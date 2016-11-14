@@ -1,0 +1,60 @@
+{% extends 'characters/character_layout.html' %}
+
+{% block character_list_title %}Monster List{% endblock %}
+
+{% block character_list %}
+    {% if monsters %}
+        {% for monster in monsters %}
+            <li style="margin-bottom: 10px;">
+                <a href="{% url 'characters:monster_detail' monster_pk=monster.pk %}">
+                    {{ monster.name }}
+                </a>
+            </li>
+        {% endfor %}
+    {% else %}
+        <li>You haven't created any monsters yet!</li>
+    {% endif %}
+{% endblock %}
+
+{% block character_contents_extra %}
+    <li><a href="{% url 'characters:monster_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create monster</span></a></li>
+{% endblock %}
+
+{% block character_detail_title %}
+    {% if this_monster %}
+        {{ this_monster.name }}
+    {% else %}
+        Monsters
+    {% endif %}
+{% endblock %}
+
+{% block character_detail_extra %}
+    {% if this_monster %}
+        <li><a href="{% url 'characters:monster_update' monster_pk=this_monster.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit monster</span></a></li>
+        <li><a href="{% url 'characters:monster_delete' monster_pk=this_monster.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete monster</span></a></li>
+    {% else %}
+        <li><a href="{% url 'characters:monster_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create monster</span></a></li>
+    {% endif %}
+{% endblock %}
+
+{% block character_detail %}
+    {% if this_monster %}
+        <p>Level: {{ this_monster.level }}</p>
+        <p>Alignment: {{ this_monster.get_alignment_display }}</p>
+        <p>Size: {{ this_monster.get_size_display }}</p>
+        <p>Languages: {{ this_monster.languages }}</p>
+        <p>Strength: {{ this_monster.strength }}</p>
+        <p>Dexterity: {{ this_monster.dexterity }}</p>
+        <p>Constitution: {{ this_monster.constitution }}</p>
+        <p>Intelligence: {{ this_monster.intelligence }}</p>
+        <p>Wisdom: {{ this_monster.wisdom }}</p>
+        <p>Charisma: {{ this_monster.charisma }}</p>
+        <p>Armor Class: {{ this_monster.armor_class }}</p>
+        <p>Hit Points: {{ this_monster.hit_points }}</p>
+        <p>Speed: {{ this_monster.speed }}</p>
+        <p>Saving Throws: {{ this_monster.saving_throws }}</p>
+        <p>Skills: {{ this_monster.skills }}</p>
+    {% else %}
+        <p>You haven't created any monsters yet!</p>
+    {% endif %}
+{% endblock %}

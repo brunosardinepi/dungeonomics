@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+
+{% block header_title %}Your Monsters{% endblock %}
+
+{% block body_content %}
+
+    <ul>
+        {% for monster in monsters %}
+            <li><a href="{% url 'characters:monster_detail' monster_pk=monster.id %}">{{ monster.name }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'characters:monster_create' %}">Create Monster</a>
+
+    
+
+{% endblock %}

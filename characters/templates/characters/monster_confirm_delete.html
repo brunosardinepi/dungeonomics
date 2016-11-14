@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% block header_title %}Delete Monster{% endblock %}
+
+{% block body_content %}
+<form action="{% url 'characters:monster_delete' monster_pk=monster.pk %}" method="POST">
+    {% csrf_token %}
+    <p>Are you sure you want to delete "{{ monster.name }}"?</p>
+    <input type="submit" class="btn" value="Confirm" />
+</form>
+{% endblock %}

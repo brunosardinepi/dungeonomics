@@ -1,0 +1,8 @@
+{% load account %}
+{% user_display user as user_display %}
+{% load i18n %}
+{% autoescape off %}
+    {% blocktrans with site_name=current_site.name site_domain=current_site.domain %}
+        Click here and confirm your e-mail address to complete your Dungeonomics registration: {{ activate_url }}
+    {% endblocktrans %}
+{% endautoescape %}

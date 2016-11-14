@@ -1,0 +1,6 @@
+{% for campaign in campaigns %} 
+    <li><a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.id %}">{{ campaign.title }}</a></li>
+{% endfor %}
+{% if campaigns %}
+    <li role="separator" class="divider"></li>
+{% endif %}

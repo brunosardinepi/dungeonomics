@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% block header_title %}Create a Chapter in campaign "{{ campaign }}"{% endblock %}
+
+{% block body_content %}
+<form method="POST" action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" class="button" value="Create Chapter">
+</form>
+{% endblock %}

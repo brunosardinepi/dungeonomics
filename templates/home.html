@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+{% block body_content %}
+    {% if user.is_authenticated %}
+        logged in
+    {% else %}
+        <div class="jumbotron cover clearfix">
+            <div class="container">
+                hello
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

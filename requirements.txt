@@ -1,0 +1,13 @@
+defusedxml==0.4.1
+Django==1.10.2
+django-allauth==0.28.0
+django-bootstrap3==7.1.0
+django-tinymce==2.4.0
+freeze==1.0.10
+gunicorn==19.6.0
+oauthlib==2.0.0
+psycopg2==2.6.2
+python3-openid==3.0.10
+requests==2.11.1
+requests-oauthlib==0.7.0
+six==1.10.0

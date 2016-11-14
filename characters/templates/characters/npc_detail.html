@@ -1,0 +1,47 @@
+{% extends 'characters/character_layout.html' %}
+
+{% block character_list_title %}NPC List{% endblock %}
+
+{% block character_list %}
+    {% if npcs %}
+        {% for npc in npcs %}
+            <li style="margin-bottom: 10px;">
+                <a href="{% url 'characters:npc_detail' npc_pk=npc.id %}">
+                    {{ npc.name }}
+                </a>
+            </li>
+        {% endfor %}
+    {% else %}
+        <li>You haven't created any NPCs yet!</li>
+    {% endif %}
+{% endblock %}
+
+{% block character_contents_extra %}
+    <li><a href="{% url 'characters:npc_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create NPC</span></a></li>
+{% endblock %}
+
+{% block character_detail_title %}
+    {% if this_npc %}
+        {{ this_npc.name }}
+    {% else %}
+        NPCs
+    {% endif %}
+{% endblock %}
+
+{% block character_detail_extra %}
+    {% if this_npc %}
+        <li><a href="{% url 'characters:npc_update' npc_pk=this_npc.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit NPC</span></a></li>
+        <li><a href="{% url 'characters:npc_delete' npc_pk=this_npc.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete NPC</span></a></li>
+    {% else %}
+        <li><a href="{% url 'characters:npc_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create NPC</span></a></li>
+    {% endif %}
+{% endblock %}
+
+{% block character_detail %}
+    {% if this_npc %}
+        <p>NPC level: {{ this_npc.level }}</p>
+        <p>NPC alignment: {{ this_npc.get_alignment_display }}</p>
+    {% else %}
+        <p>You haven't created any NPCs yet!</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,91 @@
+{% load static from staticfiles %}
+{% load lib_extras %}
+{% load bootstrap3 %}
+
+{% bootstrap_css %}
+{% bootstrap_javascript jquery=1 %}
+{% comment %}{% bootstrap_messages %}{% endcomment %}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'>
+		<meta name="viewport" content="width=device-width">
+		<title>{% block title %}test_dungeonomics{% endblock %}</title>
+        {% block head_extra %}{% endblock %}
+		<!-- stylesheets -->
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+		<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+		<link rel="stylesheet" href="{% static 'css/layout.css' %}">
+        {% block static %}{% endblock %}
+	</head>
+
+    <body>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <div id="logo_wrapper">
+                        <a id="logo" href="{% url 'home' %}" title="Dungeonomics">
+                            <img id="logo_img" src="{% static 'img/logo_cut.png' %}" alt="Dungeonomics">
+                        </a>
+                    </div>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav">
+                        {% if user.is_authenticated %}                            
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Campaigns <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    {% nav_campaign_list request %}
+                                    <li><a href="{% url 'campaign:campaign_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create campaign</span></a></li>
+                                </ul>
+                            </li>
+
+                            <li><a href="{% url 'characters:monster_detail' %}">Monsters</a></li>
+                            <li><a href="{% url 'characters:npc_detail' %}">NPCs</a></li>
+                        {% endif %}
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        {% if user.is_authenticated %}
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Account <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-header">{{ user.email }}</li>
+                                    <li><a href="{% url 'profile' %}"><i class="fa fa-fw fa-user" aria-hidden="true"></i> Profile</a></li>
+                                    <li><a href="{% url 'account_logout' %}"><i class="fa fa-fw fa-power-off" aria-hidden="true"></i> Logout</a></li>
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li><p class="navbar-btn"><a class="btn btn-default" href="{% url 'login' %}" role="button">Login</a></p></li>
+                            <li style="margin-left: 8px;"><p class="navbar-btn"><a class="btn btn-success" href="{% url 'signup' %}" role="button">Sign up</a></p></li>
+                        {% endif %}
+                    </ul>
+                </div><!--/.navbar-collapse -->
+            </div>
+        </nav>
+
+        {% block breadcrumbs %}{% endblock %}
+        {% bootstrap_messages %}
+        {% block header_title %}{% endblock %}
+
+        {% if user.is_authenticated %}
+            <div class="container">
+        {% endif %}
+
+        {% block body_content %}{% endblock %}
+        
+        {% if user.is_authenticated %}
+            </div>
+        {% endif %}
+        
+	</body>
+</html>

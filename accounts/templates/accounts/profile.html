@@ -1,0 +1,7 @@
+{% extends 'layout.html' %}
+
+{% block header_title %}Profile{% endblock %}
+
+{% block body_content %}
+    <a href="{% url 'accounts:delete' %}">Delete account</a>
+{% endblock %}

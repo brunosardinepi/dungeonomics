@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% block header_title %}Delete NPC{% endblock %}
+
+{% block body_content %}
+<form action="{% url 'characters:npc_delete' npc_pk=npc.pk %}" method="POST">
+    {% csrf_token %}
+    <p>Are you sure you want to delete "{{ npc.name }}"?</p>
+    <input type="submit" class="btn" value="Confirm" />
+</form>
+{% endblock %}

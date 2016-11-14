@@ -1,0 +1,23 @@
+{% extends 'layout.html' %}
+
+{% block head_extra %}
+    <link rel="stylesheet" href="/static/style.css"/>
+{% endblock %}
+
+{% load bootstrap3 %}
+
+{% block title_tag %}Login | {{ block.super }}{% endblock %}
+
+{% block body_content %}
+
+<div class="container">
+    <form method="post" class="form">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {% buttons %}
+            <button type="submit" class="btn btn-primary">Submit</button>
+        {% endbuttons %}
+    </form>
+</div>
+
+{% endblock %}
