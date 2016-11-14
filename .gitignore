@@ -1,0 +1,4 @@
+__pycache__/
+test_dungeonomics_env/
+db.sqlite3
+.DS_Store
