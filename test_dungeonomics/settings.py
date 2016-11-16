@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.facebook',
     'lib',
     'bootstrap3',
-    # 'accounts',
     'campaign',
     'characters',
 ]
@@ -87,7 +86,7 @@ WSGI_APPLICATION = 'test_dungeonomics.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'test_dungeonomics',
+        'NAME': 'dungeonomics',
         'USER': 'gnowak',
         'PASSWORD': 'Ballsack1',
         'HOST': 'localhost',
