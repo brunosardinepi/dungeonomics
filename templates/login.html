@@ -45,9 +45,9 @@
                             {% if socialaccount_providers %}
                                 {% for socialaccount_provider in socialaccount_providers %}
                                     {% if socialaccount_provider.name|lower == 'facebook' %}
-                                        <a class="btn btn-primary btn-block auth-facebook" href="http://bayonetwork.us:8000/accounts/facebook/login/?process=login"><span class="auth-text">Sign in with Facebook</span></a>
+                                        <a class="btn btn-primary btn-block auth-facebook" href="http://dungeonomics.com/accounts/facebook/login/?process=login"><span class="auth-text">Sign in with Facebook</span></a>
                                     {% elif socialaccount_provider.name|lower == 'google' %}
-                                        <a class="btn btn-primary btn-block auth-google"href="http://bayonetwork.us:8000/accounts/google/login/?process=login"><span class="auth-text">Sign in with Google</span></a>
+                                        <a class="btn btn-primary btn-block auth-google"href="http://dungeonomics.com/accounts/google/login/?process=login"><span class="auth-text">Sign in with Google</span></a>
                                     {% endif %}
                                 {% endfor %}
                                 {% include "socialaccount/snippets/login_extra.html" %}
