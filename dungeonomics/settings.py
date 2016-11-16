@@ -150,7 +150,7 @@ ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
 
 ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
 
-DEFAULT_FROM_EMAIL = 'no-reply@bayonetwork.us'
+DEFAULT_FROM_EMAIL = 'no-reply@dungeonomics.com'
 
 EMAIL_USE_TLS = True
 
