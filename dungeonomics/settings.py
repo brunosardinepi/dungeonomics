@@ -149,3 +149,5 @@ STATICFILES_DIRS = (
 
 # used to redirect from accounts/profile to something else
 LOGIN_REDIRECT_URL = "home"
+
+from settings_local import *
