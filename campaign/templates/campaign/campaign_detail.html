@@ -29,9 +29,9 @@
     <div class="row campaign-row">
         <div class="col-md-4">
             <div class="panel panel-default">
-                <div class="panel-heading clearfix">
+                <div class="panel-heading panel-heading-cog clearfix">
                     <span class="pull-left">
-                        <h3 class="panel-title">Contents</h3>
+                        <h3 class="panel-title panel-title-cog">Contents</h3>
                     </span>
                     <span class="pull-right">
                         <ul class="nav navbar-nav navbar-right navbar-cog">
@@ -80,9 +80,9 @@
             <div class="panel panel-default">
                 {% if this_chapter %}
                     {% if not this_section %}
-                        <div class="panel-heading clearfix">
+                        <div class="panel-heading panel-heading-cog clearfix">
                             <span class="pull-left">
-                                <h3 class="panel-title">{{ this_chapter.title }}</h3>
+                                <h3 class="panel-title panel-title-cog">{{ this_chapter.title }}</h3>
                             </span>
                             <span class="pull-right">
                                 <ul class="nav navbar-nav navbar-right navbar-cog">
@@ -101,9 +101,9 @@
                             <p>{{ this_chapter.content|safe }}</p>
                         </div>
                     {% elif this_section %}
-                        <div class="panel-heading clearfix">
+                        <div class="panel-heading panel-heading-cog clearfix">
                             <span class="pull-left">
-                                <h3 class="panel-title">{{ this_section.title }}</h3>
+                                <h3 class="panel-title panel-title-cog">{{ this_section.title }}</h3>
                             </span>
                             <span class="pull-right">
                                 <ul class="nav navbar-nav navbar-right navbar-cog">
@@ -122,7 +122,7 @@
                         </div>
                     {% endif %}
                 {% else %}
-                    <div class="panel-heading clearfix">
+                    <div class="panel-heading panel-heading-cog clearfix">
                         <span class="pull-right">
                             <ul class="nav navbar-nav navbar-right navbar-cog">
                                 <li class="dropdown">
