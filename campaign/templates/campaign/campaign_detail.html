@@ -9,8 +9,8 @@
                     <a href="{% url 'campaign:campaign_detail' campaign_pk=this_campaign.pk %}">{{ this_campaign.title }}</a>
                 </span>
                 <span>
-                    <span class="breadcrumbs_separator"> / </span>
                     {% if this_chapter %}
+                        <span class="breadcrumbs_separator"> / </span>
                         {% if this_section %}
                             <a href="{% url 'campaign:campaign_detail' campaign_pk=this_campaign.pk chapter_pk=this_chapter.pk %}">{{ this_chapter.title }}</a>
                             <span class="breadcrumbs_separator"> / </span>
