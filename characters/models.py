@@ -58,6 +58,13 @@ class Character(models.Model):
 
 class Monster(Character):
     creature_type = models.CharField(max_length=255)
+    damage_vulnerabilities = models.CharField(max_length=255)
+    damage_immunities = models.CharField(max_length=255)
+    condition_immunities = models.CharField(max_length=255)
+    senses = models.CharField(max_length=255)
+    challenge_rating = models.CharField(max_length=255)
+    traits = models.CharField(max_length=255)
+    actions = models.CharField(max_length=255)
 
     def get_absolute_url(self):
         return reverse('characters:monster_detail', kwargs={
@@ -67,6 +74,19 @@ class Monster(Character):
 
 class NPC(Character):
     npc_class = models.CharField(max_length=255)
+    personality_traits = models.TextField()
+    age = models.IntegerField(default=1)
+    height = models.CharField(max_length=255)
+    weight = models.CharField(max_length=255)
+    notes = models.TextField()
+    creature_type = models.CharField(max_length=255)
+    damage_vulnerabilities = models.CharField(max_length=255)
+    damage_immunities = models.CharField(max_length=255)
+    condition_immunities = models.CharField(max_length=255)
+    senses = models.CharField(max_length=255)
+    challenge_rating = models.CharField(max_length=255)
+    traits = models.CharField(max_length=255)
+    actions = models.CharField(max_length=255)
 
     class Meta:
         verbose_name = 'NPC'
