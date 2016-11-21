@@ -74,11 +74,11 @@ class Monster(Character):
 
 class NPC(Character):
     npc_class = models.CharField(max_length=255, default='')
-    personality_traits = models.TextField()
+    personality_traits = models.TextField(default='')
     age = models.IntegerField(default=1)
     height = models.CharField(max_length=255, default='')
     weight = models.CharField(max_length=255, default='')
-    notes = models.TextField()
+    notes = models.TextField(default='')
     creature_type = models.CharField(max_length=255, default='')
     damage_vulnerabilities = models.CharField(max_length=255, default='')
     damage_immunities = models.CharField(max_length=255, default='')
