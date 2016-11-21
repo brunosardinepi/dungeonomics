@@ -63,6 +63,14 @@ class MonsterCreate(LoginRequiredMixin, CreateView):
         'speed',
         'saving_throws',
         'skills',
+        'creature_type',
+        'damage_vulnerabilities',
+        'damage_immunities',
+        'condition_immunities',
+        'senses',
+        'challenge_rating',
+        'traits',
+        'actions',
     ]
 
     def form_valid(self, form):
@@ -92,6 +100,20 @@ class NPCCreate(LoginRequiredMixin, CreateView):
         'speed',
         'saving_throws',
         'skills',
+        'npc_class',
+        'personality_traits',
+        'age',
+        'height',
+        'weight',
+        'notes',
+        'creature_type',
+        'damage_vulnerabilities',
+        'damage_immunities',
+        'condition_immunities',
+        'senses',
+        'challenge_rating',
+        'traits',
+        'actions',
     ]
 
     def form_valid(self, form):
@@ -121,6 +143,20 @@ class MonsterUpdate(LoginRequiredMixin, UpdateView):
         'speed',
         'saving_throws',
         'skills',
+        'npc_class',
+        'personality_traits',
+        'age',
+        'height',
+        'weight',
+        'notes',
+        'creature_type',
+        'damage_vulnerabilities',
+        'damage_immunities',
+        'condition_immunities',
+        'senses',
+        'challenge_rating',
+        'traits',
+        'actions',
     ]
     template_name_suffix = '_update_form'
     slug_field = "pk"
@@ -146,6 +182,20 @@ class NPCUpdate(LoginRequiredMixin, UpdateView):
         'speed',
         'saving_throws',
         'skills',
+        'npc_class',
+        'personality_traits',
+        'age',
+        'height',
+        'weight',
+        'notes',
+        'creature_type',
+        'damage_vulnerabilities',
+        'damage_immunities',
+        'condition_immunities',
+        'senses',
+        'challenge_rating',
+        'traits',
+        'actions',
     ]
     template_name_suffix = '_update_form'
     slug_field = "pk"
