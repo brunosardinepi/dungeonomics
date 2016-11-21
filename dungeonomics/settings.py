@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
+from settings_local import *
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -149,5 +150,3 @@ STATICFILES_DIRS = (
 
 # used to redirect from accounts/profile to something else
 LOGIN_REDIRECT_URL = "home"
-
-from settings_local import *
