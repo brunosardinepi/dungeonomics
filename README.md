@@ -54,7 +54,7 @@
 - [ ] players
 - [ ] need to be able to signup with facebook and link google afterwards
 - [ ] hover over monsters/npcs in campaign to get preview of important stats
-- [ ] look into doing tinymce more proper (http://stackoverflow.com/questions/19013509/tinymce-widget-usage-in-django-template)
+- [ ] [look into doing tinymce more proper](http://stackoverflow.com/questions/19013509/tinymce-widget-usage-in-django-template)
 - [ ] if you create a chapter or section with an order number that already exists, put it above the order number and move everything else down. Look into the treehouse ordering javascript thing.
 - [ ] if you delete a chapter or section, it should shift everything up/down to fill the gap of the deleted chapter
 - [ ] create chapter in modal
