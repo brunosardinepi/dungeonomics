@@ -190,6 +190,13 @@ class SectionUpdate(LoginRequiredMixin, UpdateView):
     slug_field = "pk"
     slug_url_kwarg = "section_pk"
 
+    def get_context_data(self, **kwargs):
+        context = super(SectionUpdate, self).get_context_data(**kwargs)
+        context['campaign'] = models.Campaign.objects.get(pk=self.kwargs['campaign_pk'])
+        context['chapter'] = models.Chapter.objects.get(pk=self.kwargs['chapter_pk'])
+        context['section'] = models.Section.objects.get(pk=self.kwargs['section_pk'])
+        return context
+
 
 class CampaignDelete(LoginRequiredMixin, DeleteView):
     model = models.Campaign
