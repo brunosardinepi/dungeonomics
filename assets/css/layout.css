@@ -74,7 +74,7 @@ ul.contents_list li {
     color: #000;
 }
 .dropdown-cog a:hover {
-    color: #ee1c25;
+    color: #ee1c25 !important;
 }
 .li-content {
     margin-bottom: 10px;
