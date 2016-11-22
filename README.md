@@ -45,12 +45,12 @@
 - [x] bootstrap form styling
 - [x] move "update" on CRUD pages to beginning
 - [x] add cancel button to CRUD views
+- [x] change cog hover color to red
 - [ ] users need to delete their account - should it be inactive or aaron hernandez?
 - [ ] tinymce uploads
 - [ ] use google mail servers instead of local mail server
 - [ ] implement tinymce site-wide
 - [ ] delete campaign view needs to be styled
-- [ ] change cog hover color to red
 - [ ] players
 - [ ] need to be able to signup with facebook and link google afterwards
 - [ ] hover over monsters/npcs in campaign to get preview of important stats
