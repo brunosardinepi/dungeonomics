@@ -73,7 +73,7 @@ ul.contents_list li {
     line-height: 37px !important;
     color: #000;
 }
-a.dropdown-cog:hover, a.dropdown-cog:active {
+a.dropdown-cog:hover, a.dropdown-cog:active, li.open a.dropdown-cog {
     color: #000;
 }
 .li-content {
