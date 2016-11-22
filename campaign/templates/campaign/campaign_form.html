@@ -12,8 +12,9 @@
                     {% csrf_token %}
                     {% bootstrap_form form %}
             </div>
-            <div class="panel-footer">
-                    <input type="submit" class="btn btn-primary btn-block" value="Create Campaign">
+            <div class="panel-footer clearfix">
+                    <a href="{% url 'home' %}" class="btn btn-default">Cancel</a>
+                    <input type="submit" class="btn btn-primary pull-right" value="Create Campaign">
                 </form>
             </div>
         </div>
