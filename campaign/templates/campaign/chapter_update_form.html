@@ -1,11 +1,21 @@
 {% extends 'layout.html' %}
-
-{% block header_title %}Update Chapter{% endblock %}
+{% load bootstrap3 %}
 
 {% block body_content %}
-<form method="POST" action="">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" class="button" value="Update Chapter">
-</form>
+    <div class="col-md-12">
+        <div class="panel panel-default panel-campaign">
+            <div class="panel-heading">
+                <h3 class="panel-title">{{ campaign }} / {{ chapter }}: Update</h3>
+            </div>
+            <div class="panel-body">
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+            </div>
+            <div class="panel-footer clearfix">
+                    <input type="submit" class="btn btn-primary pull-right" value="Update Chapter">
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -171,6 +171,12 @@ class ChapterUpdate(LoginRequiredMixin, UpdateView):
     slug_field = "pk"
     slug_url_kwarg = "chapter_pk"
 
+    def get_context_data(self, **kwargs):
+        context = super(ChapterUpdate, self).get_context_data(**kwargs)
+        context['campaign'] = models.Campaign.objects.get(pk=self.kwargs['campaign_pk'])
+        context['chapter'] = models.Campaign.objects.get(pk=self.kwargs['chapter_pk'])
+        return context
+
 class SectionUpdate(LoginRequiredMixin, UpdateView):
     model = models.Section
     fields = [
