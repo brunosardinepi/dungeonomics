@@ -73,8 +73,8 @@ ul.contents_list li {
     line-height: 37px !important;
     color: #000;
 }
-.dropdown-cog a:hover {
-    color: #ee1c25 !important;
+a.dropdown-cog:hover {
+    color: #ee1c25;
 }
 .li-content {
     margin-bottom: 10px;
