@@ -13,6 +13,7 @@
                     {% bootstrap_form form %}
             </div>
             <div class="panel-footer clearfix">
+                    <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk %}" class="btn btn-default">Cancel</a>
                     <input type="submit" class="btn btn-primary pull-right" value="Create Chapter">
                 </form>
             </div>
