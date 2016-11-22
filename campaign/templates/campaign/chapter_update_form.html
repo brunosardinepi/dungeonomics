@@ -5,7 +5,7 @@
     <div class="col-md-12">
         <div class="panel panel-default panel-campaign">
             <div class="panel-heading">
-                <h3 class="panel-title">{{ campaign }} / {{ chapter }}: Update</h3>
+                <h3 class="panel-title">UPDATE: {{ campaign }} / {{ chapter }}</h3>
             </div>
             <div class="panel-body">
                 <form method="POST" action="">
@@ -13,6 +13,7 @@
                     {% bootstrap_form form %}
             </div>
             <div class="panel-footer clearfix">
+                    <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="btn btn-default">Cancel</a>
                     <input type="submit" class="btn btn-primary pull-right" value="Update Chapter">
                 </form>
             </div>
