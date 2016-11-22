@@ -45,7 +45,7 @@
 - [x] bootstrap form styling
 - [x] move "update" on CRUD pages to beginning
 - [x] add cancel button to CRUD views
-- [x] change cog hover color to red
+- [x] change cog hover color
 - [ ] users need to delete their account - should it be inactive or aaron hernandez?
 - [ ] tinymce uploads
 - [ ] use google mail servers instead of local mail server
