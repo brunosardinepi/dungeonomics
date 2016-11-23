@@ -78,8 +78,8 @@ def section_create(request, campaign_pk, chapter_pk):
         if form.is_valid():
             section = form.save(commit=False)
             section.user = request.user
-            section.campaign = self.campaign
-            section.chapter = self.chapter
+            section.campaign = campaign
+            section.chapter = chapter
             section.save()
             messages.add_message(self.request, messages.SUCCESS, "Section created!")
             return HttpResponseRedirect(section.get_absolute_url())
