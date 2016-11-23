@@ -167,7 +167,7 @@ class CampaignUpdate(LoginRequiredMixin, UpdateView):
 
 @login_required
 def chapter_update(request, campaign_pk, chapter_pk):
-    chapter = get_object_or_404(models.Chapter, pk=chapter_pk, campaign_pk=campaign_pk) # possibly need campaign_id=campaign_pk
+    chapter = get_object_or_404(models.Chapter, pk=chapter_pk, campaign_id=campaign_pk)
     monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
     monsters = {}
     for monster in monsters_raw:
@@ -184,7 +184,7 @@ def chapter_update(request, campaign_pk, chapter_pk):
             form.save()
             messages.add_message(request, messages.SUCCESS, "Updated chapter: {}".format(form.cleaned_data['title']))
             return HttpResponseRedirect(chapter.get_absolute_url())
-    return render(request, 'campaign/chapter_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': chapter.campaign})
+    return render(request, 'campaign/chapter_update_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': chapter.campaign})
 
 
 class SectionUpdate(LoginRequiredMixin, UpdateView):
