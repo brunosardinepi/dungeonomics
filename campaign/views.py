@@ -74,7 +74,10 @@ def section_create(request, campaign_pk, chapter_pk):
     monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
     monsters = {}
     for monster in monsters_raw:
-        monsters[monster.name] = monster.pk
+        monsters[monster.pk] = monster.name
+    npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
+    for npc in npcs_raw:
+        monsters[npc.pk] = npc.name
 
     form = forms.SectionForm()
     if request.method == 'POST':
@@ -87,7 +90,7 @@ def section_create(request, campaign_pk, chapter_pk):
             section.save()
             messages.add_message(request, messages.SUCCESS, "Section created!")
             return HttpResponseRedirect(section.get_absolute_url())
-    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'campaign': campaign, 'chapter': chapter})
+    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': campaign, 'chapter': chapter})
 
 
 class CampaignCreate(LoginRequiredMixin, CreateView):
@@ -124,34 +127,6 @@ class ChapterCreate(LoginRequiredMixin, CreateView):
         chapter.save()
         messages.add_message(self.request, messages.SUCCESS, "Chapter created!")
         return HttpResponseRedirect(chapter.get_absolute_url())
-
-
-class SectionCreate(LoginRequiredMixin, CreateView):
-    model = models.Section
-    fields = [
-        'title',
-        'content',
-        'order',
-    ]
-
-    def get_context_data(self, **kwargs):
-        context = super(SectionCreate, self).get_context_data(**kwargs)
-        context['campaign'] = models.Campaign.objects.get(pk=self.kwargs['campaign_pk']) 
-        context['chapter'] = models.Chapter.objects.get(pk=self.kwargs['chapter_pk'])
-        context['monsters_raw'] = character_models.Monster.objects.filter(user=self.request.user).order_by('name')
-        context['monsters'] = {}
-        for monster in context['monsters_raw']:
-            context['monsters'][monster.name] = monster.pk
-        return context
-
-    def form_valid(self, form):
-        section = form.save(commit=False)
-        section.user = self.request.user
-        section.campaign = models.Campaign.objects.get(pk=self.kwargs['campaign_pk'])
-        section.chapter = models.Chapter.objects.get(pk=self.kwargs['chapter_pk'])
-        section.save()
-        messages.add_message(self.request, messages.SUCCESS, "Section created!")
-        return HttpResponseRedirect(section.get_absolute_url())
 
 
 class CampaignUpdate(LoginRequiredMixin, UpdateView):
