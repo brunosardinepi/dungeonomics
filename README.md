@@ -48,6 +48,7 @@
 - [x] change cog hover color
 - [ ] users need to delete their account - should it be inactive or aaron hernandez?
 - [ ] tinymce uploads
+- [ ] style monster/npc CRUD
 - [ ] use google mail servers instead of local mail server
 - [ ] implement tinymce site-wide
 - [ ] delete campaign view needs to be styled
