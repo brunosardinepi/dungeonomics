@@ -169,26 +169,6 @@ def chapter_update(request, campaign_pk, chapter_pk):
     return render(request, 'campaign/chapter_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': chapter.campaign, 'chapter': chapter})
 
 
-# class SectionUpdate(LoginRequiredMixin, UpdateView):
-#     model = models.Section
-#     fields = [
-#         'title',
-#         'campaign',
-#         'chapter',
-#         'content',
-#         'order',
-#     ]
-#     template_name_suffix = '_update_form'
-#     slug_field = "pk"
-#     slug_url_kwarg = "section_pk"
-
-#     def get_context_data(self, **kwargs):
-#         context = super(SectionUpdate, self).get_context_data(**kwargs)
-#         context['campaign'] = models.Campaign.objects.get(pk=self.kwargs['campaign_pk'])
-#         context['chapter'] = models.Chapter.objects.get(pk=self.kwargs['chapter_pk'])
-#         context['section'] = models.Section.objects.get(pk=self.kwargs['section_pk'])
-#         return context
-
 @login_required
 def section_update(request, campaign_pk, chapter_pk, section_pk):
     section = get_object_or_404(models.Section, pk=section_pk, chapter_id=chapter_pk, campaign_id=campaign_pk)
