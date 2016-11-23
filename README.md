@@ -47,11 +47,11 @@
 - [x] add cancel button to CRUD views
 - [x] change cog hover color
 - [x] [look into doing tinymce more proper](http://stackoverflow.com/questions/19013509/tinymce-widget-usage-in-django-template)
+- [x] implement tinymce site-wide
 - [ ] users need to delete their account - should it be inactive or aaron hernandez?
 - [ ] tinymce uploads
 - [ ] style monster/npc CRUD
 - [ ] use google mail servers instead of local mail server
-- [ ] implement tinymce site-wide
 - [ ] delete campaign view needs to be styled
 - [ ] players
 - [ ] need to be able to signup with facebook and link google afterwards
