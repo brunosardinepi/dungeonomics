@@ -59,13 +59,10 @@ ul.contents_list li {
 .campaign-row {
     margin-top: 30px;
 }
-.panel-campaign {
-    margin-top: 30px;
-}
-.panel-heading-cog {
+.panel-heading {
     padding: 0;
 }
-.panel-title-cog {
+.panel-title {
     padding: 10px 0 0 15px;
 }
 .navbar-cog {
@@ -84,4 +81,7 @@ a.dropdown-cog:hover, a.dropdown-cog:active, li.open a.dropdown-cog {
 }
 .alert {
     text-align: center;
+}
+.margin-bottom-zero {
+    margin-bottom: 0;
 }
