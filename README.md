@@ -46,6 +46,7 @@
 - [x] move "update" on CRUD pages to beginning
 - [x] add cancel button to CRUD views
 - [x] change cog hover color
+- [x] [look into doing tinymce more proper](http://stackoverflow.com/questions/19013509/tinymce-widget-usage-in-django-template)
 - [ ] users need to delete their account - should it be inactive or aaron hernandez?
 - [ ] tinymce uploads
 - [ ] style monster/npc CRUD
@@ -55,7 +56,6 @@
 - [ ] players
 - [ ] need to be able to signup with facebook and link google afterwards
 - [ ] hover over monsters/npcs in campaign to get preview of important stats
-- [ ] [look into doing tinymce more proper](http://stackoverflow.com/questions/19013509/tinymce-widget-usage-in-django-template)
 - [ ] if you create a chapter or section with an order number that already exists, put it above the order number and move everything else down. Look into the treehouse ordering javascript thing.
 - [ ] if you delete a chapter or section, it should shift everything up/down to fill the gap of the deleted chapter
 - [ ] create chapter in modal
@@ -64,3 +64,4 @@
 - [ ] on signup, change "password (again)" to "confirm password"
 - [ ] remove the "please fill out this field" on hover on login
 - [ ] use get_object_or_404 on views
+- [ ] add option in "edit campaign" to drag/drop to change order of chapters, order number should auto-update as you do it
