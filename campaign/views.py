@@ -211,7 +211,7 @@ class CampaignDelete(LoginRequiredMixin, DeleteView):
 
 class ChapterDelete(LoginRequiredMixin, DeleteView):
     model = models.Chapter
-    chapter = get_object()
+    chapter = self.get_object()
     success_url = reverse_lazy('campaign:campaign_detail', kwargs={'campaign_pk': chatper.pk})
     slug_field = "pk"
     slug_url_kwarg = "chapter_pk"
