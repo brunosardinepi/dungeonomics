@@ -5,6 +5,7 @@
 
 {% block head_extra %}
     {{ form.media.css }}
+    {{ form.media.js }}
     
     <script type="text/javascript">
         var monsters = [];
@@ -72,8 +73,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
-
-{% block javascript %}
-    {{ form.media.js }}
 {% endblock %}
