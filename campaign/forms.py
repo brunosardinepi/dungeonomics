@@ -32,13 +32,13 @@ class SectionForm(forms.ModelForm):
     class Media:
         css = {
             'all': (
-                '/assets/css/autocomplete.css',
+                '/static/css/autocomplete.css',
                 'https://cdnjs.cloudflare.com/ajax/libs/at.js/1.5.2/css/jquery.atwho.min.css',
                 )
             }
         js = (
             'https://cdnjs.cloudflare.com/ajax/libs/at.js/1.5.2/js/jquery.atwho.min.js',
             'https://cdnjs.cloudflare.com/ajax/libs/Caret.js/0.3.1/jquery.caret.min.js',
-            '/assets/js/tinymce/tinymce.min.js',
-            '/assets/js/tinymce_config.js',
+            '/static/js/tinymce/tinymce.min.js',
+            '/static/js/tinymce_config.js',
             )
