@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^(?P<campaign_pk>\d+)/chapter/(?P<chapter_pk>\d+)/section/(?P<section_pk>\d+)/edit/$', views.section_update, name='section_update'),
 
     url(r'^(?P<campaign_pk>\d+)/delete/$', views.CampaignDelete.as_view(), name='campaign_delete'),
-    url(r'^(?P<campaign_pk>\d+)/chapter/(?P<chapter_pk>\d+)/delete/$', views.ChapterDelete.as_view(), name='chapter_delete'),
+    # url(r'^(?P<campaign_pk>\d+)/chapter/(?P<chapter_pk>\d+)/delete/$', views.ChapterDelete.as_view(), name='chapter_delete'),
+    url(r'^(?P<campaign_pk>\d+)/chapter/(?P<chapter_pk>\d+)/delete/$', views.chapter_delete, name='chapter_delete'),    
     url(r'^(?P<campaign_pk>\d+)/chapter/(?P<chapter_pk>\d+)/section/(?P<section_pk>\d+)/delete/$', views.SectionDelete.as_view(), name='section_delete'),
 ]
