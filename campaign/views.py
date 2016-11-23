@@ -69,6 +69,8 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
 
 @login_required
 def section_create(request, campaign_pk, chapter_pk):
+    campaign = models.Campaign.objects.get(pk=self.kwargs['campaign_pk'])
+    chapter = models.Chapter.objects.get(pk=self.kwargs['chapter_pk'])
     form = forms.SectionForm()
 
     if request.method == 'POST':
@@ -76,11 +78,12 @@ def section_create(request, campaign_pk, chapter_pk):
         if form.is_valid():
             section = form.save(commit=False)
             section.user = request.user
-            section.campaign = models.Campaign.objects.get(pk=self.kwargs['campaign_pk'])
-            section.chapter = models.Chapter.objects.get(pk=self.kwargs['chapter_pk'])
+            section.campaign = self.campaign
+            section.chapter = self.chapter
             section.save()
             messages.add_message(self.request, messages.SUCCESS, "Section created!")
             return HttpResponseRedirect(section.get_absolute_url())
+    return render(request, 'campaign/section_form.html', {'form': form, 'campaign': campaign, 'chapter': chapter})
 
 
 class CampaignCreate(LoginRequiredMixin, CreateView):
