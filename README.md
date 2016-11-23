@@ -67,3 +67,4 @@
 - [ ] add option in "edit campaign" to drag/drop to change order of chapters, order number should auto-update as you do it
 - [ ] consolidate tinymce config into one template
 - [ ] check all titles and make sure they are using "title | super" format
+- [ ] consider moving css/js for tinymce into the campaign dir since it isn't used elsewhere
