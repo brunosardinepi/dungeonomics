@@ -17,6 +17,14 @@
                     'type': 'monster'
                 });
         }
+        var npcs_dict = {{npcs|safe}};
+        for (var key in npcs_dict) {
+            monsters.push({
+                    'name': npcs_dict[key],
+                    'id': key,
+                    'type': 'npcs'
+                });
+        }
         console.log(monsters);
         tinymce.init({
             selector: "#id_content",

@@ -76,8 +76,9 @@ def section_create(request, campaign_pk, chapter_pk):
     for monster in monsters_raw:
         monsters[monster.pk] = monster.name
     npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
+    npcs = {}
     for npc in npcs_raw:
-        monsters[npc.pk] = npc.name
+        npcs[npc.pk] = npc.name
 
     form = forms.SectionForm()
     if request.method == 'POST':
@@ -90,7 +91,7 @@ def section_create(request, campaign_pk, chapter_pk):
             section.save()
             messages.add_message(request, messages.SUCCESS, "Section created!")
             return HttpResponseRedirect(section.get_absolute_url())
-    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'campaign': campaign, 'chapter': chapter})
+    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': campaign, 'chapter': chapter})
 
 
 class CampaignCreate(LoginRequiredMixin, CreateView):
