@@ -3,32 +3,7 @@ from django import forms
 from . import models
 
 
-class CampaignForm(forms.ModelForm):
-    class Meta:
-        model = models.Campaign
-        fields = [
-            'title',
-        ]
-
-
-class ChapterForm(forms.ModelForm):
-    class Meta:
-        model = models.Chapter
-        fields = [
-            'content',
-            'order',
-        ]
-
-
-class SectionForm(forms.ModelForm):
-    class Meta:
-        model = models.Section
-        fields = [
-            'title',
-            'content',
-            'order',
-        ]
-
+class TinyMCEForm(forms.ModelForm):
     class Media:
         css = {
             'all': (
@@ -41,3 +16,31 @@ class SectionForm(forms.ModelForm):
             'https://cdnjs.cloudflare.com/ajax/libs/Caret.js/0.3.1/jquery.caret.min.js',
             '/static/js/tinymce/tinymce.min.js',
             )
+
+
+class CampaignForm(TinyMCEForm):
+    class Meta:
+        model = models.Campaign
+        fields = [
+            'title',
+        ]
+
+
+class ChapterForm(TinyMCEForm):
+    class Meta:
+        model = models.Chapter
+        fields = [
+            'title',
+            'content',
+            'order',
+        ]
+
+
+class SectionForm(TinyMCEForm):
+    class Meta:
+        model = models.Section
+        fields = [
+            'title',
+            'content',
+            'order',
+        ]
