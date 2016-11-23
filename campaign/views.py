@@ -208,7 +208,7 @@ def section_update(request, campaign_pk, chapter_pk, section_pk):
             form.save()
             messages.add_message(request, messages.SUCCESS, "Updated section: {}".format(form.cleaned_data['title']))
             return HttpResponseRedirect(section.get_absolute_url())
-    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': chapter.campaign, 'chapter': chapter, 'section': section})
+    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': section.chapter.campaign, 'chapter': section.chapter, 'section': section})
 
 
 class CampaignDelete(LoginRequiredMixin, DeleteView):
