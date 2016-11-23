@@ -71,8 +71,12 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
 def section_create(request, campaign_pk, chapter_pk):
     campaign = models.Campaign.objects.get(pk=campaign_pk)
     chapter = models.Chapter.objects.get(pk=chapter_pk)
-    form = forms.SectionForm()
+    monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
+    monsters = {}
+    for monster in monsters_raw:
+        monsters[monster.name] = monster.pk
 
+    form = forms.SectionForm()
     if request.method == 'POST':
         form = forms.SectionForm(request.POST)
         if form.is_valid():
@@ -83,7 +87,7 @@ def section_create(request, campaign_pk, chapter_pk):
             section.save()
             messages.add_message(request, messages.SUCCESS, "Section created!")
             return HttpResponseRedirect(section.get_absolute_url())
-    return render(request, 'campaign/section_form.html', {'form': form, 'campaign': campaign, 'chapter': chapter})
+    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'campaign': campaign, 'chapter': chapter})
 
 
 class CampaignCreate(LoginRequiredMixin, CreateView):
