@@ -1,7 +1,5 @@
 {% extends 'layout.html' %}
 {% load bootstrap3 %}
-{% load static from staticfiles %}
-{% load campaign_extras %}
 
 {% block head_extra %}
     {{ form.media.css }}
@@ -25,7 +23,6 @@
                     'type': 'npc'
                 });
         }
-        console.log(monsters);
         tinymce.init({
             selector: "#id_content",
             height : "350",
