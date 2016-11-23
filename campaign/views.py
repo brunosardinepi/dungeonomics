@@ -90,7 +90,7 @@ def section_create(request, campaign_pk, chapter_pk):
             section.save()
             messages.add_message(request, messages.SUCCESS, "Section created!")
             return HttpResponseRedirect(section.get_absolute_url())
-    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': campaign, 'chapter': chapter})
+    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'campaign': campaign, 'chapter': chapter})
 
 
 class CampaignCreate(LoginRequiredMixin, CreateView):
