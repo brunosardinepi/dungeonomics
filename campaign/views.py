@@ -184,7 +184,7 @@ def chapter_update(request, campaign_pk, chapter_pk):
             form.save()
             messages.add_message(request, messages.SUCCESS, "Updated chapter: {}".format(form.cleaned_data['title']))
             return HttpResponseRedirect(chapter.get_absolute_url())
-    return render(request, 'campaign/chapter_update_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': chapter.campaign})
+    return render(request, 'campaign/chapter_update_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': chapter.campaign, 'chapter': chapter})
 
 
 class SectionUpdate(LoginRequiredMixin, UpdateView):
