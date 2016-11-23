@@ -32,7 +32,7 @@ class SectionForm(forms.ModelForm):
     class Media:
         css = {
             'all': (
-                '/static/css/autocomplete.css',
+                '/static/css/autocomplete.css', 
                 'https://cdnjs.cloudflare.com/ajax/libs/at.js/1.5.2/css/jquery.atwho.min.css',
                 )
             }
