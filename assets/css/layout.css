@@ -59,10 +59,16 @@ ul.contents_list li {
 .campaign-row {
     margin-top: 30px;
 }
+.panel-campaign {
+    margin-top: 30px;
+}
 .panel-heading {
     padding: 0;
 }
 .panel-title {
+    padding: 10px 0 0 15px;
+}
+.panel-title-cog {
     padding: 10px 0 0 15px;
 }
 .navbar-cog {
