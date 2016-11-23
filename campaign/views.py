@@ -108,26 +108,51 @@ class CampaignCreate(LoginRequiredMixin, CreateView):
         return HttpResponseRedirect(campaign.get_absolute_url())
 
 
-class ChapterCreate(LoginRequiredMixin, CreateView):
-    model = models.Chapter
-    fields = [
-        'title',
-        'content',
-        'order',
-    ]
+@login_required
+def chapter_create(request):
+    campaign = models.Campaign.objects.get(pk=campaign_pk)
+    monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
+    monsters = {}
+    for monster in monsters_raw:
+        monsters[monster.pk] = monster.name
+    npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
+    npcs = {}
+    for npc in npcs_raw:
+        npcs[npc.pk] = npc.name
 
-    def get_context_data(self, **kwargs):
-        context = super(ChapterCreate, self).get_context_data(**kwargs)
-        context['campaign'] = models.Campaign.objects.get(pk=self.kwargs['campaign_pk'])
-        return context
+    form = forms.ChapterForm()
+    if request.method == 'POST':
+        form = forms.ChapterForm(request.POST)
+        if form.is_valid():
+            chapter = form.save(commit=False)
+            chapter.user = request.user
+            chapter.campaign = campaign
+            chapter.save()
+            messages.add_message(request, messages.SUCCESS, "Chapter created!")
+            return HttpResponseRedirect(chapter.get_absolute_url())
+    return render(request, 'campaign/chapter_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': campaign})
 
-    def form_valid(self, form):
-        chapter = form.save(commit=False)
-        chapter.user = self.request.user
-        chapter.campaign = models.Campaign.objects.get(pk=self.kwargs['campaign_pk'])
-        chapter.save()
-        messages.add_message(self.request, messages.SUCCESS, "Chapter created!")
-        return HttpResponseRedirect(chapter.get_absolute_url())
+
+# class ChapterCreate(LoginRequiredMixin, CreateView):
+#     model = models.Chapter
+#     fields = [
+#         'title',
+#         'content',
+#         'order',
+#     ]
+
+#     def get_context_data(self, **kwargs):
+#         context = super(ChapterCreate, self).get_context_data(**kwargs)
+#         context['campaign'] = models.Campaign.objects.get(pk=self.kwargs['campaign_pk'])
+#         return context
+
+#     def form_valid(self, form):
+#         chapter = form.save(commit=False)
+#         chapter.user = self.request.user
+#         chapter.campaign = models.Campaign.objects.get(pk=self.kwargs['campaign_pk'])
+#         chapter.save()
+#         messages.add_message(self.request, messages.SUCCESS, "Chapter created!")
+#         return HttpResponseRedirect(chapter.get_absolute_url())
 
 
 class CampaignUpdate(LoginRequiredMixin, UpdateView):

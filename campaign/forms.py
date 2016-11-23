@@ -18,7 +18,7 @@ class TinyMCEForm(forms.ModelForm):
             )
 
 
-class CampaignForm(TinyMCEForm):
+class CampaignForm(models.ModelForm):
     class Meta:
         model = models.Campaign
         fields = [
