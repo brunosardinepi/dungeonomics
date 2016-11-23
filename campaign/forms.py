@@ -40,4 +40,5 @@ class SectionForm(forms.ModelForm):
             'https://cdnjs.cloudflare.com/ajax/libs/at.js/1.5.2/js/jquery.atwho.min.js',
             'https://cdnjs.cloudflare.com/ajax/libs/Caret.js/0.3.1/jquery.caret.min.js',
             '/static/js/tinymce/tinymce.min.js',
+            '/static/js/tinymce_config.js',
             )
