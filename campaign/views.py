@@ -129,7 +129,8 @@ def chapter_create(request, campaign_pk):
             chapter.campaign = campaign
             chapter.save()
             messages.add_message(request, messages.SUCCESS, "Chapter created!")
-            return HttpResponseRedirect(chapter.get_absolute_url())
+            # return HttpResponseRedirect(chapter.get_absolute_url())
+            return HttpResponseRedirect('home')
     return render(request, 'campaign/chapter_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': campaign})
 
 
