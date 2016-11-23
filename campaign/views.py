@@ -81,7 +81,7 @@ def section_create(request, campaign_pk, chapter_pk):
             section.campaign = campaign
             section.chapter = chapter
             section.save()
-            messages.add_message(self.request, messages.SUCCESS, "Section created!")
+            messages.add_message(request, messages.SUCCESS, "Section created!")
             return HttpResponseRedirect(section.get_absolute_url())
     return render(request, 'campaign/section_form.html', {'form': form, 'campaign': campaign, 'chapter': chapter})
 
