@@ -63,3 +63,4 @@
 - [ ] import monster/npc
 - [ ] on signup, change "password (again)" to "confirm password"
 - [ ] remove the "please fill out this field" on hover on login
+- [ ] use get_object_or_404 on views

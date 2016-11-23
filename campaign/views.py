@@ -67,33 +67,6 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
         return render(request, 'campaign/campaign_detail.html', {'this_campaign': this_campaign})
 
 
-@login_required
-def section_create(request, campaign_pk, chapter_pk):
-    campaign = models.Campaign.objects.get(pk=campaign_pk)
-    chapter = models.Chapter.objects.get(pk=chapter_pk)
-    monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
-    monsters = {}
-    for monster in monsters_raw:
-        monsters[monster.pk] = monster.name
-    npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
-    npcs = {}
-    for npc in npcs_raw:
-        npcs[npc.pk] = npc.name
-
-    form = forms.SectionForm()
-    if request.method == 'POST':
-        form = forms.SectionForm(request.POST)
-        if form.is_valid():
-            section = form.save(commit=False)
-            section.user = request.user
-            section.campaign = campaign
-            section.chapter = chapter
-            section.save()
-            messages.add_message(request, messages.SUCCESS, "Section created!")
-            return HttpResponseRedirect(section.get_absolute_url())
-    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': campaign, 'chapter': chapter})
-
-
 class CampaignCreate(LoginRequiredMixin, CreateView):
     model = models.Campaign
     fields = [
@@ -132,27 +105,31 @@ def chapter_create(request, campaign_pk):
             return HttpResponseRedirect(chapter.get_absolute_url())
     return render(request, 'campaign/chapter_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': campaign})
 
+@login_required
+def section_create(request, campaign_pk, chapter_pk):
+    campaign = models.Campaign.objects.get(pk=campaign_pk)
+    chapter = models.Chapter.objects.get(pk=chapter_pk)
+    monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
+    monsters = {}
+    for monster in monsters_raw:
+        monsters[monster.pk] = monster.name
+    npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
+    npcs = {}
+    for npc in npcs_raw:
+        npcs[npc.pk] = npc.name
 
-# class ChapterCreate(LoginRequiredMixin, CreateView):
-#     model = models.Chapter
-#     fields = [
-#         'title',
-#         'content',
-#         'order',
-#     ]
-
-#     def get_context_data(self, **kwargs):
-#         context = super(ChapterCreate, self).get_context_data(**kwargs)
-#         context['campaign'] = models.Campaign.objects.get(pk=self.kwargs['campaign_pk'])
-#         return context
-
-#     def form_valid(self, form):
-#         chapter = form.save(commit=False)
-#         chapter.user = self.request.user
-#         chapter.campaign = models.Campaign.objects.get(pk=self.kwargs['campaign_pk'])
-#         chapter.save()
-#         messages.add_message(self.request, messages.SUCCESS, "Chapter created!")
-#         return HttpResponseRedirect(chapter.get_absolute_url())
+    form = forms.SectionForm()
+    if request.method == 'POST':
+        form = forms.SectionForm(request.POST)
+        if form.is_valid():
+            section = form.save(commit=False)
+            section.user = request.user
+            section.campaign = campaign
+            section.chapter = chapter
+            section.save()
+            messages.add_message(request, messages.SUCCESS, "Section created!")
+            return HttpResponseRedirect(section.get_absolute_url())
+    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': campaign, 'chapter': chapter})
 
 
 class CampaignUpdate(LoginRequiredMixin, UpdateView):
@@ -170,23 +147,45 @@ class CampaignUpdate(LoginRequiredMixin, UpdateView):
         return context
 
 
-class ChapterUpdate(LoginRequiredMixin, UpdateView):
-    model = models.Chapter
-    fields = [
-        'title',
-        'campaign',
-        'content',
-        'order',
-    ]
-    template_name_suffix = '_update_form'
-    slug_field = "pk"
-    slug_url_kwarg = "chapter_pk"
+# class ChapterUpdate(LoginRequiredMixin, UpdateView):
+#     model = models.Chapter
+#     fields = [
+#         'title',
+#         'campaign',
+#         'content',
+#         'order',
+#     ]
+#     template_name_suffix = '_update_form'
+#     slug_field = "pk"
+#     slug_url_kwarg = "chapter_pk"
 
-    def get_context_data(self, **kwargs):
-        context = super(ChapterUpdate, self).get_context_data(**kwargs)
-        context['campaign'] = models.Campaign.objects.get(pk=self.kwargs['campaign_pk'])
-        context['chapter'] = models.Chapter.objects.get(pk=self.kwargs['chapter_pk'])
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super(ChapterUpdate, self).get_context_data(**kwargs)
+#         context['campaign'] = models.Campaign.objects.get(pk=self.kwargs['campaign_pk'])
+#         context['chapter'] = models.Chapter.objects.get(pk=self.kwargs['chapter_pk'])
+#         return context
+
+@login_required
+def chapter_update(request, campaign_pk, chapter_pk):
+    chapter = get_object_or_404(models.Chapter, pk=chapter_pk, campaign_pk=campaign_pk) # possibly need campaign_id=campaign_pk
+    monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
+    monsters = {}
+    for monster in monsters_raw:
+        monsters[monster.pk] = monster.name
+    npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
+    npcs = {}
+    for npc in npcs_raw:
+        npcs[npc.pk] = npc.name
+
+    form = forms.ChapterForm(instance=chapter)
+    if request.method == 'POST':
+        form = forms.ChapterForm(instance=chapter, data=request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, messages.SUCCESS, "Updated chapter: {}".format(form.cleaned_data['title']))
+            return HttpResponseRedirect(chapter.get_absolute_url())
+    return render(request, 'campaign/chapter_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': chapter.campaign})
+
 
 class SectionUpdate(LoginRequiredMixin, UpdateView):
     model = models.Section
