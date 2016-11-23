@@ -56,7 +56,13 @@
     <div class="col-md-12">
         <div class="panel panel-default panel-campaign">
             <div class="panel-heading">
-                <h3 class="panel-title"><strong>NEW CHAPTER:</strong> {{ campaign }}</h3>
+                <h3 class="panel-title">
+                    {% if chapter.pk %}
+                        <strong>UPDATE:</strong> {{ campaign }} / {{ chapter }}
+                    {% else %}
+                        <strong>NEW CHAPTER:</strong> {{ campaign }}
+                    {% endif %}
+                </h3>
             </div>
             <div class="panel-body">
                 <form method="POST" action="">
@@ -64,8 +70,13 @@
                     {% bootstrap_form form %}
             </div>
             <div class="panel-footer clearfix">
+                {% if chapter.pk %}
+                    <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="btn btn-default">Cancel</a>
+                    <input type="submit" class="btn btn-primary pull-right" value="Update Chapter">
+                {% else %}
                     <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk %}" class="btn btn-default">Cancel</a>
                     <input type="submit" class="btn btn-primary pull-right" value="Create Chapter">
+                {% endif %}
                 </form>
             </div>
         </div>
