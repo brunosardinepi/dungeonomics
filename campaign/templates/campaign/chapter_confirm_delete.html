@@ -12,9 +12,9 @@
             <div class="panel-body">
                 <form method="POST" action="">
                     {% csrf_token %}
-                    <p class="margin-bottom-zero">Please confirm that you want to delete the following chapter:</p>
-                    <p><strong>{{ chapter.title }}</strong></p>
-                    <p>This will be permanently deleted.</p>
+                    <p>Please confirm that you want to delete the following chapter:</p>
+                    <p style="font-size: 14px; font-weight: bold;">{{ chapter.title }}</p>
+                    <p class="margin-bottom-zero">This will be permanently deleted.</p>
             </div>
             <div class="panel-footer clearfix">
                     <a href="{% url 'campaign:campaign_detail' campaign_pk=chapter.campaign.pk chapter_pk=chapter.pk %}" class="btn btn-default">Cancel</a>
