@@ -10,7 +10,7 @@
                 <h3 class="panel-title"><strong>DELETE: {{ chapter.title }}</strong></h3>
             </div>
             <div class="panel-body">
-                <form method="POST" action="">
+                <form method="POST" action="" class="margin-bottom-zero">
                     {% csrf_token %}
                     <p>Please confirm that you want to delete the following chapter:</p>
                     <p style="font-size: 18px; font-weight: bold;" class="text-center">{{ chapter.title }}</p>
