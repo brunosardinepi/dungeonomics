@@ -60,7 +60,7 @@ ul.contents_list li {
     margin-top: 30px;
 }
 .panel-campaign {
-    margin-top: 30px; 
+    margin-top: 30px;
 }
 .panel-heading-cog {
     padding: 0;
@@ -74,6 +74,9 @@ ul.contents_list li {
 .dropdown-cog {
     padding: 0 15px !important;
     line-height: 37px !important;
+    color: #000;
+}
+a.dropdown-cog:hover, a.dropdown-cog:active, li.open a.dropdown-cog {
     color: #000;
 }
 .li-content {
