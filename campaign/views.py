@@ -209,35 +209,22 @@ class CampaignDelete(LoginRequiredMixin, DeleteView):
             return campaign
 
 
-# class ChapterDelete(LoginRequiredMixin, DeleteView):
-#     model = models.Chapter
-#     success_url = reverse_lazy('home')
-#     slug_field = "pk"
-#     slug_url_kwarg = "chapter_pk"
+class ChapterDelete(LoginRequiredMixin, DeleteView):
+    model = models.Chapter
+    success_url = reverse_lazy('home')
+    slug_field = "pk"
+    slug_url_kwarg = "chapter_pk"
 
-#     def delete(self, request, *args, **kwargs):
-#         messages.add_message(self.request, messages.SUCCESS, "Chapter deleted!")
-#         return super(ChapterDelete, self).delete(request, *args, **kwargs)
+    def delete(self, request, *args, **kwargs):
+        messages.add_message(self.request, messages.SUCCESS, "Chapter deleted!")
+        return super(ChapterDelete, self).delete(request, *args, **kwargs)
 
-#     def get_object(self, queryset=None):
-#         chapter = super(ChapterDelete, self).get_object()
-#         if not chapter.user == self.request.user:
-#             raise Http404
-#         else:
-#             return chapter
-
-@login_required
-def chapter_delete(request, campaign_pk, chapter_pk):
-    chapter = get_object_or_404(models.Chapter, pk=chapter_pk, campaign_id=campaign_pk)
-
-    form = forms.ChapterForm(instance=chapter)
-    if request.method == 'POST':
-        form = forms.ChapterForm(instance=chapter, data=request.POST)
-        if form.is_valid():
-            form.delete()
-            messages.add_message(request, messages.SUCCESS, "Deleted chapter: {}".format(form.cleaned_data['title']))
-            return HttpResponseRedirect('campaign:campaign_detail', kwargs={'campaign_pk': chapter.campaign.pk})
-    return render(request, 'campaign/chapter_confirm_delete.html', {'form': form, 'campaign': chapter.campaign, 'chapter': chapter})
+    def get_object(self, queryset=None):
+        chapter = super(ChapterDelete, self).get_object()
+        if not chapter.user == self.request.user:
+            raise Http404
+        else:
+            return chapter
 
 
 class SectionDelete(LoginRequiredMixin, DeleteView):
