@@ -12,7 +12,7 @@
     {{ form.media.css }}
     {{ form.media.js }}
     
-    <script type="text/javascript">
+    {% comment %}<script type="text/javascript">
         var monsters = [];
         var monsters_dict = {{monsters|safe}};
         for (var key in monsters_dict) {
@@ -48,7 +48,7 @@
                 }
             }
         });
-    </script>
+    </script>{% endcomment %}
 {% endblock %}
 
 {% block body_content %}
