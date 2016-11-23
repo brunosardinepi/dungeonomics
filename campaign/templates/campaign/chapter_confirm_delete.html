@@ -13,7 +13,7 @@
                 <form method="POST" action="">
                     {% csrf_token %}
                     <p>Please confirm that you want to delete the following chapter:</p>
-                    <p style="font-size: 14px; font-weight: bold;">{{ chapter.title }}</p>
+                    <p style="font-size: 18px; font-weight: bold;" class="text-center">{{ chapter.title }}</p>
                     <p class="margin-bottom-zero">This will be permanently deleted.</p>
             </div>
             <div class="panel-footer clearfix">
