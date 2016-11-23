@@ -69,8 +69,8 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
 
 @login_required
 def section_create(request, campaign_pk, chapter_pk):
-    campaign = models.Campaign.objects.get(pk=self.kwargs['campaign_pk'])
-    chapter = models.Chapter.objects.get(pk=self.kwargs['chapter_pk'])
+    campaign = models.Campaign.objects.get(pk=campaign_pk)
+    chapter = models.Chapter.objects.get(pk=chapter_pk)
     form = forms.SectionForm()
 
     if request.method == 'POST':
