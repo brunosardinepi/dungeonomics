@@ -26,7 +26,7 @@ class Campaign(CampaignTemplate):
 
 
 class Chapter(CampaignTemplate):
-    content = models.TextField(default='')
+    content = models.TextField(blank=True)
     order = models.IntegerField(verbose_name= _('Chapter number'),default=1)
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
 
