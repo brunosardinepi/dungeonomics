@@ -169,25 +169,46 @@ def chapter_update(request, campaign_pk, chapter_pk):
     return render(request, 'campaign/chapter_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': chapter.campaign, 'chapter': chapter})
 
 
-class SectionUpdate(LoginRequiredMixin, UpdateView):
-    model = models.Section
-    fields = [
-        'title',
-        'campaign',
-        'chapter',
-        'content',
-        'order',
-    ]
-    template_name_suffix = '_update_form'
-    slug_field = "pk"
-    slug_url_kwarg = "section_pk"
+# class SectionUpdate(LoginRequiredMixin, UpdateView):
+#     model = models.Section
+#     fields = [
+#         'title',
+#         'campaign',
+#         'chapter',
+#         'content',
+#         'order',
+#     ]
+#     template_name_suffix = '_update_form'
+#     slug_field = "pk"
+#     slug_url_kwarg = "section_pk"
 
-    def get_context_data(self, **kwargs):
-        context = super(SectionUpdate, self).get_context_data(**kwargs)
-        context['campaign'] = models.Campaign.objects.get(pk=self.kwargs['campaign_pk'])
-        context['chapter'] = models.Chapter.objects.get(pk=self.kwargs['chapter_pk'])
-        context['section'] = models.Section.objects.get(pk=self.kwargs['section_pk'])
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super(SectionUpdate, self).get_context_data(**kwargs)
+#         context['campaign'] = models.Campaign.objects.get(pk=self.kwargs['campaign_pk'])
+#         context['chapter'] = models.Chapter.objects.get(pk=self.kwargs['chapter_pk'])
+#         context['section'] = models.Section.objects.get(pk=self.kwargs['section_pk'])
+#         return context
+
+@login_required
+def section_update(request, campaign_pk, chapter_pk, section_pk):
+    section = get_object_or_404(models.Section, pk=section_pk, chapter_id=chapter_pk, campaign_id=campaign_pk)
+    monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
+    monsters = {}
+    for monster in monsters_raw:
+        monsters[monster.pk] = monster.name
+    npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
+    npcs = {}
+    for npc in npcs_raw:
+        npcs[npc.pk] = npc.name
+
+    form = forms.SectionForm(instance=section)
+    if request.method == 'POST':
+        form = forms.SectionForm(instance=section, data=request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, messages.SUCCESS, "Updated section: {}".format(form.cleaned_data['title']))
+            return HttpResponseRedirect(section.get_absolute_url())
+    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': chapter.campaign, 'chapter': chapter, 'section': section})
 
 
 class CampaignDelete(LoginRequiredMixin, DeleteView):
