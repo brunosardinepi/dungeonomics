@@ -67,6 +67,22 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
         return render(request, 'campaign/campaign_detail.html', {'this_campaign': this_campaign})
 
 
+@login_required
+def section_create(request, campaign_pk, chapter_pk):
+    form = forms.SectionForm()
+
+    if request.method == 'POST':
+        form = forms.SectionForm(request.POST)
+        if form.is_valid():
+            section = form.save(commit=False)
+            section.user = request.user
+            section.campaign = models.Campaign.objects.get(pk=self.kwargs['campaign_pk'])
+            section.chapter = models.Chapter.objects.get(pk=self.kwargs['chapter_pk'])
+            section.save()
+            messages.add_message(self.request, messages.SUCCESS, "Section created!")
+            return HttpResponseRedirect(section.get_absolute_url())
+
+
 class CampaignCreate(LoginRequiredMixin, CreateView):
     model = models.Campaign
     fields = [
@@ -110,19 +126,6 @@ class SectionCreate(LoginRequiredMixin, CreateView):
         'content',
         'order',
     ]
-
-    # class Media:
-    #     css = {
-    #         'all': (
-    #             'css/autocomplete.css',
-    #             'https://cdnjs.cloudflare.com/ajax/libs/at.js/1.5.2/css/jquery.atwho.min.css',
-    #             )
-    #     }
-    #     js = (
-    #         'js/tinymce/tinymce.min.js',
-    #         'https://cdnjs.cloudflare.com/ajax/libs/at.js/1.5.2/js/jquery.atwho.min.js',
-    #         'https://cdnjs.cloudflare.com/ajax/libs/Caret.js/0.3.1/jquery.caret.min.js',
-    #         )
 
     def get_context_data(self, **kwargs):
         context = super(SectionCreate, self).get_context_data(**kwargs)
