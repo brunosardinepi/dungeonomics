@@ -151,7 +151,7 @@ class NPCUpdate(LoginRequiredMixin, UpdateView):
 
 class MonsterDelete(LoginRequiredMixin, DeleteView):
     model = models.Monster
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('characters:monster_detail')
     slug_field = "pk"
     slug_url_kwarg = "monster_pk"
 
@@ -162,7 +162,7 @@ class MonsterDelete(LoginRequiredMixin, DeleteView):
 
 class NPCDelete(LoginRequiredMixin, DeleteView):
     model = models.NPC
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('characters:monster_detail')
     slug_field = "pk"
     slug_url_kwarg = "npc_pk"
 
