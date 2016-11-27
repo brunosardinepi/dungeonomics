@@ -62,11 +62,9 @@ class NPCForm(TinyMCEForm):
             'saving_throws',
             'skills',
             'npc_class',
-            'personality_traits',
             'age',
             'height',
             'weight',
-            'notes',
             'creature_type',
             'damage_vulnerabilities',
             'damage_immunities',
@@ -75,4 +73,5 @@ class NPCForm(TinyMCEForm):
             'challenge_rating',
             'traits',
             'actions',
+            'notes',
         ]
