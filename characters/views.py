@@ -130,7 +130,7 @@ class NPCUpdate(LoginRequiredMixin, UpdateView):
         'saving_throws',
         'skills',
         'npc_class',
-        'personality_traits',
+        # 'personality_traits',
         'age',
         'height',
         'weight',
