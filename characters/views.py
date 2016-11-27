@@ -44,41 +44,54 @@ def npc_detail(request, npc_pk=''):
     return render(request, 'characters/npc_detail.html', {'this_npc': this_npc, 'npcs': npcs})
 
 
-class MonsterCreate(LoginRequiredMixin, CreateView):
-    model = models.Monster
-    fields = [
-        'name',
-        'level',
-        'alignment',
-        'size',
-        'languages',
-        'strength',
-        'dexterity',
-        'constitution',
-        'intelligence',
-        'wisdom',
-        'charisma',
-        'armor_class',
-        'hit_points',
-        'speed',
-        'saving_throws',
-        'skills',
-        'creature_type',
-        'damage_vulnerabilities',
-        'damage_immunities',
-        'condition_immunities',
-        'senses',
-        'challenge_rating',
-        'traits',
-        'actions',
-    ]
+@login_required
+def monster_create(request):
+    form = forms.MonsterForm()
+    if request.method == 'POST':
+        form = forms.MonsterForm(request.POST)
+        if form.is_valid():
+            monster = form.save(commit=False)
+            monster.user = request.user
+            monster.save()
+            messages.add_message(request, messages.SUCCESS, "Monster created!")
+            return HttpResponseRedirect(monster.get_absolute_url())
+    return render(request, 'characters/monster_form.html', {'form': form})
 
-    def form_valid(self, form):
-        monster = form.save(commit=False)
-        monster.user = self.request.user
-        monster.save()
-        messages.add_message(self.request, messages.SUCCESS, "Monster created!")
-        return HttpResponseRedirect(monster.get_absolute_url())
+# class MonsterCreate(LoginRequiredMixin, CreateView):
+#     model = models.Monster
+#     fields = [
+#         'name',
+#         'level',
+#         'alignment',
+#         'size',
+#         'languages',
+#         'strength',
+#         'dexterity',
+#         'constitution',
+#         'intelligence',
+#         'wisdom',
+#         'charisma',
+#         'armor_class',
+#         'hit_points',
+#         'speed',
+#         'saving_throws',
+#         'skills',
+#         'creature_type',
+#         'damage_vulnerabilities',
+#         'damage_immunities',
+#         'condition_immunities',
+#         'senses',
+#         'challenge_rating',
+#         'traits',
+#         'actions',
+#     ]
+
+#     def form_valid(self, form):
+#         monster = form.save(commit=False)
+#         monster.user = self.request.user
+#         monster.save()
+#         messages.add_message(self.request, messages.SUCCESS, "Monster created!")
+#         return HttpResponseRedirect(monster.get_absolute_url())
 
 
 class NPCCreate(LoginRequiredMixin, CreateView):
