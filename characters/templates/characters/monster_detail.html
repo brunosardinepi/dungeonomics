@@ -54,6 +54,14 @@
         <p>Speed: {{ this_monster.speed }}</p>
         <p>Saving Throws: {{ this_monster.saving_throws }}</p>
         <p>Skills: {{ this_monster.skills }}</p>
+        <p>Creature Type: {{ this_monster.creature_type }}</p>
+        <p>Damage Vulnerabilities: {{ this_monster.damage_vulnerabilities }}</p>
+        <p>Damage Immunities: {{ this_monster.damage_immunities }}</p>
+        <p>Condition Immunities: {{ this_monster.condition_immunities }}</p>
+        <p>Senses: {{ this_monster.senses }}</p>
+        <p>Challenge Rating: {{ this_monster.challenge_rating }}</p>
+        <p>Traits: {{ this_monster.traits }}</p>
+        <p>Actions: {{ this_monster.actions }}</p>
     {% else %}
         <p>You haven't created any monsters yet!</p>
     {% endif %}
