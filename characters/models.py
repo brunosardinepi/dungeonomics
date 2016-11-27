@@ -74,11 +74,9 @@ class Monster(Character):
 
 class NPC(Character):
     npc_class = models.CharField(max_length=255, default='')
-    personality_traits = models.TextField(default='')
     age = models.IntegerField(default=1)
     height = models.CharField(max_length=255, default='')
     weight = models.CharField(max_length=255, default='')
-    notes = models.TextField(default='')
     creature_type = models.CharField(max_length=255, default='')
     damage_vulnerabilities = models.CharField(max_length=255, default='')
     damage_immunities = models.CharField(max_length=255, default='')
@@ -87,6 +85,7 @@ class NPC(Character):
     challenge_rating = models.CharField(max_length=255, default='')
     traits = models.TextField(blank=True)
     actions = models.TextField(blank=True)
+    notes = models.TextField(blank=True)
 
     class Meta:
         verbose_name = 'NPC'

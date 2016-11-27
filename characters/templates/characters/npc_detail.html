@@ -40,11 +40,9 @@
 {% block character_detail %}
     {% if this_npc %}
         <p>Class: {{ this_npc.npc_class }}</p>
-        <p>Personality Traits: {{ this_npc.personality_traits }}</p>
         <p>Age: {{ this_npc.age }}</p>
         <p>Height: {{ this_npc.height }}</p>
         <p>Weight: {{ this_npc.weight }}</p>
-        <p>Notes: {{ this_npc.notes }}</p>
         <p>Creature Type: {{ this_npc.creature_type }}</p>
         <p>Damage Vulnerabilities: {{ this_npc.damage_vulnerabilities }}</p>
         <p>Damage Immunities: {{ this_npc.damage_immunities }}</p>
@@ -53,6 +51,7 @@
         <p>Challenge Rating: {{ this_npc.challenge_rating }}</p>
         <p>Traits: {{ this_npc.traits }}</p>
         <p>Actions: {{ this_npc.actions }}</p>
+        <p>Notes: {{ this_npc.notes }}</p>
     {% else %}
         <p>You haven't created any NPCs yet!</p>
     {% endif %}
