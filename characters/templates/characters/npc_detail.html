@@ -49,9 +49,9 @@
         <p>Condition Immunities: {{ this_npc.condition_immunities }}</p>
         <p>Senses: {{ this_npc.senses }}</p>
         <p>Challenge Rating: {{ this_npc.challenge_rating }}</p>
-        <p>Traits: {{ this_npc.traits }}</p>
-        <p>Actions: {{ this_npc.actions }}</p>
-        <p>Notes: {{ this_npc.notes }}</p>
+        <p>Traits: {{ this_npc.traits|safe }}</p>
+        <p>Actions: {{ this_npc.actions|safe }}</p>
+        <p>Notes: {{ this_npc.notes|safe }}</p>
     {% else %}
         <p>You haven't created any NPCs yet!</p>
     {% endif %}
