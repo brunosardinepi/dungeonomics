@@ -10,7 +10,7 @@ class TinyMCEForm(forms.ModelForm):
             )
 
 
-class MonsterForm(TinyMCEForm):
+class MonsterForm(forms.ModelForm):
     class Meta:
         model = models.Monster
         fields = [
