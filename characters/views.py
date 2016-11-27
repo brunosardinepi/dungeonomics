@@ -54,8 +54,7 @@ def monster_create(request):
             monster.user = request.user
             monster.save()
             messages.add_message(request, messages.SUCCESS, "Monster created!")
-            # return HttpResponseRedirect(monster.get_absolute_url())
-            return HttpResponseRedirect('home')
+            return HttpResponseRedirect(monster.get_absolute_url())
     return render(request, 'characters/monster_form.html', {'form': form})
 
 # class MonsterCreate(LoginRequiredMixin, CreateView):

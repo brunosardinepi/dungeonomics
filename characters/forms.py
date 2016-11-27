@@ -36,8 +36,8 @@ class MonsterForm(TinyMCEForm):
             'condition_immunities',
             'senses',
             'challenge_rating',
-            'traits',
-            'actions',
+            # 'traits',
+            # 'actions',
         ]
 
 
