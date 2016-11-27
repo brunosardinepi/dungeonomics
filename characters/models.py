@@ -63,8 +63,8 @@ class Monster(Character):
     condition_immunities = models.CharField(max_length=255, default='')
     senses = models.CharField(max_length=255, default='')
     challenge_rating = models.IntegerField(default=1)
-    traits = models.TextField(default='')
-    actions = models.TextField(default='')
+    traits = models.TextField(blank=True)
+    actions = models.TextField(blank=True)
 
     def get_absolute_url(self):
         return reverse('characters:monster_detail', kwargs={
@@ -85,8 +85,8 @@ class NPC(Character):
     condition_immunities = models.CharField(max_length=255, default='')
     senses = models.CharField(max_length=255, default='')
     challenge_rating = models.CharField(max_length=255, default='')
-    traits = models.TextField(default='')
-    actions = models.TextField(default='')
+    traits = models.TextField(blank=True)
+    actions = models.TextField(blank=True)
 
     class Meta:
         verbose_name = 'NPC'
