@@ -107,8 +107,8 @@ def chapter_create(request, campaign_pk):
 
 @login_required
 def section_create(request, campaign_pk, chapter_pk):
-    campaign = models.Campaign.objects.get(pk=campaign_pk)
-    chapter = models.Chapter.objects.get(pk=chapter_pk)
+    campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+    chapter = get_object_or_404(models.Chapter, pk=chapter_pk)
     monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
     monsters = {}
     for monster in monsters_raw:
