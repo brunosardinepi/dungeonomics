@@ -93,6 +93,7 @@ class MonsterTestCase(TestCase):
             'challenge_rating': 10,
             'traits': 'Looks like a bear, fights like a ninja',
             'actions': 'Attacks you',
+        }
         form = forms.MonsterForm(data=form_data)
         self.assertFalse(form.is_valid())
 
