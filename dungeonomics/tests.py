@@ -14,15 +14,3 @@ class HomeTestCase(TestCase):
         request.user = AnonymousUser()
         response = views.HomeView.as_view()(request)
         self.assertEqual(response.status_code, 200)
-
-    # def test_home_view_not_logged_in(self):
-    #     request = self.factory.get('home')
-    #     request.user = AnonymousUser()
-    #     response = views.HomeView.as_view()(request)
-    #     self.assertContains(response, '<p>Not logged in</p>')
-
-    # def test_home_view_logged_in(self):
-    #     request = self.factory.get('home')
-    #     request.user = self.user
-    #     response = views.HomeView.as_view()(request)
-    #     self.assertContains(response, '<p>Yes logged in</p>')
