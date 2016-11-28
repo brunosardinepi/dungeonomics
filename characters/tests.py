@@ -50,6 +50,83 @@ class MonsterTestCase(TestCase):
         form = forms.MonsterForm(data=form_data_test)
         self.assertFalse(form.is_valid())
 
+    def test_monster_form_bad_alignment(self):
+        """Fail to create a monster because of no alignment"""
+        form_data_test = dict(self.form_data)
+        form_data_test['alignment'] = ''
+        form = forms.MonsterForm(data=form_data_test)
+        self.assertFalse(form.is_valid())
+
+    def test_monster_form_bad_size(self):
+        """Fail to create a monster because of no size"""
+        form_data_test = dict(self.form_data)
+        form_data_test['size'] = ''
+        form = forms.MonsterForm(data=form_data_test)
+        self.assertFalse(form.is_valid())
+
+    def test_monster_form_bad_languages(self):
+        """Fail to create a monster because of no languages"""
+        form_data_test = dict(self.form_data)
+        form_data_test['languages'] = ''
+        form = forms.MonsterForm(data=form_data_test)
+        self.assertFalse(form.is_valid())
+
+    def test_monster_form_bad_strength(self):
+        """Fail to create a monster because of no strength"""
+        form_data_test = dict(self.form_data)
+        form_data_test['strength'] = ''
+        form = forms.MonsterForm(data=form_data_test)
+        self.assertFalse(form.is_valid())
+
+    def test_monster_form_bad_dexterity(self):
+        """Fail to create a monster because of no dexterity"""
+        form_data_test = dict(self.form_data)
+        form_data_test['dexterity'] = ''
+        form = forms.MonsterForm(data=form_data_test)
+        self.assertFalse(form.is_valid())
+
+    def test_monster_form_bad_constitution(self):
+        """Fail to create a monster because of no constitution"""
+        form_data_test = dict(self.form_data)
+        form_data_test['constitution'] = ''
+        form = forms.MonsterForm(data=form_data_test)
+        self.assertFalse(form.is_valid())
+
+    def test_monster_form_bad_intelligence(self):
+        """Fail to create a monster because of no intelligence"""
+        form_data_test = dict(self.form_data)
+        form_data_test['intelligence'] = ''
+        form = forms.MonsterForm(data=form_data_test)
+        self.assertFalse(form.is_valid())
+
+    def test_monster_form_bad_wisdom(self):
+        """Fail to create a monster because of no wisdom"""
+        form_data_test = dict(self.form_data)
+        form_data_test['wisdom'] = ''
+        form = forms.MonsterForm(data=form_data_test)
+        self.assertFalse(form.is_valid())
+
+    def test_monster_form_bad_charisma(self):
+        """Fail to create a monster because of no charisma"""
+        form_data_test = dict(self.form_data)
+        form_data_test['charisma'] = ''
+        form = forms.MonsterForm(data=form_data_test)
+        self.assertFalse(form.is_valid())
+
+    def test_monster_form_bad_armor_class(self):
+        """Fail to create a monster because of no armor_class"""
+        form_data_test = dict(self.form_data)
+        form_data_test['armor_class'] = ''
+        form = forms.MonsterForm(data=form_data_test)
+        self.assertFalse(form.is_valid())
+
+    def test_monster_form_bad_hit_points(self):
+        """Fail to create a monster because of no hit_points"""
+        form_data_test = dict(self.form_data)
+        form_data_test['hit_points'] = ''
+        form = forms.MonsterForm(data=form_data_test)
+        self.assertFalse(form.is_valid())
+
 
 class NPCTestCase(TestCase):
     form_data = {
