@@ -70,44 +70,55 @@ def npc_create(request):
             return HttpResponseRedirect(npc.get_absolute_url())
     return render(request, 'characters/npc_form.html', {'form': form})
 
+@login_required
+def monster_update(request, monster_pk):
+    monster = get_object_or_404(models.Monster, pk=monster_pk)
+    form = forms.MonsterForm(instance=monster)
+    if request.method == 'POST':
+        form = forms.MonsterForm(instance=monster, data=request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, messages.SUCCESS, "Updated monster: {}".format(form.cleaned_data['name']))
+            return HttpResponseRedirect(monster.get_absolute_url())
+    return render(request, 'characters/monster_form.html', {'form': form, 'monster': monster})
 
-class MonsterUpdate(LoginRequiredMixin, UpdateView):
-    model = models.Monster
-    fields = [
-        'name',
-        'level',
-        'alignment',
-        'size',
-        'languages',
-        'strength',
-        'dexterity',
-        'constitution',
-        'intelligence',
-        'wisdom',
-        'charisma',
-        'armor_class',
-        'hit_points',
-        'speed',
-        'saving_throws',
-        'skills',
-        'npc_class',
-        'personality_traits',
-        'age',
-        'height',
-        'weight',
-        'notes',
-        'creature_type',
-        'damage_vulnerabilities',
-        'damage_immunities',
-        'condition_immunities',
-        'senses',
-        'challenge_rating',
-        'traits',
-        'actions',
-    ]
-    template_name_suffix = '_update_form'
-    slug_field = "pk"
-    slug_url_kwarg = "monster_pk"
+# class MonsterUpdate(LoginRequiredMixin, UpdateView):
+#     model = models.Monster
+#     fields = [
+#         'name',
+#         'level',
+#         'alignment',
+#         'size',
+#         'languages',
+#         'strength',
+#         'dexterity',
+#         'constitution',
+#         'intelligence',
+#         'wisdom',
+#         'charisma',
+#         'armor_class',
+#         'hit_points',
+#         'speed',
+#         'saving_throws',
+#         'skills',
+#         'npc_class',
+#         'personality_traits',
+#         'age',
+#         'height',
+#         'weight',
+#         'notes',
+#         'creature_type',
+#         'damage_vulnerabilities',
+#         'damage_immunities',
+#         'condition_immunities',
+#         'senses',
+#         'challenge_rating',
+#         'traits',
+#         'actions',
+#     ]
+#     template_name_suffix = '_update_form'
+#     slug_field = "pk"
+#     slug_url_kwarg = "monster_pk"
 
 
 class NPCUpdate(LoginRequiredMixin, UpdateView):
