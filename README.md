@@ -49,6 +49,7 @@
 - [x] [look into doing tinymce more proper](http://stackoverflow.com/questions/19013509/tinymce-widget-usage-in-django-template)
 - [x] implement tinymce site-wide
 - [x] style monster/npc CRUD
+- [x] use get_object_or_404 on views
 - [ ] users need to delete their account - should it be inactive or aaron hernandez?
 - [ ] tinymce uploads
 - [ ] use google mail servers instead of local mail server
@@ -62,7 +63,6 @@
 - [ ] import monster/npc
 - [ ] on signup, change "password (again)" to "confirm password"
 - [ ] remove the "please fill out this field" on hover on login
-- [ ] use get_object_or_404 on views
 - [ ] add option in "edit campaign" to drag/drop to change order of chapters, order number should auto-update as you do it
 - [ ] consolidate tinymce config into one template
 - [ ] check all titles and make sure they are using "title | super" format
