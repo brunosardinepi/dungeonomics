@@ -68,3 +68,4 @@
 - [ ] consolidate tinymce config into one template
 - [ ] redo delete views so that they redirect better
 - [ ] write tests
+- [ ] home page blog
