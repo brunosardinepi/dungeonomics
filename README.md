@@ -48,9 +48,9 @@
 - [x] change cog hover color
 - [x] [look into doing tinymce more proper](http://stackoverflow.com/questions/19013509/tinymce-widget-usage-in-django-template)
 - [x] implement tinymce site-wide
+- [x] style monster/npc CRUD
 - [ ] users need to delete their account - should it be inactive or aaron hernandez?
 - [ ] tinymce uploads
-- [ ] style monster/npc CRUD
 - [ ] use google mail servers instead of local mail server
 - [ ] delete campaign view needs to be styled
 - [ ] players
