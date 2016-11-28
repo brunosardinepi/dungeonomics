@@ -38,14 +38,14 @@ class MonsterTestCase(TestCase):
 
     def test_monster_form_bad_name(self):
         """Fail to create a monster because of no name"""
-        form_data_test = dict(form_data)
+        form_data_test = dict(self.form_data)
         form_data_test['name'] = ''
         form = forms.MonsterForm(data=form_data_test)
         self.assertFalse(form.is_valid())
 
     def test_monster_form_bad_level(self):
         """Fail to create a monster because of no level"""
-        form_data_test = dict(form_data)
+        form_data_test = dict(self.form_data)
         form_data_test['level'] = ''
         form = forms.MonsterForm(data=form_data_test)
         self.assertFalse(form.is_valid())
