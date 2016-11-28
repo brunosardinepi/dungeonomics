@@ -82,82 +82,17 @@ def monster_update(request, monster_pk):
             return HttpResponseRedirect(monster.get_absolute_url())
     return render(request, 'characters/monster_form.html', {'form': form, 'monster': monster})
 
-# class MonsterUpdate(LoginRequiredMixin, UpdateView):
-#     model = models.Monster
-#     fields = [
-#         'name',
-#         'level',
-#         'alignment',
-#         'size',
-#         'languages',
-#         'strength',
-#         'dexterity',
-#         'constitution',
-#         'intelligence',
-#         'wisdom',
-#         'charisma',
-#         'armor_class',
-#         'hit_points',
-#         'speed',
-#         'saving_throws',
-#         'skills',
-#         'npc_class',
-#         'personality_traits',
-#         'age',
-#         'height',
-#         'weight',
-#         'notes',
-#         'creature_type',
-#         'damage_vulnerabilities',
-#         'damage_immunities',
-#         'condition_immunities',
-#         'senses',
-#         'challenge_rating',
-#         'traits',
-#         'actions',
-#     ]
-#     template_name_suffix = '_update_form'
-#     slug_field = "pk"
-#     slug_url_kwarg = "monster_pk"
-
-
-class NPCUpdate(LoginRequiredMixin, UpdateView):
-    model = models.NPC
-    fields = [
-        'name',
-        'level',
-        'alignment',
-        'size',
-        'languages',
-        'strength',
-        'dexterity',
-        'constitution',
-        'intelligence',
-        'wisdom',
-        'charisma',
-        'armor_class',
-        'hit_points',
-        'speed',
-        'saving_throws',
-        'skills',
-        'npc_class',
-        # 'personality_traits',
-        'age',
-        'height',
-        'weight',
-        'notes',
-        'creature_type',
-        'damage_vulnerabilities',
-        'damage_immunities',
-        'condition_immunities',
-        'senses',
-        'challenge_rating',
-        'traits',
-        'actions',
-    ]
-    template_name_suffix = '_update_form'
-    slug_field = "pk"
-    slug_url_kwarg = "npc_pk"
+@login_required
+def npc_update(request, npc_pk):
+    npc = get_object_or_404(models.NPC, pk=npc_pk)
+    form = forms.NPCForm(instance=npc)
+    if request.method == 'POST':
+        form = forms.NPCForm(instance=npc, data=request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, messages.SUCCESS, "Updated NPC: {}".format(form.cleaned_data['name']))
+            return HttpResponseRedirect(npc.get_absolute_url())
+    return render(request, 'characters/npc_form.html', {'form': form, 'npc': npc})
 
 
 class MonsterDelete(LoginRequiredMixin, DeleteView):
