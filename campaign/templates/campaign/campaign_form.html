@@ -27,7 +27,6 @@
                     {% csrf_token %}
                     {% bootstrap_form form %}
                     <hr>
-                    {% bootstrap_formset formset layout='horizontal' %}
 
                     {{ formset.management_form }}
 
@@ -42,12 +41,12 @@
                         <tbody class="order">
                             {% for form in formset %}
                                 <tr>
-                                    <td>{{ form.order }}</td>
-                                    <td>{{ form.title }}</td>
+                                    <td style="width: 10%">{{ form.order }}</td>
+                                    <td style="width: 80%">{{ form.title }}</td>
                                     {% if form.instance.pk %}
-                                        <td class="text-center">{{ form.DELETE }}</td>
+                                        <td class="text-center" style="width: 10%">{{ form.DELETE }}</td>
                                     {% else %}
-                                        <td class="text-center"></td>
+                                        <td class="text-center" style="width: 10%"></td>
                                     {% endif %}
                                 </tr>
                             {% endfor %}
