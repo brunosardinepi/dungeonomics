@@ -17,8 +17,6 @@ class CampaignTemplate(models.Model):
 
 
 class Campaign(CampaignTemplate):
-    # description = models.TextField(default='')
-
     def get_absolute_url(self):
         return reverse('campaign:campaign_detail', kwargs={
             'campaign_pk': self.pk

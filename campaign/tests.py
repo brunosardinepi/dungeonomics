@@ -12,8 +12,7 @@ class CampaignModelTests(TestCase):
     def test_campaign_creation(self):
         campaign = models.Campaign.objects.create(
             user=self.user,
-            title="Campaign Title",
-            description="This is the campaign description."
+            title="Campaign Title"
         )
         now = timezone.now()
         self.assertLess(campaign.created_at, now)
