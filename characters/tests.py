@@ -98,30 +98,111 @@ class MonsterTestCase(TestCase):
         self.assertFalse(form.is_valid())
 
 
-# class NPCTestCase(TestCase):
-#     def test_npc_form_success(self):
-#         """Successfully create an NPC"""
-#         form_data = {
-#             'name': 'Deckard Cain',
-#             'level': 20,
-#             }
-#         form = forms.NPCForm(data=form_data)
-#         self.assertTrue(form.is_valid())
+class NPCTestCase(TestCase):
+    def test_npc_form_success(self):
+        """Successfully create an NPC"""
+        form_data = {
+            'name': 'Deckard Cain',
+            'level': 20,
+            'alignment': 'Lawful Good',
+            'size': 'Medium',
+            'languages': 'Everything',
+            'strength': 10,
+            'dexterity': 10,
+            'constitution': 10,
+            'intelligence': 20,
+            'wisdom': 20,
+            'charisma': 20,
+            'armor_class': 12,
+            'hit_points': 34,
+            'speed': '20 ft.',
+            'saving_throws': 'None',
+            'skills': 'Identify',
+            'npc_class': 'Wizard',
+            'age': 225,
+            'height': '4 ft. 5 in.',
+            'weight': '80 lbs.',
+            'creature_type': 'Human',
+            'damage_vulnerabilities': 'All',
+            'damage_immunities': 'None',
+            'condition_immunities': 'None',
+            'senses': 'None',
+            'challenge_rating': 20,
+            'traits': 'Can identify any artifact with ease',
+            'actions': 'Asks you to stay awhile and listen',
+            'notes': 'Old man',
+            }
+        form = forms.NPCForm(data=form_data)
+        self.assertTrue(form.is_valid())
 
-#     def test_npc_form_bad_name_1(self):
-#         """Fail to create an NPC because of no name"""
-#         form_data = {
-#             'name': '',
-#             'level': 20,
-#             }
-#         form = forms.NPCForm(data=form_data)
-#         self.assertFalse(form.is_valid())
+    def test_npc_form_bad_name_1(self):
+        """Fail to create an NPC because of no name"""
+        form_data = {
+            'name': '',
+            'level': 20,
+            'alignment': 'Lawful Good',
+            'size': 'Medium',
+            'languages': 'Everything',
+            'strength': 10,
+            'dexterity': 10,
+            'constitution': 10,
+            'intelligence': 20,
+            'wisdom': 20,
+            'charisma': 20,
+            'armor_class': 12,
+            'hit_points': 34,
+            'speed': '20 ft.',
+            'saving_throws': 'None',
+            'skills': 'Identify',
+            'npc_class': 'Wizard',
+            'age': 225,
+            'height': '4 ft. 5 in.',
+            'weight': '80 lbs.',
+            'creature_type': 'Human',
+            'damage_vulnerabilities': 'All',
+            'damage_immunities': 'None',
+            'condition_immunities': 'None',
+            'senses': 'None',
+            'challenge_rating': 20,
+            'traits': 'Can identify any artifact with ease',
+            'actions': 'Asks you to stay awhile and listen',
+            'notes': 'Old man',
+            }
+        form = forms.NPCForm(data=form_data)
+        self.assertFalse(form.is_valid())
 
-#     def test_npc_form_bad_name_2(self):
-#         """Fail to create an NPC because of no level"""
-#         form_data = {
-#             'name': 'Sir Bearington',
-#             'level': '',
-#             }
-#         form = forms.NPCForm(data=form_data)
-#         self.assertFalse(form.is_valid())
+    def test_npc_form_bad_name_2(self):
+        """Fail to create an NPC because of no level"""
+        form_data = {
+            'name': 'Deckard Cain',
+            'level': ,
+            'alignment': 'Lawful Good',
+            'size': 'Medium',
+            'languages': 'Everything',
+            'strength': 10,
+            'dexterity': 10,
+            'constitution': 10,
+            'intelligence': 20,
+            'wisdom': 20,
+            'charisma': 20,
+            'armor_class': 12,
+            'hit_points': 34,
+            'speed': '20 ft.',
+            'saving_throws': 'None',
+            'skills': 'Identify',
+            'npc_class': 'Wizard',
+            'age': 225,
+            'height': '4 ft. 5 in.',
+            'weight': '80 lbs.',
+            'creature_type': 'Human',
+            'damage_vulnerabilities': 'All',
+            'damage_immunities': 'None',
+            'condition_immunities': 'None',
+            'senses': 'None',
+            'challenge_rating': 20,
+            'traits': 'Can identify any artifact with ease',
+            'actions': 'Asks you to stay awhile and listen',
+            'notes': 'Old man',
+            }
+        form = forms.NPCForm(data=form_data)
+        self.assertFalse(form.is_valid())
