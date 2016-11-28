@@ -25,7 +25,7 @@
             <div class="panel-body">
                 <form method="POST" action="">
                     {% csrf_token %}
-                    {% bootstrap_form form %}
+                    {% bootstrap_formset formset %}
 
                     {{ formset.management_form }}
 
@@ -33,7 +33,7 @@
                         <thead>
                             <tr>
                                 <th scope="col" class="text-center" style="width: 10%">Order</th>
-                                <th scope="col" class="text-center">Title</th>
+                                <th scope="col" class="text-center" style="width: 80%">Title</th>
                                 <th scope="col" class="text-center" style="width: 10%">Delete?</th>
                             </tr>
                         </thead>
