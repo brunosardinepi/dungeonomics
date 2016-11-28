@@ -66,3 +66,4 @@
 - [ ] consolidate tinymce config into one template
 - [ ] redo delete views so that they redirect better
 - [ ] consolidate campaign and campaign_update
+- [ ] write tests
