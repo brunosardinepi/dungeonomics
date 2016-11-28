@@ -26,9 +26,9 @@
                 <form method="POST" action="">
                     {% csrf_token %}
                     {% bootstrap_form form %}
+                    <hr>
                     {% bootstrap_formset formset %}
 
-                    <hr>
                     {{ formset.management_form }}
 
                     <table role="grid" class="stack hover" style="width: 100%">
