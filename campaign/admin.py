@@ -1,3 +1,11 @@
 from django.contrib import admin
 
-# Register your models here.
+from . import models
+
+
+class CampaignAdmin(admin.ModelAdmin):
+  list_display = ('title', 'user', 'created_at',)
+  # ordering = ('-created_at',)
+  list_filter = ('user',)
+
+admin.site.register(models.Campaign, CampaignAdmin)
