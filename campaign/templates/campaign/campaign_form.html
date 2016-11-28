@@ -29,9 +29,10 @@
 
                     {{ formset.management_form }}
                     {% for form in formset %}
-                        <p>{{ form.id }}{{ form.order }}</p>
+                        <p>{{ form.id }}</p>
+                        <p>{{ form.order }}</p>
                         <p>{{ form.title }}</p>
-                        <p>{{ form.DELETE }}></p>
+                        <p>{{ form.DELETE }}</p>
                         <hr>
                     {% endfor %}
             </div>
