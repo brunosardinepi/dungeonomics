@@ -35,7 +35,7 @@ class MonsterTestCase(TestCase):
         form = forms.MonsterForm(data=form_data)
         self.assertTrue(form.is_valid())
 
-    def test_monster_form_bad_name_1(self):
+    def test_monster_form_bad_name(self):
         """Fail to create a monster because of no name"""
         form_data = {
             'name': '',
@@ -66,7 +66,7 @@ class MonsterTestCase(TestCase):
         form = forms.MonsterForm(data=form_data)
         self.assertFalse(form.is_valid())
 
-    def test_monster_form_bad_name_2(self):
+    def test_monster_form_bad_level(self):
         """Fail to create a monster because of no level"""
         form_data = {
             'name': 'Sir Bearington',
@@ -135,7 +135,7 @@ class NPCTestCase(TestCase):
         form = forms.NPCForm(data=form_data)
         self.assertTrue(form.is_valid())
 
-    def test_npc_form_bad_name_1(self):
+    def test_npc_form_bad_name(self):
         """Fail to create an NPC because of no name"""
         form_data = {
             'name': '',
@@ -171,7 +171,7 @@ class NPCTestCase(TestCase):
         form = forms.NPCForm(data=form_data)
         self.assertFalse(form.is_valid())
 
-    def test_npc_form_bad_name_2(self):
+    def test_npc_form_bad_level(self):
         """Fail to create an NPC because of no level"""
         form_data = {
             'name': 'Deckard Cain',
