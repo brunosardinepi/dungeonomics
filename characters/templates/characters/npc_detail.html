@@ -39,8 +39,34 @@
 
 {% block character_detail %}
     {% if this_npc %}
-        <p>NPC level: {{ this_npc.level }}</p>
-        <p>NPC alignment: {{ this_npc.get_alignment_display }}</p>
+        <p>Level: {{ this_npc.level }}</p>
+        <p>Alignment: {{ this_npc.get_alignment_display }}</p>
+        <p>Size: {{ this_npc.get_size_display }}</p>
+        <p>Languages: {{ this_npc.languages }}</p>
+        <p>Strength: {{ this_npc.strength }}</p>
+        <p>Dexterity: {{ this_npc.dexterity }}</p>
+        <p>Constitution: {{ this_npc.constitution }}</p>
+        <p>Intelligence: {{ this_npc.intelligence }}</p>
+        <p>Wisdom: {{ this_npc.wisdom }}</p>
+        <p>Charisma: {{ this_npc.charisma }}</p>
+        <p>Armor Class: {{ this_npc.armor_class }}</p>
+        <p>Hit Points: {{ this_npc.hit_points }}</p>
+        <p>Speed: {{ this_npc.speed }}</p>
+        <p>Saving Throws: {{ this_npc.saving_throws }}</p>
+        <p>Skills: {{ this_npc.skills }}</p>
+        <p>Class: {{ this_npc.npc_class }}</p>
+        <p>Age: {{ this_npc.age }}</p>
+        <p>Height: {{ this_npc.height }}</p>
+        <p>Weight: {{ this_npc.weight }}</p>
+        <p>Creature Type: {{ this_npc.creature_type }}</p>
+        <p>Damage Vulnerabilities: {{ this_npc.damage_vulnerabilities }}</p>
+        <p>Damage Immunities: {{ this_npc.damage_immunities }}</p>
+        <p>Condition Immunities: {{ this_npc.condition_immunities }}</p>
+        <p>Senses: {{ this_npc.senses }}</p>
+        <p>Challenge Rating: {{ this_npc.challenge_rating }}</p>
+        <p>Traits: {{ this_npc.traits|safe }}</p>
+        <p>Actions: {{ this_npc.actions|safe }}</p>
+        <p>Notes: {{ this_npc.notes|safe }}</p>
     {% else %}
         <p>You haven't created any NPCs yet!</p>
     {% endif %}

@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 
 
 class Character(models.Model):
@@ -63,8 +64,8 @@ class Monster(Character):
     condition_immunities = models.CharField(max_length=255, default='')
     senses = models.CharField(max_length=255, default='')
     challenge_rating = models.IntegerField(default=1)
-    traits = models.CharField(max_length=255, default='')
-    actions = models.CharField(max_length=255, default='')
+    traits = models.TextField(blank=True)
+    actions = models.TextField(blank=True)
 
     def get_absolute_url(self):
         return reverse('characters:monster_detail', kwargs={
@@ -73,20 +74,19 @@ class Monster(Character):
 
 
 class NPC(Character):
-    npc_class = models.CharField(max_length=255, default='')
-    personality_traits = models.TextField(default='')
+    npc_class = models.CharField(verbose_name= _('Class'),max_length=255, default='')
     age = models.IntegerField(default=1)
     height = models.CharField(max_length=255, default='')
     weight = models.CharField(max_length=255, default='')
-    notes = models.TextField(default='')
     creature_type = models.CharField(max_length=255, default='')
     damage_vulnerabilities = models.CharField(max_length=255, default='')
     damage_immunities = models.CharField(max_length=255, default='')
     condition_immunities = models.CharField(max_length=255, default='')
     senses = models.CharField(max_length=255, default='')
     challenge_rating = models.CharField(max_length=255, default='')
-    traits = models.CharField(max_length=255, default='')
-    actions = models.CharField(max_length=255, default='')
+    traits = models.TextField(blank=True)
+    actions = models.TextField(blank=True)
+    notes = models.TextField(blank=True)
 
     class Meta:
         verbose_name = 'NPC'
