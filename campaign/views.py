@@ -211,7 +211,7 @@ class CampaignDelete(LoginRequiredMixin, DeleteView):
 
 class ChapterDelete(LoginRequiredMixin, DeleteView):
     model = models.Chapter
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('campaign:campaign_detail')
     slug_field = "pk"
     slug_url_kwarg = "chapter_pk"
 
@@ -229,7 +229,7 @@ class ChapterDelete(LoginRequiredMixin, DeleteView):
 
 class SectionDelete(LoginRequiredMixin, DeleteView):
     model = models.Section
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('campaign:campaign_detail')
     slug_field = "pk"
     slug_url_kwarg = "section_pk"
 
