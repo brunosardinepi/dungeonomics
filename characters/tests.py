@@ -175,7 +175,7 @@ class NPCTestCase(TestCase):
         """Fail to create an NPC because of no level"""
         form_data = {
             'name': 'Deckard Cain',
-            'level': ,
+            'level': '',
             'alignment': 'Lawful Good',
             'size': 'Medium',
             'languages': 'Everything',
