@@ -33,7 +33,7 @@ class MonsterTestCase(TestCase):
 
     def test_monster_form_success(self):
         """Successfully create a monster"""
-        form = forms.MonsterForm(data=form_data)
+        form = forms.MonsterForm(data=self.form_data)
         self.assertTrue(form.is_valid())
 
     def test_monster_form_bad_name(self):
