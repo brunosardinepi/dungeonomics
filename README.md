@@ -59,7 +59,6 @@
 - [ ] if you create a chapter or section with an order number that already exists, put it above the order number and move everything else down. Look into the treehouse ordering javascript thing.
 - [ ] if you delete a chapter or section, it should shift everything up/down to fill the gap of the deleted chapter
 - [ ] create chapter in modal
-- [ ] show summary when deleting campaign
 - [ ] import monster/npc
 - [ ] on signup, change "password (again)" to "confirm password"
 - [ ] remove the "please fill out this field" on hover on login
