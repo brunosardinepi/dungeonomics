@@ -69,3 +69,4 @@
 - [ ] redo delete views so that they redirect better
 - [ ] write tests
 - [ ] home page blog
+- [ ] BUG: when you cancel campaign creation, try to go back to an active campaign if you can
