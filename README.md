@@ -52,6 +52,7 @@
 - [x] use get_object_or_404 on views
 - [x] delete campaign view needs to be styled
 - [x] check all titles and make sure they are using "title | super" format
+- [x] consolidate campaign and campaign_update
 - [ ] users need to delete their account - should it be inactive or aaron hernandez?
 - [ ] tinymce uploads
 - [ ] use google mail servers instead of local mail server
@@ -65,6 +66,5 @@
 - [ ] add option in "edit campaign" to drag/drop to change order of chapters, order number should auto-update as you do it
 - [ ] consolidate tinymce config into one template
 - [ ] redo delete views so that they redirect better
-- [ ] consolidate campaign and campaign_update
 - [ ] write tests
 - [ ] add campaign to admin
