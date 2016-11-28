@@ -28,13 +28,32 @@
                     {% bootstrap_form form %}
 
                     {{ formset.management_form }}
-                    {% for form in formset %}
-                        <p>{{ form.id }}</p>
-                        <p>{{ form.order }}</p>
-                        <p>{{ form.title }}</p>
-                        <p>{{ form.DELETE }}</p>
-                        <hr>
-                    {% endfor %}
+
+                    <table role="grid" class="stack hover" style="width: 100%">
+                        <thead>
+                            <tr>
+                                <th scope="col" class="text-center" style="width: 10%">ID</th>
+                                <th scope="col" class="text-center" style="width: 10%">Order</th>
+                                <th scope="col" class="text-center">Title</th>
+                                <th scope="col" class="text-center" style="width: 10%">Delete?</th>
+                            </tr>
+                        </thead>
+                        <tbody class="order">
+                            {% for form in formset %}
+                                <tr>
+                                    <td>{{ form.id }}</td>
+                                    <td>{{ form.order }}</td>
+                                    <td>{{ form.title }}</td>
+                                    {% if form.instance.pk %}
+                                        <td class="text-center">{{ form.DELETE }}</td>
+                                    {% else %}
+                                        <td class="text-center"></td>
+                                    {% endif %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
             </div>
             <div class="panel-footer clearfix">
                 {% if campaign.pk %}
