@@ -211,18 +211,13 @@ class CampaignDelete(LoginRequiredMixin, DeleteView):
 
 class ChapterDelete(LoginRequiredMixin, DeleteView):
     model = models.Chapter
-    success_url = reverse_lazy('campaign:campaign_detail')
+    success_url = reverse_lazy('home')
     slug_field = "pk"
     slug_url_kwarg = "chapter_pk"
 
     def delete(self, request, *args, **kwargs):
         messages.add_message(self.request, messages.SUCCESS, "Chapter deleted!")
         return super(ChapterDelete, self).delete(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super(ChapterDelete, self).get_context_data(**kwargs)
-        context['campaign'] = models.Campaign.objects.get(pk=self.kwargs['campaign_pk'])
-        return context
 
     def get_object(self, queryset=None):
         chapter = super(ChapterDelete, self).get_object()
@@ -234,7 +229,7 @@ class ChapterDelete(LoginRequiredMixin, DeleteView):
 
 class SectionDelete(LoginRequiredMixin, DeleteView):
     model = models.Section
-    success_url = reverse_lazy('campaign:campaign_detail')
+    success_url = reverse_lazy('home')
     slug_field = "pk"
     slug_url_kwarg = "section_pk"
 
