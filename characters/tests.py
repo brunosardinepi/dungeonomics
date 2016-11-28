@@ -189,20 +189,6 @@ class MonsterTestCase(TestCase):
         form_data_test['challenge_rating'] = ''
         form = forms.MonsterForm(data=form_data_test)
         self.assertFalse(form.is_valid())
-        
-    def test_monster_form_bad_traits(self):
-        """Fail to create a monster because of no traits"""
-        form_data_test = dict(self.form_data)
-        form_data_test['traits'] = ''
-        form = forms.MonsterForm(data=form_data_test)
-        self.assertFalse(form.is_valid())
-        
-    def test_monster_form_bad_actions(self):
-        """Fail to create a monster because of no actions"""
-        form_data_test = dict(self.form_data)
-        form_data_test['actions'] = ''
-        form = forms.MonsterForm(data=form_data_test)
-        self.assertFalse(form.is_valid())
 
 
 class NPCTestCase(TestCase):
@@ -421,26 +407,5 @@ class NPCTestCase(TestCase):
         """Fail to create a monster because of no challenge_rating"""
         form_data_test = dict(self.form_data)
         form_data_test['challenge_rating'] = ''
-        form = forms.MonsterForm(data=form_data_test)
-        self.assertFalse(form.is_valid())
-        
-    def test_monster_form_bad_traits(self):
-        """Fail to create a monster because of no traits"""
-        form_data_test = dict(self.form_data)
-        form_data_test['traits'] = ''
-        form = forms.MonsterForm(data=form_data_test)
-        self.assertFalse(form.is_valid())
-        
-    def test_monster_form_bad_actions(self):
-        """Fail to create a monster because of no actions"""
-        form_data_test = dict(self.form_data)
-        form_data_test['actions'] = ''
-        form = forms.MonsterForm(data=form_data_test)
-        self.assertFalse(form.is_valid())
-        
-    def test_monster_form_bad_notes(self):
-        """Fail to create a monster because of no notes"""
-        form_data_test = dict(self.form_data)
-        form_data_test['notes'] = ''
         form = forms.MonsterForm(data=form_data_test)
         self.assertFalse(form.is_valid())
