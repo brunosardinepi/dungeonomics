@@ -61,7 +61,6 @@
 - [ ] if you delete a chapter or section, it should shift everything up/down to fill the gap of the deleted chapter
 - [ ] create chapter in modal
 - [ ] import monster/npc
-- [ ] remove the "please fill out this field" on hover on login
 - [ ] add option in "edit campaign" to drag/drop to change order of chapters, order number should auto-update as you do it
 - [ ] consolidate tinymce config into one template
 - [ ] check all titles and make sure they are using "title | super" format
