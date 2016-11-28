@@ -219,6 +219,11 @@ class ChapterDelete(LoginRequiredMixin, DeleteView):
         messages.add_message(self.request, messages.SUCCESS, "Chapter deleted!")
         return super(ChapterDelete, self).delete(request, *args, **kwargs)
 
+    def get_context_data(self, **kwargs):
+        context = super(ChapterDelete, self).get_context_data(**kwargs)
+        context['campaign'] = models.Campaign.objects.get(pk=self.kwargs['campaign_pk'])
+        return context
+
     def get_object(self, queryset=None):
         chapter = super(ChapterDelete, self).get_object()
         if not chapter.user == self.request.user:
