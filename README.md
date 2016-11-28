@@ -50,10 +50,10 @@
 - [x] implement tinymce site-wide
 - [x] style monster/npc CRUD
 - [x] use get_object_or_404 on views
+- [x] delete campaign view needs to be styled
 - [ ] users need to delete their account - should it be inactive or aaron hernandez?
 - [ ] tinymce uploads
 - [ ] use google mail servers instead of local mail server
-- [ ] delete campaign view needs to be styled
 - [ ] players
 - [ ] need to be able to signup with facebook and link google afterwards
 - [ ] hover over monsters/npcs in campaign to get preview of important stats
@@ -61,7 +61,6 @@
 - [ ] if you delete a chapter or section, it should shift everything up/down to fill the gap of the deleted chapter
 - [ ] create chapter in modal
 - [ ] import monster/npc
-- [ ] on signup, change "password (again)" to "confirm password"
 - [ ] remove the "please fill out this field" on hover on login
 - [ ] add option in "edit campaign" to drag/drop to change order of chapters, order number should auto-update as you do it
 - [ ] consolidate tinymce config into one template
