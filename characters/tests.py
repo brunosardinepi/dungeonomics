@@ -9,7 +9,7 @@ class MonsterTestCase(TestCase):
         form_data = {
             'name': 'Sir Bearington',
             'level': 20,
-            'alignment': 'Lawful Good',
+            'alignment': 'LG',
             'size': 'Large',
             'languages': 'Common, Bear',
             'strength': 20,
