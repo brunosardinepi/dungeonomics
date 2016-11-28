@@ -1,5 +1,7 @@
 {% extends 'characters/character_layout.html' %}
 
+{% block title %} {{ this_npc.name }} | {{ block.super }}{% endblock %}
+
 {% block character_list_title %}NPC List{% endblock %}
 
 {% block character_list %}

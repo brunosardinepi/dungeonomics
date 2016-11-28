@@ -66,3 +66,4 @@
 - [ ] check all titles and make sure they are using "title | super" format
 - [ ] consider moving css/js for tinymce into the campaign dir since it isn't used elsewhere
 - [ ] redo delete views so that they redirect better
+- [ ] consolidate campaign and campaign_update

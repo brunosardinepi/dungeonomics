@@ -1,6 +1,15 @@
 {% extends 'layout.html' %}
 {% load bootstrap3 %}
 
+{% block title %}
+    {% if section.pk %}
+        Update Section 
+    {% else %}
+        New Section 
+    {% endif %}
+    | {{ block.super }}
+{% endblock %}
+
 {% block head_extra %}
     {{ form.media.css }}
     {{ form.media.js }}

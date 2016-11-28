@@ -1,6 +1,15 @@
 {% extends 'layout.html' %}
 {% load bootstrap3 %}
 
+{% block title %}
+    {% if chapter.pk %}
+        Update Chapter 
+    {% else %}
+        New Chapter 
+    {% endif %}
+    | {{ block.super }}
+{% endblock %}
+
 {% block head_extra %}
     {{ form.media.css }}
     {{ form.media.js }}

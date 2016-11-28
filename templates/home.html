@@ -1,5 +1,7 @@
 {% extends 'layout.html' %}
 
+{% block title %} Home | {{ block.super }}{% endblock %}
+
 {% block body_content %}
     {% if user.is_authenticated %}
         logged in

@@ -1,6 +1,15 @@
 {% extends 'layout.html' %}
 {% load bootstrap3 %}
 
+{% block title %}
+    {% if npc.pk %}
+        Update NPC 
+    {% else %}
+        New NPC 
+    {% endif %}
+    | {{ block.super }}
+{% endblock %}
+
 {% block head_extra %}
     {{ form.media.js }}
     
