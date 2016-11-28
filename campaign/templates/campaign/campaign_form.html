@@ -27,7 +27,7 @@
                     {% csrf_token %}
                     {% bootstrap_form form %}
                     <hr>
-                    {% bootstrap_formset formset %}
+                    {% bootstrap_formset formset layout='horizontal' %}
 
                     {{ formset.management_form }}
 
