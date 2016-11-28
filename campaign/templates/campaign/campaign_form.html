@@ -1,13 +1,26 @@
 {% extends 'layout.html' %}
 {% load bootstrap3 %}
 
-{% block title %} New Campaign | {{ block.super }}{% endblock %}
+{% block title %}
+    {% if campaign.pk %}
+        Update Campaign 
+    {% else %}
+        New Campaign 
+    {% endif %}
+    | {{ block.super }}
+{% endblock %}
 
 {% block body_content %}
     <div class="col-md-4 col-md-offset-4">
         <div class="panel panel-default panel-campaign">
             <div class="panel-heading">
-                <h3 class="panel-title"><strong>NEW CAMPAIGN</strong></h3>
+                <h3 class="panel-title">
+                    {% if campaign.pk %}
+                        <strong>UPDATE:</strong> {{ campaign }}
+                    {% else %}
+                        <strong>NEW CAMPAIGN</strong>
+                    {% endif %}
+                </h3>
             </div>
             <div class="panel-body">
                 <form method="POST" action="">
@@ -15,8 +28,13 @@
                     {% bootstrap_form form %}
             </div>
             <div class="panel-footer clearfix">
+                {% if campaign.pk %}
+                    <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk %}" class="btn btn-default">Cancel</a>
+                    <input type="submit" class="btn btn-primary pull-right" value="Update Campaign">
+                {% else %}
                     <a href="{% url 'home' %}" class="btn btn-default">Cancel</a>
                     <input type="submit" class="btn btn-primary pull-right" value="Create Campaign">
+                {% endif %}
                 </form>
             </div>
         </div>

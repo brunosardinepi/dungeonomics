@@ -132,20 +132,17 @@ def section_create(request, campaign_pk, chapter_pk):
     return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': campaign, 'chapter': chapter})
 
 
-class CampaignUpdate(LoginRequiredMixin, UpdateView):
-    model = models.Campaign
-    fields = [
-        'title',
-    ]
-    template_name_suffix = '_update_form'
-    slug_field = "pk"
-    slug_url_kwarg = "campaign_pk"
-
-    def get_context_data(self, **kwargs):
-        context = super(CampaignUpdate, self).get_context_data(**kwargs)
-        context['campaign'] = models.Campaign.objects.get(pk=self.kwargs['campaign_pk'])
-        return context
-
+@login_required
+def campaign_update(request, campaign_pk):
+    campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+    form = forms.CampaignForm(instance=campaign)
+    if request.method == 'POST':
+        form = forms.CampaignForm(instance=campaign, data=request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, messages.SUCCESS, "Updated campaign: {}".format(form.cleaned_data['title']))
+            return HttpResponseRedirect(campaign.get_absolute_url())
+    return render(request, 'campaign/campaign_form.html', {'form': form, 'campaign': campaign})
 
 @login_required
 def chapter_update(request, campaign_pk, chapter_pk):
@@ -167,7 +164,6 @@ def chapter_update(request, campaign_pk, chapter_pk):
             messages.add_message(request, messages.SUCCESS, "Updated chapter: {}".format(form.cleaned_data['title']))
             return HttpResponseRedirect(chapter.get_absolute_url())
     return render(request, 'campaign/chapter_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': chapter.campaign, 'chapter': chapter})
-
 
 @login_required
 def section_update(request, campaign_pk, chapter_pk, section_pk):
