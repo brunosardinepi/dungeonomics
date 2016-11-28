@@ -23,11 +23,6 @@ class LoginView(views.LoginView):
 class SignupView(views.SignupView):
     template_name = 'signup.html'
 
-    def __init__(self, *args, **kwargs):
-        super(SignupView, self).__init__(*args, **kwargs)
-        for field in self.fields.values():
-            field.error_messages = {'required':'The field is is is is is required'}
-
 
 class ConfirmEmailView(views.ConfirmEmailView):
     template_name = 'confirm_email.html'
