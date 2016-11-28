@@ -86,7 +86,7 @@
             <div class="panel-footer clearfix">
                 {% if npc.pk %}
                     <a href="{% url 'characters:npc_detail' npc_pk=npc.pk%}" class="btn btn-default">Cancel</a>
-                    <input type="submit" class="btn btn-primary pull-right" value="Create NPC">
+                    <input type="submit" class="btn btn-primary pull-right" value="Update NPC">
                 {% else %}
                     <a href="{% url 'characters:npc_detail' %}" class="btn btn-default">Cancel</a>
                     <input type="submit" class="btn btn-primary pull-right" value="Create NPC">
