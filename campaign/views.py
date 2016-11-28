@@ -138,7 +138,7 @@ def campaign_update(request, campaign_pk):
     form = forms.CampaignForm(instance=campaign)
     chapter_forms = forms.ChapterInlineFormSet(queryset=form.instance.chapter_set.all())
     if request.method == 'POST':
-        form = forms.CampaignForm(instance=campaign, data=request.POST)
+        form = forms.CampaignForm(request.POST, instance=campaign)
         chapter_forms = forms.ChapterInlineFormSet(request.POST, queryset=form.instance.chapter_set.all())
         if form.is_valid() and chapter_forms.is_valid():
             form.save()
