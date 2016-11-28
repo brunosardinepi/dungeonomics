@@ -40,7 +40,7 @@ class MonsterTestCase(TestCase):
         form_data = {
             'name': '',
             'level': 20,
-            'alignment': 'Lawful Good',
+            'alignment': 'LG',
             'size': 'Large',
             'languages': 'Common, Bear',
             'strength': 20,
@@ -71,7 +71,7 @@ class MonsterTestCase(TestCase):
         form_data = {
             'name': 'Sir Bearington',
             'level': '',
-            'alignment': 'Lawful Good',
+            'alignment': 'LG',
             'size': 'Large',
             'languages': 'Common, Bear',
             'strength': 20,
@@ -104,7 +104,7 @@ class NPCTestCase(TestCase):
         form_data = {
             'name': 'Deckard Cain',
             'level': 20,
-            'alignment': 'Lawful Good',
+            'alignment': 'LG',
             'size': 'Medium',
             'languages': 'Everything',
             'strength': 10,
@@ -140,7 +140,7 @@ class NPCTestCase(TestCase):
         form_data = {
             'name': '',
             'level': 20,
-            'alignment': 'Lawful Good',
+            'alignment': 'LG',
             'size': 'Medium',
             'languages': 'Everything',
             'strength': 10,
@@ -176,7 +176,7 @@ class NPCTestCase(TestCase):
         form_data = {
             'name': 'Deckard Cain',
             'level': '',
-            'alignment': 'Lawful Good',
+            'alignment': 'LG',
             'size': 'Medium',
             'languages': 'Everything',
             'strength': 10,
