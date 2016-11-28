@@ -26,6 +26,14 @@
                 <form method="POST" action="">
                     {% csrf_token %}
                     {% bootstrap_form form %}
+
+                    {{ formset.management_form }}
+                    {% for form in formset %}
+                        <p>{{ form.id }}{{ form.order }}</p>
+                        <p>{{ form.title }}</p>
+                        <p>{{ form.DELETE }}></p>
+                        <hr>
+                    {% endfor %}
             </div>
             <div class="panel-footer clearfix">
                 {% if campaign.pk %}
