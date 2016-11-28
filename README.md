@@ -53,6 +53,7 @@
 - [x] delete campaign view needs to be styled
 - [x] check all titles and make sure they are using "title | super" format
 - [x] consolidate campaign and campaign_update
+- [x] add campaign to admin
 - [ ] users need to delete their account - should it be inactive or aaron hernandez?
 - [ ] tinymce uploads
 - [ ] use google mail servers instead of local mail server
@@ -67,4 +68,3 @@
 - [ ] consolidate tinymce config into one template
 - [ ] redo delete views so that they redirect better
 - [ ] write tests
-- [ ] add campaign to admin
