@@ -26,9 +26,9 @@
                 <form method="POST" action="">
                     {% csrf_token %}
                     {% comment %}{% bootstrap_form form %}{% endcomment %}
-                    <hr>
+                    {% comment %}<hr>{% endcomment %}
 
-                    {% bootstrap_formset formset %}
+                    {% comment %}{% bootstrap_formset formset %}{% endcomment %}
                     {% comment %}{{ formset.management_form }}
 
                     <table class="table table-striped table-hover">
