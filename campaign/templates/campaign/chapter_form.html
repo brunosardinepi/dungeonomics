@@ -78,7 +78,7 @@
                     {% csrf_token %}
                     {% bootstrap_form form %}
 
-                    {% if chapter.pk %}
+                    {% if chapter.section.pk %}
                         <hr>
 
                         {{ formset.management_form }}
