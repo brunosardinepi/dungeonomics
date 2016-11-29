@@ -10,18 +10,6 @@
     | {{ block.super }}
 {% endblock %}
 
-{% block static %}
-    {% load static from staticfiles %}
-    {{ form.media }}
-    <script src="{% static 'js/jquery.formset.js' %}"></script>
-    <script>
-        $('.chapter-form').formset({
-            addText: 'Add chapter',
-            deleteText: 'Delete'
-        });
-    </script>
-{% endblock %}
-
 {% block body_content %}
     <div class="col-md-8 col-md-offset-2">
         <div class="panel panel-default panel-campaign">
