@@ -145,6 +145,7 @@ def campaign_update(request, campaign_pk):
             chapters = chapter_forms.save(commit=False)
             for chapter in chapters:
                 chapter.campaign = campaign
+                chapter.user = request.user
                 chapter.save()
             for chapter in chapter_forms.deleted_objects:
                 chapter.delete()
