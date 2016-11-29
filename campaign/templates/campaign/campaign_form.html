@@ -26,32 +26,35 @@
                 <form method="POST" action="">
                     {% csrf_token %}
                     {% bootstrap_form form %}
-                    <hr>
 
-                    {{ formset.management_form }}
+                    {% if campaign.pk %}
+                        <hr>
 
-                    <table class="table table-striped table-hover" style="width: 100%;">
-                        <thead>
-                            <tr>
-                                <th class="text-center width-ten">Chapter</th>
-                                <th class="text-center width-eighty">Title</th>
-                                <th class="text-center width-ten">Delete?</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for form in formset %}
+                        {{ formset.management_form }}
+
+                        <table class="table table-striped table-hover" style="width: 100%;">
+                            <thead>
                                 <tr>
-                                    <td class="width-ten">{{ form.id }}{{ form.order }}</td>
-                                    <td class="width-eighty">{{ form.title }}</td>
-                                    {% if form.instance.pk %}
-                                        <td class="text-center width-ten">{{ form.DELETE }}</td>
-                                    {% else %}
-                                        <td class="text-center width-ten"></td>
-                                    {% endif %}
+                                    <th class="text-center width-ten">Chapter</th>
+                                    <th class="text-center width-eighty">Title</th>
+                                    <th class="text-center width-ten">Delete?</th>
                                 </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {% for form in formset %}
+                                    <tr>
+                                        <td class="width-ten">{{ form.id }}{{ form.order }}</td>
+                                        <td class="width-eighty">{{ form.title }}</td>
+                                        {% if form.instance.pk %}
+                                            <td class="text-center width-ten">{{ form.DELETE }}</td>
+                                        {% else %}
+                                            <td class="text-center width-ten"></td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
 
             </div>
             <div class="panel-footer clearfix">
