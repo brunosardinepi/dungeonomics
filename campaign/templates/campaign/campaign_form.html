@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block static %}
+    {% load static from staticfiles %}
     {{ form.media }}
     <script>
         $('.chapter-form').formset({
