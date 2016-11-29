@@ -26,8 +26,7 @@ class SortableForm(forms.ModelForm):
         }
         js = (
             'js/vendor/jquery.fn.sortable.min.js',
-            'js/order.js',
-            'js/jquery.formset.js'
+            'js/order.js'
         )
 
 
