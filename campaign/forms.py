@@ -58,3 +58,17 @@ ChapterInlineFormSet = forms.inlineformset_factory(
     fields=('order', 'title'),
     formset=ChapterFormSet,
 )
+
+SectionFormSet = forms.modelformset_factory(
+    models.Section,
+    form=SectionForm,
+    extra=0,
+)
+
+SectionInlineFormSet = forms.inlineformset_factory(
+    models.Chapter,
+    models.Section,
+    extra=0,
+    fields=('order', 'title'),
+    formset=SectionFormSet,
+)
