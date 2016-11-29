@@ -1,6 +1,6 @@
 # Todo
 
-## Completed
+### Completed
 - [x] users need to signup
 - [x] users need to login
 - [x] users need to logout
