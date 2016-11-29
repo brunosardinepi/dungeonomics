@@ -90,4 +90,30 @@ a.dropdown-cog:hover, a.dropdown-cog:active, li.open a.dropdown-cog {
 }
 .margin-bottom-zero {
     margin-bottom: 0;
-} 
+}
+.width-ten {
+    width: 10%;
+}
+.width-eighty {
+    width: 80%;
+}
+.width-ten input[id*='order'], .width-ten  input[id*='title'], .width-eighty input[id*='order'], .width-eighty  input[id*='title'] {
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    margin: 0;
+    font-size: 14px;
+    line-height: normal;
+    color: #555;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+.campaign-update-chapters {
+    font-weight: 700;
+    font-size: 14px;
+}

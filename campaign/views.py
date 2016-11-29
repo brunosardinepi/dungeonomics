@@ -136,13 +136,22 @@ def section_create(request, campaign_pk, chapter_pk):
 def campaign_update(request, campaign_pk):
     campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
     form = forms.CampaignForm(instance=campaign)
+    chapter_forms = forms.ChapterInlineFormSet(queryset=form.instance.chapter_set.all())
     if request.method == 'POST':
-        form = forms.CampaignForm(instance=campaign, data=request.POST)
-        if form.is_valid():
+        form = forms.CampaignForm(request.POST, instance=campaign)
+        chapter_forms = forms.ChapterInlineFormSet(request.POST, queryset=form.instance.chapter_set.all())
+        if form.is_valid() and chapter_forms.is_valid():
             form.save()
+            chapters = chapter_forms.save(commit=False)
+            for chapter in chapters:
+                chapter.campaign = campaign
+                chapter.user = request.user
+                chapter.save()
+            for chapter in chapter_forms.deleted_objects:
+                chapter.delete()
             messages.add_message(request, messages.SUCCESS, "Updated campaign: {}".format(form.cleaned_data['title']))
             return HttpResponseRedirect(campaign.get_absolute_url())
-    return render(request, 'campaign/campaign_form.html', {'form': form, 'campaign': campaign})
+    return render(request, 'campaign/campaign_form.html', {'form': form, 'formset': chapter_forms, 'campaign': campaign})
 
 @login_required
 def chapter_update(request, campaign_pk, chapter_pk):
