@@ -97,6 +97,6 @@ a.dropdown-cog:hover, a.dropdown-cog:active, li.open a.dropdown-cog {
 .width-eighty {
     width: 80%;
 }
-input[id*='order'], input[id*='title'], input[id*='DELETE'] {
+/*input[id*='order'], input[id*='title'], input[id*='DELETE'] {
     width: 100%;
-}
+}*/
