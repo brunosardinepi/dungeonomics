@@ -28,12 +28,13 @@
                     {% bootstrap_form form %}
                     <hr>
 
+                    {% bootstrap_formset formset %}
                     {{ formset.management_form }}
 
                     <table class="table table-striped table-hover">
                         <thead>
                             <tr>
-                                <th class="text-center">Order</th>
+                                <th class="text-center">Chapter</th>
                                 <th class="text-center">Title</th>
                                 <th class="text-center">Delete?</th>
                             </tr>
@@ -41,7 +42,7 @@
                         <tbody>
                             {% for form in formset %}
                                 <tr>
-                                    <td>{{ form.id}}{{ form.order }}</td>
+                                    <td>{{ form.id }}{{ form.order }}</td>
                                     <td>{{ form.title }}</td>
                                     {% if form.instance.pk %}
                                         <td class="text-center">{{ form.DELETE }}</td>
