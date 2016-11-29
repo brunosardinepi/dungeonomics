@@ -97,6 +97,10 @@ a.dropdown-cog:hover, a.dropdown-cog:active, li.open a.dropdown-cog {
 .width-eighty {
     width: 80%;
 }
-input[id*='order'], input[id*='title'] {
+.width-ten input[id*='order'], .width-ten  input[id*='title'], .width-eighty input[id*='order'], .width-eighty  input[id*='title'] {
     width: 100%;
+}
+.campaign-update-chapters {
+    font-weight: 700;
+    font-size: 14px;
 }
