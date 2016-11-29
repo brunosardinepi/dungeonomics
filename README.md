@@ -81,4 +81,3 @@
 
 ### TinyMCE
 - [ ] tinymce uploads
-- [ ] consolidate tinymce config into one template
