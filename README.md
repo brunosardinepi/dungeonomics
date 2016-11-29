@@ -55,6 +55,7 @@
 - [x] check all titles and make sure they are using "title | super" format
 - [x] consolidate campaign and campaign_update
 - [x] add campaign to admin
+- [x] add ability to order sections in chapter update similar to how you can order chapters in campaign update
 
 ### Site-wide
 - [ ] write tests
@@ -75,7 +76,6 @@
 - [ ] add option in "edit campaign" to drag/drop to change order of chapters, order number should auto-update as you do it
 - [ ] redo delete views so that they redirect better
 - [ ] BUG: when you cancel campaign creation, try to go back to an active campaign if you can
-- [ ] add ability to order sections in chapter update similar to how you can order chapters in campaign update
 
 ### Monsters/NPCs
 - [ ] import monster/npc
