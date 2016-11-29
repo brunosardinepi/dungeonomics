@@ -33,20 +33,20 @@
                     <table class="table table-striped table-hover" style="width: 100%">
                         <thead>
                             <tr>
-                                <th class="text-center">Order</th>
-                                <th class="text-center">Title</th>
-                                <th class="text-center">Delete?</th>
+                                <th class="col-md-1 text-center">Order</th>
+                                <th class="col-md-10 text-center">Title</th>
+                                <th class="col-md-1 text-center">Delete?</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for form in formset %}
                                 <tr>
-                                    <td>{{ form.id}}{{ form.order }}</td>
-                                    <td>{{ form.title }}</td>
+                                    <td class="col-md-1">{{ form.id}}{{ form.order }}</td>
+                                    <td class="col-md-10">{{ form.title }}</td>
                                     {% if form.instance.pk %}
-                                        <td class="text-center">{{ form.DELETE }}</td>
+                                        <td class="col-md-1 text-center">{{ form.DELETE }}</td>
                                     {% else %}
-                                        <td class="text-center"></td>
+                                        <td class="col-md-1 text-center"></td>
                                     {% endif %}
                                 </tr>
                             {% endfor %}
