@@ -30,23 +30,23 @@
 
                     {{ formset.management_form }}
 
-                    <table role="grid" class="stack hover" style="width: 100%">
+                    <table class="table table-striped table-hover" style="width: 100%">
                         <thead>
                             <tr>
-                                <th scope="col" class="text-center" style="width: 10%">Order</th>
-                                <th scope="col" class="text-center" style="width: 80%">Title</th>
-                                <th scope="col" class="text-center" style="width: 10%">Delete?</th>
+                                <th class="text-center">Order</th>
+                                <th class="text-center">Title</th>
+                                <th class="text-center">Delete?</th>
                             </tr>
                         </thead>
                         <tbody class="order">
                             {% for form in formset %}
                                 <tr>
-                                    <td style="width: 10%">{{ form.id}}{{ form.order }}</td>
-                                    <td style="width: 80%">{{ form.title }}</td>
+                                    <td>{{ form.id}}{{ form.order }}</td>
+                                    <td>{{ form.title }}</td>
                                     {% if form.instance.pk %}
-                                        <td class="text-center" style="width: 10%">{{ form.DELETE }}</td>
+                                        <td class="text-center">{{ form.DELETE }}</td>
                                     {% else %}
-                                        <td class="text-center" style="width: 10%"></td>
+                                        <td class="text-center"></td>
                                     {% endif %}
                                 </tr>
                             {% endfor %}
