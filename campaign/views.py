@@ -156,6 +156,7 @@ def campaign_update(request, campaign_pk):
 @login_required
 def chapter_update(request, campaign_pk, chapter_pk):
     chapter = get_object_or_404(models.Chapter, pk=chapter_pk, campaign_id=campaign_pk)
+    sections = models.Section.objects.filter(chapter=chapter)
     monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
     monsters = {}
     for monster in monsters_raw:
@@ -181,7 +182,7 @@ def chapter_update(request, campaign_pk, chapter_pk):
                 section.delete()
             messages.add_message(request, messages.SUCCESS, "Updated chapter: {}".format(form.cleaned_data['title']))
             return HttpResponseRedirect(chapter.get_absolute_url())
-    return render(request, 'campaign/chapter_form.html', {'form': form, 'formset': section_forms, 'monsters': monsters, 'npcs': npcs, 'campaign': chapter.campaign, 'chapter': chapter})
+    return render(request, 'campaign/chapter_form.html', {'form': form, 'formset': section_forms, 'monsters': monsters, 'npcs': npcs, 'campaign': chapter.campaign, 'chapter': chapter, 'sections': sections})
 
 @login_required
 def section_update(request, campaign_pk, chapter_pk, section_pk):
