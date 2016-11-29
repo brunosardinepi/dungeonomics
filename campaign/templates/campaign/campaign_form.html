@@ -30,23 +30,23 @@
 
                     {{ formset.management_form }}
 
-                    <table class="table table-striped table-hover">
+                    <table class="table table-striped table-hover" style="width: 100%;">
                         <thead>
                             <tr>
-                                <th class="text-center">Chapter</th>
-                                <th class="text-center">Title</th>
-                                <th class="text-center">Delete?</th>
+                                <th class="text-center" style="width: 10%;">Chapter</th>
+                                <th class="text-center" style="width: 80%;">Title</th>
+                                <th class="text-center" style="width: 10%;">Delete?</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for form in formset %}
                                 <tr>
-                                    <td>{{ form.id }}{{ form.order }}</td>
-                                    <td>{{ form.title }}</td>
+                                    <td style="width: 10%;">{{ form.id }}{{ form.order }}</td>
+                                    <td style="width: 80%;">{{ form.title }}</td>
                                     {% if form.instance.pk %}
-                                        <td class="text-center">{{ form.DELETE }}</td>
+                                        <td class="text-center" style="width: 10%;">{{ form.DELETE }}</td>
                                     {% else %}
-                                        <td class="text-center"></td>
+                                        <td class="text-center" style="width: 10%;"></td>
                                     {% endif %}
                                 </tr>
                             {% endfor %}
