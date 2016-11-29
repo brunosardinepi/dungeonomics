@@ -17,8 +17,21 @@ class TinyMCEForm(forms.ModelForm):
             '/static/js/tinymce/tinymce.min.js',
             )
 
+class SortableForm(forms.ModelForm):
+    class Media:
+        css = {
+            'all': (
+                'campaign/css/order.css',
+            )
+        }
+        js = (
+            'campaign/js/vendor/jquery.fn.sortable.min.js',
+            'campaign/js/order.js',
+            'campaign/js/jquery.formset.js'
+        )
 
-class CampaignForm(forms.ModelForm):
+
+class CampaignForm(SortableForm):
     class Meta:
         model = models.Campaign
         fields = [
