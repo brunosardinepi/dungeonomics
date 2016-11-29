@@ -170,17 +170,23 @@ def chapter_update(request, campaign_pk, chapter_pk):
     if request.method == 'POST':
         form = forms.ChapterForm(request.POST, instance=chapter)
         section_forms = forms.SectionInlineFormSet(request.POST, queryset=form.instance.section_set.all())
-        if form.is_valid() and section_forms.is_valid():
-            form.save()
-            sections = section_forms.save(commit=False)
-            for section in sections:
-                section.chapter = chapter
-                section.user = request.user
-                section.save()
-            for section in section_forms.deleted_objects:
-                section.delete()
-            messages.add_message(request, messages.SUCCESS, "Updated chapter: {}".format(form.cleaned_data['title']))
-            return HttpResponseRedirect(chapter.get_absolute_url())
+        if section_forms:
+            if form.is_valid() and section_forms.is_valid():
+                form.save()
+                sections = section_forms.save(commit=False)
+                for section in sections:
+                    section.chapter = chapter
+                    section.user = request.user
+                    section.save()
+                for section in section_forms.deleted_objects:
+                    section.delete()
+                messages.add_message(request, messages.SUCCESS, "Updated chapter: {}".format(form.cleaned_data['title']))
+                return HttpResponseRedirect(chapter.get_absolute_url())
+        else:
+            if form.is_valid():
+                form.save()
+                messages.add_message(request, messages.SUCCESS, "Updated chapter: {}".format(form.cleaned_data['title']))
+                return HttpResponseRedirect(chapter.get_absolute_url())
     return render(request, 'campaign/chapter_form.html', {'form': form, 'formset': section_forms, 'monsters': monsters, 'npcs': npcs, 'campaign': chapter.campaign, 'chapter': chapter})
 
 @login_required
