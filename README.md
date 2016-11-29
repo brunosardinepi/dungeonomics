@@ -60,8 +60,6 @@
 - [ ] players
 - [ ] need to be able to signup with facebook and link google afterwards
 - [ ] hover over monsters/npcs in campaign to get preview of important stats
-- [ ] if you create a chapter or section with an order number that already exists, put it above the order number and move everything else down. Look into the treehouse ordering javascript thing.
-- [ ] if you delete a chapter or section, it should shift everything up/down to fill the gap of the deleted chapter
 - [ ] create chapter in modal
 - [ ] import monster/npc
 - [ ] add option in "edit campaign" to drag/drop to change order of chapters, order number should auto-update as you do it
@@ -70,3 +68,4 @@
 - [ ] write tests
 - [ ] home page blog
 - [ ] BUG: when you cancel campaign creation, try to go back to an active campaign if you can
+- [ ] add ability to order sections in chapter update similar to how you can order chapters in campaign update
