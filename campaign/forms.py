@@ -21,13 +21,13 @@ class SortableForm(forms.ModelForm):
     class Media:
         css = {
             'all': (
-                'campaign/css/order.css',
+                'static/css/order.css',
             )
         }
         js = (
-            'campaign/js/vendor/jquery.fn.sortable.min.js',
-            'campaign/js/order.js',
-            'campaign/js/jquery.formset.js'
+            'static/js/vendor/jquery.fn.sortable.min.js',
+            'static/js/order.js',
+            'static/js/jquery.formset.js'
         )
 
 
