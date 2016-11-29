@@ -41,12 +41,12 @@
                         <tbody>
                             {% for form in formset %}
                                 <tr>
-                                    <td class="col-md-1">{{ form.id}}{{ form.order }}</td>
-                                    <td class="col-md-10">{{ form.title }}</td>
+                                    <td>{{ form.id}}{{ form.order }}</td>
+                                    <td>{{ form.title }}</td>
                                     {% if form.instance.pk %}
-                                        <td class="col-md-1 text-center">{{ form.DELETE }}</td>
+                                        <td class="text-center">{{ form.DELETE }}</td>
                                     {% else %}
-                                        <td class="col-md-1 text-center"></td>
+                                        <td class="text-center"></td>
                                     {% endif %}
                                 </tr>
                             {% endfor %}
