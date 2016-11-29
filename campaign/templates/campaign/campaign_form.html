@@ -41,7 +41,7 @@
                         <tbody class="order">
                             {% for form in formset %}
                                 <tr>
-                                    <td style="width: 10%">{{ form.order }}</td>
+                                    <td style="width: 10%">{{ form.id}}{{ form.order }}</td>
                                     <td style="width: 80%">{{ form.title }}</td>
                                     {% if form.instance.pk %}
                                         <td class="text-center" style="width: 10%">{{ form.DELETE }}</td>
