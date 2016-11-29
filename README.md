@@ -75,7 +75,6 @@
 - [ ] create chapter in modal
 - [ ] add option in "edit campaign" to drag/drop to change order of chapters, order number should auto-update as you do it
 - [ ] redo delete views so that they redirect better
-- [ ] BUG: when you cancel campaign creation, try to go back to an active campaign if you can
 
 ### Monsters/NPCs
 - [ ] import monster/npc
