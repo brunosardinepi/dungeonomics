@@ -25,8 +25,8 @@
             <div class="panel-body">
                 <form method="POST" action="">
                     {% csrf_token %}
-                    {% comment %}{% bootstrap_form form %}{% endcomment %}
-                    {% comment %}<hr>{% endcomment %}
+                    {% bootstrap_form form %}
+                    <hr>
 
                     {% comment %}{% bootstrap_formset formset %}{% endcomment %}
                     {% comment %}{{ formset.management_form }}
