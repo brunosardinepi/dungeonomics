@@ -1,5 +1,6 @@
 # Todo
 
+## Completed
 - [x] users need to signup
 - [x] users need to login
 - [x] users need to logout
@@ -54,18 +55,31 @@
 - [x] check all titles and make sure they are using "title | super" format
 - [x] consolidate campaign and campaign_update
 - [x] add campaign to admin
-- [ ] users need to delete their account - should it be inactive or aaron hernandez?
-- [ ] tinymce uploads
-- [ ] use google mail servers instead of local mail server
+
+## Site-wide
+- [ ] write tests
 - [ ] players
+- [ ] home page (blog? tutorial?)
+- [ ] beginner/faq
+
+## Mail
+- [ ] use google mail servers instead of local mail server
+
+## Users
+- [ ] users need to delete their account - should it be inactive or aaron hernandez?
 - [ ] need to be able to signup with facebook and link google afterwards
+
+## Campaign
 - [ ] hover over monsters/npcs in campaign to get preview of important stats
 - [ ] create chapter in modal
-- [ ] import monster/npc
 - [ ] add option in "edit campaign" to drag/drop to change order of chapters, order number should auto-update as you do it
-- [ ] consolidate tinymce config into one template
 - [ ] redo delete views so that they redirect better
-- [ ] write tests
-- [ ] home page blog
 - [ ] BUG: when you cancel campaign creation, try to go back to an active campaign if you can
 - [ ] add ability to order sections in chapter update similar to how you can order chapters in campaign update
+
+## Monsters/NPCs
+- [ ] import monster/npc
+
+## TinyMCE
+- [ ] tinymce uploads
+- [ ] consolidate tinymce config into one template
