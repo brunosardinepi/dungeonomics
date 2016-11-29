@@ -90,4 +90,13 @@ a.dropdown-cog:hover, a.dropdown-cog:active, li.open a.dropdown-cog {
 }
 .margin-bottom-zero {
     margin-bottom: 0;
-} 
+}
+.width-ten {
+    width: 10%;
+}
+.width-eighty {
+    width: 80%;
+}
+input[id*='order'], input[id*='title'], input[id*='DELETE'] {
+    width: 100%;
+}
