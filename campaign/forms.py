@@ -48,13 +48,11 @@ class SectionForm(TinyMCEForm):
 ChapterFormSet = forms.modelformset_factory(
     models.Chapter,
     form=ChapterForm,
-    extra=2,
 )
 
 ChapterInlineFormSet = forms.inlineformset_factory(
     models.Campaign,
     models.Chapter,
-    extra=2,
     fields=('order', 'title'),
     formset=ChapterFormSet,
 )
