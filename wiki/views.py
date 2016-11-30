@@ -23,10 +23,7 @@ def wiki_home(request, section_pk=None, subsection_pk=None):
         if subsection_pk:
             this_subsection = get_object_or_404(models.Subsection, pk=subsection_pk)
         else:
-            if len(this_subsections) > 0:
-                this_subsection = this_subsections[0]
-            else:
-                this_subsection = None
+            this_subsection = None
 
         if this_subsection:
             return render(request, 'wiki/home.html', {'this_section': this_section, 'this_subsection': this_subsection, 'sections': sections, 'subsections': subsections})
