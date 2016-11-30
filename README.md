@@ -66,6 +66,7 @@
 - [ ] home page (blog? tutorial?)
 - [ ] beginner/faq
 - [ ] style admin login
+- [ ] style email
 
 ### Users
 - [ ] users need to delete their account - should it be inactive or aaron hernandez?
