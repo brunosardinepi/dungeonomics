@@ -31,7 +31,7 @@ def wiki_home(request, section_pk=None, subsection_pk=None):
         if this_subsection:
             return render(request, 'wiki/home.html', {'this_section': this_section, 'this_subsection': this_subsection, 'sections': sections, 'subsections': subsections})
         else:
-            return render(request, 'campaign/campaign_detail.html', {'this_section': this_section, 'sections': sections, 'subsections': subsections})
+            return render(request, 'wiki/home.html', {'this_section': this_section, 'sections': sections, 'subsections': subsections})
     else:
         this_section = None
         sections = sorted(models.Section.objects.all(),
