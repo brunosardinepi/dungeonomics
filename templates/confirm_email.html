@@ -15,13 +15,14 @@
             <div class="panel-body">
                 {% if confirmation %}
                     {% user_display confirmation.email_address.user as user_display %}
-                    <p>{% with confirmation.email_address.email as email %}Please confirm that your email address is: <strong><a href="mailto:{{ email }}">{{ email }}</a></strong>{% endwith %}</p>
+                    <p>{% with confirmation.email_address.email as email %}Please confirm that your email address is:</p>
+                    <p class="text-center"><strong><a href="mailto:{{ email }}">{{ email }}</a></strong>{% endwith %}</p>
             </div>
             <div class="panel-footer clearfix">
-                <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+                <form method="post" action="{% url 'account_confirm_email' confirmation.key %}" style="margin-bottom:0;">
                     {% csrf_token %}
                     {% buttons %}
-                        <button type="submit" class="btn btn-primary">Confirm</button>
+                        <button type="submit" class="btn btn-primary btn-block">Confirm</button>
                     {% endbuttons %}
                 </form>
                 {% else %}
