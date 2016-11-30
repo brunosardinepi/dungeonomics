@@ -1,6 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 
+from . import models
+
 
 # def wiki_home(request, section_pk=None):
 #     if section_pk:
