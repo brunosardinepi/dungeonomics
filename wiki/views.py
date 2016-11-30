@@ -1,9 +1,11 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 
 from . import models
 
 
+@login_required
 def wiki_home(request, section_pk=None, subsection_pk=None):
     sections = sorted(models.Section.objects.all(),
         key=lambda section: section.title)

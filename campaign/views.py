@@ -21,6 +21,7 @@ def campaign_list(request):
         )
     return render(request, 'campaign/campaign_list.html', {'campaigns': campaigns})
 
+@login_required
 def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None):
     if campaign_pk:
         this_campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
