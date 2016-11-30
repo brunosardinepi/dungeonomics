@@ -150,7 +150,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'dungeonomics'
 EMAIL_HOST_PASSWORD = 'B6uv5jqIyV'
-# DEFAULT_FROM_EMAIL = 'Dungeonomics <no-reply@dungeonomics.com>'
+DEFAULT_FROM_EMAIL = 'Dungeonomics <no-reply@dungeonomics.com>'
 
 
 # Static files (CSS, JavaScript, Images)
