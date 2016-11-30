@@ -52,7 +52,7 @@
                         {% if sections %}
                             {% for section in sections %}
                                 <li class="li-content"> 
-                                    <a href="{% url 'wiki:home' section_pk=this_section.pk %}">
+                                    <a href="{% url 'wiki:home' section_pk=section.pk %}">
                                         {{ section.title }}
                                     </a>
                                 </li>
@@ -60,7 +60,7 @@
                                     {% for subsection in subsections %}
                                         {% if subsection.section.pk == section.pk %}
                                             <li class="li-content"> 
-                                                <a href="{% url 'wiki:home' section_pk=this_section.pk subsection_pk=subsection.pk %}">
+                                                <a href="{% url 'wiki:home' section_pk=section.pk subsection_pk=subsection.pk %}">
                                                     {{ subsection.title }}
                                                 </a>
                                             </li>
