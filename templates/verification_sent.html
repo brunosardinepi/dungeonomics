@@ -1,11 +1,19 @@
 {% extends 'layout.html' %}
-
 {% load bootstrap3 %}
-{% load i18n %}
 
 {% block title %}Email Verification Required | {{ block.super }}{% endblock %}
 
 {% block body_content %}
-    <h1>Email Verification Required</h1>
-    <p>We have sent you an email for verification. Follow the link provided to finalize the signup process. Please contact us if you do not receive it within a few minutes.</p>
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-default panel-campaign">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Email Verification Required
+                </h3>
+            </div>
+            <div class="panel-body">
+                <p>We have sent you an email for verification. Follow the link in the email to finalize the signup process. Please check your Spam folder and then <a href="mailto:dungeonomics@gmail.com">contact us</a> if you don't receive it within a few minutes.</p>
+            </div>
+        </div>
+    </div>
 {% endblock %}
