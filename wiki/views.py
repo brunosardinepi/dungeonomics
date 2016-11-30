@@ -28,4 +28,4 @@ def wiki_home(request, section_pk=None, subsection_pk=None):
             key=lambda section: section.title)
         if len(sections) > 0:
             this_section = sections[0]
-        return render(request, 'wiki/home.html', {'this_section': this_section})
+        return render(request, 'wiki/home.html', {'this_section': this_section, 'sections': sections})
