@@ -57,6 +57,7 @@
 - [x] add campaign to admin
 - [x] add ability to order sections in chapter update similar to how you can order chapters in campaign update
 - [x] use google mail servers instead of local mail server
+- [x] style email verification page
 
 ### Site-wide
 - [ ] write tests
@@ -64,9 +65,6 @@
 - [ ] home page (blog? tutorial?)
 - [ ] beginner/faq
 - [ ] remove settings.py from version control
-
-### Mail
-- [ ] style email verification page
 
 ### Users
 - [ ] users need to delete their account - should it be inactive or aaron hernandez?
