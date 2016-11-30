@@ -62,6 +62,7 @@
 - [ ] players
 - [ ] home page (blog? tutorial?)
 - [ ] beginner/faq
+- [ ] style admin login
 
 ### Mail
 - [ ] use google mail servers instead of local mail server
