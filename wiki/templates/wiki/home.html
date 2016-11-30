@@ -32,8 +32,20 @@
             <div class="panel panel-default">
                 <div class="panel-heading panel-heading-cog clearfix">
                     <span class="pull-left">
-                        <h3 class="panel-title">Contents</h3>
+                        <h3 class="panel-title panel-title-cog">Contents</h3>
                     </span>
+                    {% if user.is_staff %}
+                        <span class="pull-right">
+                            <ul class="nav navbar-nav navbar-right navbar-cog">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{% url 'wiki:home' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create section</span></a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </span>
+                    {% endif %}
                 </div>
                 <div class="panel-body">
                     <ul class="contents_list">
@@ -67,8 +79,22 @@
                     {% if not this_subsection %}
                         <div class="panel-heading panel-heading-cog clearfix">
                             <span class="pull-left">
-                                <h3 class="panel-title">{{ this_section.title }}</h3>
+                                <h3 class="panel-title panel-title-cog">{{ this_section.title }}</h3>
                             </span>
+                            {% if user.is_staff %}
+                                <span class="pull-right">
+                                    <ul class="nav navbar-nav navbar-right navbar-cog">
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="{% url 'wiki:home' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create subsection</span></a></li>
+                                                <li><a href="{% url 'wiki:home' %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit section</span></a></li>
+                                                <li><a href="{% url 'wiki:home' %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete section</span></a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </span>
+                            {% endif %}
                         </div>
                         <div class="panel-body">
                             <p>{{ this_section.content|safe }}</p>
@@ -78,6 +104,19 @@
                             <span class="pull-left">
                                 <h3 class="panel-title panel-title-cog">{{ this_subsection.title }}</h3>
                             </span>
+                            {% if user.is_staff %}
+                                <span class="pull-right">
+                                    <ul class="nav navbar-nav navbar-right navbar-cog">
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="{% url 'wiki:home' %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit subsection</span></a></li>
+                                                <li><a href="{% url 'wiki:home' %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete subsection</span></a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </span>
+                            {% endif %}
                         </div>
                         <div class="panel-body">
                             <p>{{ this_subsection.content|safe }}</p>
