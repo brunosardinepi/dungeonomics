@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% load campaign_extras %}
 
 {% block title %} {{ this_section.title }} | {{ block.super }}{% endblock %}
 
@@ -21,12 +22,6 @@
 {% endblock %}
 
 {% block body_content %}
-<p>This Section: {{ this_section }}</p>
-<p>This Subsection: {{ this_subsection }}</p>
-<hr>
-<p>Sections: {{ sections }}</p>
-<p>Subsections: {{ subsections }}</p>
-
     <div class="row campaign-row">
         <div class="col-md-4">
             <div class="panel panel-default">
@@ -51,7 +46,8 @@
                     <ul class="contents_list">
                         {% if sections %}
                             {% for section in sections %}
-                                <li class="li-content"> 
+                                <li class="li-content">
+                                    {{ section.order|int_to_roman }}. 
                                     <a href="{% url 'wiki:home' section_pk=section.pk %}">
                                         {{ section.title }}
                                     </a>
@@ -60,6 +56,7 @@
                                     {% for subsection in subsections %}
                                         {% if subsection.section.pk == section.pk %}
                                             <li class="li-content"> 
+                                                {{ subsection.order|int_to_letter }}. 
                                                 <a href="{% url 'wiki:home' section_pk=section.pk subsection_pk=subsection.pk %}">
                                                     {{ subsection.title }}
                                                 </a>
