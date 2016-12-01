@@ -119,7 +119,7 @@ def section_delete(request, section_pk):
     if request.method == 'POST':
         form = forms.SectionForm(request.POST, instance=section)
         if form.is_valid():
-            form.delete()
+            section.delete()
             messages.add_message(request, messages.SUCCESS, "Deleted section: {}".format(form.cleaned_data['title']))
             return HttpResponseRedirect('wiki:home')
     return render(request, 'wiki/section_confirm_delete.html', {'form': form, 'section': section})
@@ -149,7 +149,7 @@ def subsection_delete(request, section_pk, subsection_pk):
     if request.method == 'POST':
         form = forms.SubsectionForm(request.POST, instance=subsection)
         if form.is_valid():
-            form.delete()
+            subsection.delete()
             messages.add_message(request, messages.SUCCESS, "Deleted subsection: {}".format(form.cleaned_data['title']))
             return HttpResponseRedirect('wiki:home')
     return render(request, 'wiki/subsection_confirm_delete.html', {'form': form, 'section': subsection.section, 'subsection': subsection})
