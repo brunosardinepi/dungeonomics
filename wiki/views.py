@@ -118,7 +118,7 @@ def section_delete(request, section_pk):
     form = forms.SectionForm(instance=section)
     if request.method == 'POST':
         form = forms.SectionForm(request.POST, instance=section)
-        if request.user.is_staff and form.is_valid():
+        if form.is_valid():
             section.delete()
             messages.add_message(request, messages.SUCCESS, "Deleted section: {}".format(form.cleaned_data['title']))
             return HttpResponseRedirect('wiki:home')
