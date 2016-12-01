@@ -15,7 +15,7 @@ from . import forms
 @login_required
 def wiki_home(request, section_pk=None, subsection_pk=None):
     sections = sorted(models.Section.objects.all(),
-        key=lambda section: section.title)
+        key=lambda section: section.order)
 
     subsections = []
     for section in sections:
