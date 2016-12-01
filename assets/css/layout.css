@@ -126,7 +126,7 @@ a.dropdown-cog:hover, a.dropdown-cog:active, li.open a.dropdown-cog {
     font-weight: bold;
     font-size: 12px;
     margin-bottom: 5px;
-    color: #333;
+    color: #666;
 }
 .character-details p {
     text-align: center;
