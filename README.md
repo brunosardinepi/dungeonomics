@@ -59,12 +59,13 @@
 - [x] use google mail servers instead of local mail server
 - [x] style email verification page
 - [x] remove settings.py from version control
+- [x] create wiki
 
 ### Site-wide
 - [ ] write tests
 - [ ] players
 - [ ] home page (blog? tutorial?)
-- [ ] beginner/faq
+- [ ] fill wiki with content
 - [ ] style admin login
 - [ ] style email
 
