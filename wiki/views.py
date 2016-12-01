@@ -115,7 +115,7 @@ def subsection_update(request, section_pk, subsection_pk):
 @staff_member_required
 def section_delete(request, section_pk):
     section = get_object_or_404(models.Section, pk=section_pk)
-    if request.user.is_staff() and section:
+    if request.user.is_staff and section:
         section.delete()
         messages.add_message(request, messages.SUCCESS, "Deleted section: {}".format(form.cleaned_data['title']))
         return HttpResponseRedirect('wiki:home')
