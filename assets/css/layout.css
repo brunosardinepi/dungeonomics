@@ -119,6 +119,7 @@ a.dropdown-cog:hover, a.dropdown-cog:active, li.open a.dropdown-cog {
 }
 .character-label, .character-details, .character-label-long, .character-details-long {
     width: 100%;
+    color: #333;
 }
 .character-label p, .character-label-long p {
     text-align: center;
