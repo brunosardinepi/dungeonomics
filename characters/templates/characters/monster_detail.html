@@ -173,10 +173,32 @@
             </div>
         </div>
 
-        <hr>        
-        
-        <p>Saving Throws: {{ this_monster.saving_throws }}</p>
-        <p>Skills: {{ this_monster.skills }}</p>
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Saving Throws</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_monster.saving_throws }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Skills</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_monster.skills }}</p>
+                </div>
+            </div>
+        </div>
+
         <p>Damage Vulnerabilities: {{ this_monster.damage_vulnerabilities }}</p>
         <p>Damage Immunities: {{ this_monster.damage_immunities }}</p>
         <p>Condition Immunities: {{ this_monster.condition_immunities }}</p>

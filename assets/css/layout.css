@@ -117,20 +117,23 @@ a.dropdown-cog:hover, a.dropdown-cog:active, li.open a.dropdown-cog {
     font-weight: 700;
     font-size: 14px;
 }
-.character-label {
+.character-label, .character-details, .character-label-long, .character-details-long {
     width: 100%;
 }
-.character-label p {
+.character-label p, .character-label-long p {
     text-align: center;
     text-transform: uppercase;
     font-weight: bold;
     font-size: 12px;
     margin-bottom: 5px;
 }
-.character-details {
-    width: 100%;
-}
-.character-details p {
+.character-details p, .character-details-long p {
     text-align: center;
     font-size: 18px;
+}
+.character-label-long p {
+    text-align: left;
+}
+.character-details-long p {
+    text-align: left;
 }
