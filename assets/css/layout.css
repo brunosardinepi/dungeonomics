@@ -127,9 +127,9 @@ a.dropdown-cog:hover, a.dropdown-cog:active, li.open a.dropdown-cog {
     font-size: 12px;
     margin-bottom: 5px;
 }
-.character-details p, .character-details-long p {
+.character-details p {
     text-align: center;
-    font-size: 18px;
+    font-size: 20px;
 }
 .character-label-long p {
     text-align: left;
