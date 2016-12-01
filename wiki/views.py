@@ -12,10 +12,10 @@ from . import forms
 
 class StaffRequiredMixin(View):  
     @method_decorator(login_required)
-        def dispatch(self, request, *args, **kwargs):
-            if not request.user.is_staff:
-                raise Http404        
-            return super(StaffRequiredMixin, self).dispatch(request, *args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            raise Http404        
+        return super(StaffRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 
 @login_required
