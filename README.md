@@ -61,12 +61,12 @@
 - [x] remove settings.py from version control
 - [x] create wiki
 - [x] style admin login
+- [x] fill wiki with content
 
 ### Site-wide
 - [ ] write tests
 - [ ] players
 - [ ] home page (blog? tutorial?)
-- [ ] fill wiki with content
 - [ ] style email
 
 ### Users
