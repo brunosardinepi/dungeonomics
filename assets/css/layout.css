@@ -117,3 +117,11 @@ a.dropdown-cog:hover, a.dropdown-cog:active, li.open a.dropdown-cog {
     font-weight: 700;
     font-size: 14px;
 }
+.character-label {
+    width: 100%;
+    text-align: center;
+}
+.character-details {
+    width: 100%;
+    text-align: center;
+}

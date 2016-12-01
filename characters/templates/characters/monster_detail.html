@@ -48,6 +48,40 @@
 
 {% block character_detail %}
     {% if this_monster %}
+        <div class="row">
+            <div class="col-md-4">
+                <div class="character-label">
+                    Level
+                </div>
+                <div class="character-details">
+                    {{ this_monster.level }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="character-label">
+                    Alignment
+                </div>
+                <div class="character-details">
+                    {{ this_monster.get_alignment_display }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="character-label">
+                    Size
+                </div>
+                <div class="character-details">
+                    {{ this_monster.get_size_display }}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="character-label">
+                    Languages
+                </div>
+                <div class="character-details">
+                    {{ this_monster.languages }}
+                </div>
+            </div>
+        </div>
         <p>Level: {{ this_monster.level }}</p>
         <p>Alignment: {{ this_monster.get_alignment_display }}</p>
         <p>Size: {{ this_monster.get_size_display }}</p>
