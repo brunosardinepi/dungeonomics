@@ -1,12 +1,21 @@
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
+from django.utils.decorators import method_decorator
 
 from . import models
 from . import forms
+
+
+class StaffRequiredMixin(View):  
+    @method_decorator(login_required)
+        def dispatch(self, request, *args, **kwargs):
+            if not request.user.is_staff:
+                raise Http404        
+            return super(StaffRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 
 @login_required
@@ -94,37 +103,36 @@ def subsection_update(request, section_pk, subsection_pk):
     return render(request, 'wiki/subsection_form.html', {'form': form, 'section': subsection.section, 'subsection': subsection})
 
 
-# class SectionDelete(PermissionRequiredMixin, DeleteView):
-#     permission_required = 'user.is_staff'
-#     model = models.Campaign
-#     success_url = reverse_lazy('home')
-#     slug_field = "pk"
-#     slug_url_kwarg = "campaign_pk"
+class SectionDelete(LoginRequiredMixin, StaffRequiredMixin, DeleteView):
+    model = models.Section
+    success_url = reverse_lazy('wiki:home')
+    slug_field = "pk"
+    slug_url_kwarg = "section_pk"
 
-#     def delete(self, request, *args, **kwargs):
-#         messages.add_message(self.request, messages.SUCCESS, "Campaign deleted!")
-#         return super(CampaignDelete, self).delete(request, *args, **kwargs)
+    def delete(self, request, *args, **kwargs):
+        messages.add_message(self.request, messages.SUCCESS, "Section deleted!")
+        return super(SectionDelete, self).delete(request, *args, **kwargs)
 
-#     def get_object(self, queryset=None):
-#         campaign = super(CampaignDelete, self).get_object()
-#         if not campaign.user == self.request.user:
-#             raise Http404
-#         else:
-#             return campaign
-
-@staff_member_required
-def section_delete(request, section_pk):
-    section = get_object_or_404(models.Section, pk=section_pk)
-    form = forms.SectionForm(instance=section)
-    if request.method == 'POST':
-        form = forms.SectionForm(request.POST, instance=section)
-        if form.is_valid():
-            section.delete()
-            messages.add_message(request, messages.SUCCESS, "Deleted section: {}".format(form.cleaned_data['title']))
-            return HttpResponseRedirect('wiki:home')
-        else:
+    def get_object(self, queryset=None):
+        section = super(SectionDelete, self).get_object()
+        if not self.request.user.is_staff:
             raise Http404
-    return render(request, 'wiki/section_confirm_delete.html', {'form': form, 'section': section})
+        else:
+            return section
+
+# @staff_member_required
+# def section_delete(request, section_pk):
+#     section = get_object_or_404(models.Section, pk=section_pk)
+#     form = forms.SectionForm(instance=section)
+#     if request.method == 'POST':
+#         form = forms.SectionForm(request.POST, instance=section)
+#         if form.is_valid():
+#             section.delete()
+#             messages.add_message(request, messages.SUCCESS, "Deleted section: {}".format(form.cleaned_data['title']))
+#             return HttpResponseRedirect('wiki:home')
+#         else:
+#             raise Http404
+#     return render(request, 'wiki/section_confirm_delete.html', {'form': form, 'section': section})
 
 
 # class ChapterDelete(LoginRequiredMixin, DeleteView):
