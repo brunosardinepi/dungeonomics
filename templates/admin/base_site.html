@@ -2,6 +2,17 @@
 {% load static from staticfiles %}
 {% load i18n %}
 
+{% block extrastyle %}
+<style>
+#header {
+    background-color: #000;
+}
+#branding {
+    text-align: center;
+}
+</style>
+{% endblock %}
+
 {% block title %}{{ title }} | {% trans 'Dungeonomics admin' %}{% endblock %}
 
 {% block branding %}
