@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
 
 from . import models
@@ -115,14 +115,13 @@ def subsection_update(request, section_pk, subsection_pk):
 @staff_member_required
 def section_delete(request, section_pk):
     section = get_object_or_404(models.Section, pk=section_pk)
-    form = forms.SectionForm(instance=section)
-    if request.method == 'POST':
-        form = forms.SectionForm(request.POST, instance=section)
-        if form.is_valid():
-            section.delete()
-            messages.add_message(request, messages.SUCCESS, "Deleted section: {}".format(form.cleaned_data['title']))
-            return HttpResponseRedirect('wiki:home')
-    return render(request, 'wiki/section_confirm_delete.html', {'form': form, 'section': section})
+    if request.user.is_staff() and section:
+        section.delete()
+        messages.add_message(request, messages.SUCCESS, "Deleted section: {}".format(form.cleaned_data['title']))
+        return HttpResponseRedirect('wiki:home')
+    else:
+        raise Http404
+    # return render(request, 'wiki/section_confirm_delete.html', {'section': section})
 
 
 # class ChapterDelete(LoginRequiredMixin, DeleteView):
