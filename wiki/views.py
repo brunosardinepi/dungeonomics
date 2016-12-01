@@ -10,14 +10,6 @@ from . import models
 from . import forms
 
 
-class StaffRequiredMixin(View):  
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_staff:
-            raise Http404        
-        return super(StaffRequiredMixin, self).dispatch(request, *args, **kwargs)
-
-
 @login_required
 def wiki_home(request, section_pk=None, subsection_pk=None):
     sections = sorted(models.Section.objects.all(),
@@ -103,22 +95,22 @@ def subsection_update(request, section_pk, subsection_pk):
     return render(request, 'wiki/subsection_form.html', {'form': form, 'section': subsection.section, 'subsection': subsection})
 
 
-class SectionDelete(LoginRequiredMixin, StaffRequiredMixin, DeleteView):
+class SectionDelete(LoginRequiredMixin, DeleteView):
     model = models.Section
     success_url = reverse_lazy('wiki:home')
     slug_field = "pk"
     slug_url_kwarg = "section_pk"
 
     def delete(self, request, *args, **kwargs):
-        messages.add_message(self.request, messages.SUCCESS, "Section deleted!")
-        return super(SectionDelete, self).delete(request, *args, **kwargs)
+        if not request.user.is_staff:
+            raise Http404
+        else:
+            messages.add_message(self.request, messages.SUCCESS, "Section deleted!")
+            return super(SectionDelete, self).delete(request, *args, **kwargs)
 
     def get_object(self, queryset=None):
         section = super(SectionDelete, self).get_object()
-        if not self.request.user.is_staff:
-            raise Http404
-        else:
-            return section
+        return section
 
 # @staff_member_required
 # def section_delete(request, section_pk):
