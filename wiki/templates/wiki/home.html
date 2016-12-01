@@ -76,11 +76,16 @@
                     {% if not this_subsection %}
                         <div class="panel-heading panel-heading-cog clearfix">
                             <span class="pull-left">
-                                <h3 class="panel-title panel-title-cog">{{ this_section.title }}</h3>
+                                {% if user.is_staff %}
+                                    <h3 class="panel-title panel-title-cog">
+                                {% else %}
+                                    <h3 class="panel-title">
+                                {% endif %}
+                                {{ this_section.title }}</h3>
                             </span>
-                            <span class="pull-right">
-                                <ul class="nav navbar-nav navbar-right navbar-cog">
-                                    {% if user.is_staff %}
+                            {% if user.is_staff %}
+                                <span class="pull-right">
+                                    <ul class="nav navbar-nav navbar-right navbar-cog">
                                         <li class="dropdown">
                                             <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
                                             <ul class="dropdown-menu">
@@ -89,9 +94,9 @@
                                                 <li><a href="{% url 'wiki:section_delete' section_pk=this_section.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete section</span></a></li>
                                             </ul>
                                         </li>
-                                    {% endif %}
-                                </ul>
-                            </span>
+                                    </ul>
+                                </span>
+                            {% endif %}
                         </div>
                         <div class="panel-body">
                             <p>{{ this_section.content|safe }}</p>
@@ -99,11 +104,16 @@
                     {% elif this_subsection %}
                         <div class="panel-heading panel-heading-cog clearfix">
                             <span class="pull-left">
-                                <h3 class="panel-title panel-title-cog">{{ this_subsection.title }}</h3>
+                                {% if user.is_staff %}
+                                    <h3 class="panel-title panel-title-cog">
+                                {% else %}
+                                    <h3 class="panel-title">
+                                {% endif %}
+                                {{ this_subsection.title }}</h3>
                             </span>
-                            <span class="pull-right">
-                                <ul class="nav navbar-nav navbar-right navbar-cog">
-                                    {% if user.is_staff %}
+                            {% if user.is_staff %}
+                                <span class="pull-right">
+                                    <ul class="nav navbar-nav navbar-right navbar-cog">
                                         <li class="dropdown">
                                             <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
                                             <ul class="dropdown-menu">
@@ -111,9 +121,9 @@
                                                 <li><a href="{% url 'wiki:subsection_delete' section_pk=this_section.pk subsection_pk=this_subsection.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete subsection</span></a></li>
                                             </ul>
                                         </li>
-                                    {% endif %}
-                                </ul>
-                            </span>
+                                    </ul>
+                                </span>
+                            {% endif %}
                         </div>
                         <div class="panel-body">
                             <p>{{ this_subsection.content|safe }}</p>
