@@ -1,6 +1,13 @@
 {% extends 'characters/character_layout.html' %}
 
-{% block title %} {{ this_npc.name }} | {{ block.super }}{% endblock %}
+{% block title %}
+    {% if this_npc.pk %}
+        {{ this_npc.name }} 
+    {% else %}
+        NPCs 
+    {% endif %}
+    | {{ block.super }}
+{% endblock %}
 
 {% block character_list_title %}NPC List{% endblock %}
 

@@ -1,6 +1,13 @@
 {% extends 'characters/character_layout.html' %}
 
-{% block title %} {{ this_monster.name }} | {{ block.super }}{% endblock %}
+{% block title %}
+    {% if this_monster.pk %}
+        {{ this_monster.name }} 
+    {% else %}
+        Monsters 
+    {% endif %}
+    | {{ block.super }}
+{% endblock %}
 
 {% block character_list_title %}Monster List{% endblock %}
 
