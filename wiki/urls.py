@@ -14,5 +14,6 @@ urlpatterns = [
     url(r'^(?P<section_pk>\d+)/subsection/(?P<subsection_pk>\d+)/edit/$', views.subsection_update, name='subsection_update'),
 
     url(r'^(?P<section_pk>\d+)/delete/$', views.SectionDelete.as_view(), name='section_delete'),
-    url(r'^(?P<section_pk>\d+)/subsection/(?P<subsection_pk>\d+)/delete/$', views.subsection_delete, name='subsection_delete'),
+    # url(r'^(?P<section_pk>\d+)/subsection/(?P<subsection_pk>\d+)/delete/$', views.subsection_delete, name='subsection_delete'),
+    url(r'^(?P<section_pk>\d+)/subsection/(?P<subsection_pk>\d+)/delete/$', views.SubsectionDelete.as_view(), name='subsection_delete'),
 ]
