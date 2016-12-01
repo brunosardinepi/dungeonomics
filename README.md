@@ -60,13 +60,13 @@
 - [x] style email verification page
 - [x] remove settings.py from version control
 - [x] create wiki
+- [x] style admin login
 
 ### Site-wide
 - [ ] write tests
 - [ ] players
 - [ ] home page (blog? tutorial?)
 - [ ] fill wiki with content
-- [ ] style admin login
 - [ ] style email
 
 ### Users
