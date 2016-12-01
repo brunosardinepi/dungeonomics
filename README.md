@@ -80,6 +80,7 @@
 
 ### Monsters/NPCs
 - [ ] import monster/npc
+- [ ] style monster/npc page
 
 ### TinyMCE
 - [ ] tinymce uploads ([tinymce](https://www.tinymce.com/docs/configure/file-image-upload/), [django](http://stackoverflow.com/questions/5871730/need-a-minimal-django-file-upload-example))
