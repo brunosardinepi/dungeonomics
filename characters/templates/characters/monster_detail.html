@@ -48,29 +48,247 @@
 
 {% block character_detail %}
     {% if this_monster %}
-        <p>Level: {{ this_monster.level }}</p>
-        <p>Alignment: {{ this_monster.get_alignment_display }}</p>
-        <p>Size: {{ this_monster.get_size_display }}</p>
-        <p>Languages: {{ this_monster.languages }}</p>
-        <p>Strength: {{ this_monster.strength }}</p>
-        <p>Dexterity: {{ this_monster.dexterity }}</p>
-        <p>Constitution: {{ this_monster.constitution }}</p>
-        <p>Intelligence: {{ this_monster.intelligence }}</p>
-        <p>Wisdom: {{ this_monster.wisdom }}</p>
-        <p>Charisma: {{ this_monster.charisma }}</p>
-        <p>Armor Class: {{ this_monster.armor_class }}</p>
-        <p>Hit Points: {{ this_monster.hit_points }}</p>
-        <p>Speed: {{ this_monster.speed }}</p>
-        <p>Saving Throws: {{ this_monster.saving_throws }}</p>
-        <p>Skills: {{ this_monster.skills }}</p>
-        <p>Creature Type: {{ this_monster.creature_type }}</p>
-        <p>Damage Vulnerabilities: {{ this_monster.damage_vulnerabilities }}</p>
-        <p>Damage Immunities: {{ this_monster.damage_immunities }}</p>
-        <p>Condition Immunities: {{ this_monster.condition_immunities }}</p>
-        <p>Senses: {{ this_monster.senses }}</p>
-        <p>Challenge Rating: {{ this_monster.challenge_rating }}</p>
-        <p>Traits: {{ this_monster.traits|safe }}</p>
-        <p>Actions: {{ this_monster.actions|safe }}</p>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="character-label">
+                    <p>Level</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_monster.level }}</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="character-label">
+                    <p>Alignment</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_monster.get_alignment_display }}</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="character-label">
+                    <p>Armor Class</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_monster.armor_class }}</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="character-label">
+                    <p>Hit Points</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_monster.hit_points }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>STR</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_monster.strength }}</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>DEX</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_monster.dexterity }}</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>CON</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_monster.constitution }}</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>WIS</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_monster.wisdom }}</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>INT</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_monster.intelligence }}</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>CHA</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_monster.charisma }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="character-label">
+                    <p>Creature Type</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_monster.creature_type }}</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="character-label">
+                    <p>Challenge Rating</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_monster.challenge_rating }}</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="character-label">
+                    <p>Size</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_monster.get_size_display }}</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="character-label">
+                    <p>Speed</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_monster.speed }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Saving Throws</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_monster.saving_throws }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Skills</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_monster.skills }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Damage Vulnerabilities</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_monster.damage_vulnerabilities }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Damage Immunities</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_monster.damage_immunities }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Condition Immunities</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_monster.condition_immunities }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Senses</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_monster.senses }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Languages</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_monster.languages }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Traits</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_monster.traits|safe }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Actions</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_monster.actions|safe }}</p>
+                </div>
+            </div>
+        </div>
     {% else %}
         <p>You haven't created any monsters yet!</p>
     {% endif %}

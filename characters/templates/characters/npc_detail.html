@@ -48,34 +48,297 @@
 
 {% block character_detail %}
     {% if this_npc %}
-        <p>Level: {{ this_npc.level }}</p>
-        <p>Alignment: {{ this_npc.get_alignment_display }}</p>
-        <p>Size: {{ this_npc.get_size_display }}</p>
-        <p>Languages: {{ this_npc.languages }}</p>
-        <p>Strength: {{ this_npc.strength }}</p>
-        <p>Dexterity: {{ this_npc.dexterity }}</p>
-        <p>Constitution: {{ this_npc.constitution }}</p>
-        <p>Intelligence: {{ this_npc.intelligence }}</p>
-        <p>Wisdom: {{ this_npc.wisdom }}</p>
-        <p>Charisma: {{ this_npc.charisma }}</p>
-        <p>Armor Class: {{ this_npc.armor_class }}</p>
-        <p>Hit Points: {{ this_npc.hit_points }}</p>
-        <p>Speed: {{ this_npc.speed }}</p>
-        <p>Saving Throws: {{ this_npc.saving_throws }}</p>
-        <p>Skills: {{ this_npc.skills }}</p>
-        <p>Class: {{ this_npc.npc_class }}</p>
-        <p>Age: {{ this_npc.age }}</p>
-        <p>Height: {{ this_npc.height }}</p>
-        <p>Weight: {{ this_npc.weight }}</p>
-        <p>Creature Type: {{ this_npc.creature_type }}</p>
-        <p>Damage Vulnerabilities: {{ this_npc.damage_vulnerabilities }}</p>
-        <p>Damage Immunities: {{ this_npc.damage_immunities }}</p>
-        <p>Condition Immunities: {{ this_npc.condition_immunities }}</p>
-        <p>Senses: {{ this_npc.senses }}</p>
-        <p>Challenge Rating: {{ this_npc.challenge_rating }}</p>
-        <p>Traits: {{ this_npc.traits|safe }}</p>
-        <p>Actions: {{ this_npc.actions|safe }}</p>
-        <p>Notes: {{ this_npc.notes|safe }}</p>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="character-label">
+                    <p>Level</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_npc.level }}</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="character-label">
+                    <p>Alignment</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_npc.get_alignment_display }}</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="character-label">
+                    <p>Armor Class</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_npc.armor_class }}</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="character-label">
+                    <p>Hit Points</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_npc.hit_points }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>STR</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_npc.strength }}</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>DEX</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_npc.dexterity }}</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>CON</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_npc.constitution }}</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>WIS</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_npc.wisdom }}</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>INT</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_npc.intelligence }}</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>CHA</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_npc.charisma }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="character-label">
+                    <p>Creature Type</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_npc.creature_type }}</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="character-label">
+                    <p>Challenge Rating</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_npc.challenge_rating }}</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="character-label">
+                    <p>Size</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_npc.get_size_display }}</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="character-label">
+                    <p>Speed</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_npc.speed }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="character-label">
+                    <p>Class</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_npc.npc_class }}</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="character-label">
+                    <p>Age</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_npc.age }}</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="character-label">
+                    <p>Height</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_npc.height }}</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="character-label">
+                    <p>Weight</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_npc.weight }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Saving Throws</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_npc.saving_throws }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Skills</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_npc.skills }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Damage Vulnerabilities</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_npc.damage_vulnerabilities }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Damage Immunities</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_npc.damage_immunities }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Condition Immunities</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_npc.condition_immunities }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Senses</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_npc.senses }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Languages</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_npc.languages }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Traits</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_npc.traits|safe }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Actions</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_npc.actions|safe }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Notes</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_npc.notes|safe }}</p>
+                </div>
+            </div>
+        </div>
     {% else %}
         <p>You haven't created any NPCs yet!</p>
     {% endif %}

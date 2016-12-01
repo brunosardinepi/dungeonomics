@@ -117,3 +117,24 @@ a.dropdown-cog:hover, a.dropdown-cog:active, li.open a.dropdown-cog {
     font-weight: 700;
     font-size: 14px;
 }
+.character-label, .character-details, .character-label-long, .character-details-long {
+    width: 100%;
+}
+.character-label p, .character-label-long p {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 12px;
+    margin-bottom: 5px;
+    color: #666;
+}
+.character-details p {
+    text-align: center;
+    font-size: 20px;
+}
+.character-label-long p {
+    text-align: left;
+}
+.character-details-long p {
+    text-align: left;
+}
