@@ -82,6 +82,56 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>STR</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_monster.strength }}</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>DEX</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_monster.dexterity }}</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>CON</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_monster.constitution }}</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>WIS</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_monster.wisdom }}</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>INT</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_monster.intelligence }}</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>CHA</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_monster.charisma }}</p>
+                </div>
+            </div>
+        </div>
         <p>Level: {{ this_monster.level }}</p>
         <p>Alignment: {{ this_monster.get_alignment_display }}</p>
         <p>Size: {{ this_monster.get_size_display }}</p>
