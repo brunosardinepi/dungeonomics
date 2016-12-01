@@ -41,7 +41,7 @@ def wiki_home(request, section_pk=None, subsection_pk=None):
     else:
         this_section = None
         sections = sorted(models.Section.objects.all(),
-            key=lambda section: section.title)
+            key=lambda section: section.order)
         if len(sections) > 0:
             this_section = sections[0]
         return render(request, 'wiki/home.html', {'this_section': this_section, 'sections': sections, 'subsections': subsections})
