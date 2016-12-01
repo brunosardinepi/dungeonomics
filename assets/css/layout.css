@@ -124,11 +124,13 @@ a.dropdown-cog:hover, a.dropdown-cog:active, li.open a.dropdown-cog {
     text-align: center;
     text-transform: uppercase;
     font-weight: bold;
+    font-size: 12px;
+    margin-bottom: 5px;
 }
 .character-details {
     width: 100%;
 }
 .character-details p {
     text-align: center;
-    font-size: 16px;
+    font-size: 18px;
 }
