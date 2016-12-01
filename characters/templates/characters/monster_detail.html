@@ -199,13 +199,96 @@
             </div>
         </div>
 
-        <p>Damage Vulnerabilities: {{ this_monster.damage_vulnerabilities }}</p>
-        <p>Damage Immunities: {{ this_monster.damage_immunities }}</p>
-        <p>Condition Immunities: {{ this_monster.condition_immunities }}</p>
-        <p>Senses: {{ this_monster.senses }}</p>
-        <p>{{ this_monster.languages }}</p>
-        <p>Traits: {{ this_monster.traits|safe }}</p>
-        <p>Actions: {{ this_monster.actions|safe }}</p>
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Damage Vulnerabilities</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_monster.damage_vulnerabilities }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Damage Immunities</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_monster.damage_immunities }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Condition Immunities</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_monster.condition_immunities }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Senses</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_monster.senses }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Languages</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_monster.languages }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Traits</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_monster.traits|safe }}</p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="character-label-long">
+                    <p>Actions</p>
+                </div>
+                <div class="character-details-long">
+                    <p>{{ this_monster.actions|safe }}</p>
+                </div>
+            </div>
+        </div>
     {% else %}
         <p>You haven't created any monsters yet!</p>
     {% endif %}
