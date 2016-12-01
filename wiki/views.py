@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
 from django.utils.decorators import method_decorator
+from django.views.generic.edit import DeleteView
 
 from . import models
 from . import forms
