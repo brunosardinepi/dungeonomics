@@ -120,14 +120,15 @@ a.dropdown-cog:hover, a.dropdown-cog:active, li.open a.dropdown-cog {
 .character-label {
     width: 100%;
 }
-.character-label span {
+.character-label p {
     text-align: center;
     text-transform: uppercase;
+    font-weight: bold;
 }
 .character-details {
     width: 100%;
 }
-.character-details span {
+.character-details p {
     text-align: center;
     font-size: 16px;
 }
