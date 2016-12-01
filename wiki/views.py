@@ -146,14 +146,31 @@ class SectionDelete(LoginRequiredMixin, DeleteView):
 #         else:
 #             return chapter
 
-@staff_member_required
-def subsection_delete(request, section_pk, subsection_pk):
-    subsection = get_object_or_404(models.Subsection, pk=subsection_pk, section_id=section_pk)
-    form = forms.SubsectionForm(instance=subsection)
-    if request.method == 'POST':
-        form = forms.SubsectionForm(request.POST, instance=subsection)
-        if form.is_valid():
-            subsection.delete()
-            messages.add_message(request, messages.SUCCESS, "Deleted subsection: {}".format(form.cleaned_data['title']))
-            return HttpResponseRedirect('wiki:home')
-    return render(request, 'wiki/subsection_confirm_delete.html', {'form': form, 'section': subsection.section, 'subsection': subsection})
+# @staff_member_required
+# def subsection_delete(request, section_pk, subsection_pk):
+#     subsection = get_object_or_404(models.Subsection, pk=subsection_pk, section_id=section_pk)
+#     form = forms.SubsectionForm(instance=subsection)
+#     if request.method == 'POST':
+#         form = forms.SubsectionForm(request.POST, instance=subsection)
+#         if form.is_valid():
+#             subsection.delete()
+#             messages.add_message(request, messages.SUCCESS, "Deleted subsection: {}".format(form.cleaned_data['title']))
+#             return HttpResponseRedirect('wiki:home')
+#     return render(request, 'wiki/subsection_confirm_delete.html', {'form': form, 'section': subsection.section, 'subsection': subsection})
+
+class SubsectionDelete(LoginRequiredMixin, DeleteView):
+    model = models.Subsection
+    success_url = reverse_lazy('wiki:home')
+    slug_field = "pk"
+    slug_url_kwarg = "subsection_pk"
+
+    def delete(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            raise Http404
+        else:
+            messages.add_message(self.request, messages.SUCCESS, "Subsection deleted!")
+            return super(SubsectionDelete, self).delete(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        subsection = super(SubsectionDelete, self).get_object()
+        return subsection
