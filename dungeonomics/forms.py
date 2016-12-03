@@ -1,6 +1,6 @@
 from django import forms
 
-from accounts import models
+from allauth import models
 
 class DeleteUserForm(forms.ModelForm):
     class Meta:
