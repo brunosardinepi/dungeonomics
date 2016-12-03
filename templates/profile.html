@@ -14,60 +14,25 @@
                 </div>
                 <div class="panel-body">
                     <p><strong>Email:</strong> {{ user.email }}</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        By the Numbers
-                    </h3>
-                </div>
-                <div class="panel-body">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="character-label">
-                                <p>Campaigns</p>
-                            </div>
-                            <div class="character-details">
-                                <p>{{ campaigns }}</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="character-label">
-                                <p>Monsters</p>
-                            </div>
-                            <div class="character-details">
-                                <p>{{ monsters }}</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="character-label">
-                                <p>NPCs</p>
-                            </div>
-                            <div class="character-details">
-                                <p>{{ npcs }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        Password
-                    </h3>
-                </div>
-                <div class="panel-body">
+                    <hr>
                     <p>Forgot your password? We got you.</p>
                     <a href="{% url 'home' %}" class="btn btn-info">Reset password</a>
                 </div>
             </div>
         </div>
-        <div class="col-md-12">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Title
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    Body
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
             <div class="panel panel-danger">
                 <div class="panel-heading">
                     <h3 class="panel-title">
