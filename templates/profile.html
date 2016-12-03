@@ -5,7 +5,7 @@
 
 {% block body_content %}
     <div class="row campaign-row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">
@@ -14,6 +14,19 @@
                 </div>
                 <div class="panel-body">
                     <p><strong>Email:</strong> {{ user.email }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Password
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <p>Forgot your password? We got you.</p>
+                    <a href="{% url 'home' %}" class="btn btn-info">Reset password</a>
                 </div>
             </div>
         </div>
