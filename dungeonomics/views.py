@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.utils.translation import ugettext_lazy as _
 from django.views.generic import TemplateView
 from django.views.generic.base import TemplateResponseMixin, View
 
