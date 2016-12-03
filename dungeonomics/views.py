@@ -14,9 +14,13 @@ class HomeView(TemplateView):
     template_name = 'home.html'
 
 
-class ProfileView(TemplateView):
-    template_name = 'profile.html'
+# class ProfileView(TemplateView):
+#     template_name = 'profile.html'
 
+@login_required
+def profile_detail(request):
+    user = get_object_or_404(User, pk=request.user.pk)
+    return render(request, 'profile.html', {'user': user})
 
 class LoginView(views.LoginView):
     template_name = 'login.html'

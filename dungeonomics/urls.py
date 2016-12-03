@@ -5,7 +5,8 @@ from . import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^accounts/profile/', views.ProfileView.as_view(), name='profile'),
+    # url(r'^accounts/profile/', views.ProfileView.as_view(), name='profile'),
+    url(r'^accounts/profile/', views.profile_detail, name='profile'),
     url(r'^accounts/login/', views.LoginView.as_view(), name='login'),
     url(r'^accounts/signup/', views.SignupView.as_view(), name='signup'),
     url(r'^accounts/confirm-email/$', views.EmailVerificationSentView.as_view(), name='email_verification_sent'),
