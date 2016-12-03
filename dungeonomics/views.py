@@ -17,10 +17,6 @@ class ProfileView(TemplateView):
     template_name = 'profile.html'
 
 
-# class LogoutView(views.LogoutView):
-#     template_name = 'logout.html'
-
-
 class LoginView(views.LoginView):
     template_name = 'login.html'
 
@@ -48,6 +44,7 @@ def account_delete(request):
     if request.method == 'POST':
         form = forms.DeleteUserForm(request.POST, instance=user)
         # if form.is_valid() and user.pk == request.user.pk:
+        if user.pk == request.user.pk:
         # if form.is_valid():
         user.delete()
         messages.add_message(request, messages.SUCCESS, "Deleted user!")
