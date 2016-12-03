@@ -1,9 +1,10 @@
 from django import forms
 
+from accounts import models
 
 class DeleteUserForm(forms.ModelForm):
     class Meta:
-        model = User
+        model = models.User
         fields = ['is_active']
 
     def __init__(self, *args, **kwargs):
