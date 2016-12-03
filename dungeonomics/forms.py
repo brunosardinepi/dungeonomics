@@ -1,6 +1,5 @@
 from django import forms
 
-from . import models
 
 class DeleteUserForm(forms.ModelForm):
     class Meta:
