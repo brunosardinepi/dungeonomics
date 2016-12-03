@@ -29,9 +29,15 @@
                 </div>
                 <div class="panel-body">
                     {% get_social_accounts user as accounts %}
-                    {% if accounts %}
-                        {{ accounts.facebook }}
-                        {{ accounts.google }}
+                    {% if accounts.facebook %}
+                        <p>Facebook is connected</p>
+                    {% else %}
+                        <p>Facebook is NOT connected</p>
+                    {% endif %}
+                    {% if accounts.google %}
+                        <p>Google is connected</p>
+                    {% else %}
+                        <p>Google is NOT connected</p>
                     {% endif %}
                 </div>
             </div>
