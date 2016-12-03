@@ -29,7 +29,10 @@
                 </div>
                 <div class="panel-body">
                     {% get_social_accounts user as accounts %}
-                    {{ accounts }}
+                    {% if accounts %}
+                        {{ accounts.facebook }}
+                        {{ accounts.google }}
+                    {% endif %}
                 </div>
             </div>
         </div>
