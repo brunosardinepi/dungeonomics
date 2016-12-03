@@ -5,6 +5,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic import TemplateView
 from django.views.generic.base import TemplateResponseMixin, View
 
+from account.conf import settings
+
 from allauth.account import views
 
 from . import forms
