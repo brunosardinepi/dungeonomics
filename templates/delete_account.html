@@ -12,6 +12,9 @@
                 </h3>
             </div>
             <div class="panel-body">
+                <p>Please confirm that you want to delete the following account:</p>
+                <p style="font-size: 18px; font-weight: bold;" class="text-center">{{ user.username }}</p>
+                <p class="margin-bottom-zero">This account will be permanently deleted.</p>
                 <form method="post" action="" style="margin-bottom:0;">
                     {% csrf_token %}
                     {% buttons %}
