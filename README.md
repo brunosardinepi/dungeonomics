@@ -75,7 +75,6 @@
 - [ ] need to be able to signup with facebook and link google afterwards
 
 ### Campaign
-- [ ] hover over monsters/npcs in campaign to get preview of important stats
 - [ ] add option in "edit campaign" to drag/drop to change order of chapters, order number should auto-update as you do it
 - [ ] redo delete views so that they redirect better
 
