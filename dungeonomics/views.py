@@ -8,6 +8,8 @@ from django.views.generic import TemplateView
 from allauth.account import views
 
 from . import forms
+from campaign import models as campaign_models
+from characters import models as character_models
 
 
 class HomeView(TemplateView):
@@ -20,7 +22,11 @@ class HomeView(TemplateView):
 @login_required
 def profile_detail(request):
     user = get_object_or_404(User, pk=request.user.pk)
-    return render(request, 'profile.html', {'user': user})
+    campaigns = campaign_models.Campaign.objects.filter(user=user)
+    campaigns = len(campaigns)
+    monsters = character_models.Monster.objects.filter(user=user)
+    npcs = character_models.NPC.objects.filter(user=user)
+    return render(request, 'profile.html', {'user': user, 'campaigns': campaigns, 'monsters': monsters, 'npcs': npcs})
 
 class LoginView(views.LoginView):
     template_name = 'login.html'
