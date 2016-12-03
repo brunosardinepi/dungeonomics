@@ -39,7 +39,7 @@ class PasswordResetView(views.PasswordResetView):
 
 
 @login_required
-def delete_account(request):
+def account_delete(request):
     user = get_object_or_404(models.User, pk=request.user.pk)
     form = forms.DeleteUserForm(instance=user)
     if request.method == 'POST':
