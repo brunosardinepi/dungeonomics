@@ -63,6 +63,7 @@
 - [x] style admin login
 - [x] fill wiki with content
 - [x] style monster/npc page
+- [x] users need to delete their account - should it be inactive or aaron hernandez?
 
 ### Site-wide
 - [ ] write tests
@@ -71,7 +72,7 @@
 - [ ] style email
 
 ### Users
-- [ ] users need to delete their account - should it be inactive or aaron hernandez?
+- [ ] profile
 - [ ] need to be able to signup with facebook and link google afterwards
 
 ### Campaign
