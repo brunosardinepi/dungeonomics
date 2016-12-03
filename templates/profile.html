@@ -25,9 +25,32 @@
                     </h3>
                 </div>
                 <div class="panel-body">
-                    <p><strong>Campaigns:</strong> {{ campaigns }}</p>
-                    <p><strong>Monsters:</strong> {{ monsters }}</p>
-                    <p><strong>NPCs:</strong> {{ npcs }}</p>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="character-label">
+                                <p>Campaigns</p>
+                            </div>
+                            <div class="character-details">
+                                <p>{{ campaigns }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="character-label">
+                                <p>Monsters</p>
+                            </div>
+                            <div class="character-details">
+                                <p>{{ monsters }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="character-label">
+                                <p>NPCs</p>
+                            </div>
+                            <div class="character-details">
+                                <p>{{ npcs }}</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
