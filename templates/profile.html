@@ -4,15 +4,24 @@
 {% block title %}Profile | {{ block.super }}{% endblock %}
 
 {% block body_content %}
-    <div class="col-md-6 col-md-offset-3">
-        <div class="panel panel-default panel-campaign">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    Profile
-                </h3>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Account Settings
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <p><a href="{% url 'account_delete' %}">Delete account</a></p>
+                </div>
             </div>
-            <div class="panel-body">
-                <p><a href="{% url 'account_delete' %}">Delete account</a></p>
+        </div>
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+
+                </div>
             </div>
         </div>
     </div>
