@@ -5,6 +5,8 @@ from django.views.generic import TemplateView
 
 from allauth.account import views
 
+from . import forms
+
 
 class HomeView(TemplateView):
     template_name = 'home.html'
