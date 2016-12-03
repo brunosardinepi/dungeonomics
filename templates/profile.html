@@ -30,8 +30,7 @@
                 <div class="panel-body">
                     {% get_social_accounts user as accounts %}
                     {% if accounts %}
-                        {{ accounts.facebook }}
-                        {{ accounts.google }}
+                        {{ accounts }}
                     {% endif %}
                 </div>
             </div>
