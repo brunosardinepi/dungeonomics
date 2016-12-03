@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.views.generic import TemplateView
+from django.views.generic.base import TemplateResponseMixin, View
 
 from allauth.account import views
 
