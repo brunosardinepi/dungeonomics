@@ -11,7 +11,7 @@ urlpatterns = [
     url(r'^accounts/confirm-email/$', views.EmailVerificationSentView.as_view(), name='email_verification_sent'),
     url(r'^accounts/confirm-email/(?P<key>[-:\w]+)/$', views.ConfirmEmailView.as_view(), name='confirm_email'),
     url(r'^accounts/password/reset/', views.PasswordResetView.as_view(), name='password_reset'),
-    url(r'^accounts/delete/', views.account_delete(), name='account_delete'),
+    url(r'^accounts/delete/', views.account_delete, name='account_delete'),
     url(r'^accounts/', include('allauth.urls')),
     # url(r'^accounts/', include('accounts.urls', namespace='accounts')),
     # url(r'^accounts/', include('django.contrib.auth.urls')),
