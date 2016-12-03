@@ -24,8 +24,8 @@ class HomeView(TemplateView):
 def profile_detail(request):
     user = get_object_or_404(User, pk=request.user.pk)
     campaigns = campaign_models.Campaign.objects.filter(user=user).count()
-    monsters = character_models.Monster.objects.filter(user=user)
-    npcs = character_models.NPC.objects.filter(user=user)
+    monsters = character_models.Monster.objects.filter(user=user).count()
+    npcs = character_models.NPC.objects.filter(user=user).count()
     return render(request, 'profile.html', {'user': user, 'campaigns': campaigns, 'monsters': monsters, 'npcs': npcs})
 
 class LoginView(views.LoginView):
