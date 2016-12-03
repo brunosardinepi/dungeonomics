@@ -46,6 +46,6 @@ def delete_account(request):
         form = forms.DeleteUserForm(request.POST, instance=user)
         if form.is_valid() and user == request.user:
             user.delete()
-            messages.add_message(request, messages.SUCCESS, "Deleted user!"
+            messages.add_message(request, messages.SUCCESS, "Deleted user!")
             return HttpResponseRedirect('home')
     return render(request, 'delete_account.html', {'form': form, 'user': user})
