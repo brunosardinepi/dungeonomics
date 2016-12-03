@@ -72,7 +72,9 @@
 - [ ] style email
 
 ### Users
-- [ ] profile
+- [ ] profile page
+- [ ] need to be able to change email
+- [ ] need to be able to reset password
 - [ ] need to be able to signup with facebook and link google afterwards
 
 ### Campaign
