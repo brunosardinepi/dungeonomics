@@ -64,6 +64,8 @@
 - [x] fill wiki with content
 - [x] style monster/npc page
 - [x] users need to delete their account - should it be inactive or aaron hernandez?
+- [x] profile page
+- [x] need to be able to signup with facebook and link google afterwards
 
 ### Site-wide
 - [ ] write tests
@@ -72,10 +74,8 @@
 - [ ] style email
 
 ### Users
-- [ ] profile page
 - [ ] need to be able to change email
 - [ ] need to be able to reset password
-- [ ] need to be able to signup with facebook and link google afterwards
 
 ### Campaign
 - [ ] add option in "edit campaign" to drag/drop to change order of chapters, order number should auto-update as you do it
