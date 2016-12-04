@@ -31,7 +31,7 @@
                     <p>You currently have the following social accounts connected to Dungeonomics:</p>
                     {% get_social_accounts user as accounts %}
                     {% if accounts %}
-                        <ul>
+                        <ul class="socialaccount_providers">
                             {% for account in accounts %}
                                 <li><strong>{{ account|capfirst }}</strong></li>
                             {% endfor %}
