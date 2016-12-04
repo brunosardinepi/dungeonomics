@@ -37,7 +37,7 @@
                     {% if accounts.google %}
                         <p>Google is connected</p>
                     {% else %}
-                        <p>Google is NOT connected</p>
+                        <p><a href="{% provider_login_url 'google' process='connect' %}">Google is NOT connected</a></p>
                     {% endif %}
                 </div>
             </div>
