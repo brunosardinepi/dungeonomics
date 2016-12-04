@@ -37,17 +37,12 @@
                     </h3>
                 </div>
                 <div class="panel-body">
-                    <p>You currently have the following social accounts connected to Dungeonomics:</p>
-                    {% get_social_accounts user as accounts %}
-                    {% if accounts %}
-                        <ul>
-                            {% for account in accounts %}
-                                <li>{{ account|capfirst }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>None</p>
-                    {% endif %}
+                    <p>You can link the following accounts to Dungeonomics:</p>
+                    <ul class="socialaccount_providers">
+                    {% include "socialaccount/snippets/provider_list.html" with process="connect" %}
+                    </ul>
+
+                    {% include "socialaccount/snippets/login_extra.html" %}
                 </div>
             </div>
         </div>
