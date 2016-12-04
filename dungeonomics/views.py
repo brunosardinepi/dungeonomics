@@ -36,6 +36,10 @@ class SignupView(views.SignupView):
     template_name = 'signup.html'
 
 
+class SocialSignupView(views.SignupView):
+    template_name = 'social_signup.html'
+
+
 class ConfirmEmailView(views.ConfirmEmailView):
     template_name = 'confirm_email.html'
 

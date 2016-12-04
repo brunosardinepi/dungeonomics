@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^accounts/profile/', views.profile_detail, name='profile'),
     url(r'^accounts/login/', views.LoginView.as_view(), name='login'),
     url(r'^accounts/signup/', views.SignupView.as_view(), name='signup'),
+    url(r'^accounts/social/signup/', views.SocialSignupView.as_view(), name='social_signup'),
     url(r'^accounts/confirm-email/$', views.EmailVerificationSentView.as_view(), name='email_verification_sent'),
     url(r'^accounts/confirm-email/(?P<key>[-:\w]+)/$', views.ConfirmEmailView.as_view(), name='confirm_email'),
     url(r'^accounts/password/reset/', views.PasswordResetView.as_view(), name='password_reset'),
