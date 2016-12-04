@@ -29,15 +29,15 @@
                 </div>
                 <div class="panel-body">
                     <p>You currently have the following social accounts connected to Dungeonomics:</p>
-                    {% get_social_accounts user as accounts %}
-                    {% if accounts %}
-                        <ul class="socialaccount_providers">
+                    <ul>
+                        {% get_social_accounts user as accounts %}
+                        {% if accounts %}
                             {% for account in accounts %}
                                 <li><strong>{{ account|capfirst }}</strong></li>
                             {% endfor %}
-                    {% else %}
-                        <li><strong>None</strong></li>
-                    {% endif %}
+                        {% else %}
+                            <li><strong>None</strong></li>
+                        {% endif %}
                     </ul>
                     <hr>
                     <a href="{% url 'socialaccount_connections' %}" class="btn btn-success">Manage Accounts</a>
