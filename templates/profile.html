@@ -16,7 +16,7 @@
                 <div class="panel-body">
                     <p><strong>Email:</strong> {{ user.email }}</p>
                     <hr>
-                    <a href="{% url 'home' %}" class="btn btn-primary">Reset password</a>
+                    <a href="{% url 'home' %}" class="btn btn-primary btn-block">Reset password</a>
                 </div>
             </div>
         </div>
@@ -40,7 +40,7 @@
                         {% endif %}
                     </ul>
                     <hr>
-                    <a href="{% url 'socialaccount_connections' %}" class="btn btn-success">Manage Accounts</a>
+                    <a href="{% url 'socialaccount_connections' %}" class="btn btn-success btn-block">Manage Accounts</a>
                 </div>
             </div>
         </div>
@@ -54,7 +54,7 @@
                 <div class="panel-body">
                     <p>If you delete your account, it's gone forever.</p>
                     <hr>
-                    <a href="{% url 'account_delete' %}" class="btn btn-danger">Delete account</a>
+                    <a href="{% url 'account_delete' %}" class="btn btn-danger btn-block">Delete account</a>
                 </div>
             </div>
         </div>
