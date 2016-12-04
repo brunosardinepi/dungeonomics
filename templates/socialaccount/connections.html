@@ -20,7 +20,10 @@
                     {% if accounts %}
                         <ul>
                             {% for account in accounts %}
+                                <li>{{ account }}</li>
                                 <li>{{ account.provider }}</li>
+                                <li>{{ account.name }}</li>
+                                <li>{{ account.site }}</li>
                             {% endfor %}
                         </ul>
                     {% else %}
