@@ -20,7 +20,7 @@
                     {% if accounts %}
                         <ul>
                             {% for account in accounts %}
-                                <li>{{ account|capfirst }}</li>
+                                <li><strong>{{ account|capfirst }}</strong></li>
                             {% endfor %}
                         </ul>
                     {% else %}
@@ -37,11 +37,10 @@
                     </h3>
                 </div>
                 <div class="panel-body">
-                    <p>You can link the following accounts to Dungeonomics:</p>
+                    <p>The following social accounts can be linked to Dungeonomics:</p>
                     <ul class="socialaccount_providers">
-                    {% include "socialaccount/snippets/provider_list.html" with process="connect" %}
+                        {% include "socialaccount/snippets/provider_list.html" with process="connect" %}
                     </ul>
-
                     {% include "socialaccount/snippets/login_extra.html" %}
                 </div>
             </div>
