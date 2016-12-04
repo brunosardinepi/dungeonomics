@@ -28,17 +28,18 @@
                     </h3>
                 </div>
                 <div class="panel-body">
+                    <p>You currently have the following social accounts connected to Dungeonomics:</p>
                     {% get_social_accounts user as accounts %}
-                    {% if accounts.facebook %}
-                        <p>Facebook is connected</p>
+                    {% if accounts %}
+                        <ul>
+                            {% for account in accounts %}
+                                <li><strong>{{ account|capfirst }}</strong></li>
+                            {% endfor %}
+                        </ul>
                     {% else %}
-                        <p>Facebook is NOT connected</p>
+                        <p>None</p>
                     {% endif %}
-                    {% if accounts.google %}
-                        <p>Google is connected</p>
-                    {% else %}
-                        <p><a href="{% provider_login_url 'google' process='connect' %}">Google is NOT connected</a></p>
-                    {% endif %}
+                    <a href="{% url 'socialaccount_connections' %}" class="btn btn-success">Manage Accounts</a>
                 </div>
             </div>
         </div>
