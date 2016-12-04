@@ -61,7 +61,7 @@
                 <div class="panel-body">
                     <p>You can remove the following social accounts from Dungeonomics:</p>
                     {% if form.accounts %}
-                        <form method="post" action="{% url 'socialaccount_connections' %}">
+                        <form method="post" action="{% url 'socialaccount_connections' %}" style="margin-bottom: 0;">
                         {% csrf_token %}
                             <fieldset>
                                 {% if form.non_field_errors %}
