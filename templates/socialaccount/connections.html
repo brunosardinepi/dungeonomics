@@ -20,14 +20,71 @@
                     {% if accounts %}
                         <ul>
                             {% for account in accounts %}
-                                <li>{{ account }}</li>
-                                <li>{{ account.provider }}</li>
-                                <li>{{ account.name }}</li>
-                                <li>{{ account.site }}</li>
+                                <li>{{ account|capfirst }}</li>
                             {% endfor %}
                         </ul>
                     {% else %}
                         <p>None</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Add Social Accounts
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <p>You currently have the following social accounts connected to Dungeonomics:</p>
+                    {% get_social_accounts user as accounts %}
+                    {% if accounts %}
+                        <ul>
+                            {% for account in accounts %}
+                                <li>{{ account|capfirst }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>None</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Remove Social Accounts
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <p>You can remove the following social accounts from Dungeonomics:</p>
+                    {% if form.accounts %}
+                        <form method="post" action="{% url 'socialaccount_connections' %}">
+                        {% csrf_token %}
+                            <fieldset>
+                                {% if form.non_field_errors %}
+                                    <div id="errorMsg">div id errorMsg: {{ form.non_field_errors }}</div>
+                                {% endif %}
+                                {% for base_account in form.accounts %}
+                                    {% with base_account.get_provider_account as account %}
+                                        <div>
+                                            <label for="id_account_{{ base_account.id }}">
+                                                <input id="id_account_{{ base_account.id }}" type="radio" name="account" value="{{ base_account.id }}"/>
+                                                <span class="socialaccount_provider {{ base_account.provider }} {{ account.get_brand.id }}">{{account.get_brand.name}}</span>
+                                                {{ account }}
+                                            </label>
+                                        </div>
+                                    {% endwith %}
+                                {% endfor %}
+                                <div>
+                                    <button type="submit">{% trans 'Remove' %}</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    {% else %}
+                        <p>{% trans 'You have no social network accounts connected to Dungeonomics.' %}</p>
                     {% endif %}
                 </div>
             </div>
