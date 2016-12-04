@@ -28,7 +28,7 @@
                     <div class="col-md-12">
                         <p class="text-center">
                             {% blocktrans with provider_name=account.get_provider.name site_name=site.name %}
-                                You are about to link your <strong>{{provider_name}}</strong> account to {{site_name}}. Please verify your email address:
+                                You are about to use your <strong>{{provider_name}}</strong> account to sign up for {{site_name}}. Please verify your email address:
                             {% endblocktrans %}
                         </p>
                         <form class="signup" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
