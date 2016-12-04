@@ -35,10 +35,10 @@
                             {% for account in accounts %}
                                 <li><strong>{{ account|capfirst }}</strong></li>
                             {% endfor %}
-                        </ul>
                     {% else %}
-                        <p>None</p>
+                        <li><strong>None</strong></li>
                     {% endif %}
+                    </ul>
                     <a href="{% url 'socialaccount_connections' %}" class="btn btn-success">Manage Accounts</a>
                 </div>
             </div>
