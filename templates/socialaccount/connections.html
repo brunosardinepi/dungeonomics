@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+{% load socialaccount %}
+{% load bootstrap3 %}
+{% load i18n %}
+
+{% block title %}Social Accounts | {{ block.super }}{% endblock %}
+
+{% block body_content %}
+    <div class="row campaign-row">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        Social Accounts
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <p>You currently have the following social accounts connected to Dungeonomics:</p>
+                    {% get_social_accounts user as accounts %}
+                    {% if accounts %}
+                        <ul>
+                            {% for account in accounts %}
+                                <li>{{ account.provider }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>None</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
