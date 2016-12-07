@@ -224,24 +224,7 @@ class CampaignDelete(LoginRequiredMixin, DeleteView):
             raise Http404
         else:
             return campaign
-
-
-class ChapterDelete(LoginRequiredMixin, DeleteView):
-    model = models.Chapter
-    success_url = reverse_lazy('home')
-    slug_field = "pk"
-    slug_url_kwarg = "chapter_pk"
-
-    def delete(self, request, *args, **kwargs):
-        messages.add_message(self.request, messages.SUCCESS, "Chapter deleted!")
-        return super(ChapterDelete, self).delete(request, *args, **kwargs)
-
-    def get_object(self, queryset=None):
-        chapter = super(ChapterDelete, self).get_object()
-        if not chapter.user == self.request.user:
-            raise Http404
-        else:
-            return chapter
+            
 
 @login_required
 def chapter_delete(request, campaign_pk, chapter_pk):
