@@ -71,7 +71,6 @@
 - [ ] write tests
 - [ ] players
 - [ ] home page (blog? tutorial?)
-- [ ] style email
 
 ### Users
 - [ ] need to be able to change email
