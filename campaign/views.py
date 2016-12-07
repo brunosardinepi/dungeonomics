@@ -243,19 +243,32 @@ class ChapterDelete(LoginRequiredMixin, DeleteView):
             return chapter
 
 
-class SectionDelete(LoginRequiredMixin, DeleteView):
-    model = models.Section
-    success_url = reverse_lazy('home')
-    slug_field = "pk"
-    slug_url_kwarg = "section_pk"
+# class SectionDelete(LoginRequiredMixin, DeleteView):
+#     model = models.Section
+#     success_url = reverse_lazy('home')
+#     slug_field = "pk"
+#     slug_url_kwarg = "section_pk"
 
-    def delete(self, request, *args, **kwargs):
-        messages.add_message(self.request, messages.SUCCESS, "Section deleted!")
-        return super(SectionDelete, self).delete(request, *args, **kwargs)
+#     def delete(self, request, *args, **kwargs):
+#         messages.add_message(self.request, messages.SUCCESS, "Section deleted!")
+#         return super(SectionDelete, self).delete(request, *args, **kwargs)
 
-    def get_object(self, queryset=None):
-        section = super(SectionDelete, self).get_object()
-        if not section.user == self.request.user:
-            raise Http404
-        else:
-            return section
+#     def get_object(self, queryset=None):
+#         section = super(SectionDelete, self).get_object()
+#         if not section.user == self.request.user:
+#             raise Http404
+#         else:
+#             return section
+
+@login_required
+def section_delete(request, campaign_pk, chapter_pk, section_pk):
+    campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+    chapter = get_object_or_404(models.Chapter, pk=chapter_pk)
+    section = get_object_or_404(models.Section, pk=section_pk)
+    form = forms.DeleteSectionForm(instance=section)
+    if request.method == 'POST':
+        form = forms.DeleteSectionForm(request.POST, instance=section)
+        if section.user.pk == request.user.pk:
+            section.delete()
+            return HttpResponseRedirect('campaign:campaign_detail', kwargs={'campaign_pk': campaign.pk, 'chapter_pk': chapter.pk})
+    return render(request, 'section_delete.html', {'form': form, 'section': section})
