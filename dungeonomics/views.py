@@ -63,4 +63,4 @@ def account_delete(request):
 
 
 class PasswordResetDoneView(TemplateView):
-    template_name = "account/password_reset_done.html"
+    template_name = "password_reset_done.html"
