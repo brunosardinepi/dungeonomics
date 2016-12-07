@@ -66,6 +66,7 @@
 - [x] users need to delete their account - should it be inactive or aaron hernandez?
 - [x] profile page
 - [x] need to be able to signup with facebook and link google afterwards
+- [x] redo delete views so that they redirect better
 
 ### Site-wide
 - [ ] write tests
@@ -78,7 +79,6 @@
 
 ### Campaign
 - [ ] add option in "edit campaign" to drag/drop to change order of chapters, order number should auto-update as you do it
-- [ ] redo delete views so that they redirect better
 
 ### Monsters/NPCs
 - [ ] import monster/npc
