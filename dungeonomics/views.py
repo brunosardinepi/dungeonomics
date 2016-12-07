@@ -60,3 +60,7 @@ def account_delete(request):
             user.delete()
             return HttpResponseRedirect('home')
     return render(request, 'delete_account.html', {'form': form, 'user': user})
+
+
+class PasswordResetDoneView(TemplateView):
+    template_name = "account/password_reset_done.html"
