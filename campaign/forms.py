@@ -49,7 +49,7 @@ class SectionForm(TinyMCEForm):
 
 class DeleteSectionForm(forms.ModelForm):
     class Meta:
-        model = Section
+        model = models.Section
         fields = ['title']
 
 
