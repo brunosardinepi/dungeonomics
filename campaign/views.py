@@ -270,5 +270,5 @@ def section_delete(request, campaign_pk, chapter_pk, section_pk):
         form = forms.DeleteSectionForm(request.POST, instance=section)
         if section.user.pk == request.user.pk:
             section.delete()
-            return HttpResponseRedirect('campaign:campaign_detail', kwargs={'campaign_pk': campaign.pk, 'chapter_pk': chapter.pk})
+            return HttpResponseRedirect(reverse('campaign:campaign_detail', kwargs={'campaign_pk': campaign.pk, 'chapter_pk': chapter.pk}))
     return render(request, 'campaign/section_delete.html', {'form': form, 'section': section})
