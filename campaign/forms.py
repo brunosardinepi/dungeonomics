@@ -53,6 +53,12 @@ class DeleteSectionForm(forms.ModelForm):
         fields = ['title']
 
 
+class DeleteChapterForm(forms.ModelForm):
+    class Meta:
+        model = models.Chapter
+        fields = ['title']
+
+
 ChapterFormSet = forms.modelformset_factory(
     models.Chapter,
     form=ChapterForm,

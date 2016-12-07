@@ -243,23 +243,18 @@ class ChapterDelete(LoginRequiredMixin, DeleteView):
         else:
             return chapter
 
-
-# class SectionDelete(LoginRequiredMixin, DeleteView):
-#     model = models.Section
-#     success_url = reverse_lazy('home')
-#     slug_field = "pk"
-#     slug_url_kwarg = "section_pk"
-
-#     def delete(self, request, *args, **kwargs):
-#         messages.add_message(self.request, messages.SUCCESS, "Section deleted!")
-#         return super(SectionDelete, self).delete(request, *args, **kwargs)
-
-#     def get_object(self, queryset=None):
-#         section = super(SectionDelete, self).get_object()
-#         if not section.user == self.request.user:
-#             raise Http404
-#         else:
-#             return section
+@login_required
+def chapter_delete(request, campaign_pk, chapter_pk):
+    campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+    chapter = get_object_or_404(models.Chapter, pk=chapter_pk)
+    form = forms.DeleteChapterForm(instance=chapter)
+    if request.method == 'POST':
+        form = forms.DeleteChapterForm(request.POST, instance=chapter)
+        if chapter.user.pk == request.user.pk:
+            chapter.delete()
+            messages.add_message(request, messages.SUCCESS, "Chapter deleted!")
+            return HttpResponseRedirect(reverse('campaign:campaign_detail', kwargs={'campaign_pk': campaign.pk}))
+    return render(request, 'campaign/chapter_delete.html', {'form': form, 'chapter': chapter})
 
 @login_required
 def section_delete(request, campaign_pk, chapter_pk, section_pk):
