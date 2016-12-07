@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.models import User
 
 from . import models
 
@@ -44,6 +45,19 @@ class SectionForm(TinyMCEForm):
             'content',
             'order',
         ]
+
+
+class DeleteSectionForm(forms.ModelForm):
+    class Meta:
+        model = models.Section
+        fields = ['title']
+
+
+class DeleteChapterForm(forms.ModelForm):
+    class Meta:
+        model = models.Chapter
+        fields = ['title']
+
 
 ChapterFormSet = forms.modelformset_factory(
     models.Chapter,
