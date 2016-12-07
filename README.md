@@ -71,6 +71,7 @@
 - [ ] write tests
 - [ ] players
 - [ ] home page (blog? tutorial?)
+- [ ] password reset email styling
 
 ### Users
 - [ ] need to be able to change email
