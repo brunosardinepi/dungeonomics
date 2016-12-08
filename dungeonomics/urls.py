@@ -7,6 +7,8 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # url(r'^accounts/profile/', views.ProfileView.as_view(), name='profile'),
     url(r'^accounts/password/reset/done/', views.PasswordResetDoneView.as_view(), name='account_reset_password_done'),
+    url(r'^accounts/password/reset/key/(?P<uidb36>[0-9A-Za-z]+)-(?P<key>.+)/$', views.CustomPasswordResetFromKeyView.as_view(), name="account_reset_password_from_key"),
+    url(r'^accounts/password/reset/key/done/$', views.PasswordResetFromKeyDoneView.as_view(), name="account_reset_password_from_key_done"),
     url(r'^accounts/profile/', views.profile_detail, name='profile'),
     url(r'^accounts/login/', views.LoginView.as_view(), name='login'),
     url(r'^accounts/signup/', views.SignupView.as_view(), name='signup'),

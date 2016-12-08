@@ -64,3 +64,12 @@ def account_delete(request):
 
 class PasswordResetDoneView(TemplateView):
     template_name = "password_reset_done.html"
+
+
+class CustomPasswordResetFromKeyView(views.PasswordResetFromKeyView):
+    template_name = "password_reset_from_key.html"
+
+
+
+class PasswordResetFromKeyDoneView(TemplateView):
+    template_name = "password_reset_from_key_done.html"
