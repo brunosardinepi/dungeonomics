@@ -67,16 +67,16 @@
 - [x] profile page
 - [x] need to be able to signup with facebook and link google afterwards
 - [x] redo delete views so that they redirect better
+- [x] password reset email styling
+- [x] need to be able to reset password
 
 ### Site-wide
 - [ ] write tests
 - [ ] players
 - [ ] home page (blog? tutorial?)
-- [ ] password reset email styling
 
 ### Users
 - [ ] need to be able to change email
-- [ ] need to be able to reset password
 
 ### Campaign
 - [ ] add option in "edit campaign" to drag/drop to change order of chapters, order number should auto-update as you do it
