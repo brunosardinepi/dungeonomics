@@ -76,7 +76,7 @@
 - [ ] home page (blog? tutorial?)
 
 ### Users
-- [ ] need to be able to change email
+- [ ] need to be able to change email ([template](https://github.com/pennersr/django-allauth/blob/master/allauth/templates/account/email.html), [view](https://github.com/pennersr/django-allauth/blob/master/allauth/account/views.py), [url](https://github.com/pennersr/django-allauth/blob/master/allauth/account/urls.py))
 
 ### Campaign
 - [ ] add option in "edit campaign" to drag/drop to change order of chapters, order number should auto-update as you do it
