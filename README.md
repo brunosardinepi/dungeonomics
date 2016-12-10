@@ -70,19 +70,16 @@
 - [x] password reset email styling
 - [x] need to be able to reset password
 
-### Site-wide
-- [ ] write tests
-- [ ] players
+### Remaining items
 - [ ] home page (blog? tutorial?)
+- [ ] make sure @login_required is applied to all views that need it
 
-### Users
+### Future
+These have been pushed to future additions, since they aren't needed right now.
+
+- [ ] players
+- [ ] write tests
 - [ ] need to be able to change email ([template](https://github.com/pennersr/django-allauth/blob/master/allauth/templates/account/email.html), [view](https://github.com/pennersr/django-allauth/blob/master/allauth/account/views.py), [url](https://github.com/pennersr/django-allauth/blob/master/allauth/account/urls.py))
-
-### Campaign
 - [ ] add option in "edit campaign" to drag/drop to change order of chapters, order number should auto-update as you do it
-
-### Monsters/NPCs
-- [ ] import monster/npc
-
-### TinyMCE
 - [ ] tinymce uploads ([tinymce](https://www.tinymce.com/docs/configure/file-image-upload/), [django](http://stackoverflow.com/questions/5871730/need-a-minimal-django-file-upload-example))
+- [ ] import monster/npc (branch: feature_import_characters)
