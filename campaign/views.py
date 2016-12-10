@@ -13,15 +13,6 @@ from . import models
 from characters import models as character_models
 
 
-def campaign_list(request):
-    user = None
-    if request.user.is_authenticated():
-        user = request.user.pk
-    campaigns = sorted(models.Campaign.objects.filter(user=user),
-        key=lambda campaign: campaign.name
-        )
-    return render(request, 'campaign/campaign_list.html', {'campaigns': campaigns})
-
 @login_required
 def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None):
     if campaign_pk:

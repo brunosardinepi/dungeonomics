@@ -13,6 +13,7 @@ from . import forms
 from . import models
 
 
+@login_required
 def monster_detail(request, monster_pk=None):
     user = None
     if request.user.is_authenticated():
@@ -28,6 +29,7 @@ def monster_detail(request, monster_pk=None):
         this_monster = None
     return render(request, 'characters/monster_detail.html', {'this_monster': this_monster, 'monsters': monsters})
 
+@login_required
 def npc_detail(request, npc_pk=''):
     user = None
     if request.user.is_authenticated():
