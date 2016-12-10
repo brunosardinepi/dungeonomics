@@ -69,10 +69,10 @@
 - [x] redo delete views so that they redirect better
 - [x] password reset email styling
 - [x] need to be able to reset password
+- [x] make sure @login_required is applied to all views that need it
 
 ### Remaining items
-- [ ] home page (blog? tutorial?)
-- [ ] make sure @login_required is applied to all views that need it
+- [ ] home page (blog? tutorial? activity?)
 
 ### Future
 These have been pushed to future additions, since they aren't needed right now.
