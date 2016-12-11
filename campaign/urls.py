@@ -18,4 +18,5 @@ urlpatterns = [
     url(r'^(?P<campaign_pk>\d+)/delete/$', views.CampaignDelete.as_view(), name='campaign_delete'),
     url(r'^(?P<campaign_pk>\d+)/chapter/(?P<chapter_pk>\d+)/delete/$', views.chapter_delete, name='chapter_delete'),
     url(r'^(?P<campaign_pk>\d+)/chapter/(?P<chapter_pk>\d+)/section/(?P<section_pk>\d+)/delete/$', views.section_delete, name='section_delete'),
+    url(r'^$', views.campaign_detail, name='campaign_detail'),
 ]

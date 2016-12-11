@@ -4,8 +4,6 @@ from django.core import serializers
 
 import json
 
-from campaign import models
-
 
 register = template.Library() 
 
@@ -45,16 +43,7 @@ def int_to_letter(input):
       result += letters[(input % 26) - 1]
    return result
 
-def home_campaign(user):
-    campaigns = models.Campaign.objects.filter(user=user).order_by('title').values()
-    if campaigns:
-        campaign = campaigns[0].pk
-    else:
-        campaign = None
-    return {'campaign': campaign}
-
 
 register.filter('jsonify', jsonify)
 register.filter('int_to_roman', int_to_roman)
 register.filter('int_to_letter', int_to_letter)
-register.filter('home_campaign', home_campaign)
