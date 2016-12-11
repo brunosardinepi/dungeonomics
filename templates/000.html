@@ -1,3 +1,15 @@
 {% extends "layout.html" %}
 
-{% block body_content %}{% endblock %}
+{% block body_content %}
+    <div class="row campaign-row">
+        <div class="col-md-6 col-md-offset-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h1>Oops!</h1>
+                    {% block error_message %}{% endblock %}
+                    <p>Please go back to the previous page and try again. If you continue to experience issues, please <a href="mailto:dungeonomics@gmail.com">contact us</a>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
