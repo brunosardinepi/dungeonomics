@@ -4,9 +4,9 @@
 
 {% block body_content %}
     <div class="row campaign-row">
-        <div class="col-md-4">
+        <div class="col-md-3 col-md-offset-3">
             <div class="panel panel-default">
-                <a href="{% url 'campaign:campaign_detail' %}">
+                <a href="{% url 'campaign:campaign_detail' %}" class="home-panel">
                     <div class="panel-body">
                         <p class="text-center"><i class="fa fa-book fa-5x" aria-hidden="true"></i></p>
                         <h2 class="text-center">Campaigns</h2>
@@ -14,9 +14,9 @@
                 </a>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3 col-md-offset-3">
             <div class="panel panel-default">
-                <a href="{% url 'characters:monster_detail' %}">
+                <a href="{% url 'characters:monster_detail' %}" class="home-panel">
                     <div class="panel-body">
                         <p class="text-center"><i class="fa fa-paw fa-5x" aria-hidden="true"></i></p>
                         <h2 class="text-center">Monsters</h2>
@@ -24,12 +24,22 @@
                 </a>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3 col-md-offset-3">
             <div class="panel panel-default">
-                <a href="{% url 'characters:npc_detail' %}">
+                <a href="{% url 'characters:npc_detail' %}" class="home-panel">
                     <div class="panel-body">
                         <p class="text-center"><i class="fa fa-user-circle-o fa-5x" aria-hidden="true"></i></p>
                         <h2 class="text-center">NPCs</h2>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3 col-md-offset-3">
+            <div class="panel panel-default">
+                <a href="{% url 'wiki:home' %}" class="home-panel">
+                    <div class="panel-body">
+                        <p class="text-center"><i class="fa fa-info-circle fa-5x" aria-hidden="true"></i></p>
+                        <h2 class="text-center">Wiki</h2>
                     </div>
                 </a>
             </div>
