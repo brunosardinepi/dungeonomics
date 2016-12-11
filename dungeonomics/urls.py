@@ -25,5 +25,6 @@ urlpatterns = [
     url(r'^$', views.HomeView.as_view(), name='home'),
 ]
 
-handler400 = 'views.error_400_view'
+handler400 = 'views.error_404_view'
 handler404 = 'views.error_404_view'
+handler500 = 'views.error_404_view'
