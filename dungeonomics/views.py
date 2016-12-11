@@ -27,7 +27,7 @@ def profile_detail(request):
     campaigns = campaign_models.Campaign.objects.filter(user=user).count()
     monsters = character_models.Monster.objects.filter(user=user).count()
     npcs = character_models.NPC.objects.filter(user=user).count()
-    return render(request, 'profiles.html', {'user': user, 'campaigns': campaigns, 'monsters': monsters, 'npcs': npcs})
+    return render(request, 'profile.html', {'user': user, 'campaigns': campaigns, 'monsters': monsters, 'npcs': npcs})
 
 class LoginView(views.LoginView):
     template_name = 'login.html'
