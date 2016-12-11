@@ -73,6 +73,8 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
             sections = [item for sublist in sections for item in sublist]
 
             return render(request, 'campaign/campaign_detail.html', {'this_campaign': this_campaign, 'this_chapter': this_chapter, 'chapters': chapters, 'sections': sections})
+        else:
+            return render(request, 'campaign/campaign_form.html')
         return render(request, 'campaign/campaign_detail.html', {'this_campaign': this_campaign})
 
 
