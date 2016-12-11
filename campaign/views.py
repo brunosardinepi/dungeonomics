@@ -57,7 +57,7 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
             key=lambda campaign: campaign.title)
         if len(campaigns) > 0:
             this_campaign = campaigns[0]
-        return render(request, 'campaign/campaign_detail.html', {'this_campaign': this_campaign})
+        return render(request, 'home.html', {'this_campaign': this_campaign})
 
 
 class CampaignCreate(LoginRequiredMixin, CreateView):
