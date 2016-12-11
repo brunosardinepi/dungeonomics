@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^characters/', include('characters.urls', namespace='characters')),
     url(r'^campaign/', include('campaign.urls', namespace='campaign')),
     url(r'^wiki/', include('wiki.urls', namespace='wiki')),
-    url(r'^$', views.HomeView.as_view(), name='home'),
+    # url(r'^$', views.HomeView.as_view(), name='home'),
+    url(r'^$', views.home_view, name='home'),
 ]
