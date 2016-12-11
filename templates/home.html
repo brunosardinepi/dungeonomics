@@ -6,11 +6,10 @@
     <div class="row campaign-row">
         <div class="col-md-4">
             <div class="panel panel-default">
-                {% comment %}<a href="{% url 'campaign:campaign_detail' campaign_pk=this_campaign.pk %}">{% endcomment %}
+                <a href="{% url 'campaign:campaign_detail' %}">
                     <div class="panel-body">
                         <p class="text-center"><i class="fa fa-book fa-5x" aria-hidden="true"></i></p>
                         <h1>Campaigns</h1>
-                        {{ this_campaign.pk }}
                     </div>
                 </a>
             </div>
