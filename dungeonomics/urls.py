@@ -1,4 +1,5 @@
 from django.conf.urls import url, include
+from django.conf.urls.defaults import handler404, handler500
 from django.contrib import admin
 
 from . import views
@@ -24,3 +25,5 @@ urlpatterns = [
     url(r'^wiki/', include('wiki.urls', namespace='wiki')),
     url(r'^$', views.HomeView.as_view(), name='home'),
 ]
+
+handler404 = 'views.page_not_found_view'
