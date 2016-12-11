@@ -74,7 +74,7 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
 
             return render(request, 'campaign/campaign_detail.html', {'this_campaign': this_campaign, 'this_chapter': this_chapter, 'chapters': chapters, 'sections': sections})
         else:
-            return render(request, 'campaign/campaign_form.html')
+            return CampaignCreate()
         return render(request, 'campaign/campaign_detail.html', {'this_campaign': this_campaign})
 
 
