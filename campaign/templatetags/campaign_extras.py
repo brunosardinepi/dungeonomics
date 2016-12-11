@@ -48,7 +48,7 @@ def int_to_letter(input):
 def home_campaign(user):
     campaigns = models.Campaign.objects.filter(user=user).order_by('title').values()
     if campaigns:
-        campaign = campaigns[0]
+        campaign = campaigns[0].pk
     else:
         campaign = None
     return {'campaign': campaign}
