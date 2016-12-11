@@ -138,10 +138,10 @@ a.dropdown-cog:hover, a.dropdown-cog:active, li.open a.dropdown-cog {
 .character-details-long p {
     text-align: left;
 }
-a.home-panel {
-    color: #000 !important;
+.home-panel {
+    color: #999;
 }
-a.home-panel:hover {
-    text-decoration: none !important;
-    colo: #666 !important;
+.home-panel:hover {
+    text-decoration: none;
+    colo: #000;
 }
