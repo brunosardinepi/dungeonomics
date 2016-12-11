@@ -139,9 +139,9 @@ a.dropdown-cog:hover, a.dropdown-cog:active, li.open a.dropdown-cog {
     text-align: left;
 }
 a.home-panel {
-    color: #000;
+    color: #000 !important;
 }
 a.home-panel:hover {
-    text-decoration: none;
-    colo: #666;
+    text-decoration: none !important;
+    colo: #666 !important;
 }
