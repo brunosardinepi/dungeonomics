@@ -1,5 +1,4 @@
-from django.conf.urls import url, include
-from django.conf.urls.defaults import handler404, handler500
+from django.conf.urls import url, include, handler404, handler500
 from django.contrib import admin
 
 from . import views
