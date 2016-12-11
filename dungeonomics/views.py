@@ -3,7 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Count
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, render_to_response
+from django.template import RequestContext
 from django.views.generic import TemplateView
 
 from allauth.account import views
@@ -73,3 +74,18 @@ class CustomPasswordResetFromKeyView(views.PasswordResetFromKeyView):
 
 class PasswordResetFromKeyDoneView(TemplateView):
     template_name = "password_reset_from_key_done.html"
+
+
+
+def handler404(request):
+    response = render_to_response('404.html', {},
+                                  context_instance=RequestContext(request))
+    response.status_code = 404
+    return response
+
+
+def handler500(request):
+    response = render_to_response('500.html', {},
+                                  context_instance=RequestContext(request))
+    response.status_code = 500
+    return response
