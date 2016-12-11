@@ -73,3 +73,7 @@ class CustomPasswordResetFromKeyView(views.PasswordResetFromKeyView):
 
 class PasswordResetFromKeyDoneView(TemplateView):
     template_name = "password_reset_from_key_done.html"
+
+
+def error_404_view(request):
+    return render(request, 'error_404.html')

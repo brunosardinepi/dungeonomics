@@ -1,4 +1,4 @@
-from django.conf.urls import url, include
+from django.conf.urls import url, include, handler400, handler404
 from django.contrib import admin
 
 from . import views
@@ -24,3 +24,6 @@ urlpatterns = [
     url(r'^wiki/', include('wiki.urls', namespace='wiki')),
     url(r'^$', views.HomeView.as_view(), name='home'),
 ]
+
+handler400 = 'views.error_400_view'
+handler404 = 'views.error_404_view'
