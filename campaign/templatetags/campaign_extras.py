@@ -57,3 +57,4 @@ def home_campaign(user):
 register.filter('jsonify', jsonify)
 register.filter('int_to_roman', int_to_roman)
 register.filter('int_to_letter', int_to_letter)
+register.filter('home_campaign', home_campaign)
