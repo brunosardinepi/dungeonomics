@@ -58,8 +58,12 @@
 
                         <p>Now, go forth and create!</p>
 
-                        <a class="btn btn-default" href="{% url 'login' %}" role="button">Login</a>
-                        <a class="btn btn-success" href="{% url 'signup' %}" role="button">Sign up</a>
+                        <div class="col-md-6">
+                            <a class="btn btn-default btn-block" href="{% url 'login' %}" role="button">Login</a>
+                        </div>
+                        <div class="col-md-6">
+                            <a class="btn btn-success btn-block" href="{% url 'signup' %}" role="button">Sign up</a>
+                        </div>
                     </div>
                 </div>
             </div>
