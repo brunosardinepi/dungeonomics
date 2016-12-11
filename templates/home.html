@@ -7,7 +7,7 @@
     <div class="row campaign-row">
         <div class="col-md-4">
             <div class="panel panel-default">
-                <a href="{% url 'campaign:campaign_detail' {{ home_campaign request.user }} %}">
+                <a href="{% url 'campaign:campaign_detail' home_campaign:request.user %}">
                     <div class="panel-body">
                         <p class="text-center"><i class="fa fa-book fa-5x" aria-hidden="true"></i></p>
                         <h1>Campaigns</h1>
