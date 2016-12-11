@@ -3,46 +3,66 @@
 {% block title %} Home | {{ block.super }}{% endblock %}
 
 {% block body_content %}
-    <div class="row campaign-row">
-        <div class="col-md-3 col-md-offset-3">
-            <div class="panel panel-default">
-                <a href="{% url 'campaign:campaign_detail' %}" class="home-panel">
-                    <div class="panel-body">
-                        <p class="text-center"><i class="fa fa-book fa-5x" aria-hidden="true"></i></p>
-                        <h2 class="text-center">Campaigns</h2>
-                    </div>
-                </a>
+    {% if user.is_authenticated %}
+        <div class="row campaign-row">
+            <div class="col-md-3 col-md-offset-3">
+                <div class="panel panel-default">
+                    <a href="{% url 'campaign:campaign_detail' %}" class="home-panel">
+                        <div class="panel-body">
+                            <p class="text-center"><i class="fa fa-book fa-5x" aria-hidden="true"></i></p>
+                            <h2 class="text-center">Campaigns</h2>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <a href="{% url 'characters:monster_detail' %}" class="home-panel">
+                        <div class="panel-body">
+                            <p class="text-center"><i class="fa fa-paw fa-5x" aria-hidden="true"></i></p>
+                            <h2 class="text-center">Monsters</h2>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3 col-md-offset-3">
+                <div class="panel panel-default">
+                    <a href="{% url 'characters:npc_detail' %}" class="home-panel">
+                        <div class="panel-body">
+                            <p class="text-center"><i class="fa fa-user-circle-o fa-5x" aria-hidden="true"></i></p>
+                            <h2 class="text-center">NPCs</h2>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <a href="{% url 'wiki:home' %}" class="home-panel">
+                        <div class="panel-body">
+                            <p class="text-center"><i class="fa fa-info-circle fa-5x" aria-hidden="true"></i></p>
+                            <h2 class="text-center">Wiki</h2>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="panel panel-default">
-                <a href="{% url 'characters:monster_detail' %}" class="home-panel">
+    {% else %}
+        <div class="row campaign-row">
+            <div class="col-md-3 col-md-offset-6">
+                <div class="panel panel-default">
                     <div class="panel-body">
-                        <p class="text-center"><i class="fa fa-paw fa-5x" aria-hidden="true"></i></p>
-                        <h2 class="text-center">Monsters</h2>
+                        <h1>Streamline Roleplaying</h1>
+                        <p>Dungeonomics is a place where DMs can manage their campaigns without the hassle of sifting through a mountain of paper. DMs can manage all aspects of their campaign from plot creation and setting up encounters to looking up/creating monsters or NPCs.</p>
+
+                        <p>Just so we're clear, we believe that there's no substitute for the real thing. Getting together with other adventurers in person will always be the best way to play D&D. Our goal is to enhance that and make it easier for you to immerse yourself in the game by eliminating the need to flip through a bunch of papers, which can sometimes pull you out of the experience.</p>
+
+                        <p>Now, go forth and create!</p>
+
+                        <a class="btn btn-default" href="{% url 'login' %}" role="button">Login</a>
+                        <a class="btn btn-success" href="{% url 'signup' %}" role="button">Sign up</a>
                     </div>
-                </a>
+                </div>
             </div>
         </div>
-        <div class="col-md-3 col-md-offset-3">
-            <div class="panel panel-default">
-                <a href="{% url 'characters:npc_detail' %}" class="home-panel">
-                    <div class="panel-body">
-                        <p class="text-center"><i class="fa fa-user-circle-o fa-5x" aria-hidden="true"></i></p>
-                        <h2 class="text-center">NPCs</h2>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="panel panel-default">
-                <a href="{% url 'wiki:home' %}" class="home-panel">
-                    <div class="panel-body">
-                        <p class="text-center"><i class="fa fa-info-circle fa-5x" aria-hidden="true"></i></p>
-                        <h2 class="text-center">Wiki</h2>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
+    {% endif %}
 {% endblock %}

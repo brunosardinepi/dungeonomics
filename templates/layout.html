@@ -81,9 +81,6 @@
                                     <li><a href="{% url 'account_logout' %}"><i class="fa fa-fw fa-power-off" aria-hidden="true"></i> Logout</a></li>
                                 </ul>
                             </li>
-                        {% else %}
-                            <li><p class="navbar-btn"><a class="btn btn-default" href="{% url 'login' %}" role="button">Login</a></p></li>
-                            <li style="margin-left: 8px;"><p class="navbar-btn"><a class="btn btn-success" href="{% url 'signup' %}" role="button">Sign up</a></p></li>
                         {% endif %}
                     </ul>
                 </div>
