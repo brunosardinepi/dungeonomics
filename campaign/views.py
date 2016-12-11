@@ -57,6 +57,18 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
             key=lambda campaign: campaign.title)
         if len(campaigns) > 0:
             this_campaign = campaigns[0]
+
+            chapters = sorted(models.Chapter.objects.filter(campaign=this_campaign), key=lambda chapter: chapter.order)
+
+            sections = []
+            for chapter in chapters:
+                sections.append(sorted(
+                    models.Section.objects.filter(chapter=chapter),
+                    key=lambda section: section.order
+                    ))
+            sections = [item for sublist in sections for item in sublist]
+
+            return render(request, 'campaign/campaign_detail.html', {'this_campaign': this_campaign, 'this_chapter': this_campaign.chapter, 'this_section': this_campaign.chapter.section, 'chapters': chapters, 'sections': sections})
         return render(request, 'campaign/campaign_detail.html', {'this_campaign': this_campaign})
 
 
