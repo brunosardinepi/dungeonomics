@@ -17,37 +17,40 @@ from characters import models as character_models
 def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None):
     if campaign_pk:
         this_campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-        chapters = sorted(models.Chapter.objects.filter(campaign=this_campaign),
-        key=lambda chapter: chapter.order)
+        if this_campaign.user == request.user:
+            chapters = sorted(models.Chapter.objects.filter(campaign=this_campaign),
+            key=lambda chapter: chapter.order)
 
-        if chapter_pk:
-            this_chapter = get_object_or_404(models.Chapter, pk=chapter_pk)
-        else:
-            if len(chapters) > 0:
-                this_chapter = chapters[0]
+            if chapter_pk:
+                this_chapter = get_object_or_404(models.Chapter, pk=chapter_pk)
             else:
-                this_chapter = None
+                if len(chapters) > 0:
+                    this_chapter = chapters[0]
+                else:
+                    this_chapter = None
 
-        sections = []
-        for chapter in chapters:
-            sections.append(sorted(
-                models.Section.objects.filter(chapter=chapter),
-                key=lambda section: section.order
-                ))
-        sections = [item for sublist in sections for item in sublist]
+            sections = []
+            for chapter in chapters:
+                sections.append(sorted(
+                    models.Section.objects.filter(chapter=chapter),
+                    key=lambda section: section.order
+                    ))
+            sections = [item for sublist in sections for item in sublist]
 
-        if section_pk:
-            this_section = get_object_or_404(models.Section, pk=section_pk)
-        else:
-            this_section = None
-
-        if this_chapter:
-            if this_section:
-                return render(request, 'campaign/campaign_detail.html', {'this_campaign': this_campaign, 'this_chapter': this_chapter, 'this_section': this_section, 'chapters': chapters, 'sections': sections})
+            if section_pk:
+                this_section = get_object_or_404(models.Section, pk=section_pk)
             else:
-                return render(request, 'campaign/campaign_detail.html', {'this_campaign': this_campaign, 'this_chapter': this_chapter, 'chapters': chapters, 'sections': sections})
+                this_section = None
+
+            if this_chapter:
+                if this_section:
+                    return render(request, 'campaign/campaign_detail.html', {'this_campaign': this_campaign, 'this_chapter': this_chapter, 'this_section': this_section, 'chapters': chapters, 'sections': sections})
+                else:
+                    return render(request, 'campaign/campaign_detail.html', {'this_campaign': this_campaign, 'this_chapter': this_chapter, 'chapters': chapters, 'sections': sections})
+            else:
+                return render(request, 'campaign/campaign_detail.html', {'this_campaign': this_campaign})
         else:
-            return render(request, 'campaign/campaign_detail.html', {'this_campaign': this_campaign})
+            return Http404
     else:
         this_campaign = None
         user = None
