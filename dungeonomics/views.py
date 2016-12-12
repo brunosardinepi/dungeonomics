@@ -25,7 +25,7 @@ def home_view(request):
             this_campaign = campaigns[0]
             return render(request, 'home.html', {'this_campaign': this_campaign})
     else:
-        return render(request, 'home.html')
+        return HttpResponseRedirect('home')
 
 @login_required
 def profile_detail(request):
