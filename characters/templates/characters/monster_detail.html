@@ -190,107 +190,124 @@
             <hr>
         {% endif %}
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="character-label-long">
-                    <p>Skills</p>
-                </div>
-                <div class="character-details-long">
-                    <p>{{ this_monster.skills }}</p>
-                </div>
-            </div>
-        </div>
-
-        <hr>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="character-label-long">
-                    <p>Damage Vulnerabilities</p>
-                </div>
-                <div class="character-details-long">
-                    <p>{{ this_monster.damage_vulnerabilities }}</p>
+        {% if this_monster.skills %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="character-label-long">
+                        <p>Skills</p>
+                    </div>
+                    <div class="character-details-long">
+                        <p>{{ this_monster.skills }}</p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <hr>
+            <hr>
+        {% endif %}
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="character-label-long">
-                    <p>Damage Immunities</p>
-                </div>
-                <div class="character-details-long">
-                    <p>{{ this_monster.damage_immunities }}</p>
-                </div>
-            </div>
-        </div>
-
-        <hr>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="character-label-long">
-                    <p>Condition Immunities</p>
-                </div>
-                <div class="character-details-long">
-                    <p>{{ this_monster.condition_immunities }}</p>
+        {% if this_monster.damage_vulnerabilities %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="character-label-long">
+                        <p>Damage Vulnerabilities</p>
+                    </div>
+                    <div class="character-details-long">
+                        <p>{{ this_monster.damage_vulnerabilities }}</p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <hr>
+            <hr>
+        {% endif %}
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="character-label-long">
-                    <p>Senses</p>
-                </div>
-                <div class="character-details-long">
-                    <p>{{ this_monster.senses }}</p>
-                </div>
-            </div>
-        </div>
-
-        <hr>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="character-label-long">
-                    <p>Languages</p>
-                </div>
-                <div class="character-details-long">
-                    <p>{{ this_monster.languages }}</p>
+        {% if this_monster.damage_immunities %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="character-label-long">
+                        <p>Damage Immunities</p>
+                    </div>
+                    <div class="character-details-long">
+                        <p>{{ this_monster.damage_immunities }}</p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <hr>
+            <hr>
+        {% endif %}
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="character-label-long">
-                    <p>Traits</p>
-                </div>
-                <div class="character-details-long">
-                    <p>{{ this_monster.traits|safe }}</p>
-                </div>
-            </div>
-        </div>
-
-        <hr>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="character-label-long">
-                    <p>Actions</p>
-                </div>
-                <div class="character-details-long">
-                    <p>{{ this_monster.actions|safe }}</p>
+        {% if this_monster.condition_immunities %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="character-label-long">
+                        <p>Condition Immunities</p>
+                    </div>
+                    <div class="character-details-long">
+                        <p>{{ this_monster.condition_immunities }}</p>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <hr>
+        {% endif %}
+
+        {% if this_monster.senses %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="character-label-long">
+                        <p>Senses</p>
+                    </div>
+                    <div class="character-details-long">
+                        <p>{{ this_monster.senses }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+        {% endif %}
+
+        {% if this_monster.languages %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="character-label-long">
+                        <p>Languages</p>
+                    </div>
+                    <div class="character-details-long">
+                        <p>{{ this_monster.languages }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+        {% endif %}
+
+        {% if this_monster.traits %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="character-label-long">
+                        <p>Traits</p>
+                    </div>
+                    <div class="character-details-long">
+                        <p>{{ this_monster.traits|safe }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+        {% endif %}
+
+        {% if this_monster.actions %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="character-label-long">
+                        <p>Actions</p>
+                    </div>
+                    <div class="character-details-long">
+                        <p>{{ this_monster.actions|safe }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
     {% else %}
         <p>You haven't created any monsters yet!</p>
     {% endif %}
