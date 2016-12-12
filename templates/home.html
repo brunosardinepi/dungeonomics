@@ -7,14 +7,10 @@
         <div class="row campaign-row">
             <div class="col-md-4">
                 <div class="panel panel-default">
-                    {% if this_campaign %}
-                        <a href="{% url 'campaign:campaign_detail' %}" class="home-panel">
-                    {% else %}
-                        <a href="{% url 'campaign:campaign_create' %}" class="home-panel">
-                    {% endif %}
+                    <a href="{% url 'campaign:campaign_create' %}" class="home-panel">
                         <div class="panel-body">
                             <p class="text-center"><i class="fa fa-book fa-5x" aria-hidden="true"></i></p>
-                            <h2 class="text-center">Campaigns</h2>
+                            <h2 class="text-center">New Campaign</h2>
                         </div>
                     </a>
                 </div>
