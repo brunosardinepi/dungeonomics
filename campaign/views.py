@@ -50,7 +50,7 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
             else:
                 return render(request, 'campaign/campaign_detail.html', {'this_campaign': this_campaign})
         else:
-            return Http404
+            return Http404()
     else:
         this_campaign = None
         user = None
