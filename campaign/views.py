@@ -244,7 +244,7 @@ def campaign_delete(request, campaign_pk):
         if request.method == 'POST':
             form = forms.DeleteCampaignForm(request.POST, instance=campaign)
             if campaign.user.pk == request.user.pk:
-                chapter.delete()
+                campaign.delete()
                 messages.add_message(request, messages.SUCCESS, "Campaign deleted!")
                 return HttpResponseRedirect(reverse('home'))
     else:
