@@ -5,7 +5,7 @@
 {% block body_content %}
     {% if user.is_authenticated %}
         <div class="row campaign-row">
-            <div class="col-md-2 col-md-offset-3">
+            <div class="col-md-4">
                 <div class="panel panel-default">
                     {% if this_campaign %}
                         <a href="{% url 'campaign:campaign_detail' %}" class="home-panel">
@@ -19,7 +19,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <div class="panel panel-default">
                     <a href="{% url 'characters:monster_detail' %}" class="home-panel">
                         <div class="panel-body">
@@ -29,7 +29,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <div class="panel panel-default">
                     <a href="{% url 'characters:npc_detail' %}" class="home-panel">
                         <div class="panel-body">
@@ -41,7 +41,7 @@
             </div>
         </div>
         <div class="row campaign-row">
-            <div class="col-md-2 col-md-offset-3">
+            <div class="col-md-4">
                 <div class="panel panel-default">
                     <a href="{% url 'profile' %}" class="home-panel">
                         <div class="panel-body">
@@ -51,7 +51,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <div class="panel panel-default">
                     <a href="{% url 'wiki:home' %}" class="home-panel">
                         <div class="panel-body">
@@ -61,7 +61,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <div class="panel panel-default">
                     <a href="https://www.reddit.com/r/dungeonomics/" class="home-panel">
                         <div class="panel-body">
