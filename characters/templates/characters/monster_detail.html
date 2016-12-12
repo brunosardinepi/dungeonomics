@@ -175,18 +175,20 @@
 
         <hr>
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="character-label-long">
-                    <p>Saving Throws</p>
-                </div>
-                <div class="character-details-long">
-                    <p>{{ this_monster.saving_throws }}</p>
+        {% if this_monster.saving_throws %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="character-label-long">
+                        <p>Saving Throws</p>
+                    </div>
+                    <div class="character-details-long">
+                        <p>{{ this_monster.saving_throws }}</p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <hr>
+            <hr>
+        {% endif %}
 
         <div class="row">
             <div class="col-md-12">
