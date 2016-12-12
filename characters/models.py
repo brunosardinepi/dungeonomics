@@ -64,7 +64,7 @@ class Monster(Character):
     damage_immunities = models.CharField(max_length=255, default='', blank=True)
     condition_immunities = models.CharField(max_length=255, default='', blank=True)
     senses = models.CharField(max_length=255, default='', blank=True)
-    challenge_rating = models.CharField(max_length=255, blank=True)
+    challenge_rating = models.CharField(max_length=255, default='', blank=True)
     traits = models.TextField(blank=True)
     actions = models.TextField(blank=True)
 
@@ -76,7 +76,7 @@ class Monster(Character):
 
 class NPC(Character):
     npc_class = models.CharField(verbose_name= _('Class'),max_length=255, default='', blank=True)
-    age = models.IntegerField(default=0, blank=True)
+    age = models.CharField(max_length=255, default='', blank=True)
     height = models.CharField(max_length=255, default='', blank=True)
     weight = models.CharField(max_length=255, default='', blank=True)
     creature_type = models.CharField(max_length=255, default='', blank=True)
