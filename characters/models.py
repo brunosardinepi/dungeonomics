@@ -9,6 +9,7 @@ class Character(models.Model):
     name = models.CharField(max_length=255, default='')
     level = models.IntegerField(default=1)
     ALIGNMENT_CHOICES = (
+        ('None', 'None'),
         ('LG', 'Lawful Good'),
         ('NG', 'Neutral Good'),
         ('CG', 'Chaotic Good'),
@@ -37,7 +38,7 @@ class Character(models.Model):
         choices=SIZE_CHOICES,
         default='Medium',
     )
-    languages = models.CharField(max_length=255, default='Common')
+    languages = models.CharField(max_length=255, blank=True)
     strength = models.IntegerField(default=10, blank=True)
     dexterity = models.IntegerField(default=10, blank=True)
     constitution = models.IntegerField(default=10, blank=True)
