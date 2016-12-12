@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -25,10 +25,14 @@ def monster_detail(request, monster_pk=None):
         this_monster = get_object_or_404(models.Monster, pk=monster_pk)
         if this_monster.user == request.user:
             return render(request, 'characters/monster_detail.html', {'this_monster': this_monster, 'monsters': monsters})
+        else:
+            raise Http404
     elif len(monsters) > 0:
         this_monster = monsters[0]
         if this_monster.user == request.user:
             return render(request, 'characters/monster_detail.html', {'this_monster': this_monster, 'monsters': monsters})
+        else:
+            raise Http404
     else:
         this_monster = None
     return render(request, 'characters/monster_detail.html', {'this_monster': this_monster, 'monsters': monsters})
@@ -45,10 +49,14 @@ def npc_detail(request, npc_pk=''):
         this_npc = get_object_or_404(models.NPC, pk=npc_pk)
         if this_npc.user == request.user:
             return render(request, 'characters/npc_detail.html', {'this_npc': this_npc, 'npcs': npcs})
+        else:
+            raise Http404
     elif len(npcs) > 0:
         this_npc = npcs[0]
         if this_npc.user == request.user:
             return render(request, 'characters/npc_detail.html', {'this_npc': this_npc, 'npcs': npcs})
+        else:
+            raise Http404
     else:
         this_npc = None
     return render(request, 'characters/npc_detail.html', {'this_npc': this_npc, 'npcs': npcs})
