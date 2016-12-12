@@ -49,37 +49,29 @@
 {% block character_detail %}
     {% if this_npc %}
         <div class="row">
-            <div class="col-md-3">
-                <div class="character-label">
-                    <p>Level</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_npc.level }}</p>
-                </div>
+            <div class="col-md-12">
+                <p>{% if this_npc.level %}Level {{ this_npc.level }}{% endif %}{% if this_npc.get_size_display %} {{ this_npc.get_size_display }}{% endif %}{% if this_npc.creature_type %} {{ this_npc.creature_type }}{% endif %}{% if this_npc.get_alignment_display %}, {{ this_npc.get_alignment_display }}{% endif %}</p>
             </div>
-            <div class="col-md-3">
-                <div class="character-label">
-                    <p>Alignment</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_npc.get_alignment_display }}</p>
-                </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                {% if this_npc.npc_class %}<p><strong>Class</strong> {{ this_npc.npc_class }}</p>{% endif %}
+                {% if this_npc.age %}<p><strong>Age</strong> {{ this_npc.age }}</p>{% endif %}
+                {% if this_npc.height %}<p><strong>Height</strong> {{ this_npc.height }}</p>{% endif %}
+                {% if this_npc.weight %}<p><strong>Weight</strong> {{ this_npc.weight }}</p>{% endif %}
             </div>
-            <div class="col-md-3">
-                <div class="character-label">
-                    <p>Armor Class</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_npc.armor_class }}</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="character-label">
-                    <p>Hit Points</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_npc.hit_points }}</p>
-                </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                {% if this_npc.armor_class %}<p><strong>Armor Class</strong> {{ this_npc.armor_class }}</p>{% endif %}
+                {% if this_npc.hit_points %}<p><strong>Hit Points</strong> {{ this_npc.hit_points }}</p>{% endif %}
+                {% if this_npc.speed %}<p><strong>Speed</strong> {{ this_npc.speed }}</p>{% endif %}
             </div>
         </div>
 
@@ -139,185 +131,23 @@
         <hr>
 
         <div class="row">
-            <div class="col-md-3">
-                <div class="character-label">
-                    <p>Creature Type</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_npc.creature_type }}</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="character-label">
-                    <p>Challenge Rating</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_npc.challenge_rating }}</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="character-label">
-                    <p>Size</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_npc.get_size_display }}</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="character-label">
-                    <p>Speed</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_npc.speed }}</p>
-                </div>
+            <div class="col-md-12">
+                {% if this_npc.saving_throws %}<p><strong>Saving Throws</strong> {{ this_npc.saving_throws }}</p>{% endif %}
+                {% if this_npc.skills %}<p><strong>Skills</strong> {{ this_npc.skills }}</p>{% endif %}
+                {% if this_npc.damage_vulnerabilities %}<p><strong>Damage Vulnerabilities</strong> {{ this_npc.damage_vulnerabilities }}</p>{% endif %}
+                {% if this_npc.damage_immunities %}<p><strong>Damage Immunities</strong> {{ this_npc.damage_immunities }}</p>{% endif %}
+                {% if this_npc.condition_immunities %}<p><strong>Condition Immunities</strong> {{ this_npc.condition_immunities }}</p>{% endif %}
+                {% if this_npc.senses %}<p><strong>Senses</strong> {{ this_npc.senses }}</p>{% endif %}
+                {% if this_npc.languages %}<p><strong>Languages</strong> {{ this_npc.languages }}</p>{% endif %}
+                {% if this_npc.challenge_rating %}<p><strong>Challenge</strong> {{ this_npc.challenge_rating }}</p>{% endif %}
             </div>
         </div>
-
-        <hr>
-
-        <div class="row">
-            <div class="col-md-3">
-                <div class="character-label">
-                    <p>Class</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_npc.npc_class }}</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="character-label">
-                    <p>Age</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_npc.age }}</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="character-label">
-                    <p>Height</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_npc.height }}</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="character-label">
-                    <p>Weight</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_npc.weight }}</p>
-                </div>
-            </div>
-        </div>
-
-        {% if this_npc.saving_throws %}
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="character-label-long">
-                        <p>Saving Throws</p>
-                    </div>
-                    <div class="character-details-long">
-                        <p>{{ this_npc.saving_throws }}</p>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-
-        {% if this_npc.skills %}
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="character-label-long">
-                        <p>Skills</p>
-                    </div>
-                    <div class="character-details-long">
-                        <p>{{ this_npc.skills }}</p>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-
-        {% if this_npc.damage_vulnerabilities %}
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="character-label-long">
-                        <p>Damage Vulnerabilities</p>
-                    </div>
-                    <div class="character-details-long">
-                        <p>{{ this_npc.damage_vulnerabilities }}</p>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-
-        {% if this_npc.damage_immunities %}
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="character-label-long">
-                        <p>Damage Immunities</p>
-                    </div>
-                    <div class="character-details-long">
-                        <p>{{ this_npc.damage_immunities }}</p>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-
-        {% if this_npc.condition_immunities %}
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="character-label-long">
-                        <p>Condition Immunities</p>
-                    </div>
-                    <div class="character-details-long">
-                        <p>{{ this_npc.condition_immunities }}</p>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-
-        {% if this_npc.senses %}
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="character-label-long">
-                        <p>Senses</p>
-                    </div>
-                    <div class="character-details-long">
-                        <p>{{ this_npc.senses }}</p>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-
-        {% if this_npc.languages %}
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="character-label-long">
-                        <p>Languages</p>
-                    </div>
-                    <div class="character-details-long">
-                        <p>{{ this_npc.languages }}</p>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
 
         {% if this_npc.traits %}
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="character-label-long">
-                        <p>Traits</p>
-                    </div>
-                    <div class="character-details-long">
-                        <p>{{ this_npc.traits|safe }}</p>
-                    </div>
+                    <p><strong>Traits</strong> {{ this_npc.traits|safe }}</p>
                 </div>
             </div>
         {% endif %}
@@ -326,12 +156,7 @@
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="character-label-long">
-                        <p>Actions</p>
-                    </div>
-                    <div class="character-details-long">
-                        <p>{{ this_npc.actions|safe }}</p>
-                    </div>
+                    <p><strong>Actions</strong> {{ this_npc.actions|safe }}</p>
                 </div>
             </div>
         {% endif %}
@@ -340,12 +165,7 @@
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="character-label-long">
-                        <p>Notes</p>
-                    </div>
-                    <div class="character-details-long">
-                        <p>{{ this_npc.notes|safe }}</p>
-                    </div>
+                    <p><strong>Notes</strong> {{ this_npc.notes|safe }}</p>
                 </div>
             </div>
         {% endif %}
