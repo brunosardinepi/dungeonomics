@@ -9,7 +9,7 @@ class Character(models.Model):
     name = models.CharField(max_length=255, default='')
     level = models.IntegerField(default=1)
     ALIGNMENT_CHOICES = (
-        ('None', 'None'),
+        ('Unaligned', 'Unaligned'),
         ('LG', 'Lawful Good'),
         ('NG', 'Neutral Good'),
         ('CG', 'Chaotic Good'),
