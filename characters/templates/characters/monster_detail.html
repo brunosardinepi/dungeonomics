@@ -50,7 +50,10 @@
     {% if this_monster %}
         <div class="row">
             <div class="col-md-12">
-                <p>{% if this_monster.level %}Level {{ this_monster.level }} {% endif %}{{ this_monster.get_size_display }} {{ this_monster.creature_type }}{% if this_monster.get_alignment_display %}, {{ this_monster.get_alignment_display }}{% endif %}</p>
+                <p>{% if this_monster.level %}Level {{ this_monster.level }} {% endif %}
+                    {% if this_monster.get_size_display %}{{ this_monster.get_size_display }} {% endif %}
+                    {% if this_monster.creature_type %}{{ this_monster.creature_type }}{% endif %}
+                    {% if this_monster.get_alignment_display %}, {{ this_monster.get_alignment_display }}{% endif %}</p>
             </div>
         </div>
 
