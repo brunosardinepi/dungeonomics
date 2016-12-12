@@ -146,7 +146,6 @@ a.home-panel:hover {
     color: #000;
 }
 .maintenance {
-    bottom: 0;
-    height: 50px;
+    top: 0;
     background: #0000FF;
 }
