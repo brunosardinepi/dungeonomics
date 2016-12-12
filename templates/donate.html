@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+{% load bootstrap3 %}
+
+{% block title %}Donate | {{ block.super }}{% endblock %}
+
+{% block body_content %}
+    <div class="row campaign-row">
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <p>This site is completely free and will continue to be free. However, we've gotten feedback from users saying that you would like the option to donate money to help keep our servers running. If you do want to donate, <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=3AH396JSPMD9U&lc=US&item_name=Dungeonomics&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted">click here</a>. If you don't want to donate, no big deal! Thank you for using our site!
+            </div>
+        </div>
+    </div>
+{% endblock %}
