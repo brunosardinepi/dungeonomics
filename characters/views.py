@@ -124,6 +124,36 @@ class MonsterDelete(LoginRequiredMixin, DeleteView):
         return super(MonsterDelete, self).delete(request, *args, **kwargs)
 
 
+@login_required
+def monster_delete(request, monster_pk):
+    monster = get_object_or_404(models.Monster, pk=monster_pk)
+    if monster.user == request.user:
+        form = forms.DeleteMonsterForm(instance=monster)
+        if request.method == 'POST':
+            form = forms.DeleteMonsterForm(request.POST, instance=monster)
+            if monster.user.pk == request.user.pk:
+                monster.delete()
+                messages.add_message(request, messages.SUCCESS, "Monster deleted!")
+                return HttpResponseRedirect(reverse('characters:monster_detail'))
+    else:
+        raise Http404
+    return render(request, 'characters/monster_delete.html', {'form': form, 'monster': monster})
+
+@login_required
+def npc_delete(request, npc_pk):
+    npc = get_object_or_404(models.NPC, pk=npc_pk)
+    if npc.user == request.user:
+        form = forms.DeleteNPCForm(instance=npc)
+        if request.method == 'POST':
+            form = forms.DeleteNPCForm(request.POST, instance=npc)
+            if npc.user.pk == request.user.pk:
+                npc.delete()
+                messages.add_message(request, messages.SUCCESS, "NPC deleted!")
+                return HttpResponseRedirect(reverse('characters:npc_detail'))
+    else:
+        raise Http404
+    return render(request, 'characters/npc_delete.html', {'form': form, 'npc': npc})
+
 class NPCDelete(LoginRequiredMixin, DeleteView):
     model = models.NPC
     success_url = reverse_lazy('characters:npc_detail')

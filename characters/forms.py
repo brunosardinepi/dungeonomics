@@ -75,3 +75,15 @@ class NPCForm(TinyMCEForm):
             'actions',
             'notes',
         ]
+
+
+class DeleteMonsterForm(forms.ModelForm):
+    class Meta:
+        model = models.Monster
+        fields = ['name']
+
+
+class DeleteNPCForm(forms.ModelForm):
+    class Meta:
+        model = models.NPC
+        fields = ['name']
