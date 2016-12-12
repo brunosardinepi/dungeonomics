@@ -19,10 +19,11 @@ class HomeView(TemplateView):
 
 
 def home_view(request):
-    campaigns = campaign_models.Campaign.objects.filter(user=request.user)
-    if len(campaigns) > 0:
-        this_campaign = campaigns[0]
-        return render(request, 'home.html', {'this_campaign': this_campaign})
+    if request.user:
+        campaigns = campaign_models.Campaign.objects.filter(user=request.user)
+        if len(campaigns) > 0:
+            this_campaign = campaigns[0]
+            return render(request, 'home.html', {'this_campaign': this_campaign})
     else:
         return render(request, 'home.html')
 
