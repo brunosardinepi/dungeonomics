@@ -145,3 +145,7 @@ a.home-panel:hover {
     text-decoration: none;
     color: #000;
 }
+.maintenance {
+    top: 0;
+    background: #333;
+}
