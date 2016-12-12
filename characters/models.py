@@ -76,7 +76,7 @@ class Monster(Character):
 
 class NPC(Character):
     npc_class = models.CharField(verbose_name= _('Class'),max_length=255, default='', blank=True)
-    age = models.IntegerField(default=1, blank=True)
+    age = models.IntegerField(default='', blank=True)
     height = models.CharField(max_length=255, default='', blank=True)
     weight = models.CharField(max_length=255, default='', blank=True)
     creature_type = models.CharField(max_length=255, default='', blank=True)
