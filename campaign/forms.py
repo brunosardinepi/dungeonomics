@@ -53,6 +53,12 @@ class DeleteSectionForm(forms.ModelForm):
         fields = ['title']
 
 
+class DeleteCampaignForm(forms.ModelForm):
+    class Meta:
+        model = models.Campaign
+        fields = ['title']
+
+
 class DeleteChapterForm(forms.ModelForm):
     class Meta:
         model = models.Chapter
