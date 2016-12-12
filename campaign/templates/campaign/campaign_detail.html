@@ -53,7 +53,7 @@
                         {% if chapters %}
                             {% for chapter in chapters %}
                                 <li class="li-content">
-                                    {{ chapter.order|int_to_roman }}. 
+                                    {{ chapter.order }}. 
                                     <a href="{% url 'campaign:campaign_detail' campaign_pk=this_campaign.pk chapter_pk=chapter.pk %}">
                                         {{ chapter.title }}
                                     </a>
@@ -62,7 +62,7 @@
                                     {% for section in sections %}
                                         {% if section.chapter.pk == chapter.pk %}
                                             <li class="li-content">
-                                                {{ section.order|int_to_letter }}. 
+                                                {{ section.order }}. 
                                                 <a href="{% url 'campaign:campaign_detail' campaign_pk=this_campaign.pk chapter_pk=chapter.pk section_pk=section.pk %}">
                                                     {{ section.title }}
                                                 </a>
