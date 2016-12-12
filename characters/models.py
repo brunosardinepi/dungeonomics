@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 class Character(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, default='')
+    level = models.IntegerField(default=1)
     ALIGNMENT_CHOICES = (
         ('Unaligned', 'Unaligned'),
         ('LG', 'Lawful Good'),
