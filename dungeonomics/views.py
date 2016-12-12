@@ -19,13 +19,12 @@ class HomeView(TemplateView):
 
 
 def home_view(request):
-    if request.user.is_authenticated():
-        campaigns = campaign_models.Campaign.objects.filter(user=request.user)
-        if len(campaigns) > 0:
-            this_campaign = campaigns[0]
-            return render(request, 'home.html', {'this_campaign': this_campaign})
+    campaigns = campaign_models.Campaign.objects.filter(user=request.user)
+    if len(campaigns) > 0:
+        this_campaign = campaigns[0]
+        return render(request, 'home.html', {'this_campaign': this_campaign})
     else:
-        return HttpResponseRedirect('home')
+        return render(request, 'home.html')
 
 @login_required
 def profile_detail(request):
