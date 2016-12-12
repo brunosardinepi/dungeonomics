@@ -96,51 +96,57 @@ class CampaignCreate(LoginRequiredMixin, CreateView):
 @login_required
 def chapter_create(request, campaign_pk):
     campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-    monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
-    monsters = {}
-    for monster in monsters_raw:
-        monsters[monster.pk] = monster.name
-    npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
-    npcs = {}
-    for npc in npcs_raw:
-        npcs[npc.pk] = npc.name
+    if campaign.user == request.user:
+        monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
+        monsters = {}
+        for monster in monsters_raw:
+            monsters[monster.pk] = monster.name
+        npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
+        npcs = {}
+        for npc in npcs_raw:
+            npcs[npc.pk] = npc.name
 
-    form = forms.ChapterForm()
-    if request.method == 'POST':
-        form = forms.ChapterForm(request.POST)
-        if form.is_valid():
-            chapter = form.save(commit=False)
-            chapter.user = request.user
-            chapter.campaign = campaign
-            chapter.save()
-            messages.add_message(request, messages.SUCCESS, "Chapter created!")
-            return HttpResponseRedirect(chapter.get_absolute_url())
+        form = forms.ChapterForm()
+        if request.method == 'POST':
+            form = forms.ChapterForm(request.POST)
+            if form.is_valid():
+                chapter = form.save(commit=False)
+                chapter.user = request.user
+                chapter.campaign = campaign
+                chapter.save()
+                messages.add_message(request, messages.SUCCESS, "Chapter created!")
+                return HttpResponseRedirect(chapter.get_absolute_url())
+    else:
+        raise Http404
     return render(request, 'campaign/chapter_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': campaign})
 
 @login_required
 def section_create(request, campaign_pk, chapter_pk):
     campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-    chapter = get_object_or_404(models.Chapter, pk=chapter_pk)
-    monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
-    monsters = {}
-    for monster in monsters_raw:
-        monsters[monster.pk] = monster.name
-    npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
-    npcs = {}
-    for npc in npcs_raw:
-        npcs[npc.pk] = npc.name
+    if campaign.user == request.user:
+        chapter = get_object_or_404(models.Chapter, pk=chapter_pk)
+        monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
+        monsters = {}
+        for monster in monsters_raw:
+            monsters[monster.pk] = monster.name
+        npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
+        npcs = {}
+        for npc in npcs_raw:
+            npcs[npc.pk] = npc.name
 
-    form = forms.SectionForm()
-    if request.method == 'POST':
-        form = forms.SectionForm(request.POST)
-        if form.is_valid():
-            section = form.save(commit=False)
-            section.user = request.user
-            section.campaign = campaign
-            section.chapter = chapter
-            section.save()
-            messages.add_message(request, messages.SUCCESS, "Section created!")
-            return HttpResponseRedirect(section.get_absolute_url())
+        form = forms.SectionForm()
+        if request.method == 'POST':
+            form = forms.SectionForm(request.POST)
+            if form.is_valid():
+                section = form.save(commit=False)
+                section.user = request.user
+                section.campaign = campaign
+                section.chapter = chapter
+                section.save()
+                messages.add_message(request, messages.SUCCESS, "Section created!")
+                return HttpResponseRedirect(section.get_absolute_url())
+    else:
+        raise Http404
     return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': campaign, 'chapter': chapter})
 
 
@@ -264,26 +270,32 @@ def campaign_delete(request, campaign_pk):
 @login_required
 def chapter_delete(request, campaign_pk, chapter_pk):
     campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-    chapter = get_object_or_404(models.Chapter, pk=chapter_pk)
-    form = forms.DeleteChapterForm(instance=chapter)
-    if request.method == 'POST':
-        form = forms.DeleteChapterForm(request.POST, instance=chapter)
-        if chapter.user.pk == request.user.pk:
-            chapter.delete()
-            messages.add_message(request, messages.SUCCESS, "Chapter deleted!")
-            return HttpResponseRedirect(reverse('campaign:campaign_detail', kwargs={'campaign_pk': campaign.pk}))
+    if campaign.user == request.user:
+        chapter = get_object_or_404(models.Chapter, pk=chapter_pk)
+        form = forms.DeleteChapterForm(instance=chapter)
+        if request.method == 'POST':
+            form = forms.DeleteChapterForm(request.POST, instance=chapter)
+            if chapter.user.pk == request.user.pk:
+                chapter.delete()
+                messages.add_message(request, messages.SUCCESS, "Chapter deleted!")
+                return HttpResponseRedirect(reverse('campaign:campaign_detail', kwargs={'campaign_pk': campaign.pk}))
+    else:
+        raise Http404
     return render(request, 'campaign/chapter_delete.html', {'form': form, 'chapter': chapter})
 
 @login_required
 def section_delete(request, campaign_pk, chapter_pk, section_pk):
     campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-    chapter = get_object_or_404(models.Chapter, pk=chapter_pk)
-    section = get_object_or_404(models.Section, pk=section_pk)
-    form = forms.DeleteSectionForm(instance=section)
-    if request.method == 'POST':
-        form = forms.DeleteSectionForm(request.POST, instance=section)
-        if section.user.pk == request.user.pk:
-            section.delete()
-            messages.add_message(request, messages.SUCCESS, "Section deleted!")
-            return HttpResponseRedirect(reverse('campaign:campaign_detail', kwargs={'campaign_pk': campaign.pk, 'chapter_pk': chapter.pk}))
+    if campaign.user == request.user:
+        chapter = get_object_or_404(models.Chapter, pk=chapter_pk)
+        section = get_object_or_404(models.Section, pk=section_pk)
+        form = forms.DeleteSectionForm(instance=section)
+        if request.method == 'POST':
+            form = forms.DeleteSectionForm(request.POST, instance=section)
+            if section.user.pk == request.user.pk:
+                section.delete()
+                messages.add_message(request, messages.SUCCESS, "Section deleted!")
+                return HttpResponseRedirect(reverse('campaign:campaign_detail', kwargs={'campaign_pk': campaign.pk, 'chapter_pk': chapter.pk}))
+    else:
+        raise Http404
     return render(request, 'campaign/section_delete.html', {'form': form, 'section': section})
