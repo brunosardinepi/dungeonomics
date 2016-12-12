@@ -23,8 +23,12 @@ def monster_detail(request, monster_pk=None):
         )
     if monster_pk:
         this_monster = get_object_or_404(models.Monster, pk=monster_pk)
+        if this_monster.user == request.user:
+            return render(request, 'characters/monster_detail.html', {'this_monster': this_monster, 'monsters': monsters})
     elif len(monsters) > 0:
         this_monster = monsters[0]
+        if this_monster.user == request.user:
+            return render(request, 'characters/monster_detail.html', {'this_monster': this_monster, 'monsters': monsters})
     else:
         this_monster = None
     return render(request, 'characters/monster_detail.html', {'this_monster': this_monster, 'monsters': monsters})
@@ -39,8 +43,12 @@ def npc_detail(request, npc_pk=''):
         )
     if npc_pk:
         this_npc = get_object_or_404(models.NPC, pk=npc_pk)
+        if this_npc.user == request.user:
+            return render(request, 'characters/npc_detail.html', {'this_npc': this_npc, 'npcs': npcs})
     elif len(npcs) > 0:
         this_npc = npcs[0]
+        if this_npc.user == request.user:
+            return render(request, 'characters/npc_detail.html', {'this_npc': this_npc, 'npcs': npcs})
     else:
         this_npc = None
     return render(request, 'characters/npc_detail.html', {'this_npc': this_npc, 'npcs': npcs})
