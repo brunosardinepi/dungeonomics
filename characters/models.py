@@ -46,7 +46,7 @@ class Character(models.Model):
     wisdom = models.IntegerField(default=10, blank=True)
     charisma = models.IntegerField(default=10, blank=True)
     armor_class = models.IntegerField(default=0, blank=True)
-    hit_points = models.IntegerField(default=0, blank=True)
+    hit_points = models.CharField(max_length=255, blank=True)
     speed = models.CharField(max_length=255, default='', blank=True)
     saving_throws = models.CharField(max_length=255, default='', blank=True)
     skills = models.CharField(max_length=255, default='', blank=True)
@@ -64,7 +64,7 @@ class Monster(Character):
     damage_immunities = models.CharField(max_length=255, default='', blank=True)
     condition_immunities = models.CharField(max_length=255, default='', blank=True)
     senses = models.CharField(max_length=255, default='', blank=True)
-    challenge_rating = models.IntegerField(default=1, blank=True)
+    challenge_rating = models.CharField(max_length=255, blank=True)
     traits = models.TextField(blank=True)
     actions = models.TextField(blank=True)
 
