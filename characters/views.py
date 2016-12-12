@@ -92,25 +92,31 @@ def npc_create(request):
 @login_required
 def monster_update(request, monster_pk):
     monster = get_object_or_404(models.Monster, pk=monster_pk)
-    form = forms.MonsterForm(instance=monster)
-    if request.method == 'POST':
-        form = forms.MonsterForm(instance=monster, data=request.POST)
-        if form.is_valid():
-            form.save()
-            messages.add_message(request, messages.SUCCESS, "Updated monster: {}".format(form.cleaned_data['name']))
-            return HttpResponseRedirect(monster.get_absolute_url())
+    if monster.user == request.user:
+        form = forms.MonsterForm(instance=monster)
+        if request.method == 'POST':
+            form = forms.MonsterForm(instance=monster, data=request.POST)
+            if form.is_valid():
+                form.save()
+                messages.add_message(request, messages.SUCCESS, "Updated monster: {}".format(form.cleaned_data['name']))
+                return HttpResponseRedirect(monster.get_absolute_url())
+    else:
+        raise Http404
     return render(request, 'characters/monster_form.html', {'form': form, 'monster': monster})
 
 @login_required
 def npc_update(request, npc_pk):
     npc = get_object_or_404(models.NPC, pk=npc_pk)
-    form = forms.NPCForm(instance=npc)
-    if request.method == 'POST':
-        form = forms.NPCForm(instance=npc, data=request.POST)
-        if form.is_valid():
-            form.save()
-            messages.add_message(request, messages.SUCCESS, "Updated NPC: {}".format(form.cleaned_data['name']))
-            return HttpResponseRedirect(npc.get_absolute_url())
+    if npc.user == request.user:
+        form = forms.NPCForm(instance=npc)
+        if request.method == 'POST':
+            form = forms.NPCForm(instance=npc, data=request.POST)
+            if form.is_valid():
+                form.save()
+                messages.add_message(request, messages.SUCCESS, "Updated NPC: {}".format(form.cleaned_data['name']))
+                return HttpResponseRedirect(npc.get_absolute_url())
+    else:
+        raise Http404
     return render(request, 'characters/npc_form.html', {'form': form, 'npc': npc})
 
 
