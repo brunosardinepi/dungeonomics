@@ -15,7 +15,6 @@ class MonsterForm(TinyMCEForm):
         model = models.Monster
         fields = [
             'name',
-            'level',
             'alignment',
             'size',
             'languages',
@@ -46,7 +45,6 @@ class NPCForm(TinyMCEForm):
         model = models.NPC
         fields = [
             'name',
-            'level',
             'alignment',
             'size',
             'languages',

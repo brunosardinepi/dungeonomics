@@ -50,7 +50,7 @@
     {% if this_npc %}
         <div class="row">
             <div class="col-md-12">
-                <p>{% if this_npc.level %}Level {{ this_npc.level }}{% endif %}{% if this_npc.get_size_display %} {{ this_npc.get_size_display }}{% endif %}{% if this_npc.creature_type %} {{ this_npc.creature_type }}{% endif %}{% if this_npc.get_alignment_display %}, {{ this_npc.get_alignment_display }}{% endif %}</p>
+                <p>{% if this_npc.get_size_display %} {{ this_npc.get_size_display }}{% endif %}{% if this_npc.creature_type %} {{ this_npc.creature_type }}{% endif %}{% if this_npc.get_alignment_display %}, {{ this_npc.get_alignment_display }}{% endif %}</p>
             </div>
         </div>
 
