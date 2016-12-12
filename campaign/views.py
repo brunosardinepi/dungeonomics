@@ -246,7 +246,7 @@ def campaign_delete(request, campaign_pk):
             if campaign.user.pk == request.user.pk:
                 chapter.delete()
                 messages.add_message(request, messages.SUCCESS, "Campaign deleted!")
-                return HttpResponseRedirect(reverse('home')
+                return HttpResponseRedirect(reverse('home'))
     else:
         raise Http404
     return render(request, 'campaign/campaign_delete.html', {'form': form, 'campaign': campaign})
