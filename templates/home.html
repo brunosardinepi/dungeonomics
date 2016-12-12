@@ -5,7 +5,7 @@
 {% block body_content %}
     {% if user.is_authenticated %}
         <div class="row campaign-row">
-            <div class="col-md-3 col-md-offset-3">
+            <div class="col-md-2 col-md-offset-3">
                 <div class="panel panel-default">
                     {% if this_campaign %}
                         <a href="{% url 'campaign:campaign_detail' %}" class="home-panel">
@@ -19,7 +19,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="panel panel-default">
                     <a href="{% url 'characters:monster_detail' %}" class="home-panel">
                         <div class="panel-body">
@@ -29,7 +29,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-md-3 col-md-offset-3">
+            <div class="col-md-2">
                 <div class="panel panel-default">
                     <a href="{% url 'characters:npc_detail' %}" class="home-panel">
                         <div class="panel-body">
@@ -39,12 +39,34 @@
                     </a>
                 </div>
             </div>
-            <div class="col-md-3">
+        </div>
+        <div class="row campaign-row">
+            <div class="col-md-2 col-md-offset-3">
+                <div class="panel panel-default">
+                    <a href="{% url 'profile' %}" class="home-panel">
+                        <div class="panel-body">
+                            <p class="text-center"><i class="fa fa-globe fa-5x" aria-hidden="true"></i></p>
+                            <h2 class="text-center">Account</h2>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-2">
                 <div class="panel panel-default">
                     <a href="{% url 'wiki:home' %}" class="home-panel">
                         <div class="panel-body">
                             <p class="text-center"><i class="fa fa-info-circle fa-5x" aria-hidden="true"></i></p>
                             <h2 class="text-center">Wiki</h2>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="panel panel-default">
+                    <a href="https://www.reddit.com/r/dungeonomics/" class="home-panel">
+                        <div class="panel-body">
+                            <p class="text-center"><i class="fa fa-reddit fa-5x" aria-hidden="true"></i></p>
+                            <h2 class="text-center">Reddit</h2>
                         </div>
                     </a>
                 </div>
