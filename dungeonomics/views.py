@@ -19,7 +19,7 @@ class HomeView(TemplateView):
 
 
 def home_view(request):
-    if request.user:
+    if request.user.is_authenticated():
         campaigns = campaign_models.Campaign.objects.filter(user=request.user)
         if len(campaigns) > 0:
             this_campaign = campaigns[0]
