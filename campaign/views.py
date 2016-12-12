@@ -147,74 +147,83 @@ def section_create(request, campaign_pk, chapter_pk):
 @login_required
 def campaign_update(request, campaign_pk):
     campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-    form = forms.CampaignForm(instance=campaign)
-    chapter_forms = forms.ChapterInlineFormSet(queryset=form.instance.chapter_set.all())
-    if request.method == 'POST':
-        form = forms.CampaignForm(request.POST, instance=campaign)
-        chapter_forms = forms.ChapterInlineFormSet(request.POST, queryset=form.instance.chapter_set.all())
-        if form.is_valid() and chapter_forms.is_valid():
-            form.save()
-            chapters = chapter_forms.save(commit=False)
-            for chapter in chapters:
-                chapter.campaign = campaign
-                chapter.user = request.user
-                chapter.save()
-            for chapter in chapter_forms.deleted_objects:
-                chapter.delete()
-            messages.add_message(request, messages.SUCCESS, "Updated campaign: {}".format(form.cleaned_data['title']))
-            return HttpResponseRedirect(campaign.get_absolute_url())
+    if campaign.user == request.user:
+        form = forms.CampaignForm(instance=campaign)
+        chapter_forms = forms.ChapterInlineFormSet(queryset=form.instance.chapter_set.all())
+        if request.method == 'POST':
+            form = forms.CampaignForm(request.POST, instance=campaign)
+            chapter_forms = forms.ChapterInlineFormSet(request.POST, queryset=form.instance.chapter_set.all())
+            if form.is_valid() and chapter_forms.is_valid():
+                form.save()
+                chapters = chapter_forms.save(commit=False)
+                for chapter in chapters:
+                    chapter.campaign = campaign
+                    chapter.user = request.user
+                    chapter.save()
+                for chapter in chapter_forms.deleted_objects:
+                    chapter.delete()
+                messages.add_message(request, messages.SUCCESS, "Updated campaign: {}".format(form.cleaned_data['title']))
+                return HttpResponseRedirect(campaign.get_absolute_url())
+    else:
+        raise Http404
     return render(request, 'campaign/campaign_form.html', {'form': form, 'formset': chapter_forms, 'campaign': campaign})
 
 @login_required
 def chapter_update(request, campaign_pk, chapter_pk):
     chapter = get_object_or_404(models.Chapter, pk=chapter_pk, campaign_id=campaign_pk)
-    sections = models.Section.objects.filter(chapter=chapter)
-    monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
-    monsters = {}
-    for monster in monsters_raw:
-        monsters[monster.pk] = monster.name
-    npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
-    npcs = {}
-    for npc in npcs_raw:
-        npcs[npc.pk] = npc.name
+    if chapter.user == request.user:
+        sections = models.Section.objects.filter(chapter=chapter)
+        monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
+        monsters = {}
+        for monster in monsters_raw:
+            monsters[monster.pk] = monster.name
+        npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
+        npcs = {}
+        for npc in npcs_raw:
+            npcs[npc.pk] = npc.name
 
-    form = forms.ChapterForm(instance=chapter)
-    section_forms = forms.SectionInlineFormSet(queryset=form.instance.section_set.all())
-    if request.method == 'POST':
-        form = forms.ChapterForm(request.POST, instance=chapter)
-        section_forms = forms.SectionInlineFormSet(request.POST, queryset=form.instance.section_set.all())
-        if form.is_valid() and section_forms.is_valid():
-            form.save()
-            sections = section_forms.save(commit=False)
-            for section in sections:
-                section.chapter = chapter
-                section.user = request.user
-                section.save()
-            for section in section_forms.deleted_objects:
-                section.delete()
-            messages.add_message(request, messages.SUCCESS, "Updated chapter: {}".format(form.cleaned_data['title']))
-            return HttpResponseRedirect(chapter.get_absolute_url())
+        form = forms.ChapterForm(instance=chapter)
+        section_forms = forms.SectionInlineFormSet(queryset=form.instance.section_set.all())
+        if request.method == 'POST':
+            form = forms.ChapterForm(request.POST, instance=chapter)
+            section_forms = forms.SectionInlineFormSet(request.POST, queryset=form.instance.section_set.all())
+            if form.is_valid() and section_forms.is_valid():
+                form.save()
+                sections = section_forms.save(commit=False)
+                for section in sections:
+                    section.chapter = chapter
+                    section.user = request.user
+                    section.save()
+                for section in section_forms.deleted_objects:
+                    section.delete()
+                messages.add_message(request, messages.SUCCESS, "Updated chapter: {}".format(form.cleaned_data['title']))
+                return HttpResponseRedirect(chapter.get_absolute_url())
+    else:
+        raise Http404
     return render(request, 'campaign/chapter_form.html', {'form': form, 'formset': section_forms, 'monsters': monsters, 'npcs': npcs, 'campaign': chapter.campaign, 'chapter': chapter, 'sections': sections})
 
 @login_required
 def section_update(request, campaign_pk, chapter_pk, section_pk):
     section = get_object_or_404(models.Section, pk=section_pk, chapter_id=chapter_pk, campaign_id=campaign_pk)
-    monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
-    monsters = {}
-    for monster in monsters_raw:
-        monsters[monster.pk] = monster.name
-    npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
-    npcs = {}
-    for npc in npcs_raw:
-        npcs[npc.pk] = npc.name
+    if section.user == request.user:
+        monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
+        monsters = {}
+        for monster in monsters_raw:
+            monsters[monster.pk] = monster.name
+        npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
+        npcs = {}
+        for npc in npcs_raw:
+            npcs[npc.pk] = npc.name
 
-    form = forms.SectionForm(instance=section)
-    if request.method == 'POST':
-        form = forms.SectionForm(instance=section, data=request.POST)
-        if form.is_valid():
-            form.save()
-            messages.add_message(request, messages.SUCCESS, "Updated section: {}".format(form.cleaned_data['title']))
-            return HttpResponseRedirect(section.get_absolute_url())
+        form = forms.SectionForm(instance=section)
+        if request.method == 'POST':
+            form = forms.SectionForm(instance=section, data=request.POST)
+            if form.is_valid():
+                form.save()
+                messages.add_message(request, messages.SUCCESS, "Updated section: {}".format(form.cleaned_data['title']))
+                return HttpResponseRedirect(section.get_absolute_url())
+    else:
+        raise Http404
     return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': section.chapter.campaign, 'chapter': section.chapter, 'section': section})
 
 
