@@ -50,7 +50,7 @@
     {% if this_monster %}
         <div class="row">
             <div class="col-md-12">
-                <p>{% if this_monster.level %}Level {{ this_monster.level }} {% endif %}{{ this_monster.get_size_display }} {{ this_monster.creature_type }}, {{ this_monster.get_alignment_display }}</p>
+                <p>{% if this_monster.level %}Level {{ this_monster.level }} {% endif %}{{ this_monster.get_size_display }} {{ this_monster.creature_type }}{% if this_monster.get_alignment_display %}, {{ this_monster.get_alignment_display }}{% endif %}</p>
             </div>
         </div>
 
@@ -58,9 +58,9 @@
 
         <div class="row">
             <div class="col-md-12">
-                <p><strong>Armor Class</strong> {{ this_monster.armor_class }}</p>
-                <p><strong>Hit Points</strong> {{ this_monster.hit_points }}</p>
-                <p><strong>Speed</strong> {{ this_monster.speed }}</p>
+                {% if this_monster.armor_class %}<p><strong>Armor Class</strong> {{ this_monster.armor_class }}</p>{% endif %}
+                {% if this_monster.hit_points %}<p><strong>Hit Points</strong> {{ this_monster.hit_points }}</p>{% endif %}
+                {% if this_monster.speed %}<p><strong>Speed</strong> {{ this_monster.speed }}</p>{% endif %}
             </div>
         </div>
 
@@ -121,32 +121,35 @@
 
         <div class="row">
             <div class="col-md-12">
-                <p><strong>Saving Throws</strong> {{ this_monster.saving_throws }}</p>
-                <p><strong>Skills</strong> {{ this_monster.skills }}</p>
-                <p><strong>Damage Vulnerabilities</strong> {{ this_monster.damage_vulnerabilities }}</p>
-                <p><strong>Damage Immunities</strong> {{ this_monster.damage_immunities }}</p>
-                <p><strong>Condition Immunities</strong> {{ this_monster.condition_immunities }}</p>
-                <p><strong>Senses</strong> {{ this_monster.senses }}</p>
-                <p><strong>Languages</strong> {{ this_monster.languages }}</p>
-                <p><strong>Challenge</strong> {{ this_monster.challenge_rating }}</p>
+                {% if this_monster.saving_throws %}<p><strong>Saving Throws</strong> {{ this_monster.saving_throws }}</p>{% endif %}
+                {% if this_monster.skills %}<p><strong>Skills</strong> {{ this_monster.skills }}</p>{% endif %}
+                {% if this_monster.damage_vulnerabilities %}<p><strong>Damage Vulnerabilities</strong> {{ this_monster.damage_vulnerabilities }}</p>{% endif %}
+                {% if this_monster.damage_immunities %}<p><strong>Damage Immunities</strong> {{ this_monster.damage_immunities }}</p>{% endif %}
+                {% if this_monster.condition_immunities %}<p><strong>Condition Immunities</strong> {{ this_monster.condition_immunities }}</p>{% endif %}
+                {% if this_monster.senses %}<p><strong>Senses</strong> {{ this_monster.senses }}</p>{% endif %}
+                {% if this_monster.languages %}<p><strong>Languages</strong> {{ this_monster.languages }}</p>{% endif %}
+                {% if this_monster.challenge_rating %}<p><strong>Challenge</strong> {{ this_monster.challenge_rating }}</p>{% endif %}
             </div>
         </div>
 
-        <hr>
-
-        <div class="row">
-            <div class="col-md-12">
-                <p><strong>Traits</strong> {{ this_monster.traits|safe }}</p>
+        {% if this_monster.traits %}
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <p><strong>Traits</strong> {{ this_monster.traits|safe }}</p>
+                </div>
             </div>
-        </div>
+        {% endif %}
 
-        <hr>
-
-        <div class="row">
-            <div class="col-md-12">
-                <p><strong>Actions</strong> {{ this_monster.actions|safe }}</p>
+        {% if this_monster.actions %}
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <p><strong>Actions</strong> {{ this_monster.actions|safe }}</p>
+                </div>
             </div>
-        </div>
+        {% endif %}
+
     {% else %}
         <p>You haven't created any monsters yet!</p>
     {% endif %}
