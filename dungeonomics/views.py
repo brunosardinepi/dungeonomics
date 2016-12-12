@@ -18,7 +18,6 @@ class HomeView(TemplateView):
     template_name = 'home.html'
 
 
-@login_required
 def home_view(request):
     campaigns = campaign_models.Campaign.objects.filter(user=request.user)
     if len(campaigns) > 0:
