@@ -49,37 +49,18 @@
 {% block character_detail %}
     {% if this_monster %}
         <div class="row">
-            <div class="col-md-3">
-                <div class="character-label">
-                    <p>Level</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_monster.level }}</p>
-                </div>
+            <div class="col-md-12">
+                <p>{% if this_monster.level %}Level {{ this_monster.level }} {% endif %}{{ this_monster.get_size_display }} {{ this_monster.creature_type }}, {{ this_monster.get_alignment_display }}</p>
             </div>
-            <div class="col-md-3">
-                <div class="character-label">
-                    <p>Alignment</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_monster.get_alignment_display }}</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="character-label">
-                    <p>Armor Class</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_monster.armor_class }}</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="character-label">
-                    <p>Hit Points</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_monster.hit_points }}</p>
-                </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <p><strong>Armor Class</strong> {{ this_monster.armor_class }}</p>
+                <p><strong>Hit Points</strong> {{ this_monster.hit_points }}</p>
+                <p><strong>Speed</strong> {{ this_monster.speed }}</p>
             </div>
         </div>
 
@@ -139,166 +120,33 @@
         <hr>
 
         <div class="row">
-            <div class="col-md-3">
-                <div class="character-label">
-                    <p>Creature Type</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_monster.creature_type }}</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="character-label">
-                    <p>Challenge Rating</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_monster.challenge_rating }}</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="character-label">
-                    <p>Size</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_monster.get_size_display }}</p>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div class="character-label">
-                    <p>Speed</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_monster.speed }}</p>
-                </div>
+            <div class="col-md-12">
+                <p><strong>Saving Throws</strong> {{ this_monster.saving_throws }}</p>
+                <p><strong>Skills</strong> {{ this_monster.skills }}</p>
+                <p><strong>Damage Vulnerabilities</strong> {{ this_monster.damage_vulnerabilities }}</p>
+                <p><strong>Damage Immunities</strong> {{ this_monster.damage_immunities }}</p>
+                <p><strong>Condition Immunities</strong> {{ this_monster.condition_immunities }}</p>
+                <p><strong>Senses</strong> {{ this_monster.senses }}</p>
+                <p><strong>Languages</strong> {{ this_monster.languages }}</p>
+                <p><strong>Challenge</strong> {{ this_monster.challenge_rating }}</p>
             </div>
         </div>
 
-        {% if this_monster.saving_throws %}
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="character-label-long">
-                        <p>Saving Throws</p>
-                    </div>
-                    <div class="character-details-long">
-                        <p>{{ this_monster.saving_throws }}</p>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
+        <hr>
 
-        {% if this_monster.skills %}
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="character-label-long">
-                        <p>Skills</p>
-                    </div>
-                    <div class="character-details-long">
-                        <p>{{ this_monster.skills }}</p>
-                    </div>
-                </div>
+        <div class="row">
+            <div class="col-md-12">
+                <p><strong>Traits</strong> {{ this_monster.traits|safe }}</p>
             </div>
-        {% endif %}
+        </div>
 
-        {% if this_monster.damage_vulnerabilities %}
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="character-label-long">
-                        <p>Damage Vulnerabilities</p>
-                    </div>
-                    <div class="character-details-long">
-                        <p>{{ this_monster.damage_vulnerabilities }}</p>
-                    </div>
-                </div>
+        <hr>
+
+        <div class="row">
+            <div class="col-md-12">
+                <p><strong>Actions</strong> {{ this_monster.actions|safe }}</p>
             </div>
-        {% endif %}
-
-        {% if this_monster.damage_immunities %}
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="character-label-long">
-                        <p>Damage Immunities</p>
-                    </div>
-                    <div class="character-details-long">
-                        <p>{{ this_monster.damage_immunities }}</p>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-
-        {% if this_monster.condition_immunities %}
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="character-label-long">
-                        <p>Condition Immunities</p>
-                    </div>
-                    <div class="character-details-long">
-                        <p>{{ this_monster.condition_immunities }}</p>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-
-        {% if this_monster.senses %}
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="character-label-long">
-                        <p>Senses</p>
-                    </div>
-                    <div class="character-details-long">
-                        <p>{{ this_monster.senses }}</p>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-
-        {% if this_monster.languages %}
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="character-label-long">
-                        <p>Languages</p>
-                    </div>
-                    <div class="character-details-long">
-                        <p>{{ this_monster.languages }}</p>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-
-        {% if this_monster.traits %}
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="character-label-long">
-                        <p>Traits</p>
-                    </div>
-                    <div class="character-details-long">
-                        <p>{{ this_monster.traits|safe }}</p>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-
-        {% if this_monster.actions %}
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="character-label-long">
-                        <p>Actions</p>
-                    </div>
-                    <div class="character-details-long">
-                        <p>{{ this_monster.actions|safe }}</p>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-
+        </div>
     {% else %}
         <p>You haven't created any monsters yet!</p>
     {% endif %}
