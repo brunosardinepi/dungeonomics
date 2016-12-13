@@ -102,3 +102,7 @@ def handler500(request):
 
 class DonateView(TemplateView):
     template_name = 'donate.html'
+
+
+class PrivacyView(TemplateView):
+    template_name = 'privacy.html'
