@@ -105,7 +105,7 @@ class Player(Character):
     player_class = models.CharField(max_length=255, default='', blank=True)
     race = models.TextField(blank=True)
     xp = models.IntegerField(default=10, blank=True)
-    background = modelsCharField(max_length=255, default='', blank=True)
+    background = models.CharField(max_length=255, default='', blank=True)
     age = models.CharField(max_length=255, default='', blank=True)
     height = models.CharField(max_length=255, default='', blank=True)
     weight = models.CharField(max_length=255, default='', blank=True)
