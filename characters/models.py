@@ -97,3 +97,8 @@ class NPC(Character):
         return reverse('characters:npc_detail', kwargs={
             'npc_pk': self.pk
             })
+
+
+class Player(Character):
+    initiative = models.CharField(max_length=255, default='', blank=True)
+    

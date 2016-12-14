@@ -1,0 +1,107 @@
+{% extends 'layout.html' %}
+{% load bootstrap3 %}
+
+{% block title %}
+    {% if pc.pk %}
+        Update PC 
+    {% else %}
+        New PC 
+    {% endif %}
+    | {{ block.super }}
+{% endblock %}
+
+{% block head_extra %}
+    {{ form.media.js }}
+    
+    <script type="text/javascript">
+        tinymce.init({
+            selector: "#id_traits",
+            height : "100",
+            plugins: [
+            'paste autosave autolink print searchreplace table textcolor wordcount link image'
+            ],
+            menu: {
+            edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace'},
+            insert: {title: 'Insert', items: 'image'},
+            view: {title: 'View', items: 'visualaid'},
+            format: {title: 'Format', items: 'bold italic underline strikethrough superscript subscript | formats | removeformat'},
+            table: {title: 'Table', items: 'inserttable tableprops deletetable | cell row column'}
+            },
+            toolbar: 'print | fontsizeselect bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link | forecolor backcolor',
+            browser_spellcheck: true,
+            paste_as_text: true,
+            fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
+        });
+    </script>
+    <script type="text/javascript">
+        tinymce.init({
+            selector: "#id_actions",
+            height : "100",
+            plugins: [
+            'paste autosave autolink print searchreplace table textcolor wordcount link image'
+            ],
+            menu: {
+            edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace'},
+            insert: {title: 'Insert', items: 'image'},
+            view: {title: 'View', items: 'visualaid'},
+            format: {title: 'Format', items: 'bold italic underline strikethrough superscript subscript | formats | removeformat'},
+            table: {title: 'Table', items: 'inserttable tableprops deletetable | cell row column'}
+            },
+            toolbar: 'print | fontsizeselect bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link | forecolor backcolor',
+            browser_spellcheck: true,
+            paste_as_text: true,
+            fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
+        });
+    </script>
+    <script type="text/javascript">
+        tinymce.init({
+            selector: "#id_notes",
+            height : "100",
+            plugins: [
+            'paste autosave autolink print searchreplace table textcolor wordcount link image'
+            ],
+            menu: {
+            edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace'},
+            insert: {title: 'Insert', items: 'image'},
+            view: {title: 'View', items: 'visualaid'},
+            format: {title: 'Format', items: 'bold italic underline strikethrough superscript subscript | formats | removeformat'},
+            table: {title: 'Table', items: 'inserttable tableprops deletetable | cell row column'}
+            },
+            toolbar: 'print | fontsizeselect bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link | forecolor backcolor',
+            browser_spellcheck: true,
+            paste_as_text: true,
+            fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
+        });
+    </script>
+{% endblock %}
+
+{% block body_content %}
+    <div class="col-md-12">
+        <div class="panel panel-default panel-campaign">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    {% if pc.pk %}
+                        <strong>UPDATE PC:</strong> {{ pc.name }}
+                    {% else %}
+                        <strong>NEW PC</strong>
+                    {% endif %}
+                </h3>
+            </div>
+            <div class="panel-body">
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+            </div>
+            <div class="panel-footer clearfix">
+                {% if pc.pk %}
+                    <a href="{% url 'characters:pc_detail' pc_pk=pc.pk%}" class="btn btn-default">Cancel</a>
+                    <input type="submit" class="btn btn-primary pull-right" value="Update PC">
+                {% else %}
+                    <a href="{% url 'characters:pc_detail' %}" class="btn btn-default">Cancel</a>
+                    <input type="submit" class="btn btn-primary pull-right" value="Create PC">
+                {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
