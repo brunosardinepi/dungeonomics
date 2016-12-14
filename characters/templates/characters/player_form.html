@@ -2,10 +2,10 @@
 {% load bootstrap3 %}
 
 {% block title %}
-    {% if pc.pk %}
-        Update PC 
+    {% if player.pk %}
+        Update Player 
     {% else %}
-        New PC 
+        New Player 
     {% endif %}
     | {{ block.super }}
 {% endblock %}
@@ -80,10 +80,10 @@
         <div class="panel panel-default panel-campaign">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    {% if pc.pk %}
-                        <strong>UPDATE PC:</strong> {{ pc.name }}
+                    {% if player.pk %}
+                        <strong>UPDATE Player:</strong> {{ player.name }}
                     {% else %}
-                        <strong>NEW PC</strong>
+                        <strong>NEW Player</strong>
                     {% endif %}
                 </h3>
             </div>
@@ -93,12 +93,12 @@
                     {% bootstrap_form form %}
             </div>
             <div class="panel-footer clearfix">
-                {% if pc.pk %}
-                    <a href="{% url 'characters:pc_detail' pc_pk=pc.pk%}" class="btn btn-default">Cancel</a>
-                    <input type="submit" class="btn btn-primary pull-right" value="Update PC">
+                {% if player.pk %}
+                    <a href="{% url 'characters:player_detail' player_pk=player.pk%}" class="btn btn-default">Cancel</a>
+                    <input type="submit" class="btn btn-primary pull-right" value="Update Player">
                 {% else %}
-                    <a href="{% url 'characters:pc_detail' %}" class="btn btn-default">Cancel</a>
-                    <input type="submit" class="btn btn-primary pull-right" value="Create PC">
+                    <a href="{% url 'characters:player_detail' %}" class="btn btn-default">Cancel</a>
+                    <input type="submit" class="btn btn-primary pull-right" value="Create Player">
                 {% endif %}
                 </form>
             </div>

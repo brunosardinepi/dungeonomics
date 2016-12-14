@@ -100,5 +100,29 @@ class NPC(Character):
 
 
 class Player(Character):
+    proficiency = models.CharField(max_lenght=255, default='', blank=True)
+    player = models.CharField(max_length=255, default='', blank=True)
+    player_class = models.CharField(max_lenght=255, default='', blank=True)
+    race = models.TextField(blank=True)
+    xp = models.IntegerField(default=10, blank=True)
+    background = modelsCharField(max_length=255, default='', blank=True)
+    age = models.CharField(max_length=255, default='', blank=True)
+    height = models.CharField(max_length=255, default='', blank=True)
+    weight = models.CharField(max_length=255, default='', blank=True)
     initiative = models.CharField(max_length=255, default='', blank=True)
+    personality = models.TextField(blank=True)
+    bonds = models.TextField(blank=True)
+    ideals = models.TextField(blank=True)
+    flaws = models.TextField(blank=True)
+    feats = models.TextField(blank=True)
+    actions = models.TextField(blank=True)
+    spells = models.TextField(blank=True)
+    notes = models.TextField(blank=True)
+
+
+
+    def get_absolute_url(self):
+        return reverse('characters:player_detail', kwargs={
+            'player_pk': self.pk
+            })
     

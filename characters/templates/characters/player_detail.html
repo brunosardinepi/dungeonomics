@@ -1,56 +1,56 @@
 {% extends 'characters/character_layout.html' %}
 
 {% block title %}
-    {% if this_pc.pk %}
-        {{ this_pc.name }} 
+    {% if this_player.pk %}
+        {{ this_player.name }} 
     {% else %}
-        PCs 
+        Playes 
     {% endif %}
     | {{ block.super }}
 {% endblock %}
 
-{% block character_list_title %}PC List{% endblock %}
+{% block character_list_title %}Player List{% endblock %}
 
 {% block character_list %}
-    {% if pcs %}
-        {% for pc in pcs %}
+    {% if players %}
+        {% for player in players %}
             <li style="margin-bottom: 10px;">
-                <a href="{% url 'characters:pc_detail' pc_pk=pc.id %}">
-                    {{ pc.name }}
+                <a href="{% url 'characters:player_detail' player_pk=player.id %}">
+                    {{ player.name }}
                 </a>
             </li>
         {% endfor %}
     {% else %}
-        <li>You haven't created any PCs yet!</li>
+        <li>You haven't created any Players yet!</li>
     {% endif %}
 {% endblock %}
 
 {% block character_contents_extra %}
-    <li><a href="{% url 'characters:pc_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create PC</span></a></li>
+    <li><a href="{% url 'characters:player_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create Player</span></a></li>
 {% endblock %}
 
 {% block character_detail_title %}
-    {% if this_pc %}
-        {{ this_pc.name }}
+    {% if this_player %}
+        {{ this_player.name }}
     {% else %}
-        PCs
+        Playes
     {% endif %}
 {% endblock %}
 
 {% block character_detail_extra %}
-    {% if this_pc %}
-        <li><a href="{% url 'characters:pc_update' pc_pk=this_pc.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit PC</span></a></li>
-        <li><a href="{% url 'characters:pc_delete' pc_pk=this_pc.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete PC</span></a></li>
+    {% if this_player %}
+        <li><a href="{% url 'characters:player_update' player_pk=this_player.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit Player</span></a></li>
+        <li><a href="{% url 'characters:player_delete' player_pk=this_player.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete Player</span></a></li>
     {% else %}
-        <li><a href="{% url 'characters:pc_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create PC</span></a></li>
+        <li><a href="{% url 'characters:player_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create Player</span></a></li>
     {% endif %}
 {% endblock %}
 
 {% block character_detail %}
-    {% if this_pc %}
+    {% if this_player %}
         <div class="row">
             <div class="col-md-12">
-                <p>{% if this_pc.get_size_display %} {{ this_pc.get_size_display }}{% endif %}{% if this_pc.creature_type %} {{ this_pc.creature_type }}{% endif %}{% if this_pc.get_alignment_display %}, {{ this_pc.get_alignment_display }}{% endif %}</p>
+                <p>{% if this_player.get_size_display %} {{ this_player.get_size_display }}{% endif %}{% if this_player.creature_type %} {{ this_player.creature_type }}{% endif %}{% if this_player.get_alignment_display %}, {{ this_player.get_alignment_display }}{% endif %}</p>
             </div>
         </div>
 
@@ -58,10 +58,10 @@
 
         <div class="row">
             <div class="col-md-12">
-                {% if this_pc.pc_class %}<p><strong>Class</strong> {{ this_pc.pc_class }}</p>{% endif %}
-                {% if this_pc.age %}<p><strong>Age</strong> {{ this_pc.age }}</p>{% endif %}
-                {% if this_pc.height %}<p><strong>Height</strong> {{ this_pc.height }}</p>{% endif %}
-                {% if this_pc.weight %}<p><strong>Weight</strong> {{ this_pc.weight }}</p>{% endif %}
+                {% if this_player.player_class %}<p><strong>Class</strong> {{ this_player.player_class }}</p>{% endif %}
+                {% if this_player.age %}<p><strong>Age</strong> {{ this_player.age }}</p>{% endif %}
+                {% if this_player.height %}<p><strong>Height</strong> {{ this_player.height }}</p>{% endif %}
+                {% if this_player.weight %}<p><strong>Weight</strong> {{ this_player.weight }}</p>{% endif %}
             </div>
         </div>
 
@@ -69,9 +69,9 @@
 
         <div class="row">
             <div class="col-md-12">
-                {% if this_npc.armor_class %}<p><strong>Armor Class</strong> {{ this_npc.armor_class }}</p>{% endif %}
-                {% if this_npc.hit_points %}<p><strong>Hit Points</strong> {{ this_npc.hit_points }}</p>{% endif %}
-                {% if this_npc.speed %}<p><strong>Speed</strong> {{ this_npc.speed }}</p>{% endif %}
+                {% if this_player.armor_class %}<p><strong>Armor Class</strong> {{ this_player.armor_class }}</p>{% endif %}
+                {% if this_player.hit_points %}<p><strong>Hit Points</strong> {{ this_player.hit_points }}</p>{% endif %}
+                {% if this_player.speed %}<p><strong>Speed</strong> {{ this_player.speed }}</p>{% endif %}
             </div>
         </div>
 
@@ -83,7 +83,7 @@
                     <p>STR</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_npc.strength }}</p>
+                    <p>{{ this_player.strength }}</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -91,7 +91,7 @@
                     <p>DEX</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_npc.dexterity }}</p>
+                    <p>{{ this_player.dexterity }}</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -99,7 +99,7 @@
                     <p>CON</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_npc.constitution }}</p>
+                    <p>{{ this_player.constitution }}</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -107,7 +107,7 @@
                     <p>WIS</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_npc.wisdom }}</p>
+                    <p>{{ this_player.wisdom }}</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -115,7 +115,7 @@
                     <p>INT</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_npc.intelligence }}</p>
+                    <p>{{ this_player.intelligence }}</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -123,7 +123,7 @@
                     <p>CHA</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_npc.charisma }}</p>
+                    <p>{{ this_player.charisma }}</p>
                 </div>
             </div>
         </div>
@@ -132,45 +132,45 @@
 
         <div class="row">
             <div class="col-md-12">
-                {% if this_npc.saving_throws %}<p><strong>Saving Throws</strong> {{ this_npc.saving_throws }}</p>{% endif %}
-                {% if this_npc.skills %}<p><strong>Skills</strong> {{ this_npc.skills }}</p>{% endif %}
-                {% if this_npc.damage_vulnerabilities %}<p><strong>Damage Vulnerabilities</strong> {{ this_npc.damage_vulnerabilities }}</p>{% endif %}
-                {% if this_npc.damage_immunities %}<p><strong>Damage Immunities</strong> {{ this_npc.damage_immunities }}</p>{% endif %}
-                {% if this_npc.condition_immunities %}<p><strong>Condition Immunities</strong> {{ this_npc.condition_immunities }}</p>{% endif %}
-                {% if this_npc.senses %}<p><strong>Senses</strong> {{ this_npc.senses }}</p>{% endif %}
-                {% if this_npc.languages %}<p><strong>Languages</strong> {{ this_npc.languages }}</p>{% endif %}
-                {% if this_npc.challenge_rating %}<p><strong>Challenge</strong> {{ this_npc.challenge_rating }}</p>{% endif %}
+                {% if this_player.saving_throws %}<p><strong>Saving Throws</strong> {{ this_player.saving_throws }}</p>{% endif %}
+                {% if this_player.skills %}<p><strong>Skills</strong> {{ this_player.skills }}</p>{% endif %}
+                {% if this_player.damage_vulnerabilities %}<p><strong>Damage Vulnerabilities</strong> {{ this_player.damage_vulnerabilities }}</p>{% endif %}
+                {% if this_player.damage_immunities %}<p><strong>Damage Immunities</strong> {{ this_player.damage_immunities }}</p>{% endif %}
+                {% if this_player.condition_immunities %}<p><strong>Condition Immunities</strong> {{ this_player.condition_immunities }}</p>{% endif %}
+                {% if this_player.senses %}<p><strong>Senses</strong> {{ this_player.senses }}</p>{% endif %}
+                {% if this_player.languages %}<p><strong>Languages</strong> {{ this_player.languages }}</p>{% endif %}
+                {% if this_player.challenge_rating %}<p><strong>Challenge</strong> {{ this_player.challenge_rating }}</p>{% endif %}
             </div>
         </div>
 
-        {% if this_npc.traits %}
+        {% if this_player.traits %}
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <p><strong>Traits</strong> {{ this_npc.traits|safe }}</p>
+                    <p><strong>Traits</strong> {{ this_player.traits|safe }}</p>
                 </div>
             </div>
         {% endif %}
 
-        {% if this_npc.actions %}
+        {% if this_player.actions %}
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <p><strong>Actions</strong> {{ this_npc.actions|safe }}</p>
+                    <p><strong>Actions</strong> {{ this_player.actions|safe }}</p>
                 </div>
             </div>
         {% endif %}
 
-        {% if this_npc.notes %}
+        {% if this_player.notes %}
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <p><strong>Notes</strong> {{ this_npc.notes|safe }}</p>
+                    <p><strong>Notes</strong> {{ this_player.notes|safe }}</p>
                 </div>
             </div>
         {% endif %}
 
     {% else %}
-        <p>You haven't created any NPCs yet!</p>
+        <p>You haven't created any Players yet!</p>
     {% endif %}
 {% endblock %}

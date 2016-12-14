@@ -74,6 +74,54 @@ class NPCForm(TinyMCEForm):
             'notes',
         ]
 
+class PlayerForm(TinyMCEForm):
+    class Meta:
+        model = models.Player
+        fields = [
+            'name',
+            'player',
+            'player_class',
+            'race',
+            'xp',
+            'background',
+            'initiative',
+            'personality',
+            'bonds',
+            'ideals',
+            'flaws',
+            'feats',
+            'actions',
+            'spells',
+            'notes',
+            'alignment',
+            'size',
+            'languages',
+            'strength',
+            'dexterity',
+            'constitution',
+            'intelligence',
+            'wisdom',
+            'charisma',
+            'armor_class',
+            'hit_points',
+            'speed',
+            'saving_throws',
+            'skills',
+            'npc_class',
+            'age',
+            'height',
+            'weight',
+            'creature_type',
+            'damage_vulnerabilities',
+            'damage_immunities',
+            'condition_immunities',
+            'senses',
+            'challenge_rating',
+            'traits',
+            'actions',
+            'notes',
+        ]
+
 
 class DeleteMonsterForm(forms.ModelForm):
     class Meta:
