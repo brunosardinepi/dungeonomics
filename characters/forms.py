@@ -107,7 +107,6 @@ class PlayerForm(TinyMCEForm):
             'speed',
             'saving_throws',
             'skills',
-            'npc_class',
             'age',
             'height',
             'weight',
