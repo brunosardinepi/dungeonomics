@@ -3,6 +3,11 @@
 
 {% block title %} Home | {{ block.super }}{% endblock %}
 
+{% block static %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css" media="screen" />
+{% endblock %}
+
 {% block body_content %}
     {% if user.is_authenticated %}
         <div class="row campaign-row">
@@ -96,7 +101,7 @@
                 <div class="panel panel-default">
                     <div class="panel-body" style="min-height: 150px;">
                         <div class="col-md-3">
-                            <img src="{% static 'img/screenshot_01_thumb.png' %}">
+                            <a class="fancy" href="{% static 'img/screenshot_01_full.png' %}"><img src="{% static 'img/screenshot_01_thumb.png' %}" alt=""/></a>
                         </div>
                         <div class="col-md-9">
                             <h3>Create a Campaign</h3>
@@ -151,7 +156,7 @@
                 </div>
             </div>
         </div>
-        <div class="row campaign-row">
+        <div class="row">
             <div class="col-md-6 col-md-offset-3">
                 <div class="panel panel-default">
                     <div class="panel-body" style="min-height: 150px;">
@@ -167,4 +172,18 @@
             </div>
         </div>
     {% endif %}
+{% endblock %}
+
+{% block end_static %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("a.fancy").fancybox({
+                'transitionIn'	:	'elastic',
+                'transitionOut'	:	'elastic',
+                'speedIn'		:	600, 
+                'speedOut'		:	200, 
+                'overlayShow'	:	false
+            });            
+        });
+    </script>
 {% endblock %}
