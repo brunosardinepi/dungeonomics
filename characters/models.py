@@ -118,6 +118,8 @@ class Player(Character):
     actions = models.TextField(blank=True)
     spells = models.TextField(blank=True)
     notes = models.TextField(blank=True)
+    traits = models.TextField(blank=True)
+    senses = models.CharField(max_length=255, default='', blank=True)
 
 
 
