@@ -1,4 +1,5 @@
 {% extends 'layout.html' %}
+{% load static from staticfiles %}
 
 {% block title %} Home | {{ block.super }}{% endblock %}
 
@@ -87,9 +88,9 @@
         <div class="row campaign-row">
             <div class="col-md-6 col-md-offset-3">
                 <div class="panel panel-default">
-                    <div class="panel-body" style="min-height: 10px;">
+                    <div class="panel-body" style="min-height: 150px;">
                         <div class="col-md-2">
-                            pic
+                            <img src="{% static 'img/screenshot_01_thumb.png' %}">
                         </div>
                         <div class="col-md-10">
                             <h3>Create a Campaign</h3>
@@ -99,7 +100,65 @@
                 </div>
             </div>
         </div>
+        <div class="row campaign-row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-default">
+                    <div class="panel-body" style="min-height: 150px;">
+                        <div class="col-md-2">
+                            <img src="{% static 'img/screenshot_02_thumb.png' %}">
+                        </div>
+                        <div class="col-md-10">
+                            <h3>Tag Monsters and NPCs</h3>
+                            <p>Manually adding monsters and NPCs to your campaign is a thing of the past. With Dungeonomics, you can tag Monstesr and NPCs in your notes to quickly and easily pull up their stats.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row campaign-row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-default">
+                    <div class="panel-body" style="min-height: 150px;">
+                        <div class="col-md-2">
+                            <img src="{% static 'img/screenshot_03_thumb.png' %}">
+                        </div>
+                        <div class="col-md-10">
+                            <h3>Link to Characters</h3>
+                            <p>When you've tagged a Monster or NPC in your campaign, it will automatically create a link to that character in your campaign. All you have to do is click that generated link and it will take you to your Monster or NPC statblock.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row campaign-row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-default">
+                    <div class="panel-body" style="min-height: 150px;">
+                        <div class="col-md-2">
+                            <img src="{% static 'img/screenshot_04_thumb.png' %}">
+                        </div>
+                        <div class="col-md-10">
+                            <h3>Create Monsters and NPCs</h3>
+                            <p>Using our Monster and NPC tools, you can create your own characters to use in your campaigns. We have created this in such a way that it allows you to input all the information you'll need for any Monster or NPC in any RPG system, not just D&D.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row campaign-row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-default">
+                    <div class="panel-body" style="min-height: 150px;">
+                        <div class="col-md-2">
+                            <img src="{% static 'img/screenshot_05_thumb.png' %}">
+                        </div>
+                        <div class="col-md-10">
+                            <h3>Wiki and Community</h3>
+                            <p>We have a wiki that is constantly being updated to help with any questions you have. We also have thousands of registered users, and the generous support of the reddit community.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% endif %}
 {% endblock %}
-
-{% comment %}can also tag NPCs and Monsters in your notes to quickly and easily pull up their stats.{% endcomment %}
