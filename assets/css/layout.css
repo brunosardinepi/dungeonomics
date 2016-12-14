@@ -149,3 +149,6 @@ a.home-panel:hover {
     top: 0;
     background: #333;
 }
+.fancy img {
+    border: 2px solid #000;
+}
