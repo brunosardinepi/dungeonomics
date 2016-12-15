@@ -24,6 +24,7 @@ class MonsterTestCase(TestCase):
         'creature_type': 'Bear',
         'damage_vulnerabilities': 'Fire',
         'damage_immunities': 'Slashing',
+        'damage_resistances': 'Non-Magical Piercing',
         'condition_immunities': 'Blind',
         'senses': 'Darkvision',
         'challenge_rating': 10,
@@ -166,6 +167,13 @@ class MonsterTestCase(TestCase):
         """Fail to create a monster because of no damage_immunities"""
         form_data_test = dict(self.form_data)
         form_data_test['damage_immunities'] = ''
+        form = forms.MonsterForm(data=form_data_test)
+        self.assertFalse(form.is_valid())
+
+    def test_monster_form_bad_damage_resistances(self):
+        """Fail to create a monster because of no damage_resistances"""
+        form_data_test = dict(self.form_data)
+        form_data_test['damage_resistances'] = ''
         form = forms.MonsterForm(data=form_data_test)
         self.assertFalse(form.is_valid())
         
@@ -386,6 +394,13 @@ class NPCTestCase(TestCase):
         """Fail to create an npc because of no damage_immunities"""
         form_data_test = dict(self.form_data)
         form_data_test['damage_immunities'] = ''
+        form = forms.NPCForm(data=form_data_test)
+        self.assertFalse(form.is_valid())
+
+    def test_npc_form_bad_damage_resistances(self):
+        """Fail to create an npc because of no damage_resistances"""
+        form_data_test = dict(self.form_data)
+        form_data_test['damage_resistances'] = ''
         form = forms.NPCForm(data=form_data_test)
         self.assertFalse(form.is_valid())
         
