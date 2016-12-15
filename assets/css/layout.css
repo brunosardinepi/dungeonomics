@@ -159,7 +159,9 @@ a.home-panel:hover {
   height: 60px;
   background-color: #222;
 }
-.container .text-center {
+.footer > .container .text-center {
   margin: 20px 0;
-  color: #9d9d9d;
+}
+.footer a {
+    color: #9d9d9d;
 }
