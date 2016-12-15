@@ -5,14 +5,14 @@ from django.utils import timezone
 from . import models
 
 
-class CampaignModelTests(TestCase):
-    def setUp(self):
-        self.user = User.objects.create(username="testuser", password="testpassword")
+# class CampaignModelTests(TestCase):
+#     def setUp(self):
+#         self.user = User.objects.create(username="testuser", password="testpassword")
 
-    def test_campaign_creation(self):
-        campaign = models.Campaign.objects.create(
-            user=self.user,
-            title="Campaign Title"
-        )
-        now = timezone.now()
-        self.assertLess(campaign.created_at, now)
+#     def test_campaign_creation(self):
+#         campaign = models.Campaign.objects.create(
+#             user=self.user,
+#             title="Campaign Title"
+#         )
+#         now = timezone.now()
+#         self.assertLess(campaign.created_at, now)
