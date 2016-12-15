@@ -78,7 +78,7 @@ class PlayerForm(TinyMCEForm):
     class Meta:
         model = models.Player
         fields = [
-            'char_name',
+            'name',
             'player_name',
             'player_class',
             'race',
