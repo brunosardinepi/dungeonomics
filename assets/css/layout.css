@@ -162,6 +162,17 @@ a.home-panel:hover {
 .footer > .container .text-center {
   margin: 20px 0;
 }
-.footer a {
+.footer a.footer-link, .footer a.footer-logo {
+    text-decoration: none;
+}
+.footer a.footer-link:hover, .footer a.footer-logo:hover {
+    text-decoration: none;
+    color: #fff;
+}
+.footer a.footer-link {
+    color: #9d9d9d;
+    padding: 0 2px;
+}
+.footer a.footer-logo {
     color: #9d9d9d;
 }
