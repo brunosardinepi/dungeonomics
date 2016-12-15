@@ -67,7 +67,7 @@ def player_detail(request, player_pk=None):
     user = None
     if request.user.is_authenticated():
         user = request.user.pk
-    player = sorted(models.Player.objects.filter(user=user),
+    players = sorted(models.Player.objects.filter(user=user),
         key=lambda player: player.player_name.lower()
         )
     if player_pk:
