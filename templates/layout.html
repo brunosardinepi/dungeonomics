@@ -107,7 +107,13 @@
 
         <footer class="footer">
             <div class="container">
-                <p class="text-center">Donate Contact Reddit GitHub Privacy Policy</p>
+                <p class="text-center">
+                    <a href="{% url 'donate' %}">Donate</a> 
+                    <a href="mailto:dungeonomics@gmail.com">Contact</a> 
+                    <a href="https://www.reddit.com/r/dungeonomics/" target="_blank"><i class="fa fa-reddit fa-fw" aria-hidden="true"></i></a> 
+                    <a href="https://github.com/brunosardinepi/dungeonomics" target="_blank"><i class="fa fa-github fa-fw" aria-hidden="true"></i></a> 
+                    <a href="{% url 'privacy' %}">Privacy Policy</a>
+                </p>
             </div>
         </footer>
 	</body>
