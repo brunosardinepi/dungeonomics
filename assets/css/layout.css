@@ -161,7 +161,7 @@ a.home-panel:hover {
 }
 .footer > .container .text-center {
     margin: 16px 0;
-    line-height: 24px;
+    line-height: 0;
 }
 .footer a.footer-link, .footer a.footer-logo {
     text-decoration: none;
