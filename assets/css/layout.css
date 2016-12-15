@@ -4,7 +4,7 @@ html {
 }
 body {
     /*min-height: 2000px;*/
-    padding-top: 50px;
+    padding-top: 60px;
     background: url("../img/body_bg.png") no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -156,6 +156,9 @@ a.home-panel:hover {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 50px;
+  height: 60px;
   background-color: #222;
+}
+.footer p {
+    margin: 20px 0;
 }
