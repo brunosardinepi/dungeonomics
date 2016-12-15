@@ -1,4 +1,4 @@
-The settings.py file here is an exact copy of the production file, with sensitive data removed.
+The settings_template.py file here is an exact copy of the production settings.py file, with sensitive data removed.
 
 The social accounts may need to be removed from the INSTALLED_APPS in order for the site to function properly.
 
