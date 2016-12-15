@@ -164,7 +164,6 @@ a.home-panel:hover {
 }
 .footer a.footer-link, .footer a.footer-logo {
     text-decoration: none;
-    line-height: 60px;
 }
 .footer a.footer-link:hover, .footer a.footer-logo:hover {
     text-decoration: none;
