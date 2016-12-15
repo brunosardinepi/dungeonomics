@@ -80,7 +80,7 @@ class PlayerForm(TinyMCEForm):
         fields = [
             'player_name',
             'character_name',
-            'class',
+            'character_class',
 	        'level',
 	        'background',
             'race',
@@ -133,5 +133,5 @@ class DeletePlayerForm(forms.ModelForm):
         model = models.Player
         fields = [
             'name',
-            'player_name',
+            'character_name',
             ]

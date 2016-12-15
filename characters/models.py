@@ -103,7 +103,7 @@ class Player(Character):
     character_name = models.CharField(max_length=255, default='')
     proficiency_bonus = models.CharField(max_length=255, default='', blank=True)
     player_name = models.CharField(max_length=255, default='', blank=True)
-    player_class = models.CharField(max_length=255, default='', blank=True)
+    character_class = models.CharField(max_length=255, default='', blank=True)
     race = models.TextField(blank=True)
     xp = models.IntegerField(default=10, blank=True)
     background = models.CharField(max_length=255, default='', blank=True)
