@@ -8,7 +8,7 @@ Dungeonomics was created in an attempt to get rid of piles of papers that DMs ha
 
 ## Contributing
 
-Dungeonomics is a community tool made by DMs for DMs. Dungeonomics is a free tool to be used by the D&D/RPG community. In an effort to promote the use and growing functionality of Dungeonomics, we are opening Dungeonomics to contributors. Anyone is free to pull the Dungeonomics code and make their own code changes and submit them for approval. We want the community to not only provide us with feedback, but also have a direct influence on the site.
+Dungeonomics is a community tool made by DMs for DMs. Dungeonomics is a free tool to be used by the D&D/RPG community. In an effort to promote the use and growing functionality of Dungeonomics, the Dungeonomics code is open to contributors. Anyone is free to pull the Dungeonomics code and make their own code changes and submit them for approval. We want the community to not only provide us with feedback, but also have a direct influence on the site.
 
 Dungeonomics is built with [Django](https://www.djangoproject.com/).
 
