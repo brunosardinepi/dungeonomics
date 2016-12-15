@@ -100,7 +100,8 @@ class NPC(Character):
 
 
 class Player(Character):
-    proficiency = models.CharField(max_length=255, default='', blank=True)
+    character_name = models.CharField(max_length=255, default='')
+    proficiency_bonus = models.CharField(max_length=255, default='', blank=True)
     player_name = models.CharField(max_length=255, default='', blank=True)
     player_class = models.CharField(max_length=255, default='', blank=True)
     race = models.TextField(blank=True)
@@ -119,7 +120,10 @@ class Player(Character):
     spells = models.TextField(blank=True)
     notes = models.TextField(blank=True)
     traits = models.TextField(blank=True)
+    proficiencies = models.TextField(blank=True)
     senses = models.CharField(max_length=255, default='', blank=True)
+    equipment = models.TextField(blank=True)
+
 
 
 
