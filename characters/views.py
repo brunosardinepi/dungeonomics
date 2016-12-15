@@ -68,7 +68,7 @@ def player_detail(request, player_pk=None):
     if request.user.is_authenticated():
         user = request.user.pk
     player = sorted(models.Player.objects.filter(user=user),
-        key=lambda player: player.player.lower()
+        key=lambda player: player.player_name.lower()
         )
     if player_pk:
         this_player = get_object_or_404(models.Player, pk=player_pk)
@@ -77,7 +77,7 @@ def player_detail(request, player_pk=None):
         else:
             raise Http404
     elif len(players) > 0:
-        this_monster = playerss[0]
+        this_player = players[0]
         if this_player.user == request.user:
             return render(request, 'characters/player_detail.html', {'this_player': this_player, 'players': players})
         else:

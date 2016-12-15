@@ -101,7 +101,7 @@ class NPC(Character):
 
 class Player(Character):
     proficiency = models.CharField(max_length=255, default='', blank=True)
-    player = models.CharField(max_length=255, default='', blank=True)
+    player_name = models.CharField(max_length=255, default='', blank=True)
     player_class = models.CharField(max_length=255, default='', blank=True)
     race = models.TextField(blank=True)
     xp = models.IntegerField(default=10, blank=True)

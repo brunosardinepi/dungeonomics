@@ -2,9 +2,9 @@
 
 {% block title %}
     {% if this_player.pk %}
-        {{ this_player.name }} 
+        {{ this_player.player_name }} 
     {% else %}
-        Playes 
+        Players 
     {% endif %}
     | {{ block.super }}
 {% endblock %}
@@ -16,7 +16,7 @@
         {% for player in players %}
             <li style="margin-bottom: 10px;">
                 <a href="{% url 'characters:player_detail' player_pk=player.id %}">
-                    {{ player.name }}
+                    {{ player.player_name }}
                 </a>
             </li>
         {% endfor %}
@@ -31,9 +31,9 @@
 
 {% block character_detail_title %}
     {% if this_player %}
-        {{ this_player.name }}
+        {{ this_player.player_name }}
     {% else %}
-        Playes
+        Players
     {% endif %}
 {% endblock %}
 
