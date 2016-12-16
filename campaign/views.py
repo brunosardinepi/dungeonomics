@@ -306,7 +306,7 @@ def section_delete(request, campaign_pk, chapter_pk, section_pk):
 
 
 def campaign_import_chapter_create(user, campaign, chapter):
-    new_chapter = models.Chapter.create(
+    new_chapter = models.Chapter(
         title=chapter["title"],
         user=user,
         campaign=campaign,
