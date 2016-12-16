@@ -303,7 +303,7 @@ def section_delete(request, campaign_pk, chapter_pk, section_pk):
     return render(request, 'campaign/section_delete.html', {'form': form, 'section': section})
 
 @login_required
-def monster_import(request):
+def campaign_import(request):
     user_import = None
     form = forms.ImportCampaignForm()
     if request.method == 'POST':
