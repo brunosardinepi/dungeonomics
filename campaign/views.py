@@ -319,7 +319,7 @@ def campaign_import(request):
             campaign = form.save(commit=False)
             campaign.user = request.user
             campaign.save()
-            for order, attributes in user_import["chapters"]:
+            for order, attributes in user_import["chapters"].items():
                 new_chapter = models.Chapter(
                     title=attributes["title"],
                     user=request.user,
