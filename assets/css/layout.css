@@ -4,7 +4,7 @@ html {
 }
 body {
     /*min-height: 2000px;*/
-    padding-top: 60px;
+    padding-top: 51px;
     background: url("../img/body_bg.png") no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
