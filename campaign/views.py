@@ -304,6 +304,17 @@ def section_delete(request, campaign_pk, chapter_pk, section_pk):
         raise Http404
     return render(request, 'campaign/section_delete.html', {'form': form, 'section': section})
 
+
+def campaign_import_chapter_create(user, campaign, chapter):
+    new_chapter = models.Chapter(
+        title=chapter["title"],
+        user=user,
+        campaign=campaign,
+        content=chapter["content"]
+        )
+    new_chapter.save()
+    return new_chapter
+
 @login_required
 def campaign_import(request):
     user_import = None
@@ -316,37 +327,10 @@ def campaign_import(request):
             return HttpResponse("no user_import to get")
         form = forms.ImportCampaignForm(request.POST)
         if form.is_valid():
-            # monster = form.save(commit=False)
             campaign = form.save(commit=False)
-            # monster.user = request.user
             campaign.user = request.user
-            campaign.created_at = user_import["created_at"]
-            # monster.name = user_import[0]
-            # monster.level = user_import[1]
-            # monster.alignment = user_import[2]
-            # monster.size = user_import[3]
-            # monster.languages = user_import[4]
-            # monster.strength = user_import[5]
-            # monster.dexterity = user_import[6]
-            # monster.constitution = user_import[7]
-            # monster.intelligence = user_import[8]
-            # monster.wisdom = user_import[9]
-            # monster.charisma = user_import[10]
-            # monster.armor_class = user_import[11]
-            # monster.hit_points = user_import[12]
-            # monster.speed = user_import[13]
-            # monster.saving_throws = user_import[14]
-            # monster.skills = user_import[15]
-            # monster.creature_type = user_import[16]
-            # monster.damage_vulnerabilities = user_import[17]
-            # monster.damage_immunities = user_import[18]
-            # monster.condition_immunities = user_import[19]
-            # monster.senses = user_import[20]
-            # monster.challenge_rating = user_import[21]
-            # monster.traits = user_import[22]
-            # monster.actions = user_import[23]
-            # monster.save()
             campaign.save()
-            # return HttpResponseRedirect(monster.get_absolute_url())
+            for chapter in user_import["chapters"]:
+                campaign_import_chapter_create(request.user, campaign, chapter)
             return HttpResponseRedirect(campaign.get_absolute_url())
     return render(request, 'campaign/campaign_import.html', {'form': form, 'user_import': user_import})
