@@ -12,6 +12,8 @@ from . import forms
 from . import models
 from characters import models as character_models
 
+import json
+
 
 @login_required
 def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None):
@@ -309,7 +311,7 @@ def campaign_import(request):
     if request.method == 'POST':
         if request.POST.get('user_import'):
             user_import = request.POST.get('user_import')
-            user_import = dict(user_import)
+            user_import = json.loads(user_import)
         else:
             return HttpResponse("no user_import to get")
         form = forms.ImportCampaignForm(request.POST)
