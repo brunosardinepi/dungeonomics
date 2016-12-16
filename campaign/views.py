@@ -309,6 +309,7 @@ def campaign_import(request):
     if request.method == 'POST':
         if request.POST.get('user_import'):
             user_import = request.POST.get('user_import')
+            user_import = dict(user_import)
         else:
             return HttpResponse("no user_import to get")
         form = forms.ImportCampaignForm(request.POST)
@@ -317,8 +318,8 @@ def campaign_import(request):
             campaign = form.save(commit=False)
             # monster.user = request.user
             campaign.user = request.user
+            campaign.created_at = user_import["created_at"]
             # monster.name = user_import[0]
-            campaign.title = user_import["title"]
             # monster.level = user_import[1]
             # monster.alignment = user_import[2]
             # monster.size = user_import[3]
