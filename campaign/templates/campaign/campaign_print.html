@@ -5,10 +5,10 @@
 <hr>
 
 {% for chapter in chapters %}
-    <h2>{{ chapter.title }}</h3>
-    <p>{{ chapter.content }}</p>
+    <h2>{{ chapter.order }}. {{ chapter.title }}</h3>
+    {{ chapter.content|safe }}
     {% for section in sections %}
-        <h3>{{ section.title }}</h3>
-        <p>{{ section.content }}</p>
+        <h4>{{ section.title }}</h4>
+        {{ section.content|safe }}
     {% endfor %}
 {% endfor %}
