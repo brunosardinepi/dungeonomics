@@ -329,7 +329,7 @@ def campaign_import(request):
                     )
                 new_chapter.save()
                 if "sections" in chapter_attributes:
-                    for section_order, section_attributes in value["sections"].items():
+                    for section_order, section_attributes in chapter_attributes["sections"].items():
                         new_section = models.Section(
                             title=section_attributes["title"],
                             user=request.user,
