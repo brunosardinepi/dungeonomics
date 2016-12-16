@@ -158,7 +158,7 @@ a.home-panel:hover {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 80px;
+    height: 90px;
     background-color: #222;
 }
 .footer-div {
@@ -166,6 +166,7 @@ a.home-panel:hover {
 }
 #footer-nav {
     height: 60px;
+    width: 250px;
     margin: 0;
 }
 #footer-nav li {
@@ -184,7 +185,4 @@ a.home-panel:hover {
 #footer-nav a:hover {
     text-decoration: none;
     color: #fff;
-}
-.copyright {
-    margin: 0;
 }
