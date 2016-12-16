@@ -334,6 +334,6 @@ def campaign_import(request):
             for chapter in user_import["chapters"]:
                 # campaign_import_chapter_create(request.user, campaign, chapter)
                 chapters.append(chapter)
-                return HttpResponse(chapters)
-            return HttpResponseRedirect(campaign.get_absolute_url())
+            return HttpResponse(chapters)
+            # return HttpResponseRedirect(campaign.get_absolute_url())
     return render(request, 'campaign/campaign_import.html', {'form': form, 'user_import': user_import})
