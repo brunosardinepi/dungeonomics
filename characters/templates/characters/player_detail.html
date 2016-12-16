@@ -53,6 +53,8 @@
                 <div class="character-label">
                     <p>Class</p>
                 </div>
+            </div>
+            <div class="col-md-2">
                 <div class="character-details">
                     <p>{{ this_player.player_class }}</p>
                 </div>
@@ -61,6 +63,8 @@
                 <div class="character-label">
                     <p>Level</p>
                 </div>
+            </div>
+            <div class="col-md-2">
                 <div class="character-details">
                     <p>{{ this_player.level }}</p>
                 </div>
@@ -69,14 +73,20 @@
                 <div class="character-label">
                     <p>Background</p>
                 </div>
+            </div>
+            <div class="col-md-2">
                 <div class="character-details">
                     <p>{{ this_player.background }}</p>
                 </div>
             </div>
+        </div>
+        <div class="row">
             <div class="col-md-2">
                 <div class="character-label">
                     <p>Race</p>
                 </div>
+            </div>
+            <div class="col-md-2">
                 <div class="character-details">
                     <p>{{ this_player.race }}</p>
                 </div>
@@ -85,18 +95,22 @@
                 <div class="character-label">
                     <p>Alignment</p>
                 </div>
+            </div>
+            <div class="col-md-2">
                 <div class="character-details">
-                    <p>{{ this_player.get_alignment_display }}</p>
+                    <p>{{ this_player.alignment }}</p>
                 </div>
             </div>
             <div class="col-md-2">
                 <div class="character-label">
                     <p>XP</p>
                 </div>
+            </div>
+            <div class="col-md-2">
                 <div class="character-details">
                     <p>{{ this_player.xp }}</p>
                 </div>
-            </div>                    
+            </div>
         </div>
 
         <hr>
