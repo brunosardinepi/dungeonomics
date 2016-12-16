@@ -328,15 +328,16 @@ def campaign_import(request):
                     content=chapter_attributes["content"]
                     )
                 new_chapter.save()
-                for section_order, section_attributes in user_import["sections"].items():
-                    new_section = models.Section(
-                        title=section_attributes["title"],
-                        user=request.user,
-                        campaign=campaign,
-                        chapter=new_chapter,
-                        order=section_order,
-                        content=section_attributes["content"]
-                        )
-                    new_section.save()
+                if "sections" in chapter_attributes:
+                    for section_order, section_attributes in value["sections"].items():
+                        new_section = models.Section(
+                            title=section_attributes["title"],
+                            user=request.user,
+                            campaign=campaign,
+                            chapter=new_chapter,
+                            order=section_order,
+                            content=section_attributes["content"]
+                            )
+                        new_section.save()
             return HttpResponseRedirect(campaign.get_absolute_url())
     return render(request, 'campaign/campaign_import.html', {'form': form, 'user_import': user_import})
