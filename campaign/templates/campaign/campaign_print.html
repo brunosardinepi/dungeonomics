@@ -8,8 +8,10 @@
     <h2>Chapter {{ chapter.order }}: {{ chapter.title }}</h3>
     {{ chapter.content|safe }}
     {% for section in sections %}
-        <h3>Section {{ section.order }}: {{ section.title }}</h3>
-        {{ section.content|safe }}
+        {% if section.chapter == chapter %}
+            <h3>Section {{ section.order }}: {{ section.title }}</h3>
+            {{ section.content|safe }}
+        {% endif %}
     {% endfor %}
     {% if not forloop.last %}
         <hr>
