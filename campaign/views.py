@@ -319,14 +319,24 @@ def campaign_import(request):
             campaign = form.save(commit=False)
             campaign.user = request.user
             campaign.save()
-            for order, attributes in user_import["chapters"].items():
+            for chapter_order, chapter_attributes in user_import["chapters"].items():
                 new_chapter = models.Chapter(
-                    title=attributes["title"],
+                    title=chapter_attributes["title"],
                     user=request.user,
                     campaign=campaign,
-                    order=order,
-                    content=attributes["content"]
+                    order=chapter_order,
+                    content=chapter_attributes["content"]
                     )
                 new_chapter.save()
+                for section_order, section_attributes in user_import["sections"].items():
+                    new_section = models.Section(
+                        title=section_attributes["title"],
+                        user=request.user,
+                        campaign=campaign,
+                        chapter=new_chapter,
+                        order=section_order,
+                        content=section_attributes["content"]
+                        )
+                    new_section.save()
             return HttpResponseRedirect(campaign.get_absolute_url())
     return render(request, 'campaign/campaign_import.html', {'form': form, 'user_import': user_import})
