@@ -13,7 +13,19 @@
             {{ section.content|safe }}
         {% endif %}
     {% endfor %}
-    {% if not forloop.last %}
-        <hr>
-    {% endif %}
+    <hr>
+{% endfor %}
+
+<h1>Appendix A: Monsters</h1>
+
+{% for monster in monsters %}
+    <h3>{{ monster.name }}</h3>
+{% endfor %}
+
+<hr>
+
+<h1>Appendix B: NPCs</h1>
+
+{% for npc in npcs %}
+    <h3>{{ npc.name }}</h3>
 {% endfor %}
