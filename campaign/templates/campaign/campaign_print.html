@@ -9,11 +9,11 @@
     {{ chapter.content|safe }}
     {% for section in sections %}
         {% if section.chapter == chapter %}
+            <br />
+            <br />
             <h3>Section {{ section.order }}: {{ section.title }}</h3>
             {{ section.content|safe }}
         {% endif %}
-        <br />
-        <br />
     {% endfor %}
     <hr>
 {% endfor %}
