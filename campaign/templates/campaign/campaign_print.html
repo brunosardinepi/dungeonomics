@@ -22,8 +22,7 @@
 
 {% for monster in monsters %}
     <h2>{{ monster.name }}</h2>
-    <h2>{{ monster.name }}</h2>
-    <p>{% if monster.level %}Level {{ monster.level }} {% endif %}{% if monster.size %}<p>{{ monster.size }} </p>{% endif %}{% if monster.creature_type %}<p>{{ monster.creature_type }} </p>{% endif %}{% if monster.get_alignment_display %}({{ monster.get_alignment_display }}){% endif %}</p>   
+    <p>{% if monster.level %}Level {{ monster.level }} {% endif %}{% if monster.size %}{{ monster.size }} {% endif %}{% if monster.creature_type %}{{ monster.creature_type }} {% endif %}{% if monster.get_alignment_display %}({{ monster.get_alignment_display }}){% endif %}</p>   
     <br />
     {% if monster.languages %}<p>Languages: {{ monster.languages }}</p>{% endif %}
     {% if monster.senses %}<p>Senses: {{ monster.senses }}</p>{% endif %}
