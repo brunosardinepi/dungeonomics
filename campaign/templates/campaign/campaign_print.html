@@ -21,7 +21,7 @@
 <h1>Appendix A: Monsters</h1>
 
 {% for monster in monsters %}
-    <h3>{{ monster.name }}</h3>
+    <h2><i class="fa fa-paw" aria-hidden="true"></i> {{ monster.name }}</h2>
 {% endfor %}
 
 <hr>
@@ -29,18 +29,15 @@
 <h1>Appendix B: NPCs</h1>
 
 {% for npc in npcs %}
-    <h3>{{ npc.name }}</h3>
-    <p>{% if npc.level %}Level {{ npc.level }} {% endif %}{% if npc.npc_class %}{{ npc.npc_class }} {% endif %}{% if npc.alignment %}({{ npc.alignment }}){% endif %}</p>
-    <br />
+    <h2><i class="fa fa-user" aria-hidden="true"></i> {{ npc.name }}</h2>
+    <p>{% if npc.level %}Level {{ npc.level }} {% endif %}{% if npc.npc_class %}{{ npc.npc_class }} {% endif %}{% if npc.get_alignment_display %}({{ npc.get_alignment_display }}){% endif %}</p>
     {% if npc.size %}<p>Size: {{ npc.size }}</p>{% endif %}
     {% if npc.creature_type %}<p>{{ npc.creature_type }}</p>{% endif %}
     <br />
     {% if npc.age %}<p>Age: {{ npc.age }}</p>{% endif %}
     {% if npc.height %}<p>Height: {{ npc.height }}</p>{% endif %}
     {% if npc.weight %}<p>Weight: {{ npc.weight }}</p>{% endif %}
-    <br />
     {% if npc.languages %}<p>Languages: {{ npc.languages }}</p>{% endif %}
-    <br />
     {% if npc.senses %}<p>Senses: {{ npc.senses }}</p>{% endif %}
     {% if npc.challenge_rating %}<p>Challenge rating: {{ npc.challenge_rating }}</p>{% endif %}
     <br />
@@ -62,7 +59,7 @@
     {% if npc.damage_resistances %}<p>Damage resistances: {{ npc.damage_resistances }}</p>{% endif %}
     {% if npc.condition_immunities %}<p>Condition immunities: {{ npc.condition_immunities }}</p>{% endif %}
     <br />
-    {% if npc.traits %}<p>Traits {{ npc.traits }}</p>{% endif %}
-    {% if npc.actions %}<p>Actions {{ npc.actions }}</p>{% endif %}
-    {% if npc.notes %}<p>Notes {{ npc.notes }}</p>{% endif %}
+    {% if npc.traits %}<p>Traits {{ npc.traits|safe }}</p>{% endif %}
+    {% if npc.actions %}<p>Actions {{ npc.actions|safe }}</p>{% endif %}
+    {% if npc.notes %}<p>Notes {{ npc.notes|safe }}</p>{% endif %}
 {% endfor %}
