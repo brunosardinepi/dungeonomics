@@ -11,5 +11,7 @@
         <h3>Section {{ section.order }}: {{ section.title }}</h3>
         {{ section.content|safe }}
     {% endfor %}
-    <hr>
+    {% if not forloop.last %}
+        <hr>
+    {% endif %}
 {% endfor %}
