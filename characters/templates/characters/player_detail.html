@@ -49,69 +49,21 @@
 {% block character_detail %}
     {% if this_player %}
         <div class="row">
-            <div class="col-md-2">
-                <div class="character-label">
-                    <p>Class</p>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="character-details">
-                    <p>{{ this_player.player_class }}</p>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="character-label">
-                    <p>Level</p>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="character-details">
-                    <p>{{ this_player.level }}</p>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="character-label">
-                    <p>Background</p>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="character-details">
-                    <p>{{ this_player.background }}</p>
-                </div>
-            </div>
+            <div class="col-md-2"><p>Class</p></div>
+            <div class="col-md-2"><p>{{ this_player.character_class }}</p></div>
+            <div class="col-md-2"><p>Level</p></div>
+            <div class="col-md-2"><p>{{ this_player.level }}</p></div>   
+            <div class="col-md-2"><p>Background</p></div>    
+            <div class="col-md-2"><p>{{ this_player.background }}</p></div>
         </div>
         <div class="row">
-            <div class="col-md-2">
-                <div class="character-label">
-                    <p>Race</p>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="character-details">
-                    <p>{{ this_player.race }}</p>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="character-label">
-                    <p>Alignment</p>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="character-details">
-                    <p>{{ this_player.alignment }}</p>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="character-label">
-                    <p>XP</p>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="character-details">
-                    <p>{{ this_player.xp }}</p>
-                </div>
-            </div>
-        </div>
+            <div class="col-md-2"><p>Race</p></div>
+            <div class="col-md-2"><p>{{ this_player.race }}</p></div>
+            <div class="col-md-2"><p>Alignment</p></div>
+            <div class="col-md-2"><p>{{ this_player.alignment }}</p></div>
+            <div class="col-md-2"><p>XP</p></div>
+            <div class="col-md-2"><p>{{ this_player.xp }}</p></div>
+         </div>
 
         <hr>
 
