@@ -65,6 +65,14 @@ class DeleteChapterForm(forms.ModelForm):
         fields = ['title']
 
 
+class ImportCampaignForm(forms.ModelForm):
+    class Meta:
+        model = models.Campaign
+        fields = [
+            'title',
+        ]
+
+
 ChapterFormSet = forms.modelformset_factory(
     models.Chapter,
     form=ChapterForm,

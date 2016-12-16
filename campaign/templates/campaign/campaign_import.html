@@ -1,0 +1,22 @@
+<form method="POST" action="">
+    {% csrf_token %}
+    {{ form.errors }}
+    {{ form.non_field_errors }}
+    import:
+    <textarea name="user_import"></textarea>
+    <br />
+    <input type="submit" value="Submit" />
+</form>
+
+<br /><br />
+
+<p>user_import:</p>
+<p>{{ user_import }}</p>
+
+<br />
+
+<ul>
+    {% for item in user_import %}
+        <li>{{ item }}</li>
+    {% endfor %}
+</ul>
