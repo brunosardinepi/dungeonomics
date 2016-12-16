@@ -49,54 +49,9 @@
 {% block character_detail %}
     {% if this_player %}
         <div class="row">
-            <div class="col-md-2">
-                <div class="character-label">
-                    <p>Class</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_player.player_class }}</p>
-                </div>
+            <div class="col-md-12">
+                <p>{% if this_player.get_size_display %} {{ this_player.get_size_display }}{% endif %}{% if this_player.creature_type %} {{ this_player.creature_type }}{% endif %}{% if this_player.get_alignment_display %}, {{ this_player.get_alignment_display }}{% endif %}</p>
             </div>
-            <div class="col-md-2">
-                <div class="character-label">
-                    <p>Level</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_player.level }}</p>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="character-label">
-                    <p>Background</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_player.background }}</p>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="character-label">
-                    <p>Race</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_player.race }}</p>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="character-label">
-                    <p>Alignment</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_player.get_alignment_display }}</p>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="character-label">
-                    <p>XP</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_player.xp }}</p>
-                </div>
-            </div>                    
         </div>
 
         <hr>
