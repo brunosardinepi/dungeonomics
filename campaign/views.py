@@ -302,7 +302,7 @@ def section_delete(request, campaign_pk, chapter_pk, section_pk):
         raise Http404
     return render(request, 'campaign/section_delete.html', {'form': form, 'section': section})
 
-    @login_required
+@login_required
 def monster_import(request):
     user_import = None
     form = forms.ImportCampaignForm()
