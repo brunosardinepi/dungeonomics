@@ -42,6 +42,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="{% url 'campaign:chapter_create' campaign_pk=this_campaign.pk %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create chapter</span></a></li>
                                     <li><a href="{% url 'campaign:campaign_update' campaign_pk=this_campaign.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit campaign</span></a></li>
+                                    <li><a href="{% url 'campaign:campaign_print' campaign_pk=this_campaign.pk %}"><span class="text-info"><i class="fa fa-fw fa-print" aria-hidden="true"></i> Print campaign</span></a></li>
                                     <li><a href="{% url 'campaign:campaign_delete' campaign_pk=this_campaign.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete campaign</span></a></li>
                                 </ul>
                             </li>

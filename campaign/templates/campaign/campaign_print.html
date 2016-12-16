@@ -1,0 +1,14 @@
+<title>{{ campaign.title }} | Dungeonomics</title>
+
+<h1>{{ campaign.title }}</h1>
+
+<hr>
+
+{% for chapter in chapters %}
+    <h2>{{ chapter.title }}</h3>
+    <p>{{ chapter.content }}</p>
+    {% for section in sections %}
+        <h3>{{ section.title }}</h3>
+        <p>{{ section.content }}</p>
+    {% endblock %}
+{% endblock %}

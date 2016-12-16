@@ -232,24 +232,20 @@ def section_update(request, campaign_pk, chapter_pk, section_pk):
         raise Http404
     return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': section.chapter.campaign, 'chapter': section.chapter, 'section': section})
 
-
-class CampaignDelete(LoginRequiredMixin, DeleteView):
-    model = models.Campaign
-    success_url = reverse_lazy('home')
-    slug_field = "pk"
-    slug_url_kwarg = "campaign_pk"
-
-    def delete(self, request, *args, **kwargs):
-        messages.add_message(self.request, messages.SUCCESS, "Campaign deleted!")
-        return super(CampaignDelete, self).delete(request, *args, **kwargs)
-
-    def get_object(self, queryset=None):
-        campaign = super(CampaignDelete, self).get_object()
-        if not campaign.user == self.request.user:
-            raise Http404
-        else:
-            return campaign
-            
+@login_required
+def campaign_print(request, campaign_pk):
+    if campaign_pk:
+        campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+        chapters = sorted(models.Chapter.objects.filter(campaign=campaign),
+            key=lambda chapter: chapter.order
+            )
+        sections = sorted(models.Section.objects.filter(campaign=campaign),
+            key=lambda section: section.order
+            )
+        return render(request, 'campaign/campaign_print.html', {'campaign': campaign, 'chapters': chapters, 'sections': sections})
+    else:
+        raise Http404
+    
 
 @login_required
 def campaign_delete(request, campaign_pk):
