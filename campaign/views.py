@@ -319,12 +319,13 @@ def campaign_import(request):
             campaign = form.save(commit=False)
             campaign.user = request.user
             campaign.save()
-            for chapter in user_import["chapters"]:
+            for order, attributes in user_import["chapters"]:
                 new_chapter = models.Chapter(
-                    title=chapter["title"],
+                    title=attributes["title"],
                     user=request.user,
                     campaign=campaign,
-                    content=chapter["content"]
+                    order=order,
+                    content=attributes["content"]
                     )
                 new_chapter.save()
             return HttpResponseRedirect(campaign.get_absolute_url())
