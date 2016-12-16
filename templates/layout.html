@@ -106,14 +106,14 @@
         {% block end_static %}{% endblock %}
 
         <footer class="footer">
-            <div class="container" style="line-height: 28px;">
-                <p class="text-center">
-                    <a class="footer-link" href="{% url 'donate' %}">Donate</a>
-                    <a class="footer-link" href="mailto:dungeonomics@gmail.com">Contact</a>
-                    <a class="footer-logo" href="https://www.reddit.com/r/dungeonomics/" target="_blank"><i class="fa fa-2x fa-reddit" aria-hidden="true"></i></a> 
-                    <a class="footer-logo" href="https://github.com/brunosardinepi/dungeonomics" target="_blank"><i class="fa fa-2x fa-github" aria-hidden="true"></i></a> 
-                    <a class="footer-link" href="{% url 'privacy' %}">Privacy Policy</a>
-                </p>
+            <div class="footer-div">
+                <ul id="footer-nav">
+                    <li><a href="{% url 'donate' %}">Donate</a></li>
+                    <li><a href="mailto:dungeonomics@gmail.com">Contact</a></li>
+                    <li><a href="https://www.reddit.com/r/dungeonomics/" target="_blank"><i class="fa fa-2x fa-reddit" aria-hidden="true"></i></a></li> 
+                    <li><a href="https://github.com/brunosardinepi/dungeonomics" target="_blank"><i class="fa fa-2x fa-github" aria-hidden="true"></i></a></li> 
+                    <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
+                </ul>
             </div>
         </footer>
 	</body>
