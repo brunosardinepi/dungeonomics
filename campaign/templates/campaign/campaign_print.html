@@ -32,7 +32,8 @@
     <h3>{{ npc.name }}</h3>
     <p>{% if npc.level %}Level {{ npc.level }} {% endif %}{% if npc.npc_class %}{{ npc.npc_class }} {% endif %}{% if npc.alignment %}({{ npc.alignment }}){% endif %}</p>
     <br />
-    <p>{% if npc.size %}{{ npc.size }} {% endif %}{% if npc.creature_type %}{{ npc.creature_type }}{% endif %}</p>
+    {% if npc.size %}<p>Size: {{ npc.size }}</p>{% endif %}
+    {% if npc.creature_type %}<p>{{ npc.creature_type }}</p>{% endif %}
     <br />
     {% if npc.age %}<p>Age: {{ npc.age }}</p>{% endif %}
     {% if npc.height %}<p>Height: {{ npc.height }}</p>{% endif %}
