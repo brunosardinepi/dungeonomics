@@ -49,19 +49,19 @@
 {% block character_detail %}
     {% if this_player %}
         <div class="row">
-            <div class="col-md-2"><p>Class</p></div>
+            <div class="col-md-2"><p><strong>Class</strong></p></div>
             <div class="col-md-2"><p>{{ this_player.character_class }}</p></div>
-            <div class="col-md-2"><p>Level</p></div>
+            <div class="col-md-2"><p><strong>Level</strong></p></div>
             <div class="col-md-2"><p>{{ this_player.level }}</p></div>   
-            <div class="col-md-2"><p>Background</p></div>    
+            <div class="col-md-2"><p><strong>Background</strong></p></div>    
             <div class="col-md-2"><p>{{ this_player.background }}</p></div>
         </div>
         <div class="row">
-            <div class="col-md-2"><p>Race</p></div>
+            <div class="col-md-2"><p><strong>Race</strong></p></div>
             <div class="col-md-2"><p>{{ this_player.race }}</p></div>
-            <div class="col-md-2"><p>Alignment</p></div>
+            <div class="col-md-2"><p><strong>Alignment</strong></p></div>
             <div class="col-md-2"><p>{{ this_player.alignment }}</p></div>
-            <div class="col-md-2"><p>XP</p></div>
+            <div class="col-md-2"><p><strong>XP</strong></p></div>
             <div class="col-md-2"><p>{{ this_player.xp }}</p></div>
          </div>
 
