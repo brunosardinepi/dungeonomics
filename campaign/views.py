@@ -306,13 +306,12 @@ def section_delete(request, campaign_pk, chapter_pk, section_pk):
 
 
 def campaign_import_chapter_create(user, campaign, chapter):
-    new_chapter = models.Chapter(
+    new_chapter = models.Chapter.create(
         title=chapter["title"],
         user=user,
         campaign=campaign,
         content=chapter["content"]
         )
-    new_chapter.save()
     return new_chapter
 
 @login_required
@@ -330,10 +329,7 @@ def campaign_import(request):
             campaign = form.save(commit=False)
             campaign.user = request.user
             campaign.save()
-            chapters = []
             for chapter in user_import["chapters"]:
-                # campaign_import_chapter_create(request.user, campaign, chapter)
-                chapters.append(chapter)
-            return HttpResponse(chapters)
-            # return HttpResponseRedirect(campaign.get_absolute_url())
+                campaign_import_chapter_create(request.user, campaign, chapter)
+            return HttpResponseRedirect(campaign.get_absolute_url())
     return render(request, 'campaign/campaign_import.html', {'form': form, 'user_import': user_import})
