@@ -164,26 +164,29 @@ a.home-panel:hover {
 .footer-div {
     text-align: center;
 }
-#footer-nav {
+#footer-nav, #footer-social {
     height: 40px;
-    width: 300px;
+    width: 221px;
     margin: 0 auto;
     padding: 0;
 }
-#footer-nav li {
+#footer-social {
+    width: 76px !important;
+}
+#footer-nav li, #footer-social li {
     height: 40px;
     display: inline-block;
     text-align: center;
     padding: 0 5px;
 }
-#footer-nav a {
+#footer-nav a, #footer-social a {
     text-decoration: none;
     height: 40px;
     display: inline-block;
     line-height: 40px;
     color: #9d9d9d;
 }
-#footer-nav a:hover {
+#footer-nav a:hover, #footer-social a:hover {
     text-decoration: none;
     color: #fff;
 }
