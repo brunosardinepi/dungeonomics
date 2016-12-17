@@ -358,6 +358,10 @@ def campaign_export(request, campaign_pk):
         npcs = sorted(character_models.NPC.objects.filter(user=request.user),
             key=lambda npc: npc.name.lower()
             )
+        for chapter in chapters:
+            chapter.content = json.dumps(chapter.content)
+        for section in sections:
+            section.content = json.dumps(section.content)
         return render(request, 'campaign/campaign_export.html', {'campaign': campaign, 'chapters': chapters, 'sections': sections, 'monsters': monsters, 'npcs': npcs})
     else:
         raise Http404
