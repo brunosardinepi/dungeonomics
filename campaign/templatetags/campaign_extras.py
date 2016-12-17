@@ -9,7 +9,6 @@ register = template.Library()
 
 def jsonify(value): 
     '''Convert Django object to JSON object'''
-    # return mark_safe(json.dumps(value))
     return serializers.serialize("json", value)
 
 def int_to_roman(input):
@@ -43,7 +42,19 @@ def int_to_letter(input):
       result += letters[(input % 26) - 1]
    return result
 
+@register.simple_tag
+def sections_in_chapter(chapter_pk):
+    '''Returns dictionary of sections to display in export'''
+    chapter = models.Chapter.objects.get(pk=chapter_pk)
+    sections = sorted(models.Section.objects.filter(chapter=chapter),
+            key=lambda section: section.order
+            )
+    if sections:
+        for section in sections:
+            section.content = json.dumps(section.content)
+    return sections
 
 register.filter('jsonify', jsonify)
 register.filter('int_to_roman', int_to_roman)
 register.filter('int_to_letter', int_to_letter)
+register.filter('sections_in_chapter', sections_in_chapter)
