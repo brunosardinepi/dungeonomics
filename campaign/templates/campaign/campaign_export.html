@@ -11,15 +11,17 @@
 {% block static %}<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"></script>{% endblock %}
 
 {% block body_content %}
+    <div class="alert alert-info alert-dismissible" role="alert" style="margin-top: 30px;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        Copy the following code and then share it with friends! They will need to <a href="{% url 'campaign:campaign_import' %}" class="alert-link">import</a> it in order to view it.
+    </div>
     <div class="row campaign-row">
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Export Campaign</h3>
+                    <h3 class="panel-title">Export Campaign (<strong>with</strong> monsters and NPCs)</h3>
                 </div>
                 <div class="panel-body">
-                    <p>Copy the following code and then share it with friends! They will need to <a href="{% url 'campaign:campaign_import' %}">import</a> it in order to view it.</p>
-                    <p><button class="btn btn-primary btn-long" data-clipboard-target="#code-long">Copy to clipboard</button> <strong>Note: </strong>this export includes all of your monsters and NPCs. If you want to exclude these, use the code in the bottom section of the page.</p>
                     <div class="pre-scrollable" style="max-height: 400px;">
                     {% autoescape on %}
 <pre id="code-long">
@@ -99,8 +101,20 @@
 </pre>
                     {% endautoescape %}
                     </div>
-                    <hr>
-                    <p><button class="btn btn-primary btn-short" data-clipboard-target="#code-short">Copy to clipboard</button> <strong>Note: </strong>this export <strong>does not</strong> include all of your monsters and NPCs. If you want to include these, use the code in the top section of the page.</p>
+                </div>
+                <div class="panel-footer clearfix">
+                    <button class="btn btn-primary btn-long pull-right" data-clipboard-target="#code-long">Copy to clipboard</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row campaign-row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Export Campaign (<strong>without</strong> monsters and NPCs)</h3>
+                </div>
+                <div class="panel-body">
                     <div class="pre-scrollable" style="max-height: 400px;">
                     {% autoescape on %}
 <pre id="code-short">
@@ -121,6 +135,9 @@
 </pre>
                     {% endautoescape %}
                     </div>
+                </div>
+                <div class="panel-footer clearfix">
+                    <button class="btn btn-primary btn-short pull-right" data-clipboard-target="#code-short">Copy to clipboard</button>
                 </div>
             </div>
         </div>
