@@ -15,24 +15,24 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">Export Campaign</h3>
                 </div>
-                <div class="panel-body pre-scrollable">
+                <div class="panel-body pre-scrollable" style="max-height: 500px;">
                     {% autoescape on %}
-                    <pre>
-                    {
-                        "chapters": { {% for chapter in chapters %}
-                            "{{ chapter.order }}": {
-                                "title": "{{ chapter.title }}",
-                                "content": {{ chapter.content }}, {% if sections %}
-                                "sections": { {% for section in sections %}{% if section.chapter == chapter %}
-                                    "{{ section.order }}": {
-                                        "title": "{{ section.title }}",
-                                        "content": {{ section.content }}
-                                    {% if forloop.last %}}{% else %}},{% endif %}{% endif %}{% endfor %}
-                                }{% endif %}
-                            {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}
-                        }
-                    }
-                    </pre>
+<pre>
+{
+    "chapters": { {% for chapter in chapters %}
+        "{{ chapter.order }}": {
+            "title": "{{ chapter.title }}",
+            "content": {{ chapter.content }}, {% if sections %}
+            "sections": { {% for section in sections %}{% if section.chapter == chapter %}
+                "{{ section.order }}": {
+                    "title": "{{ section.title }}",
+                    "content": {{ section.content }}
+                {% if forloop.last %}}{% else %}},{% endif %}{% endif %}{% endfor %}
+            }{% endif %}
+        {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}
+    }
+}
+</pre>
                     {% endautoescape %}
                 </div>
             </div>
