@@ -19,10 +19,10 @@
                 </div>
                 <div class="panel-body">
                     <p>Copy the following code and then share it with friends! They will need to <a href="{% url 'campaign:campaign_import' %}">import</a> it in order to view it.</p>
-                    <p><button class="btn btn-primary" data-clipboard-target="#code-long">Copy to clipboard</button> <strong>Note: </strong>this export includes all of your monsters and NPCs. If you want to exclude these, use the code in the bottom section of the page.</p>
-                    <div id="code-long" class="pre-scrollable" style="max-height: 400px;">
+                    <p><button class="btn btn-primary btn-long" data-clipboard-target="#code-long">Copy to clipboard</button> <strong>Note: </strong>this export includes all of your monsters and NPCs. If you want to exclude these, use the code in the bottom section of the page.</p>
+                    <div class="pre-scrollable" style="max-height: 400px;">
                     {% autoescape on %}
-<pre>
+<pre id="code-long">
 {
     "chapters": { {% for chapter in chapters %}
         "{{ chapter.order }}": {
@@ -100,10 +100,10 @@
                     {% endautoescape %}
                     </div>
                     <hr>
-                    <p><button class="btn btn-primary" data-clipboard-target="#code-short">Copy to clipboard</button> <strong>Note: </strong>this export <strong>does not</strong> include all of your monsters and NPCs. If you want to include these, use the code in the top section of the page.</p>
-                    <div id="code-short" class="pre-scrollable" style="max-height: 400px;">
+                    <p><button class="btn btn-primary btn-short" data-clipboard-target="#code-short">Copy to clipboard</button> <strong>Note: </strong>this export <strong>does not</strong> include all of your monsters and NPCs. If you want to include these, use the code in the top section of the page.</p>
+                    <div class="pre-scrollable" style="max-height: 400px;">
                     {% autoescape on %}
-<pre>
+<pre id="code-short">
 {
     "chapters": { {% for chapter in chapters %}
         "{{ chapter.order }}": {
@@ -129,13 +129,22 @@
 
 {% block end_static %}
     <script>
-        var clipboard_long = new Clipboard('#code-long');
+        var clipboard_long = new Clipboard('.btn-long');
+        var clipboard_short = new Clipboard('.btn-short');
 
         clipboard_long.on('success', function(e) {
             console.log(e);
         });
 
         clipboard_long.on('error', function(e) {
+            console.log(e);
+        });
+
+        clipboard_short.on('success', function(e) {
+            console.log(e);
+        });
+
+        clipboard_short.on('error', function(e) {
             console.log(e);
         });
     </script>
