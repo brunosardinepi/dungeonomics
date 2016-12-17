@@ -15,8 +15,10 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">Export Campaign</h3>
                 </div>
-                <div class="panel-body pre-scrollable" style="max-height: 500px;">
+                <div class="panel-body">
                     <p>Copy the following code and then share it with friends! They will need to <a href="{% url 'campaign:campaign_import' %}">import</a> it in order to view it.</p>
+                    <p><strong>Note: </strong>this export includes all of your monsters and NPCs. If you want to exclude these, use the code in the bottom section of the page.</p>
+                    <div class="pre-scrollable" style="max-height: 400px;">
                     {% autoescape on %}
 <pre>
 {
@@ -94,6 +96,28 @@
 }
 </pre>
                     {% endautoescape %}
+                    </div>
+                    <p><strong>Note: </strong>this export <strong>does not</strong> include all of your monsters and NPCs. If you want to include these, use the code in the top section of the page.</p>
+                    <div class="pre-scrollable" style="max-height: 400px;">
+                    {% autoescape on %}
+<pre>
+{
+    "chapters": { {% for chapter in chapters %}
+        "{{ chapter.order }}": {
+            "title": "{{ chapter.title }}",
+            "content": {{ chapter.content }}, {% if sections %}
+            "sections": { {% for section in sections %}{% if section.chapter == chapter %}
+                "{{ section.order }}": {
+                    "title": "{{ section.title }}",
+                    "content": {{ section.content }}
+                {% if forloop.last %}}{% else %}},{% endif %}{% endif %}{% endfor %}
+            }{% endif %}
+        {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}
+    }
+}
+</pre>
+                    {% endautoescape %}
+                    </div>
                 </div>
             </div>
         </div>
