@@ -1,26 +1,26 @@
-{
-    "chapters": {
+<p>{</p>
+    <p>"chapters": {</p>
         {% for chapter in chapters %}
-            "{{ chapter.order }}": {
-                "title": "{{ chapter.title }}",
-                "content": "{{ chapter.content }}",
-                "sections": {
+            <p>"{{ chapter.order }}": {</p>
+                <p>"title": "{{ chapter.title }}",</p>
+                <p>"content": "{{ chapter.content }}",</p>
+                <p>"sections": {</p>
                     {% for section in sections %}
-                        "{{ section.order }}": {
-                            "title": "{{ section.title }}",
-                            "content": "{{ section.content }}"
+                        <p>"{{ section.order }}": {</p>
+                            <p>"title": "{{ section.title }}",</p>
+                            <p>"content": "{{ section.content }}"</p>
                         {% if forloop.last %}
-                            }
+                            <p>}</p>
                         {% else %}
-                            },
+                            <p>},</p>
                         {% endif %}
                     {% endfor %}
-                }
+                <p>}</p>
             {% if forloop.last %}
-                }
+                <p>}</p>
             {% else %}
-                },
+                <p>},</p>
             {% endif %}
         {% endfor %}
-    }
-}
+    <p>}</p>
+<p>}</p>
