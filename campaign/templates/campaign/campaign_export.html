@@ -8,6 +8,8 @@
 
 {% block title %}Donate | {{ block.super }}{% endblock %}
 
+{% block static %}<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"></script>{% endblock %}
+
 {% block body_content %}
     <div class="row campaign-row">
         <div class="col-md-12">
@@ -17,8 +19,8 @@
                 </div>
                 <div class="panel-body">
                     <p>Copy the following code and then share it with friends! They will need to <a href="{% url 'campaign:campaign_import' %}">import</a> it in order to view it.</p>
-                    <p><strong>Note: </strong>this export includes all of your monsters and NPCs. If you want to exclude these, use the code in the bottom section of the page.</p>
-                    <div class="pre-scrollable" style="max-height: 400px;">
+                    <p><button class="btn btn-primary" data-clipboard-target="#code-long">Copy to clipboard</button> <strong>Note: </strong>this export includes all of your monsters and NPCs. If you want to exclude these, use the code in the bottom section of the page.</p>
+                    <div id="code-long" class="pre-scrollable" style="max-height: 400px;">
                     {% autoescape on %}
 <pre>
 {
@@ -98,8 +100,8 @@
                     {% endautoescape %}
                     </div>
                     <hr>
-                    <p><strong>Note: </strong>this export <strong>does not</strong> include all of your monsters and NPCs. If you want to include these, use the code in the top section of the page.</p>
-                    <div class="pre-scrollable" style="max-height: 400px;">
+                    <p><button class="btn btn-primary" data-clipboard-target="#code-short">Copy to clipboard</button> <strong>Note: </strong>this export <strong>does not</strong> include all of your monsters and NPCs. If you want to include these, use the code in the top section of the page.</p>
+                    <div id="code-short" class="pre-scrollable" style="max-height: 400px;">
                     {% autoescape on %}
 <pre>
 {
@@ -123,4 +125,10 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block endstatic %}
+    <script>
+        new Clipboard('.btn');
+    </script>
 {% endblock %}
