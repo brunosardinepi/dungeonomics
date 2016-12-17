@@ -36,7 +36,7 @@
                     "content": {{ section.content }}
                 }{% if not forloop.last %},{% endif %}{% endif %}{% endfor %}
             }{% endif %}
-        }{% if not forloop.last %},{% endif %}{% endfor %}
+        {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}
     {% if monsters %}},{% else %}}{% endif %}
     {% if monsters %}"monsters": { {% for monster in monsters %}
         "{{ monster.name }}": {
@@ -63,7 +63,7 @@
             "challenge_rating": "{{ monster.challenge_rating }}",
             "traits": {{ monster.traits }},
             "actions": {{ monster.actions }}
-        }{% if not forloop.last %},{% endif %}{% endfor %}{% endif %}
+        {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}{% endif %}
     {% if npcs %}},{% else %}}{% endif %}
     {% if npcs %}"npcs": { {% for npc in npcs %}
         "{{ npc.name }}": {
@@ -95,7 +95,7 @@
             "traits": {{ npc.traits }},
             "actions": {{ npc.actions }},
             "notes": {{ npc.notes }}
-        }{% if not forloop.last %},{% endif %}{% endfor %}{% endif %}
+        {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}{% endif %}
     }
 }
 </pre>
