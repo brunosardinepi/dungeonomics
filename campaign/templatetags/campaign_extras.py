@@ -48,7 +48,7 @@ def int_to_letter(input):
 @register.simple_tag
 def sections_in_chapter(chapter_pk):
     '''Returns dictionary of sections to display in export'''
-    chapter = models.Chapter.get(pk=chapter_pk)
+    chapter = models.Chapter.objects.get(pk=chapter_pk)
     sections = models.Section.objects.filter(
         chapter=chapter
         ).order_by(
