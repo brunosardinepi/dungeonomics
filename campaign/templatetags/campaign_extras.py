@@ -4,6 +4,8 @@ from django.core import serializers
 
 import json
 
+from campaign import models
+
 
 register = template.Library() 
 
