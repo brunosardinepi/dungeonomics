@@ -31,7 +31,7 @@
                 "{{ section.order }}": {
                     "title": "{{ section.title }}",
                     "content": {{ section.content }}
-                }{% if not forloop.last %},{% endif %}{% endif %}{% endfor %}
+                }{% if not forloop.last %},{% endif %}{% endfor %}{% endif %}
             }{% endif %}
         {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}
     {% if monsters %}},{% else %}}{% endif %}
