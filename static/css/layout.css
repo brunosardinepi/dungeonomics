@@ -150,5 +150,6 @@ a.home-panel:hover {
     background: #333;
 }
 .border {
-    border: 1px solid black
+    border: 1px solid black;
+    padding: 2px;
 }
