@@ -55,4 +55,4 @@ def sections_in_chapter(chapter):
 register.filter('jsonify', jsonify)
 register.filter('int_to_roman', int_to_roman)
 register.filter('int_to_letter', int_to_letter)
-register.filter('chapters_in_campaign', chapters_in_campaign)
+register.filter('sections_in_chapter', sections_in_chapter)
