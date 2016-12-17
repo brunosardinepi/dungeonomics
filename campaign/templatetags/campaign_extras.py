@@ -22,7 +22,7 @@ def sections_in_chapter(chapter_pk):
     sections = sorted(models.Section.objects.filter(chapter=chapter),
             key=lambda section: section.order
             )
-    return {'sections': sections}
+    return sections
 
 
 register.filter('jsonify', jsonify)
