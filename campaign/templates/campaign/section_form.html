@@ -66,31 +66,33 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <strong>Tip!</strong> Type '@' to get a dropdown list that will automatically link to the monsters or NPCs in your campaign content!
     </div>
-    <div class="col-md-12">
-        <div class="panel panel-default panel-campaign">
-            <div class="panel-heading">
-                <h3 class="panel-title">
+    <div class="row campaign-row">
+        <div class="col-md-12">
+            <div class="panel panel-default panel-campaign">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        {% if section.pk %}
+                            <strong>UPDATE:</strong> {{ campaign }} / {{ chapter }} / {{ section }}
+                        {% else %}
+                            <strong>NEW SECTION:</strong> {{ campaign }} / {{ chapter }}
+                        {% endif %}
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                </div>
+                <div class="panel-footer clearfix">
                     {% if section.pk %}
-                        <strong>UPDATE:</strong> {{ campaign }} / {{ chapter }} / {{ section }}
+                        <a href ="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk section_pk=section.pk %}" class="btn btn-default">Cancel</a>
+                        <input type="submit" class="btn btn-primary pull-right" value="Update Section">
                     {% else %}
-                        <strong>NEW SECTION:</strong> {{ campaign }} / {{ chapter }}
+                        <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="btn btn-default">Cancel</a>
+                        <input type="submit" class="btn btn-primary pull-right" value="Create Section">
                     {% endif %}
-                </h3>
-            </div>
-            <div class="panel-body">
-                <form method="POST" action="">
-                    {% csrf_token %}
-                    {% bootstrap_form form %}
-            </div>
-            <div class="panel-footer clearfix">
-                {% if section.pk %}
-                    <a href ="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk section_pk=section.pk %}" class="btn btn-default">Cancel</a>
-                    <input type="submit" class="btn btn-primary pull-right" value="Update Section">
-                {% else %}
-                    <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="btn btn-default">Cancel</a>
-                    <input type="submit" class="btn btn-primary pull-right" value="Create Section">
-                {% endif %}
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

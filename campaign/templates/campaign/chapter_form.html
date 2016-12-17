@@ -66,64 +66,66 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         Type '@' to get a dropdown list that will automatically link to the monsters or NPCs in your campaign content!
     </div>
-    <div class="col-md-12">
-        <div class="panel panel-default panel-campaign">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    {% if chapter.pk %}
-                        <strong>UPDATE:</strong> {{ campaign }} / {{ chapter }}
-                    {% else %}
-                        <strong>NEW CHAPTER:</strong> {{ campaign }}
-                    {% endif %}
-                </h3>
-            </div>
-            <div class="panel-body">
-                <form method="POST" action="">
-                    {% csrf_token %}
-                    {% bootstrap_form form %}
+    <div class="row campaign-row">
+        <div class="col-md-12">
+            <div class="panel panel-default panel-campaign">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        {% if chapter.pk %}
+                            <strong>UPDATE:</strong> {{ campaign }} / {{ chapter }}
+                        {% else %}
+                            <strong>NEW CHAPTER:</strong> {{ campaign }}
+                        {% endif %}
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
 
-                    {% if sections %}
-                        <hr>
+                        {% if sections %}
+                            <hr>
 
-                        {{ formset.management_form }}
+                            {{ formset.management_form }}
 
-                        <table class="table table-striped table-hover" style="width: 100%;">
-                            <thead>
-                                <tr>
-                                    <th class="text-center width-ten campaign-update-chapters">Section</th>
-                                    <th class="text-center width-eighty campaign-update-chapters">Title</th>
-                                    <th class="text-center width-ten campaign-update-chapters">Delete?</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for form in formset %}
+                            <table class="table table-striped table-hover" style="width: 100%;">
+                                <thead>
                                     <tr>
-                                        <td class="width-ten">{{ form.id }}{{ form.order }}</td>
-                                        <td class="width-eighty">{{ form.title }}</td>
-                                        {% if form.instance.pk %}
-                                            <td class="text-center width-ten">{{ form.DELETE }}</td>
-                                        {% else %}
-                                            <td class="text-center width-ten"></td>
-                                        {% endif %}
+                                        <th class="text-center width-ten campaign-update-chapters">Section</th>
+                                        <th class="text-center width-eighty campaign-update-chapters">Title</th>
+                                        <th class="text-center width-ten campaign-update-chapters">Delete?</th>
                                     </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    {% for form in formset %}
+                                        <tr>
+                                            <td class="width-ten">{{ form.id }}{{ form.order }}</td>
+                                            <td class="width-eighty">{{ form.title }}</td>
+                                            {% if form.instance.pk %}
+                                                <td class="text-center width-ten">{{ form.DELETE }}</td>
+                                            {% else %}
+                                                <td class="text-center width-ten"></td>
+                                            {% endif %}
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
 
+                        {% else %}
+                            {{ formset.management_form }}
+                        {% endif %}
+                        
+                </div>
+                <div class="panel-footer clearfix">
+                    {% if chapter.pk %}
+                        <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="btn btn-default">Cancel</a>
+                        <input type="submit" class="btn btn-primary pull-right" value="Update Chapter">
                     {% else %}
-                        {{ formset.management_form }}
+                        <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk %}" class="btn btn-default">Cancel</a>
+                        <input type="submit" class="btn btn-primary pull-right" value="Create Chapter">
                     {% endif %}
-                    
-            </div>
-            <div class="panel-footer clearfix">
-                {% if chapter.pk %}
-                    <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="btn btn-default">Cancel</a>
-                    <input type="submit" class="btn btn-primary pull-right" value="Update Chapter">
-                {% else %}
-                    <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk %}" class="btn btn-default">Cancel</a>
-                    <input type="submit" class="btn btn-primary pull-right" value="Create Chapter">
-                {% endif %}
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
