@@ -31,7 +31,67 @@
                 {% if forloop.last %}}{% else %}},{% endif %}{% endif %}{% endfor %}
             }{% endif %}
         {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}
-    }
+    {% if monsters %}},{% else %}}{% endif %}
+        {% if monsters %}"monsters": { {% for monster in monsters %}
+            "{{ monster.name }}": {
+                "alignment": "{{ monster.alignment }}",
+                "size": "{{ monster.size }}",
+                "languages": "{{ monster.languages }}",
+                "strength": "{{ monster.strength }}",
+                "dexterity": "{{ monster.dexterity }}",
+                "constitution": "{{ monster.constitution }}",
+                "intelligence": "{{ monster.intelligence }}",
+                "wisdom": "{{ monster.wisdom }}",
+                "charisma": "{{ monster.charisma }}",
+                "armor_class": "{{ monster.armor_class }}",
+                "hit_points": "{{ monster.hit_points }}",
+                "speed": "{{ monster.speed }}",
+                "saving_throws": "{{ monster.saving_throws }}",
+                "skills": "{{ monster.skills }}",
+                "creature_type": "{{ monster.creature_type }}",
+                "damage_vulnerabilities": "{{ monster.damage_vulnerabilities }}",
+                "damage_immunities": "{{ monster.damage_immunities }}",
+                "damage_resistances": "{{ monster.damage_resistances }}",
+                "condition_immunities": "{{ monster.condition_immunities }}",
+                "senses": "{{ monster.senses }}",
+                "challenge_rating": "{{ monster.challenge_rating }}",
+                "traits": "{{ monster.traits }}",
+                "actions": "{{ monster.actions }}"
+            {% if forloop.last %}}{% else %}},{% endif %}{% endif %}{% endfor %}
+        {% endif %}
+        {% if npcs %}},{% else %}}{% endif %}
+        {% if npcs %}"npcs": { {% for npc in npcs %}
+            "{{ npc.name }}": {
+                "npc_class": "{{ npc.npc_class }}",
+                "age": "{{ npc.age }}",
+                "height": "{{ npc.height }}",
+                "weight": "{{ npc.weight }}",
+                "alignment": "{{ npc.alignment }}",
+                "size": "{{ npc.size }}",
+                "languages": "{{ npc.languages }}",
+                "strength": "{{ npc.strength }}",
+                "dexterity": "{{ npc.dexterity }}",
+                "constitution": "{{ npc.constitution }}",
+                "intelligence": "{{ npc.intelligence }}",
+                "wisdom": "{{ npc.wisdom }}",
+                "charisma": "{{ npc.charisma }}",
+                "armor_class": "{{ npc.armor_class }}",
+                "hit_points": "{{ npc.hit_points }}",
+                "speed": "{{ npc.speed }}",
+                "saving_throws": "{{ npc.saving_throws }}",
+                "skills": "{{ npc.skills }}",
+                "creature_type": "{{ npc.creature_type }}",
+                "damage_vulnerabilities": "{{ npc.damage_vulnerabilities }}",
+                "damage_immunities": "{{ npc.damage_immunities }}",
+                "damage_resistances": "{{ npc.damage_resistances }}",
+                "condition_immunities": "{{ npc.condition_immunities }}",
+                "senses": "{{ npc.senses }}",
+                "challenge_rating": "{{ npc.challenge_rating }}",
+                "traits": "{{ npc.traits }}",
+                "actions": "{{ npc.actions }}",
+                "notes": "{{ npc.notes }}"
+            {% if forloop.last %}}{% else %}},{% endif %}{% endif %}{% endfor %}
+        {% endif %}
 }
 </pre>
                     {% endautoescape %}
