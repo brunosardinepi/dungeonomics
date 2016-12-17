@@ -55,8 +55,8 @@
             "condition_immunities": "{{ monster.condition_immunities }}",
             "senses": "{{ monster.senses }}",
             "challenge_rating": "{{ monster.challenge_rating }}",
-            "traits": "{{ monster.traits }}",
-            "actions": "{{ monster.actions }}"
+            "traits": {{ monster.traits }},
+            "actions": {{ monster.actions }}
         {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}{% endif %}
     {% if npcs %}},{% else %}}{% endif %}
     {% if npcs %}"npcs": { {% for npc in npcs %}
@@ -86,9 +86,9 @@
             "condition_immunities": "{{ npc.condition_immunities }}",
             "senses": "{{ npc.senses }}",
             "challenge_rating": "{{ npc.challenge_rating }}",
-            "traits": "{{ npc.traits }}",
-            "actions": "{{ npc.actions }}",
-            "notes": "{{ npc.notes }}"
+            "traits": {{ npc.traits }},
+            "actions": {{ npc.actions }},
+            "notes": {{ npc.notes }}
         {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}{% endif %}
     }
 }
