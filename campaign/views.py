@@ -414,9 +414,6 @@ def campaign_export(request, campaign_pk):
         chapters = sorted(models.Chapter.objects.filter(campaign=campaign),
             key=lambda chapter: chapter.order
             )
-        sections = sorted(models.Section.objects.filter(campaign=campaign),
-            key=lambda section: section.order
-            )
         monsters = sorted(character_models.Monster.objects.filter(user=request.user),
             key=lambda monster: monster.name.lower()
             )
@@ -425,8 +422,6 @@ def campaign_export(request, campaign_pk):
             )
         for chapter in chapters:
             chapter.content = json.dumps(chapter.content)
-        # for section in sections:
-        #     section.content = json.dumps(section.content)
         for monster in monsters:
             monster.traits = json.dumps(monster.traits)
             monster.actions = json.dumps(monster.actions)
