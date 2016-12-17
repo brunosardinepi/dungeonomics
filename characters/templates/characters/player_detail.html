@@ -67,6 +67,7 @@
             <div class="col-md-3"><p><strong>Initiative: </strong>{% if this_player.initiative %}{{ this_player.initiative }}{% else %}None{% endif %}</p></div>
             <div class="col-md-3"><p><strong>Speed: </strong>{% if this_player.speed %}{{ this_player.speed }}{% else %}None{% endif %}</p></div>       
         </div>
+        <hr>
         <div class="row">
             <div class="col-md-4"><p><strong>Age: </strong>{% if this_player.age %}{{ this_player.age }}{% else %}None{% endif %}</p></div>
             <div class="col-md-4"><p><strong>Height: </strong>{% if this_player.height %}{{ this_player.height }}{% else %}None{% endif %}</p></div>
@@ -126,8 +127,6 @@
             </div>
         </div>
 
-        <hr>
-
         {% if this_player.attacks %}
             <hr>
             <div class="row">
@@ -136,7 +135,50 @@
                 </div>
             </div>
         {% endif %}
-        
+
+        {% if this_player.equipment %}
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <p><strong>Equipment</strong> {{ this_player.equipment|safe }}</p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if this_player.feats %}
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <p><strong>Features and Traits</strong> {{ this_player.feats|safe }}</p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if this_player.proficiencies %}
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <p><strong>Proficiencies</strong> {{ this_player.proficiencies|safe }}</p>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if this_player.spells %}
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <p><strong>Spells</strong> {{ this_player.spells|safe }}</p>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="row">
+            <div class="col-md-3"><p><strong>Personality Traits: </strong>{{ this_player.personality|safe }}</p></div>
+            <div class="col-md-3"><p><strong>Ideals: </strong>{{ this_player.ideals|safe }}</p></div> 
+            <div class="col-md-3"><p><strong>Bonds: </strong>{{ this_player.bonds|safe }}</p></div>
+            <div class="col-md-3"><p><strong>Flaws: </strong>{{ this_player.flaws|safe }}</p></div>       
+        </div>
+
         <hr>
 
         <div class="row">
@@ -151,24 +193,6 @@
                 {% if this_player.challenge_rating %}<p><strong>Challenge</strong> {{ this_player.challenge_rating }}</p>{% endif %}
             </div>
         </div>
-
-        {% if this_player.traits %}
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <p><strong>Traits</strong> {{ this_player.traits|safe }}</p>
-                </div>
-            </div>
-        {% endif %}
-
-        {% if this_player.actions %}
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <p><strong>Actions</strong> {{ this_player.actions|safe }}</p>
-                </div>
-            </div>
-        {% endif %}
 
         {% if this_player.notes %}
             <hr>
