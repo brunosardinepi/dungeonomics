@@ -339,7 +339,7 @@ def campaign_import(request):
                             content=section_attributes["content"]
                             )
                         new_section.save()
-            if user_import["monsters"]: 
+            if "monsters" in user_import: 
                 for monster, monster_attributes in user_import["monsters"].items():
                     new_monster = character_models.Monster(
                         user=request.user,
@@ -369,7 +369,7 @@ def campaign_import(request):
                         actions=monster_attributes["actions"]
                     )
                     new_monster.save()
-            if user_import["npcs"]:
+            if "npcs" in user_import:
                 for npc, npc_attributes in user_import["npcs"].items():
                     new_npc = character_models.NPC(
                         user=request.user,
