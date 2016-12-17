@@ -30,11 +30,12 @@
         "{{ chapter.order }}": {
             "title": "{{ chapter.title }}",
             "content": {{ chapter.content }}, {% if sections %}
-            "sections": { {% for section in sections %}{% if section.chapter == chapter %}
+            "sections": { {% for section in sections %}{% if section.chapter == chapter %}{% if forloop.counter > 1 %}
+                ,{% endif %}
                 "{{ section.order }}": {
                     "title": "{{ section.title }}",
                     "content": {{ section.content }}
-                {% if forloop.last %}}{% else %}},{% endif %}{% endif %}{% endfor %}
+                }{% endif %}{% endfor %}
             }{% endif %}
         {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}
     {% if monsters %}},{% else %}}{% endif %}
@@ -123,11 +124,12 @@
         "{{ chapter.order }}": {
             "title": "{{ chapter.title }}",
             "content": {{ chapter.content }}, {% if sections %}
-            "sections": { {% for section in sections %}{% if section.chapter == chapter %}
+            "sections": { {% for section in sections %}{% if section.chapter == chapter %}{% if forloop.counter > 1 %}
+                ,{% endif %}
                 "{{ section.order }}": {
                     "title": "{{ section.title }}",
                     "content": {{ section.content }}
-                {% if forloop.last %}}{% else %}},{% endif %}{% endif %}{% endfor %}
+                }{% endif %}{% endfor %}
             }{% endif %}
         {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}
     }
