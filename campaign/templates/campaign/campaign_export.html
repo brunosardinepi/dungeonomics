@@ -118,7 +118,7 @@
     "chapters": { {% for chapter in chapters %}
         "{{ chapter.order }}": {
             "title": "{{ chapter.title }}",
-            "content": {{ chapter.content }}{% sections_in_chapter chapter.pk as sections %}{% if sections %},{{ sections }}
+            "content": {{ chapter.content }}{% sections_in_chapter chapter.pk as sections %}{% if sections %},
             "sections": { {% for section in sections %}
                 "{{ section.order }}": {
                     "title": "{{ section.title }}",
