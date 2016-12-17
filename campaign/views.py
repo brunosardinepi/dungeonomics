@@ -339,6 +339,69 @@ def campaign_import(request):
                             content=section_attributes["content"]
                             )
                         new_section.save()
+            for monster, monster_attributes in user_import["monsters"].items():
+                new_monster = character_models.Monster(
+                    user=request.user,
+                    name=monster,
+                    alignment=monster_attributes["alignment"],
+                    size=monster_attributes["size"],
+                    languages=monster_attributes["languages"],
+                    strength=monster_attributes["strength"],
+                    dexterity=monster_attributes["dexterity"],
+                    constitution=monster_attributes["constitution"],
+                    intelligence=monster_attributes["intelligence"],
+                    wisdom=monster_attributes["wisdom"],
+                    charisma=monster_attributes["charisma"],
+                    armor_class=monster_attributes["armor_class"],
+                    hit_points=monster_attributes["hit_points"],
+                    speed=monster_attributes["speed"],
+                    saving_throws=monster_attributes["saving_throws"],
+                    skills=monster_attributes["skills"],
+                    creature_type=monster_attributes["creature_type"],
+                    damage_vulnerabilities=monster_attributes["damage_vulnerabilities"],
+                    damage_immunities=monster_attributes["damage_immunities"],
+                    damage_resistances=monster_attributes["damage_resistances"],
+                    condition_immunities=monster_attributes["condition_immunities"],
+                    senses=monster_attributes["senses"],
+                    challenge_rating=monster_attributes["challenge_rating"],
+                    traits=monster_attributes["traits"],
+                    actions=monster_attributes["actions"]
+                )
+                new_monster.save()
+            for npc, npc_attributes in user_import["npcs"].items():
+                new_npc = character_models.NPC(
+                    user=request.user,
+                    name=npc,
+                    alignment=npc_attributes["alignment"],
+                    size=npc_attributes["size"],
+                    languages=npc_attributes["languages"],
+                    strength=npc_attributes["strength"],
+                    dexterity=npc_attributes["dexterity"],
+                    constitution=npc_attributes["constitution"],
+                    intelligence=npc_attributes["intelligence"],
+                    wisdom=npc_attributes["wisdom"],
+                    charisma=npc_attributes["charisma"],
+                    armor_class=npc_attributes["armor_class"],
+                    hit_points=npc_attributes["hit_points"],
+                    speed=npc_attributes["speed"],
+                    saving_throws=npc_attributes["saving_throws"],
+                    skills=npc_attributes["skills"],
+                    npc_class=npc_attributes["npc_class"],
+                    age=npc_attributes["age"],
+                    height=npc_attributes["height"],
+                    weight=npc_attributes["weight"],
+                    creature_type=npc_attributes["creature_type"],
+                    damage_vulnerabilities=npc_attributes["damage_vulnerabilities"],
+                    damage_immunities=npc_attributes["damage_immunities"],
+                    damage_resistances=npc_attributes["damage_resistances"],
+                    condition_immunities=npc_attributes["condition_immunities"],
+                    senses=npc_attributes["senses"],
+                    challenge_rating=npc_attributes["challenge_rating"],
+                    traits=npc_attributes["traits"],
+                    actions=npc_attributes["actions"],
+                    notes=npc_attributes["notes"]
+                )
+                new_npc.save()
             return HttpResponseRedirect(campaign.get_absolute_url())
     return render(request, 'campaign/campaign_import.html', {'form': form, 'user_import': user_import})
 
@@ -362,6 +425,13 @@ def campaign_export(request, campaign_pk):
             chapter.content = json.dumps(chapter.content)
         for section in sections:
             section.content = json.dumps(section.content)
+        for monster in monsters:
+            monster.traits = json.dumps(monster.traits)
+            monster.actions = json.dumps(monster.actions)
+        for npc in npcs:
+            npc.traits = json.dumps(npc.traits)
+            npc.actions = json.dumps(npc.actions)
+            npc.notes = json.dumps(npc.nptes)
         return render(request, 'campaign/campaign_export.html', {'campaign': campaign, 'chapters': chapters, 'sections': sections, 'monsters': monsters, 'npcs': npcs})
     else:
         raise Http404
