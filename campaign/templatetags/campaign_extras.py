@@ -2,7 +2,7 @@ from django import template
 from django.utils.safestring import mark_safe
 from django.core import serializers
 
-from . import models
+from campaign import models
 
 import json
 
