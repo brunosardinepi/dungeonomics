@@ -341,3 +341,23 @@ def campaign_import(request):
                         new_section.save()
             return HttpResponseRedirect(campaign.get_absolute_url())
     return render(request, 'campaign/campaign_import.html', {'form': form, 'user_import': user_import})
+
+@login_required
+def campaign_export(request, campaign_pk):
+    if campaign_pk:
+        campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+        chapters = sorted(models.Chapter.objects.filter(campaign=campaign),
+            key=lambda chapter: chapter.order
+            )
+        sections = sorted(models.Section.objects.filter(campaign=campaign),
+            key=lambda section: section.order
+            )
+        monsters = sorted(character_models.Monster.objects.filter(user=request.user),
+            key=lambda monster: monster.name.lower()
+            )
+        npcs = sorted(character_models.NPC.objects.filter(user=request.user),
+            key=lambda npc: npc.name.lower()
+            )
+        return render(request, 'campaign/campaign_export.html', {'campaign': campaign, 'chapters': chapters, 'sections': sections, 'monsters': monsters, 'npcs': npcs})
+    else:
+        raise Http404

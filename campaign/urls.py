@@ -16,7 +16,8 @@ urlpatterns = [
     url(r'^(?P<campaign_pk>\d+)/chapter/(?P<chapter_pk>\d+)/section/(?P<section_pk>\d+)/edit/$', views.section_update, name='section_update'),
 
     url(r'^(?P<campaign_pk>\d+)/print/$', views.campaign_print, name='campaign_print'),
-    url(r'import/$', views.campaign_import, name='campaign_import'),
+    url(r'^import/$', views.campaign_import, name='campaign_import'),
+    url(r'^(?P<campaign_pk>\d+)/export/$', views.campaign_export, name='campaign_export'),
 
     url(r'^(?P<campaign_pk>\d+)/delete/$', views.campaign_delete, name='campaign_delete'),
     url(r'^(?P<campaign_pk>\d+)/chapter/(?P<chapter_pk>\d+)/delete/$', views.chapter_delete, name='chapter_delete'),

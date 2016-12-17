@@ -1,0 +1,26 @@
+{
+    "chapters": {
+        {% for chapter in chapters %}
+            "{{ chapter.order }}": {
+                "title": "{{ chapter.title }}",
+                "content": "{{ chapter.content }}",
+                "sections": {
+                    {% for section in sections %}
+                        "{{ section.order }}": {
+                            "title": "{{ section.title }}",
+                            "content": "{{ section.content }}"
+                        {% if forloop.last %}
+                            }
+                        {% else %}
+                            },
+                        {% endif %}
+                    {% endfor %}
+                }
+            {% if forloop.last %}
+                }
+            {% else %}
+                },
+            {% endif %}
+        {% endfor %}
+    }
+}
