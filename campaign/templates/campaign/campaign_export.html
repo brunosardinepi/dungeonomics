@@ -7,6 +7,7 @@
 {% block static %}<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"></script>{% endblock %}
 
 {% block body_content %}
+    {% sections_in_chapter chapter as sections %}
     <div class="alert alert-info alert-dismissible" role="alert" style="margin-top: 30px;">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         Copy the following code and then share it with friends! They will need to <a href="{% url 'campaign:campaign_import' %}" class="alert-link">import</a> it in order to view it.
@@ -26,7 +27,7 @@
         "{{ chapter.order }}": {
             "title": "{{ chapter.title }}",
             "content": {{ chapter.content }}, {% if sections %}
-            "sections": { {% for section in sections %}{% if section.chapter == chapter %}
+            "sections": { {% for section in sections %}
                 "{{ section.order }}": {
                     "title": "{{ section.title }}",
                     "content": {{ section.content }}
@@ -119,7 +120,7 @@
         "{{ chapter.order }}": {
             "title": "{{ chapter.title }}",
             "content": {{ chapter.content }}, {% if sections %}
-            "sections": { {% sections_in_chapter chapter as sections %}{% for section in sections %}
+            "sections": { {% for section in sections %}
                 "{{ section.order }}": {
                     "title": "{{ section.title }}",
                     "content": {{ section.content }}
