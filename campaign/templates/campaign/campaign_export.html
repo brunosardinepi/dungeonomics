@@ -30,12 +30,11 @@
         "{{ chapter.order }}": {
             "title": "{{ chapter.title }}",
             "content": {{ chapter.content }}, {% if sections %}
-            "sections": { {% for section in sections %}{% if section.chapter == chapter %}{% if forloop.counter > 1 %}
-                ,{% endif %}
+            "sections": { {% for section in sections %}{% if section.chapter == chapter %}
                 "{{ section.order }}": {
                     "title": "{{ section.title }}",
                     "content": {{ section.content }}
-                }{% endif %}{% endfor %}
+                {% if forloop.last %}}{% else %}},{% endif %}{% endif %}{% endfor %}
             }{% endif %}
         {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}
     {% if monsters %}},{% else %}}{% endif %}
@@ -120,16 +119,15 @@
                     {% autoescape on %}
 <pre id="code-short">
 {
-    "chapters": { {% with chapters_in_campaign campaign as chapters %}{% for chapter in chapters %}
+    "chapters": { {% for chapter in chapters %}
         "{{ chapter.order }}": {
             "title": "{{ chapter.title }}",
             "content": {{ chapter.content }}, {% if sections %}
-            "sections": { {% for section in sections %}{% if section.chapter == chapter %}{% if forloop.counter > 1 %}
-                ,{% endif %}
+            "sections": { {% for section in sections %}{% if section.chapter == chapter %}
                 "{{ section.order }}": {
                     "title": "{{ section.title }}",
                     "content": {{ section.content }}
-                }{% endif %}{% endfor %}
+                }{% endif %}{% if forloop.last %},{% endif %}{% endfor %}
             }{% endif %}
         {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}
     }
