@@ -1,18 +1,41 @@
-{% autoescape on %}
-<pre>
-{
-    "chapters": { {% for chapter in chapters %}
-        "{{ chapter.order }}": {
-            "title": "{{ chapter.title }}",
-            "content": {{ chapter.content }}, {% if sections %}
-            "sections": { {% for section in sections %}{% if section.chapter == chapter %}
-                "{{ section.order }}": {
-                    "title": "{{ section.title }}",
-                    "content": {{ section.content }}
-                {% if forloop.last %}}{% else %}},{% endif %}{% endif %}{% endfor %}
-            }{% endif %}
-        {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}
-    }
-}
-</pre>
-{% endautoescape %}
+
+
+
+
+
+{% extends 'layout.html' %}
+{% load bootstrap3 %}
+
+{% block title %}Donate | {{ block.super }}{% endblock %}
+
+{% block body_content %}
+    <div class="row campaign-row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Export Campaign</h3>
+                </div>
+                <div class="panel-body pre-scrollable">
+                    {% autoescape on %}
+                    <pre>
+                    {
+                        "chapters": { {% for chapter in chapters %}
+                            "{{ chapter.order }}": {
+                                "title": "{{ chapter.title }}",
+                                "content": {{ chapter.content }}, {% if sections %}
+                                "sections": { {% for section in sections %}{% if section.chapter == chapter %}
+                                    "{{ section.order }}": {
+                                        "title": "{{ section.title }}",
+                                        "content": {{ section.content }}
+                                    {% if forloop.last %}}{% else %}},{% endif %}{% endif %}{% endfor %}
+                                }{% endif %}
+                            {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}
+                        }
+                    }
+                    </pre>
+                    {% endautoescape %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
