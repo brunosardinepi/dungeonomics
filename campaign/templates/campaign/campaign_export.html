@@ -120,7 +120,7 @@
                     {% autoescape on %}
 <pre id="code-short">
 {
-    "chapters": { {% for chapter in chapters %}
+    "chapters": { {% with campaign|chapters_in_campaign as chapters %}{% for chapter in chapters %}
         "{{ chapter.order }}": {
             "title": "{{ chapter.title }}",
             "content": {{ chapter.content }}, {% if sections %}

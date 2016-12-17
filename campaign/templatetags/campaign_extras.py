@@ -2,6 +2,8 @@ from django import template
 from django.utils.safestring import mark_safe
 from django.core import serializers
 
+from . import models
+
 import json
 
 
@@ -43,7 +45,14 @@ def int_to_letter(input):
       result += letters[(input % 26) - 1]
    return result
 
+def chapters_in_campaign(campaign):
+    chapters = sorted(models.Chapter.objects.filter(campaign=campaign),
+            key=lambda chapter: chapter.order
+            )
+    return chapters
+
 
 register.filter('jsonify', jsonify)
 register.filter('int_to_roman', int_to_roman)
 register.filter('int_to_letter', int_to_letter)
+register.filter('chapters_in_campaign', chapters_in_campaign)
