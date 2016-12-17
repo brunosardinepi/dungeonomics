@@ -96,8 +96,8 @@
             "actions": {{ npc.actions }},
             "notes": {{ npc.notes }}
         {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}{% endif %}
-    }
-}
+    {% if npcs %}}{% endif %}
+{% if monsters %}}{% endif %}
 </pre>
                     {% endautoescape %}
                     </div>
