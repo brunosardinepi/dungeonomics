@@ -29,7 +29,7 @@
             "sections": { {% for section in sections %}
                 "{{ section.order }}": {
                     "title": "{{ section.title }}",
-                    "content": "{{ section.content }}"
+                    "content": {{ section.content }}
                 }{% if not forloop.last %},{% endif %}{% endfor %}
             }{% endif %}
         {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}
@@ -122,7 +122,7 @@
             "sections": { {% for section in sections %}
                 "{{ section.order }}": {
                     "title": "{{ section.title }}",
-                    "content": "{{ section.content }}"
+                    "content": {{ section.content }}
                 }{% if not forloop.last %},{% endif %}{% endfor %}
             }{% endif %}
         {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}
