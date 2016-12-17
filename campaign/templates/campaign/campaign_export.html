@@ -1,10 +1,6 @@
-
-
-
-
-
 {% extends 'layout.html' %}
 {% load bootstrap3 %}
+{% load campaign_extras %}
 
 {% block title %}Donate | {{ block.super }}{% endblock %}
 
@@ -123,11 +119,11 @@
         "{{ chapter.order }}": {
             "title": "{{ chapter.title }}",
             "content": {{ chapter.content }}, {% if sections %}
-            "sections": { {% for section in sections %}{% if section.chapter == chapter %}
+            "sections": { {% with sections_in_chapter chapter as sections %}{% for section in sections %}
                 "{{ section.order }}": {
                     "title": "{{ section.title }}",
                     "content": {{ section.content }}
-                }{% if not forloop.last %},{% endif %}{% endif %}{% endfor %}
+                }{% if not forloop.last %},{% endif %}{% endfor %}
             }{% endif %}
         {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}
     }

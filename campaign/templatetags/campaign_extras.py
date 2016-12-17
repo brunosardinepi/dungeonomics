@@ -45,11 +45,11 @@ def int_to_letter(input):
       result += letters[(input % 26) - 1]
    return result
 
-def chapters_in_campaign(campaign):
-    chapters = sorted(models.Chapter.objects.filter(campaign=campaign),
-            key=lambda chapter: chapter.order
-            )
-    return chapters
+# @register.inclusion_tag('campaign_nav.html')
+def sections_in_chapter(chapter):
+    '''Returns dictionary of sections to display in export'''
+    sections = models.Section.objects.filter(chapter=chapter).order_by('order')
+    return {'sections': sections}
 
 
 register.filter('jsonify', jsonify)
