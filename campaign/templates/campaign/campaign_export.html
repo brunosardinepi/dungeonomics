@@ -3,11 +3,11 @@
     "chapters": { {% for chapter in chapters %}
         "{{ chapter.order }}": {
             "title": "{{ chapter.title }}",
-            "content": "{{ chapter.content|safe|escape }}", {% if sections %}
+            "content": "{{ chapter.content|escape|safe }}", {% if sections %}
             "sections": { {% for section in sections %}{% if section.chapter == chapter %}
                 "{{ section.order }}": {
                     "title": "{{ section.title }}",
-                    "content": "{{ section.content|safe|escape }}"
+                    "content": "{{ section.content|escape|safe }}"
                 {% if forloop.last %}}{% else %}},{% endif %}{% endif %}{% endfor %}
             }{% endif %}
         {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}
