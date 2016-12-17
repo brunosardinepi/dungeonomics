@@ -20,13 +20,12 @@
                 <div class="panel-body">
                     <div class="pre-scrollable" style="max-height: 400px;">
                     {% autoescape on %}
-                    {% sections_in_chapter chapter as sections %}
 <pre id="code-long">
 {
     "chapters": { {% for chapter in chapters %}
         "{{ chapter.order }}": {
             "title": "{{ chapter.title }}",
-            "content": {{ chapter.content }}, {% if sections %}
+            "content": {{ chapter.content }}, {% sections_in_chapter chapter as sections %}{% if sections %}
             "sections": { {% for section in sections %}
                 "{{ section.order }}": {
                     "title": "{{ section.title }}",
@@ -119,7 +118,7 @@
     "chapters": { {% for chapter in chapters %}
         "{{ chapter.order }}": {
             "title": "{{ chapter.title }}",
-            "content": {{ chapter.content }}, {% if sections %}
+            "content": {{ chapter.content }}, {% sections_in_chapter chapter as sections %}{% if sections %}
             "sections": { {% for section in sections %}
                 "{{ section.order }}": {
                     "title": "{{ section.title }}",
