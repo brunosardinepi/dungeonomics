@@ -425,8 +425,8 @@ def campaign_export(request, campaign_pk):
             )
         for chapter in chapters:
             chapter.content = json.dumps(chapter.content)
-        for section in sections:
-            section.content = json.dumps(section.content)
+        # for section in sections:
+        #     section.content = json.dumps(section.content)
         for monster in monsters:
             monster.traits = json.dumps(monster.traits)
             monster.actions = json.dumps(monster.actions)
@@ -434,6 +434,6 @@ def campaign_export(request, campaign_pk):
             npc.traits = json.dumps(npc.traits)
             npc.actions = json.dumps(npc.actions)
             npc.notes = json.dumps(npc.notes)
-        return render(request, 'campaign/campaign_export.html', {'campaign': campaign, 'chapters': chapters, 'sections': sections, 'monsters': monsters, 'npcs': npcs})
+        return render(request, 'campaign/campaign_export.html', {'campaign': campaign, 'chapters': chapters, 'monsters': monsters, 'npcs': npcs})
     else:
         raise Http404

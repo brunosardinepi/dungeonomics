@@ -45,7 +45,7 @@ def int_to_letter(input):
       result += letters[(input % 26) - 1]
    return result
 
-# @register.inclusion_tag('campaign_nav.html')
+@register.simple_tag
 def sections_in_chapter(chapter):
     '''Returns dictionary of sections to display in export'''
     sections = models.Section.objects.filter(chapter=chapter).order_by('order')
