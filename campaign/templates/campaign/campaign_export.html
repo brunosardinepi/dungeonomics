@@ -129,23 +129,7 @@
 
 {% block end_static %}
     <script>
-        var clipboard_long = new Clipboard('.btn-long');
-        var clipboard_short = new Clipboard('.btn-short');
-
-        clipboard_long.on('success', function(e) {
-            console.log(e);
-        });
-
-        clipboard_long.on('error', function(e) {
-            console.log(e);
-        });
-
-        clipboard_short.on('success', function(e) {
-            console.log(e);
-        });
-
-        clipboard_short.on('error', function(e) {
-            console.log(e);
-        });
+        new Clipboard('.btn-long');
+        new Clipboard('.btn-short');
     </script>
 {% endblock %}
