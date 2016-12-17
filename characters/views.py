@@ -165,7 +165,7 @@ def player_update(request, player_pk):
             form = forms.PlayerForm(instance=player, data=request.POST)
             if form.is_valid():
                 form.save()
-                messages.add_message(request, messages.SUCCESS, "Updated player: {}".format(form.cleaned_data['name']))
+                messages.add_message(request, messages.SUCCESS, "Updated player: {}".format(form.cleaned_data['character_name']))
                 return HttpResponseRedirect(player.get_absolute_url())
     else:
         raise Http404
