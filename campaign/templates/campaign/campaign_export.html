@@ -115,11 +115,11 @@
                     {% autoescape on %}
 <pre id="code-short">
 {
-    "chapters": { {% for chapter in chapters %}{{ chapter }}
+    "chapters": { {% for chapter in chapters %}
         "{{ chapter.order }}": {
             "title": "{{ chapter.title }}",
-            "content": {{ chapter.content }}, {% sections_in_chapter chapter as sections %}{% if sections %}
-            "sections": { {% for section in sections %}{{ section }}
+            "content": {{ chapter.content }}, {% sections_in_chapter chapter.pk as sections %}{% if sections %}
+            "sections": { {% for section in sections %}
                 "{{ section.order }}": {
                     "title": "{{ section.title }}",
                     "content": {{ section.content }}
