@@ -130,21 +130,12 @@
 {% block end_static %}
     <script>
         var clipboard_long = new Clipboard('#code-long');
-        var clipboard_short = new Clipboard('#code-short');
 
         clipboard_long.on('success', function(e) {
             console.log(e);
         });
 
         clipboard_long.on('error', function(e) {
-            console.log(e);
-        });
-
-        clipboard_short.on('success', function(e) {
-            console.log(e);
-        });
-
-        clipboard_short.on('error', function(e) {
             console.log(e);
         });
     </script>
