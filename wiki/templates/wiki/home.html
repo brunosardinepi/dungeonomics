@@ -52,7 +52,7 @@
                         {% if sections %}
                             {% for section in sections %}
                                 <li class="li-content">
-                                    {{ section.order|int_to_roman }}. 
+                                    {{ section.order }}. 
                                     <a href="{% url 'wiki:home' section_pk=section.pk %}">
                                         {{ section.title }}
                                     </a>
@@ -61,7 +61,7 @@
                                     {% for subsection in subsections %}
                                         {% if subsection.section.pk == section.pk %}
                                             <li class="li-content"> 
-                                                {{ subsection.order|int_to_letter }}. 
+                                                {{ subsection.order }}. 
                                                 <a href="{% url 'wiki:home' section_pk=section.pk subsection_pk=subsection.pk %}">
                                                     {{ subsection.title }}
                                                 </a>
