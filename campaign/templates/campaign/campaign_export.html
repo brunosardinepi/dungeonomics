@@ -118,8 +118,8 @@
     "chapters": { {% for chapter in chapters %}
         "{{ chapter.order }}": {
             "title": "{{ chapter.title }}",
-            "content": {{ chapter.content }}, {% sections_in_chapter chapter as sections %}{% if sections %}{{ section }}
-            "sections": { {% for section in sections %}
+            "content": {{ chapter.content }}, {% sections_in_chapter chapter as sections %}{% if sections %}
+            "sections": { {% for section in sections %}{{ section }}
                 "{{ section.order }}": {
                     "title": "{{ section.title }}",
                     "content": {{ section.content }}
