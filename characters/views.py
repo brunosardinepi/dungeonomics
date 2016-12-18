@@ -258,7 +258,7 @@ def player_copy(request, player_pk):
             form = forms.CopyPlayerForm(request.POST, instance=player)
             if player.user.pk == request.user.pk:
                 player.pk = None
-                player.player_name = player_name +'_copy'
+                player.player_name = player.player_name + "_Copy"
                 player.save()
                 messages.add_message(request, messages.SUCCESS, "Player Copied!")
                 return HttpResponseRedirect(reverse('characters:player_detail'))
