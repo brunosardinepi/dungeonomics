@@ -153,14 +153,14 @@ a.home-panel:hover {
     border: 1px solid black;
 }
 .bd-left{
-    border-left: 1px
+    border-left: 1px solid black;
 }
 .bd-right {
-    border-right: 1px
+    border-right: 1px solid black;
 }
 .bd-bottom {
-    border-bottom: 1px
+    border-bottom: 1px solid black;
 }
 .bd-top {
-    border-top: 1px
+    border-top: 1px solid black;
 }
