@@ -141,6 +141,6 @@ class CopyPlayerForm(forms.ModelForm):
     class Meta:
         model = models.Player
         fields = [
-            'name',
+            'player_name',
             'character_name',
             ]
