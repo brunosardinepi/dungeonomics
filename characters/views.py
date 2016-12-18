@@ -253,7 +253,7 @@ class PlayerDelete(LoginRequiredMixin, DeleteView):
 def player_copy(request, player_pk):
     player = get_object_or_404(models.Player, pk=player_pk)
     if player.user == request.user:
-        form = forms.CopyPlayerForm(instance=character_name)
+        form = forms.CopyPlayerForm(instance=player)
         if request.method == 'POST':
             form = forms.CopyPlayerForm(request.POST, instance=player)
             if player.user.pk == request.user.pk:
@@ -263,5 +263,5 @@ def player_copy(request, player_pk):
                 return HttpResponseRedirect(reverse('characters:player_detail'))
     else:
         raise Http404
-    return render(request, 'characters/player_delete.html', {'form': form, 'player': player})
+    return render(request, 'characters/player_copy.html', {'form': form, 'player': player})
 
