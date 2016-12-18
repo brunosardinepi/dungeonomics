@@ -247,3 +247,21 @@ class PlayerDelete(LoginRequiredMixin, DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.add_message(self.request, messages.SUCCESS, "Player deleted!")
         return super(PlayerDelete, self).delete(request, *args, **kwargs)
+
+
+@login_required
+def player_copy(request, player_pk):
+    player = get_object_or_404(models.Player, pk=player_pk)
+    if player.user == request.user:
+        form = forms.CopyPlayerForm(instance=character_name)
+        if request.method == 'POST':
+            form = forms.CopyPlayerForm(request.POST, instance=player)
+            if player.user.pk == request.user.pk:
+                player.pk = None
+                player.save()
+                messages.add_message(request, messages.SUCCESS, "Player Copied!")
+                return HttpResponseRedirect(reverse('characters:player_detail'))
+    else:
+        raise Http404
+    return render(request, 'characters/player_delete.html', {'form': form, 'player': player})
+

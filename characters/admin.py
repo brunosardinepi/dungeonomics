@@ -10,3 +10,4 @@ class CharacterAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Monster, CharacterAdmin)
 admin.site.register(models.NPC, CharacterAdmin)
+admin.site.register(models.Player, CharacterAdmin)

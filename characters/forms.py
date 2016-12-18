@@ -135,3 +135,12 @@ class DeletePlayerForm(forms.ModelForm):
             'name',
             'character_name',
             ]
+
+
+class CopyPlayerForm(forms.ModelForm):
+    class Meta:
+        model = models.Player
+        fields = [
+            'name',
+            'character_name',
+            ]
