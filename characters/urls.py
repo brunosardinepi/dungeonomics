@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'npc/(?P<npc_pk>\d+)/delete/$', views.npc_delete, name='npc_delete'),
     url(r'player/(?P<player_pk>\d+)/delete/$', views.player_delete, name='player_delete'),
 
-    url(r'monster/(?P<monster_pk>\d+)/delete/$', views.monster_delete, name='monster_delete'),
-    url(r'npc/(?P<npc_pk>\d+)/delete/$', views.npc_delete, name='npc_delete'),
+    url(r'monster/(?P<monster_pk>\d+)/copy/$', views.monster_copy, name='monster_copy'),
+    url(r'npc/(?P<npc_pk>\d+)/copy/$', views.npc_copy, name='npc_copy'),
     url(r'player/(?P<player_pk>\d+)/copy/$', views.player_copy, name='player_copy'),
 ]
