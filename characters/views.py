@@ -267,7 +267,7 @@ def monster_copy(request, monster_pk):
 
 
 @login_required
-def NPC_copy(request, npc_pk):
+def npc_copy(request, npc_pk):
     npc = get_object_or_404(models.NPC, pk=npc_pk)
     if npc.user == request.user:
         form = forms.CopyNPCForm(instance=npc)
