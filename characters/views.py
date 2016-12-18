@@ -248,6 +248,41 @@ class PlayerDelete(LoginRequiredMixin, DeleteView):
         messages.add_message(self.request, messages.SUCCESS, "Player deleted!")
         return super(PlayerDelete, self).delete(request, *args, **kwargs)
 
+@login_required
+def monster_copy(request, monster_pk):
+    monster = get_object_or_404(models.Monster, pk=monster_pk)
+    if monster.user == request.user:
+        form = forms.CopyMonsterForm(instance=monster)
+        if request.method == 'POST':
+            form = forms.CopyMonsterForm(request.POST, instance=monster)
+            if monster.user.pk == request.user.pk:
+                monster.pk = None
+                monster.name = monster.name + "_Copy"
+                monster.save()
+                messages.add_message(request, messages.SUCCESS, "Monster Copied!")
+                return HttpResponseRedirect(reverse('characters:monster_detail'))
+    else:
+        raise Http404
+    return render(request, 'characters/monster_copy.html', {'form': form, 'monster': monster})
+
+
+@login_required
+def NPC_copy(request, npc_pk):
+    npc = get_object_or_404(models.NPC, pk=npc_pk)
+    if npc.user == request.user:
+        form = forms.CopyNPCForm(instance=npc)
+        if request.method == 'POST':
+            form = forms.CopyNPCForm(request.POST, instance=npc)
+            if npc.user.pk == request.user.pk:
+                npc.pk = None
+                npc.name = npc.name + "_Copy"
+                npc.save()
+                messages.add_message(request, messages.SUCCESS, "NPC Copied!")
+                return HttpResponseRedirect(reverse('characters:npc_detail'))
+    else:
+        raise Http404
+    return render(request, 'characters/npc_copy.html', {'form': form, 'npc': npc})
+
 
 @login_required
 def player_copy(request, player_pk):
