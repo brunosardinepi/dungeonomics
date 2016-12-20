@@ -16,7 +16,7 @@
         {% for player in players %}
             <li style="margin-bottom: 10px;">
                 <a href="{% url 'characters:player_detail' player_pk=player.id %}">
-                    {{ player.player_name }}
+                    {{ player.player_name }} 
                 </a>
             </li>
         {% endfor %}
@@ -40,7 +40,7 @@
 {% block character_detail_extra %}
     {% if this_player %}
         <li><a href="{% url 'characters:player_update' player_pk=this_player.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit Player</span></a></li>
-        <li><a href="{% url 'characters:player_copy' player_pk=this_player.pk %}"><span class="text-success"><i class="fa fa-file-o" aria-hidden="true"></i> Copy Player</span></a></li>       
+        <li><a href="{% url 'characters:player_copy' player_pk=this_player.pk %}"><span class="text-success"><i class="fa fa-fw fa-file-o" aria-hidden="true"></i> Copy Player</span></a></li>       
         <li><a href="{% url 'characters:player_delete' player_pk=this_player.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete Player</span></a></li>
     {% else %}
         <li><a href="{% url 'characters:player_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create Player</span></a></li>
@@ -50,14 +50,14 @@
 {% block character_detail %}
     {% if this_player %}
         <div class="row">
-            <div class="col-md-4"><p align="center"><strong>Class: </strong>{% if this_player.character_class %}{{ this_player.character_class }}{% else %}None{% endif %}</p></div>
-            <div class="col-md-4"><p align="center"><strong>Level: </strong>{% if this_player.level %}{{ this_player.level }}{% else %}None{% endif %}</p></div> 
-            <div class="col-md-4"><p align="center"><strong>Background: </strong>{% if this_player.background %}{{ this_player.background }}{% else %}None{% endif %}</p></div>    
+            <div class="col-md-4"><p><strong>Class: </strong>{% if this_player.character_class %}{{ this_player.character_class }}{% else %}None{% endif %}</p></div>
+            <div class="col-md-4"><p><strong>Level: </strong>{% if this_player.level %}{{ this_player.level }}{% else %}None{% endif %}</p></div> 
+            <div class="col-md-4"><p><strong>Background: </strong>{% if this_player.background %}{{ this_player.background }}{% else %}None{% endif %}</p></div>    
         </div>
         <div class="row">
-            <div class="col-md-4"><p align="center"><strong>Race: </strong>{% if this_player.race %}{{ this_player.race }}{% else %}None{% endif %}</p></div>
-            <div class="col-md-4"><p align="center"><strong>Alignment: </strong>{% if this_player.get_alignment_display %}{{ this_player.get_alignment_display }}{% else %}None{% endif %}</p></div>
-            <div class="col-md-4"><p align="center"><strong>XP: </strong>{% if this_player.xp %}{{ this_player.xp }}{% else %}None{% endif %}</p></div>
+            <div class="col-md-4"><p><strong>Race: </strong>{% if this_player.race %}{{ this_player.race }}{% else %}None{% endif %}</p></div>
+            <div class="col-md-4"><p><strong>Alignment: </strong>{% if this_player.get_alignment_display %}{{ this_player.get_alignment_display }}{% else %}None{% endif %}</p></div>
+            <div class="col-md-4"><p><strong>XP: </strong>{% if this_player.xp %}{{ this_player.xp }}{% else %}None{% endif %}</p></div>
         </div>
 
         <hr>

@@ -40,8 +40,8 @@
 {% block character_detail_extra %}
     {% if this_monster %}
         <li><a href="{% url 'characters:monster_update' monster_pk=this_monster.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit monster</span></a></li>
+                <li><a href="{% url 'characters:monster_copy' monster_pk=this_monster.pk %}"><span class="text-success"><i class="fa fa-fw fa-file-o" aria-hidden="true"></i> Copy Monster</span></a></li>
         <li><a href="{% url 'characters:monster_delete' monster_pk=this_monster.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete monster</span></a></li>
-        <li><a href="{% url 'characters:monster_copy' monster_pk=this_monster.pk %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Copy Monster</span></a></li>
     {% else %}
         <li><a href="{% url 'characters:monster_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create monster</span></a></li>
     {% endif %}
