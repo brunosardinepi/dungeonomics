@@ -102,6 +102,7 @@ class PlayerForm(TinyMCEForm):
 	        'age',
             'height',
             'weight',
+            'languages',            
             'personality',
 	        'ideals',
             'bonds',
@@ -110,7 +111,6 @@ class PlayerForm(TinyMCEForm):
             'attacks',
             'spells',
 	        'proficiencies',
-	        'languages',
 	        'equipment',
             'notes',
         ]
@@ -152,7 +152,4 @@ class CopyNPCForm(forms.ModelForm):
 class CopyPlayerForm(forms.ModelForm):
     class Meta:
         model = models.Player
-        fields = [
-            'player_name',
-            'character_name',
-            ]
+        fields = ['player_name']
