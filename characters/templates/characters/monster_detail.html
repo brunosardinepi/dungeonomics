@@ -47,7 +47,7 @@
     {% endif %}
 {% endblock %}
 
-{% block character_detail %}
+{% block character_stats %}
     {% if this_monster %}
         <div class="row">
             <div class="col-md-12">
@@ -59,6 +59,7 @@
 
         <div class="row">
             <div class="col-md-12">
+                {% if this_monster.challenge_rating %}<p><strong>Challenge Rating</strong> {{ this_monster.challenge_rating }}</p>{% endif %}
                 {% if this_monster.armor_class %}<p><strong>Armor Class</strong> {{ this_monster.armor_class }}</p>{% endif %}
                 {% if this_monster.hit_points %}<p><strong>Hit Points</strong> {{ this_monster.hit_points }}</p>{% endif %}
                 {% if this_monster.speed %}<p><strong>Speed</strong> {{ this_monster.speed }}</p>{% endif %}
@@ -124,13 +125,23 @@
             <div class="col-md-12">
                 {% if this_monster.saving_throws %}<p><strong>Saving Throws</strong> {{ this_monster.saving_throws }}</p>{% endif %}
                 {% if this_monster.skills %}<p><strong>Skills</strong> {{ this_monster.skills }}</p>{% endif %}
+                {% if this_monster.senses %}<p><strong>Senses</strong> {{ this_monster.senses }}</p>{% endif %}
+                {% if this_monster.languages %}<p><strong>Languages</strong> {{ this_monster.languages }}</p>{% endif %}
+            </div>
+        </div>
+    {% else %}
+        <p>You haven't created any monsters yet!</p>
+    {% endif %}
+{% endblock %}
+
+{% block character_detail %}
+    {% if this_monster %}
+        <div class="row">
+            <div class="col-md-12">
                 {% if this_monster.damage_vulnerabilities %}<p><strong>Damage Vulnerabilities</strong> {{ this_monster.damage_vulnerabilities }}</p>{% endif %}
                 {% if this_monster.damage_immunities %}<p><strong>Damage Immunities</strong> {{ this_monster.damage_immunities }}</p>{% endif %}
                 {% if this_monster.damage_resistances %}<p><strong>Damage Resistances</strong> {{ this_monster.damage_resistances }}</p>{% endif %}
                 {% if this_monster.condition_immunities %}<p><strong>Condition Immunities</strong> {{ this_monster.condition_immunities }}</p>{% endif %}
-                {% if this_monster.senses %}<p><strong>Senses</strong> {{ this_monster.senses }}</p>{% endif %}
-                {% if this_monster.languages %}<p><strong>Languages</strong> {{ this_monster.languages }}</p>{% endif %}
-                {% if this_monster.challenge_rating %}<p><strong>Challenge</strong> {{ this_monster.challenge_rating }}</p>{% endif %}
             </div>
         </div>
 
@@ -151,8 +162,5 @@
                 </div>
             </div>
         {% endif %}
-
-    {% else %}
-        <p>You haven't created any monsters yet!</p>
     {% endif %}
 {% endblock %}
