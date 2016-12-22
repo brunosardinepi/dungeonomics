@@ -120,6 +120,8 @@
             </div>
         </div>
 
+        <hr>
+
         <div class="row">
             <div class="col-md-12">
                 {% if this_player.age %}<p><strong>Age</strong> {{ this_player.age }}</p>{% endif %}
@@ -138,13 +140,9 @@
                 {% if this_player.languages %}<p><strong>Languages</strong> {{ this_player.languages }}</p>{% endif %}
             </div>
         </div>
-    {% else %}
-        <p>You haven't created any Players yet!</p>
-    {% endif %}
-{% endblock %}
 
-{% block character_detail %}
-    {% if this_player %}
+        <hr>
+
         <div class="row">
             <div class="col-md-12">
                 {% if this_player.personality %}<p><strong>Personality Traits</strong> {{ this_player.personality|safe }}</p>{% endif %}
@@ -153,11 +151,15 @@
                 {% if this_player.flaws %}<p><strong>Flaws</strong> {{ this_player.flaws|safe }}</p>{% endif %}
             </div>
         </div>
+    {% else %}
+        <p>You haven't created any Players yet!</p>
+    {% endif %}
+{% endblock %}
 
-        <hr>
+{% block character_detail %}
+    {% if this_player %}
 
         {% if this_player.attacks %}
-            <hr>
             <div class="row">
                 <div class="col-md-12">
                     <p><strong>Attacks and Spellcasting</strong> {{ this_player.attacks|safe }}</p>
