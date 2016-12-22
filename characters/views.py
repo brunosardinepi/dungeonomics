@@ -227,7 +227,7 @@ def monster_copy(request, monster_pk):
                 monster.name = monster.name + "_Copy"
                 monster.save()
                 messages.add_message(request, messages.SUCCESS, "Monster Copied!")
-                return HttpResponseRedirect(reverse('characters:monster_detail'))
+                return HttpResponseRedirect(monster.get_absolute_url())
     else:
         raise Http404
     return render(request, 'characters/monster_copy.html', {'form': form, 'monster': monster})
@@ -245,7 +245,7 @@ def npc_copy(request, npc_pk):
                 npc.name = npc.name + "_Copy"
                 npc.save()
                 messages.add_message(request, messages.SUCCESS, "NPC Copied!")
-                return HttpResponseRedirect(reverse('characters:npc_detail'))
+                return HttpResponseRedirect(npc.get_absolute_url())
     else:
         raise Http404
     return render(request, 'characters/npc_copy.html', {'form': form, 'npc': npc})
@@ -263,7 +263,7 @@ def player_copy(request, player_pk):
                 player.player_name = player.player_name + "_Copy"
                 player.save()
                 messages.add_message(request, messages.SUCCESS, "Player Copied!")
-                return HttpResponseRedirect(reverse('characters:player_detail'))
+                return HttpResponseRedirect(player.get_absolute_url())
     else:
         raise Http404
     return render(request, 'characters/player_copy.html', {'form': form, 'player': player})
