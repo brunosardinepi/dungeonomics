@@ -50,29 +50,29 @@
 {% block character_detail %}
     {% if this_player %}
         <div class="row">
-            <div class="col-md-4"><p><strong>Class: </strong>{% if this_player.character_class %}{{ this_player.character_class }}{% else %}None{% endif %}</p></div>
-            <div class="col-md-4"><p><strong>Level: </strong>{% if this_player.level %}{{ this_player.level }}{% else %}None{% endif %}</p></div> 
-            <div class="col-md-4"><p><strong>Background: </strong>{% if this_player.background %}{{ this_player.background }}{% else %}None{% endif %}</p></div>    
+            <div class="col-md-4"><p class="text-center"><strong>Class: </strong>{% if this_player.character_class %}{{ this_player.character_class }}{% else %}None{% endif %}</p></div>
+            <div class="col-md-4"><p class="text-center"><strong>Level: </strong>{% if this_player.level %}{{ this_player.level }}{% else %}None{% endif %}</p></div>
+            <div class="col-md-4"><p class="text-center"><strong>Background: </strong>{% if this_player.background %}{{ this_player.background }}{% else %}None{% endif %}</p></div>
         </div>
         <div class="row">
-            <div class="col-md-4"><p><strong>Race: </strong>{% if this_player.race %}{{ this_player.race }}{% else %}None{% endif %}</p></div>
-            <div class="col-md-4"><p><strong>Alignment: </strong>{% if this_player.get_alignment_display %}{{ this_player.get_alignment_display }}{% else %}None{% endif %}</p></div>
-            <div class="col-md-4"><p><strong>XP: </strong>{% if this_player.xp %}{{ this_player.xp }}{% else %}None{% endif %}</p></div>
+            <div class="col-md-4"><p class="text-center"><strong>Race: </strong>{% if this_player.race %}{{ this_player.race }}{% else %}None{% endif %}</p></div>
+            <div class="col-md-4"><p class="text-center"><strong>Alignment: </strong>{% if this_player.get_alignment_display %}{{ this_player.get_alignment_display }}{% else %}None{% endif %}</p></div>
+            <div class="col-md-4"><p class="text-center"><strong>XP: </strong>{% if this_player.xp %}{{ this_player.xp }}{% else %}None{% endif %}</p></div>
         </div>
 
         <hr>
 
         <div class="row">
-            <div class="col-md-4"><p align="center"><strong>Proficiency Bonus: </strong>{% if this_player.proficiency_bonus %}{{ this_player.proficiency_bonus }}{% else %}None{% endif %}</p></div>
-            <div class="col-md-4"><p align="center"><strong>Armor Class: </strong>{% if this_player.armor_class %}{{ this_player.armor_class }}{% else %}None{% endif %}</p></div> 
-            <div class="col-md-4"><p align="center"><strong>Initiative: </strong>{% if this_player.initiative %}{{ this_player.initiative }}{% else %}None{% endif %}</p></div>
+            <div class="col-md-4"><p class="text-center"><strong>Proficiency Bonus: </strong>{% if this_player.proficiency_bonus %}{{ this_player.proficiency_bonus }}{% else %}None{% endif %}</p></div>
+            <div class="col-md-4"><p class="text-center"><strong>Armor Class: </strong>{% if this_player.armor_class %}{{ this_player.armor_class }}{% else %}None{% endif %}</p></div> 
+            <div class="col-md-4"><p class="text-center"><strong>Initiative: </strong>{% if this_player.initiative %}{{ this_player.initiative }}{% else %}None{% endif %}</p></div>
         </div>
         <hr>
         <div class="row">
-            <div class="col-md-3"><p align="center"><strong>Age: </strong>{% if this_player.age %}{{ this_player.age }}{% else %}None{% endif %}</p></div>
-            <div class="col-md-3"><p align="center"><strong>Height: </strong>{% if this_player.height %}{{ this_player.height }}{% else %}None{% endif %}</p></div>
-            <div class="col-md-3"><p align="center"><strong>Weight: </strong>{% if this_player.weight %}{{ this_player.weight }}{% else %}None{% endif %}</p></div>
-            <div class="col-md-3"><p align="center"><strong>Speed: </strong>{% if this_player.speed %}{{ this_player.speed }}{% else %}None{% endif %}</p></div>
+            <div class="col-md-3"><p class="text-center"><strong>Age: </strong>{% if this_player.age %}{{ this_player.age }}{% else %}None{% endif %}</p></div>
+            <div class="col-md-3"><p class="text-center"><strong>Height: </strong>{% if this_player.height %}{{ this_player.height }}{% else %}None{% endif %}</p></div>
+            <div class="col-md-3"><p class="text-center"><strong>Weight: </strong>{% if this_player.weight %}{{ this_player.weight }}{% else %}None{% endif %}</p></div>
+            <div class="col-md-3"><p class="text-center"><strong>Speed: </strong>{% if this_player.speed %}{{ this_player.speed }}{% else %}None{% endif %}</p></div>
         </div>
 
         <hr>
