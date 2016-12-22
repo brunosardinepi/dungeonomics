@@ -59,18 +59,6 @@
 
         <div class="row">
             <div class="col-md-12">
-                {% if this_npc.challenge_rating %}<p><strong>Challenge Rating</strong> {{ this_npc.challenge_rating }}</p>{% endif %}
-                {% if this_npc.npc_class %}<p><strong>Class</strong> {{ this_npc.npc_class }}</p>{% endif %}
-                {% if this_npc.age %}<p><strong>Age</strong> {{ this_npc.age }}</p>{% endif %}
-                {% if this_npc.height %}<p><strong>Height</strong> {{ this_npc.height }}</p>{% endif %}
-                {% if this_npc.weight %}<p><strong>Weight</strong> {{ this_npc.weight }}</p>{% endif %}
-            </div>
-        </div>
-
-        <hr>
-
-        <div class="row">
-            <div class="col-md-12">
                 {% if this_npc.armor_class %}<p><strong>Armor Class</strong> {{ this_npc.armor_class }}</p>{% endif %}
                 {% if this_npc.hit_points %}<p><strong>Hit Points</strong> {{ this_npc.hit_points }}</p>{% endif %}
                 {% if this_npc.speed %}<p><strong>Speed</strong> {{ this_npc.speed }}</p>{% endif %}
@@ -127,6 +115,18 @@
                 <div class="character-details">
                     <p>{{ this_npc.charisma }}</p>
                 </div>
+            </div>
+        </div>
+
+        <hr>
+        
+        <div class="row">
+            <div class="col-md-12">
+                {% if this_npc.challenge_rating %}<p><strong>Challenge Rating</strong> {{ this_npc.challenge_rating }}</p>{% endif %}
+                {% if this_npc.npc_class %}<p><strong>Class</strong> {{ this_npc.npc_class }}</p>{% endif %}
+                {% if this_npc.age %}<p><strong>Age</strong> {{ this_npc.age }}</p>{% endif %}
+                {% if this_npc.height %}<p><strong>Height</strong> {{ this_npc.height }}</p>{% endif %}
+                {% if this_npc.weight %}<p><strong>Weight</strong> {{ this_npc.weight }}</p>{% endif %}
             </div>
         </div>
 
