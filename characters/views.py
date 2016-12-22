@@ -86,7 +86,6 @@ def player_detail(request, player_pk=None):
         this_player = None
     return render(request, 'characters/player_detail.html', {'this_player': this_player, 'players': players})
 
-
 @login_required
 def monster_create(request):
     form = forms.MonsterForm()
@@ -171,18 +170,6 @@ def player_update(request, player_pk):
         raise Http404
     return render(request, 'characters/player_form.html', {'form': form, 'player': player})
 
-
-class MonsterDelete(LoginRequiredMixin, DeleteView):
-    model = models.Monster
-    success_url = reverse_lazy('characters:monster_detail')
-    slug_field = "pk"
-    slug_url_kwarg = "monster_pk"
-
-    def delete(self, request, *args, **kwargs):
-        messages.add_message(self.request, messages.SUCCESS, "Monster deleted!")
-        return super(MonsterDelete, self).delete(request, *args, **kwargs)
-
-
 @login_required
 def monster_delete(request, monster_pk):
     monster = get_object_or_404(models.Monster, pk=monster_pk)
@@ -213,16 +200,6 @@ def npc_delete(request, npc_pk):
         raise Http404
     return render(request, 'characters/npc_delete.html', {'form': form, 'npc': npc})
 
-class NPCDelete(LoginRequiredMixin, DeleteView):
-    model = models.NPC
-    success_url = reverse_lazy('characters:npc_detail')
-    slug_field = "pk"
-    slug_url_kwarg = "npc_pk"
-
-    def delete(self, request, *args, **kwargs):
-        messages.add_message(self.request, messages.SUCCESS, "NPC deleted!")
-        return super(NPCDelete, self).delete(request, *args, **kwargs)
-
 @login_required
 def player_delete(request, player_pk):
     player = get_object_or_404(models.Player, pk=player_pk)
@@ -237,16 +214,6 @@ def player_delete(request, player_pk):
     else:
         raise Http404
     return render(request, 'characters/player_delete.html', {'form': form, 'player': player})
-
-class PlayerDelete(LoginRequiredMixin, DeleteView):
-    model = models.Player
-    success_url = reverse_lazy('characters:player_detail')
-    slug_field = "pk"
-    slug_url_kwarg = "player_pk"
-
-    def delete(self, request, *args, **kwargs):
-        messages.add_message(self.request, messages.SUCCESS, "Player deleted!")
-        return super(PlayerDelete, self).delete(request, *args, **kwargs)
 
 @login_required
 def monster_copy(request, monster_pk):
@@ -300,4 +267,3 @@ def player_copy(request, player_pk):
     else:
         raise Http404
     return render(request, 'characters/player_copy.html', {'form': form, 'player': player})
-

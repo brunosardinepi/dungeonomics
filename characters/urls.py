@@ -19,8 +19,6 @@ urlpatterns = [
     url(r'npc/(?P<npc_pk>\d+)/edit/$', views.npc_update, name='npc_update'),
     url(r'player/(?P<player_pk>\d+)/edit/$', views.player_update, name='player_update'),
     
-    # url(r'monster/(?P<monster_pk>\d+)/delete/$', views.MonsterDelete.as_view(), name='monster_delete'),
-    # url(r'npc/(?P<npc_pk>\d+)/delete/$', views.NPCDelete.as_view(), name='npc_delete'),
     url(r'monster/(?P<monster_pk>\d+)/delete/$', views.monster_delete, name='monster_delete'),
     url(r'npc/(?P<npc_pk>\d+)/delete/$', views.npc_delete, name='npc_delete'),
     url(r'player/(?P<player_pk>\d+)/delete/$', views.player_delete, name='player_delete'),
