@@ -68,6 +68,7 @@ class Monster(Character):
     challenge_rating = models.CharField(max_length=255, default='', blank=True)
     traits = models.TextField(blank=True)
     actions = models.TextField(blank=True)
+    notes = models.TextField(blank=True)
 
     def get_absolute_url(self):
         return reverse('characters:monster_detail', kwargs={

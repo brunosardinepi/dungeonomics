@@ -162,5 +162,14 @@
                 </div>
             </div>
         {% endif %}
+
+        {% if this_monster.notes %}
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <p><strong>Notes</strong> {{ this_monster.notes|safe }}</p>
+                </div>
+            </div>
+        {% endif %}
     {% endif %}
 {% endblock %}

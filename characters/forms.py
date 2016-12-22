@@ -38,6 +38,7 @@ class MonsterForm(TinyMCEForm):
             'challenge_rating',
             'traits',
             'actions',
+            'notes',
         ]
 
 
