@@ -16,7 +16,7 @@
         {% for player in players %}
             <li style="margin-bottom: 10px;">
                 <a href="{% url 'characters:player_detail' player_pk=player.id %}">
-                    {{ player.player_name }}{% if player.character_name %} ({{ player.character_name }}){% endif %}
+                    {{ player.player_name }} ({{ player.character_name }})
                 </a>
             </li>
         {% endfor %}
@@ -31,7 +31,7 @@
 
 {% block character_detail_title %}
     {% if this_player %}
-        {{ this_player.player_name }}{% if this_player.character_name %} ({{ this_player.character_name }}){% endif %}
+        {{ this_player.player_name }} ({{ this_player.character_name }})
     {% else %}
         Players
     {% endif %}
