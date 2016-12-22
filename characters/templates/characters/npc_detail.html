@@ -47,7 +47,7 @@
     {% endif %}
 {% endblock %}
 
-{% block character_detail %}
+{% block character_stats %}
     {% if this_npc %}
         <div class="row">
             <div class="col-md-12">
@@ -59,6 +59,7 @@
 
         <div class="row">
             <div class="col-md-12">
+                {% if this_npc.challenge_rating %}<p><strong>Challenge Rating</strong> {{ this_npc.challenge_rating }}</p>{% endif %}
                 {% if this_npc.npc_class %}<p><strong>Class</strong> {{ this_npc.npc_class }}</p>{% endif %}
                 {% if this_npc.age %}<p><strong>Age</strong> {{ this_npc.age }}</p>{% endif %}
                 {% if this_npc.height %}<p><strong>Height</strong> {{ this_npc.height }}</p>{% endif %}
@@ -134,14 +135,23 @@
         <div class="row">
             <div class="col-md-12">
                 {% if this_npc.saving_throws %}<p><strong>Saving Throws</strong> {{ this_npc.saving_throws }}</p>{% endif %}
-                {% if this_npc.skills %}<p><strong>Skills</strong> {{ this_npc.skills }}</p>{% endif %}
+                {% if this_npc.skills %}<p><strong>Skills</strong> {{ this_npc.skills }}</p>{% endif %}<p><strong>Senses</strong> {{ this_npc.senses }}</p>{% endif %}
+                {% if this_npc.languages %}<p><strong>Languages</strong> {{ this_npc.languages }}</p>{% endif %}
+            </div>
+        </div>
+    {% else %}
+        <p>You haven't created any NPCs yet!</p>
+    {% endif %}
+{% endblock %}
+
+{% block character_detail %}
+    {% if this_npc %}
+        <div class="row">
+            <div class="col-md-12">
                 {% if this_npc.damage_vulnerabilities %}<p><strong>Damage Vulnerabilities</strong> {{ this_npc.damage_vulnerabilities }}</p>{% endif %}
                 {% if this_npc.damage_immunities %}<p><strong>Damage Immunities</strong> {{ this_npc.damage_immunities }}</p>{% endif %}
                 {% if this_npc.damage_resistances %}<p><strong>Damage Resistances</strong> {{ this_npc.damage_resistances }}</p>{% endif %}
                 {% if this_npc.condition_immunities %}<p><strong>Condition Immunities</strong> {{ this_npc.condition_immunities }}</p>{% endif %}
-                {% if this_npc.senses %}<p><strong>Senses</strong> {{ this_npc.senses }}</p>{% endif %}
-                {% if this_npc.languages %}<p><strong>Languages</strong> {{ this_npc.languages }}</p>{% endif %}
-                {% if this_npc.challenge_rating %}<p><strong>Challenge</strong> {{ this_npc.challenge_rating }}</p>{% endif %}
             </div>
         </div>
 
@@ -171,8 +181,5 @@
                 </div>
             </div>
         {% endif %}
-
-    {% else %}
-        <p>You haven't created any NPCs yet!</p>
     {% endif %}
 {% endblock %}
