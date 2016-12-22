@@ -40,7 +40,7 @@
 {% block character_detail_extra %}
     {% if this_player %}
         <li><a href="{% url 'characters:player_update' player_pk=this_player.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit Player</span></a></li>
-        <li><a href="{% url 'characters:player_copy' player_pk=this_player.pk %}"><span class="text-success"><i class="fa fa-fw fa-file-o" aria-hidden="true"></i> Copy Player</span></a></li>       
+        <li><a href="{% url 'characters:player_copy' player_pk=this_player.pk %}"><span class="text-success"><i class="fa fa-fw fa-files-o" aria-hidden="true"></i> Copy Player</span></a></li>       
         <li><a href="{% url 'characters:player_delete' player_pk=this_player.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete Player</span></a></li>
     {% else %}
         <li><a href="{% url 'characters:player_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create Player</span></a></li>
