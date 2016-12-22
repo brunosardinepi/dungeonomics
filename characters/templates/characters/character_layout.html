@@ -44,7 +44,12 @@
                     </span>
                 </div>
                 <div class="panel-body">
-                    {% block character_detail %}{% endblock %}
+                    <div class="col-md-6">
+                        {% block character_stats %}{% endblock %}
+                    </div>
+                    <div class="col-md-6">
+                        {% block character_detail %}{% endblock %}
+                    </div>
                 </div>
             </div>
         </div>
