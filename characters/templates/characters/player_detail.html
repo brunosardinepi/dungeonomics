@@ -51,7 +51,7 @@
     {% if this_player %}
         <div class="row">
             <div class="col-md-12">
-                <p>{% if this_player.level %}Level {{ this_player.level }}{% endif %}{% if this_player.race %} {{ this_player.race }}{% endif %}{% if this_player.character_class %} {{ this_player.character_class }}{% endif %}{% if this_player.get_alignment_display %} {{ this_player.get_alignment_display }}{% endif %}</p>
+                <p>{% if this_player.level %}Level {{ this_player.level }}{% endif %}{% if this_player.race %} {{ this_player.race }}{% endif %}{% if this_player.character_class %} {{ this_player.character_class }}{% endif %}{% if this_player.get_alignment_display %}, {{ this_player.get_alignment_display }}{% endif %}</p>
             </div>
         </div>
 
