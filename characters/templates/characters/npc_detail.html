@@ -40,6 +40,7 @@
 {% block character_detail_extra %}
     {% if this_npc %}
         <li><a href="{% url 'characters:npc_update' npc_pk=this_npc.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit NPC</span></a></li>
+        <li><a href="{% url 'characters:npc_copy' npc_pk=this_npc.pk %}"><span class="text-success"><i class="fa fa-fw fa-file-o" aria-hidden="true"></i> Copy NPC</span></a></li>
         <li><a href="{% url 'characters:npc_delete' npc_pk=this_npc.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete NPC</span></a></li>
     {% else %}
         <li><a href="{% url 'characters:npc_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create NPC</span></a></li>

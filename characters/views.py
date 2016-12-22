@@ -62,6 +62,30 @@ def npc_detail(request, npc_pk=''):
         this_npc = None
     return render(request, 'characters/npc_detail.html', {'this_npc': this_npc, 'npcs': npcs})
 
+@login_required
+def player_detail(request, player_pk=None):
+    user = None
+    if request.user.is_authenticated():
+        user = request.user.pk
+    players = sorted(models.Player.objects.filter(user=user),
+        key=lambda player: player.player_name.lower()
+        )
+    if player_pk:
+        this_player = get_object_or_404(models.Player, pk=player_pk)
+        if this_player.user == request.user:
+            return render(request, 'characters/player_detail.html', {'this_player': this_player, 'players': players})
+        else:
+            raise Http404
+    elif len(players) > 0:
+        this_player = players[0]
+        if this_player.user == request.user:
+            return render(request, 'characters/player_detail.html', {'this_player': this_player, 'players': players})
+        else:
+            raise Http404
+    else:
+        this_player = None
+    return render(request, 'characters/player_detail.html', {'this_player': this_player, 'players': players})
+
 
 @login_required
 def monster_create(request):
@@ -88,6 +112,19 @@ def npc_create(request):
             messages.add_message(request, messages.SUCCESS, "NPC created!")
             return HttpResponseRedirect(npc.get_absolute_url())
     return render(request, 'characters/npc_form.html', {'form': form})
+
+@login_required
+def player_create(request):
+    form = forms.PlayerForm()
+    if request.method == 'POST':
+        form = forms.PlayerForm(request.POST)
+        if form.is_valid():
+            player = form.save(commit=False)
+            player.user = request.user
+            player.save()
+            messages.add_message(request, messages.SUCCESS, "Player created!")
+            return HttpResponseRedirect(player.get_absolute_url())
+    return render(request, 'characters/player_form.html', {'form': form})
 
 @login_required
 def monster_update(request, monster_pk):
@@ -118,6 +155,21 @@ def npc_update(request, npc_pk):
     else:
         raise Http404
     return render(request, 'characters/npc_form.html', {'form': form, 'npc': npc})
+
+@login_required
+def player_update(request, player_pk):
+    player = get_object_or_404(models.Player, pk=player_pk)
+    if player.user == request.user:
+        form = forms.PlayerForm(instance=player)
+        if request.method == 'POST':
+            form = forms.PlayerForm(instance=player, data=request.POST)
+            if form.is_valid():
+                form.save()
+                messages.add_message(request, messages.SUCCESS, "Updated player: {}".format(form.cleaned_data['player_name']))
+                return HttpResponseRedirect(player.get_absolute_url())
+    else:
+        raise Http404
+    return render(request, 'characters/player_form.html', {'form': form, 'player': player})
 
 
 class MonsterDelete(LoginRequiredMixin, DeleteView):
@@ -170,3 +222,82 @@ class NPCDelete(LoginRequiredMixin, DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.add_message(self.request, messages.SUCCESS, "NPC deleted!")
         return super(NPCDelete, self).delete(request, *args, **kwargs)
+
+@login_required
+def player_delete(request, player_pk):
+    player = get_object_or_404(models.Player, pk=player_pk)
+    if player.user == request.user:
+        form = forms.DeletePlayerForm(instance=player)
+        if request.method == 'POST':
+            form = forms.DeletePlayerForm(request.POST, instance=player)
+            if player.user.pk == request.user.pk:
+                player.delete()
+                messages.add_message(request, messages.SUCCESS, "Player deleted!")
+                return HttpResponseRedirect(reverse('characters:player_detail'))
+    else:
+        raise Http404
+    return render(request, 'characters/player_delete.html', {'form': form, 'player': player})
+
+class PlayerDelete(LoginRequiredMixin, DeleteView):
+    model = models.Player
+    success_url = reverse_lazy('characters:player_detail')
+    slug_field = "pk"
+    slug_url_kwarg = "player_pk"
+
+    def delete(self, request, *args, **kwargs):
+        messages.add_message(self.request, messages.SUCCESS, "Player deleted!")
+        return super(PlayerDelete, self).delete(request, *args, **kwargs)
+
+@login_required
+def monster_copy(request, monster_pk):
+    monster = get_object_or_404(models.Monster, pk=monster_pk)
+    if monster.user == request.user:
+        form = forms.CopyMonsterForm(instance=monster)
+        if request.method == 'POST':
+            form = forms.CopyMonsterForm(request.POST, instance=monster)
+            if monster.user.pk == request.user.pk:
+                monster.pk = None
+                monster.name = monster.name + "_Copy"
+                monster.save()
+                messages.add_message(request, messages.SUCCESS, "Monster Copied!")
+                return HttpResponseRedirect(reverse('characters:monster_detail'))
+    else:
+        raise Http404
+    return render(request, 'characters/monster_copy.html', {'form': form, 'monster': monster})
+
+
+@login_required
+def npc_copy(request, npc_pk):
+    npc = get_object_or_404(models.NPC, pk=npc_pk)
+    if npc.user == request.user:
+        form = forms.CopyNPCForm(instance=npc)
+        if request.method == 'POST':
+            form = forms.CopyNPCForm(request.POST, instance=npc)
+            if npc.user.pk == request.user.pk:
+                npc.pk = None
+                npc.name = npc.name + "_Copy"
+                npc.save()
+                messages.add_message(request, messages.SUCCESS, "NPC Copied!")
+                return HttpResponseRedirect(reverse('characters:npc_detail'))
+    else:
+        raise Http404
+    return render(request, 'characters/npc_copy.html', {'form': form, 'npc': npc})
+
+
+@login_required
+def player_copy(request, player_pk):
+    player = get_object_or_404(models.Player, pk=player_pk)
+    if player.user == request.user:
+        form = forms.CopyPlayerForm(instance=player)
+        if request.method == 'POST':
+            form = forms.CopyPlayerForm(request.POST, instance=player)
+            if player.user.pk == request.user.pk:
+                player.pk = None
+                player.player_name = player.player_name + "_Copy"
+                player.save()
+                messages.add_message(request, messages.SUCCESS, "Player Copied!")
+                return HttpResponseRedirect(reverse('characters:player_detail'))
+    else:
+        raise Http404
+    return render(request, 'characters/player_copy.html', {'form': form, 'player': player})
+

@@ -193,3 +193,6 @@ a.home-panel:hover {
 .copyright {
     color: #666;
 }
+.border {
+    border: 1px solid black;
+}

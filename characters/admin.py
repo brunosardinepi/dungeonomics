@@ -8,5 +8,6 @@ class CharacterAdmin(admin.ModelAdmin):
   # ordering = ('-created_at',)
   list_filter = ('user', 'level')
 
+admin.site.register(models.Player, CharacterAdmin)
 admin.site.register(models.Monster, CharacterAdmin)
 admin.site.register(models.NPC, CharacterAdmin)
