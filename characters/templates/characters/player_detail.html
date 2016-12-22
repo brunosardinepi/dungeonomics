@@ -16,7 +16,7 @@
         {% for player in players %}
             <li style="margin-bottom: 10px;">
                 <a href="{% url 'characters:player_detail' player_pk=player.id %}">
-                    {{ player.player_name }} 
+                    {{ player.player_name }} ({{ player.character_name }})
                 </a>
             </li>
         {% endfor %}
@@ -31,7 +31,7 @@
 
 {% block character_detail_title %}
     {% if this_player %}
-        {{ this_player.player_name }}
+        {{ this_player.player_name }} ({{ this_player.character_name }})
     {% else %}
         Players
     {% endif %}
@@ -63,17 +63,16 @@
         <hr>
 
         <div class="row">
-            <div class="col-md-3"><p align="center"><strong>Proficiency Bonus: </strong>{% if this_player.proficiency_bonus %}{{ this_player.proficiency_bonus }}{% else %}None{% endif %}</p></div>
-            <div class="col-md-3"><p align="center"><strong>Armor Class: </strong>{% if this_player.armor_class %}{{ this_player.armor_class }}{% else %}None{% endif %}</p></div> 
-            <div class="col-md-3"><p align="center"><strong>Initiative: </strong>{% if this_player.initiative %}{{ this_player.initiative }}{% else %}None{% endif %}</p></div>
-            <div class="col-md-3"><p align="center"><strong>Speed: </strong>{% if this_player.speed %}{{ this_player.speed }}{% else %}None{% endif %}</p></div>       
+            <div class="col-md-4"><p align="center"><strong>Proficiency Bonus: </strong>{% if this_player.proficiency_bonus %}{{ this_player.proficiency_bonus }}{% else %}None{% endif %}</p></div>
+            <div class="col-md-4"><p align="center"><strong>Armor Class: </strong>{% if this_player.armor_class %}{{ this_player.armor_class }}{% else %}None{% endif %}</p></div> 
+            <div class="col-md-4"><p align="center"><strong>Initiative: </strong>{% if this_player.initiative %}{{ this_player.initiative }}{% else %}None{% endif %}</p></div>
         </div>
         <hr>
         <div class="row">
-            <div class="col-md-3"><p align="center"><strong>Character Name: </strong>{% if this_player.character_name %}{{ this_player.character_name }}{% else %}None{% endif %}</p></div>
             <div class="col-md-3"><p align="center"><strong>Age: </strong>{% if this_player.age %}{{ this_player.age }}{% else %}None{% endif %}</p></div>
             <div class="col-md-3"><p align="center"><strong>Height: </strong>{% if this_player.height %}{{ this_player.height }}{% else %}None{% endif %}</p></div>
             <div class="col-md-3"><p align="center"><strong>Weight: </strong>{% if this_player.weight %}{{ this_player.weight }}{% else %}None{% endif %}</p></div>
+            <div class="col-md-3"><p align="center"><strong>Speed: </strong>{% if this_player.speed %}{{ this_player.speed }}{% else %}None{% endif %}</p></div>
         </div>
 
         <hr>
