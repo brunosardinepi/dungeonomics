@@ -244,7 +244,7 @@ def npc_copy(request, npc_pk):
                 npc.pk = None
                 npc.name = npc.name + "_Copy"
                 npc.save()
-                messages.add_message(request, messages.SUCCESS, "NPC Copied!")
+                messages.add_message(request, messages.SUCCESS, "NPC copied!")
                 return HttpResponseRedirect(npc.get_absolute_url())
     else:
         raise Http404
@@ -262,7 +262,7 @@ def player_copy(request, player_pk):
                 player.pk = None
                 player.player_name = player.player_name + "_Copy"
                 player.save()
-                messages.add_message(request, messages.SUCCESS, "Player Copied!")
+                messages.add_message(request, messages.SUCCESS, "Player copied!")
                 return HttpResponseRedirect(player.get_absolute_url())
     else:
         raise Http404
