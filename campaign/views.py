@@ -437,7 +437,7 @@ def campaign_export(request, campaign_pk):
         npcs = sorted(character_models.NPC.objects.filter(user=request.user),
             key=lambda npc: npc.name.lower()
             )
-        items = sorted(items_models.Item.objects.filter(user=request.user),
+        items = sorted(item_models.Item.objects.filter(user=request.user),
             key=lambda item: item.name.lower()
             )
         for chapter in chapters:
