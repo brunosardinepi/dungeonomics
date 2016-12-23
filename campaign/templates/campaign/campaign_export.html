@@ -59,8 +59,8 @@
             "challenge_rating": "{{ monster.challenge_rating }}",
             "traits": {{ monster.traits }},
             "actions": {{ monster.actions }}
-        {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}{% endif %}
-    {% if npcs %}},{% else %}}{% endif %}
+        {% if forloop.last %}}}{% else %}},{% endif %}{% endfor %}{% endif %}
+    {% if npcs %},{% endif %}
     {% if npcs %}"npcs": { {% for npc in npcs %}
         "{{ npc.name }}": {
             "npc_class": "{{ npc.npc_class }}",
@@ -91,8 +91,8 @@
             "traits": {{ npc.traits }},
             "actions": {{ npc.actions }},
             "notes": {{ npc.notes }}
-        {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}{% endif %}
-    {% if items %}},{% else %}}{% endif %}
+        {% if forloop.last %}}}{% else %}},{% endif %}{% endfor %}{% endif %}
+    {% if items %},{% endif %}
     {% if items %}"items": { {% for item in items %}
         "{{ item.name }}": {
             "item_type": "{{ item.item_type }}",
