@@ -32,6 +32,14 @@
                     'type': 'npc'
                 });
         }
+        var items_dict = {{items|safe}};
+        for (var key in items_dict) {
+            monsters.push({
+                    'name': items_dict[key],
+                    'id': key,
+                    'type': 'item'
+                });
+        }
         tinymce.init({
             selector: "#id_content",
             height : "250",
@@ -53,7 +61,11 @@
                 source: monsters,
                 delay: 0,
                 insert: function(item) {
-                    var url = "{% url 'characters:monster_detail' monster_pk=999999999999 %}".replace(999999999999, item.id).replace(/monster/g, item.type);
+                    if (item.type == 'item') {
+                        var url = "{% url 'items:item_detail' item_pk=999999999999 %}".replace(999999999999, item.id);
+                    } else {
+                        var url = "{% url 'characters:monster_detail' monster_pk=999999999999 %}".replace(999999999999, item.id).replace(/monster/g, item.type);
+                    }
                     return "<a href=" + url + ">" + item.name + "</a>";
                 }
             }
