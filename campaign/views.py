@@ -11,6 +11,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from . import forms
 from . import models
 from characters import models as character_models
+from items import models as item_models
 
 import json
 
@@ -107,6 +108,10 @@ def chapter_create(request, campaign_pk):
         npcs = {}
         for npc in npcs_raw:
             npcs[npc.pk] = npc.name
+        items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
+        items = {}
+        for item in items_raw:
+            items[item.pk] = item.name
 
         form = forms.ChapterForm()
         if request.method == 'POST':
@@ -120,7 +125,7 @@ def chapter_create(request, campaign_pk):
                 return HttpResponseRedirect(chapter.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'campaign/chapter_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': campaign})
+    return render(request, 'campaign/chapter_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'campaign': campaign})
 
 @login_required
 def section_create(request, campaign_pk, chapter_pk):
