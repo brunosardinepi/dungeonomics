@@ -421,6 +421,16 @@ def campaign_import(request):
                         notes=npc_attributes["notes"]
                     )
                     new_npc.save()
+            if "items" in user_import:
+                for item, item_attributes in user_import["items"].items():
+                    new_item = item_models.Item(
+                        user=request.user,
+                        name=item,
+                        item_type=item_attributes["item_type"],
+                        rarity=item_attributes["rarity"],
+                        description=item_attributes["description"]
+                    )
+                    new_item.save()
             return HttpResponseRedirect(campaign.get_absolute_url())
     return render(request, 'campaign/campaign_import.html', {'form': form, 'user_import': user_import})
 
