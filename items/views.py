@@ -15,11 +15,11 @@ def item_detail(request, item_pk=None):
     user = None
     if request.user.is_authenticated():
         user = request.user.pk
-    items = sorted(models.MagicItem.objects.filter(user=user),
+    items = sorted(models.Item.objects.filter(user=user),
         key=lambda item: item.name.lower()
         )
     if item_pk:
-        this_item = get_object_or_404(models.MagicItem, pk=item_pk)
+        this_item = get_object_or_404(models.Item, pk=item_pk)
         if this_item.user == request.user:
             return render(request, 'items/item_detail.html', {'this_item': this_item, 'items': items})
         else:
@@ -49,7 +49,7 @@ def item_create(request):
 
 @login_required
 def item_update(request, item_pk):
-    item = get_object_or_404(models.MagicItem, pk=item_pk)
+    item = get_object_or_404(models.Item, pk=item_pk)
     if item.user == request.user:
         form = forms.ItemForm(instance=item)
         if request.method == 'POST':
@@ -64,7 +64,7 @@ def item_update(request, item_pk):
 
 @login_required
 def item_delete(request, item_pk):
-    item = get_object_or_404(models.MagicItem, pk=item_pk)
+    item = get_object_or_404(models.Item, pk=item_pk)
     if item.user == request.user:
         form = forms.DeleteItemForm(instance=item)
         if request.method == 'POST':
@@ -79,7 +79,7 @@ def item_delete(request, item_pk):
 
 @login_required
 def item_copy(request, item_pk):
-    item = get_object_or_404(models.MagicItem, pk=item_pk)
+    item = get_object_or_404(models.Item, pk=item_pk)
     if item.user == request.user:
         form = forms.CopyItemForm(instance=item)
         if request.method == 'POST':

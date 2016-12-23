@@ -4,11 +4,11 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
-class MagicItem(models.Model):
+class Item(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, default='')
     item_type = models.CharField(verbose_name= _('Type'), max_length=255, default='', blank=True)
-    rarity = name = models.CharField(max_length=255, default='', blank=True)
+    rarity = models.CharField(max_length=255, default='', blank=True)
     description = models.TextField(blank=True)
 
     def __str__(self):
