@@ -32,8 +32,8 @@
                     "content": {{ section.content }}
                 }{% if not forloop.last %},{% endif %}{% endfor %}
             }{% endif %}
-        {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}
-    {% if monsters %}},{% else %}}{% endif %}
+        {% if forloop.last %}}}{% else %}},{% endif %}{% endfor %}
+    {% if monsters %},{% endif %}
     {% if monsters %}"monsters": { {% for monster in monsters %}
         "{{ monster.name }}": {
             "alignment": "{{ monster.alignment }}",
