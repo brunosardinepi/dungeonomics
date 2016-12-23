@@ -99,8 +99,14 @@
             "rarity": "{{ item.rarity }}",
             "description": {{ item.description }}
         {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}{% endif %}
-    {% if items %}}{% endif %}
-{% if monsters %}}{% endif %}
+    {% if items and npcs and monsters %}
+        }
+    }
+    {% elif (items and npcs) or (items and monsters) or (monsters and npcs) %}
+        }
+    {% elif items or npcs or monsters %}
+        }
+    {% endif %}
 </pre>
                     {% endautoescape %}
                     </div>
