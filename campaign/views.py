@@ -140,6 +140,10 @@ def section_create(request, campaign_pk, chapter_pk):
         npcs = {}
         for npc in npcs_raw:
             npcs[npc.pk] = npc.name
+        items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
+        items = {}
+        for item in items_raw:
+            items[item.pk] = item.name
 
         form = forms.SectionForm()
         if request.method == 'POST':
@@ -154,7 +158,7 @@ def section_create(request, campaign_pk, chapter_pk):
                 return HttpResponseRedirect(section.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': campaign, 'chapter': chapter})
+    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'campaign': campaign, 'chapter': chapter})
 
 
 @login_required
@@ -194,6 +198,10 @@ def chapter_update(request, campaign_pk, chapter_pk):
         npcs = {}
         for npc in npcs_raw:
             npcs[npc.pk] = npc.name
+        items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
+        items = {}
+        for item in items_raw:
+            items[item.pk] = item.name
 
         form = forms.ChapterForm(instance=chapter)
         section_forms = forms.SectionInlineFormSet(queryset=form.instance.section_set.all())
@@ -213,7 +221,7 @@ def chapter_update(request, campaign_pk, chapter_pk):
                 return HttpResponseRedirect(chapter.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'campaign/chapter_form.html', {'form': form, 'formset': section_forms, 'monsters': monsters, 'npcs': npcs, 'campaign': chapter.campaign, 'chapter': chapter, 'sections': sections})
+    return render(request, 'campaign/chapter_form.html', {'form': form, 'formset': section_forms, 'monsters': monsters, 'npcs': npcs, 'items': items, 'campaign': chapter.campaign, 'chapter': chapter, 'sections': sections})
 
 @login_required
 def section_update(request, campaign_pk, chapter_pk, section_pk):
@@ -227,6 +235,10 @@ def section_update(request, campaign_pk, chapter_pk, section_pk):
         npcs = {}
         for npc in npcs_raw:
             npcs[npc.pk] = npc.name
+        items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
+        items = {}
+        for item in items_raw:
+            items[item.pk] = item.name
 
         form = forms.SectionForm(instance=section)
         if request.method == 'POST':
@@ -237,7 +249,7 @@ def section_update(request, campaign_pk, chapter_pk, section_pk):
                 return HttpResponseRedirect(section.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'campaign': section.chapter.campaign, 'chapter': section.chapter, 'section': section})
+    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'campaign': section.chapter.campaign, 'chapter': section.chapter, 'section': section})
 
 @login_required
 def campaign_print(request, campaign_pk):
