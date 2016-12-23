@@ -12,7 +12,7 @@ class TinyMCEForm(forms.ModelForm):
 
 class ItemForm(TinyMCEForm):
     class Meta:
-        model = models.Item
+        model = models.MagicItem
         fields = [
             'name',
             'item_type',
@@ -23,11 +23,11 @@ class ItemForm(TinyMCEForm):
 
 class DeleteItemForm(forms.ModelForm):
     class Meta:
-        model = models.Item
+        model = models.MagicItem
         fields = ['name']
 
 
 class CopyItemForm(forms.ModelForm):
     class Meta:
-        model = models.Item
+        model = models.MagicItem
         fields = ['name']
