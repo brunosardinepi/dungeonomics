@@ -97,7 +97,7 @@
         "{{ item.name }}": {
             "item_type": "{{ item.item_type }}",
             "rarity": "{{ item.rarity }}",
-            "description": "{{ item.description }}"
+            "description": {{ item.description }}
         {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}{% endif %}
     {% if items %}}{% endif %}
 {% if monsters %}}{% endif %}
