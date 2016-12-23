@@ -23,8 +23,6 @@
                                 <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="{% url 'items:item_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create item</span></a></li>
-                                    <li><a href="{% url 'items:item_update' item_pk=this_item.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit item</span></a></li>
-                                    <li><a href="{% url 'items:item_delete' item_pk=this_item.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete item</span></a></li>
                                 </ul>
                             </li>
                         </ul>
