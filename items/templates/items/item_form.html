@@ -2,7 +2,7 @@
 {% load bootstrap3 %}
 
 {% block title %}
-    {% if monster.pk %}
+    {% if item.pk %}
         Update Item 
     {% else %}
         New Item 
@@ -40,7 +40,7 @@
         <div class="panel panel-default panel-campaign">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    {% if monster.pk %}
+                    {% if item.pk %}
                         <strong>Update item:</strong> {{ item.name }}
                     {% else %}
                         <strong>New item</strong>
@@ -53,7 +53,7 @@
                     {% bootstrap_form form %}
             </div>
             <div class="panel-footer clearfix">
-                {% if monster.pk %}
+                {% if item.pk %}
                     <a href="{% url 'items:item_detail' item_pk=item.pk %}" class="btn btn-default">Cancel</a>
                     <input type="submit" class="btn btn-primary pull-right" value="Update item">
                 {% else %}
