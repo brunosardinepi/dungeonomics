@@ -21,6 +21,7 @@ urlpatterns = [
     # url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^characters/', include('characters.urls', namespace='characters')),
     url(r'^campaign/', include('campaign.urls', namespace='campaign')),
+    url(r'^items/', include('items.urls', namespace='items')),
     url(r'^wiki/', include('wiki.urls', namespace='wiki')),
     url(r'^donate/', views.DonateView.as_view(), name='donate'),
     url(r'^privacy/', views.PrivacyView.as_view(), name='privacy'),
