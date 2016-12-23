@@ -66,7 +66,7 @@
                         </span>
                     </div>
                     <div class="panel-body">
-                            <p>{% if this_item.item_type %}{{ this_item.item_type }}{% endif %}{% if this_item.rarity and this_item.item_type %}, {{ this_item.rarity }}{% elif this_item.rarity %}{{ this_item.rarity }}{% else %}{% endif %}</p>
+                            <p><em>{% if this_item.item_type %}{{ this_item.item_type }}{% endif %}{% if this_item.rarity and this_item.item_type %}, {{ this_item.rarity }}{% elif this_item.rarity %}{{ this_item.rarity }}{% else %}{% endif %}</em></p>
                             <p>{{ this_item.description|safe }}</p>
                     </div>
                 {% else %}
