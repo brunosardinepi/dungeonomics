@@ -92,6 +92,14 @@
             "actions": {{ npc.actions }},
             "notes": {{ npc.notes }}
         {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}{% endif %}
+    {% if items %}},{% else %}}{% endif %}
+    {% if items %}"items": { {% for item in items %}
+        "{{ item.name }}": {
+            "item_type": "{{ item.item_type }}",
+            "rarity": "{{ item.rarity }}",
+            "description": "{{ item.description }}"
+        {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}{% endif %}
+    {% if items %}}{% endif %}
     {% if npcs %}}{% endif %}
 {% if monsters %}}{% endif %}
 </pre>
