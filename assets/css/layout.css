@@ -201,9 +201,6 @@ a.home-panel:hover {
   color: #fff !important;
   color: rgba(255,255,255, 1) !important;
 }
-#jumbotron-home p, #jumbotron-home a {
-    font-weight: bold;
-}
 #jumbotron-home a:hover {
     color: #fff;
 }
