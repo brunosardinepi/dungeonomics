@@ -83,28 +83,21 @@
             </div>
         </div>
     {% else %}
-        <div class="row campaign-row">
-            <div class="col-md-6 col-md-offset-3">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <h1>Streamlined Roleplaying</h1>
-                        <p>Dungeonomics is a place where DMs can manage their campaigns without the hassle of sifting through a mountain of paper. DMs control all aspects of their campaign from plot creation and setting up encounters to looking up/creating monsters or NPCs.</p>
+        <div class="jumbotron">
+            <div class="container">
+                <h1>Streamlined Roleplaying</h1>
+                <p>Dungeonomics is a place where DMs can manage their campaigns without the hassle of sifting through a mountain of paper. DMs control all aspects of their campaign from plot creation and setting up encounters to looking up/creating monsters or NPCs.</p>
 
-                        <p>Just so we're clear, we believe that there's no substitute for the real thing. Getting together with other adventurers in person will always be the best way to play D&D. Our goal is to enhance that and make it easier for you to immerse yourself in the game by eliminating the need to flip through a bunch of papers, which can sometimes pull you out of the experience.</p>
+                <p>Just so we're clear, we believe that there's no substitute for the real thing. Getting together with other adventurers in person will always be the best way to play D&D. Our goal is to enhance that and make it easier for you to immerse yourself in the game by eliminating the need to flip through a bunch of papers, which can sometimes pull you out of the experience.</p>
 
-                        <p>Now, go forth and create! Also, please come check us out on <a href="https://www.reddit.com/r/dungeonomics/" target="_blank">Reddit</a> to give us feedback and to receive updates.</p>
-
-                        <div class="col-md-6">
-                            <a class="btn btn-default btn-block" href="{% url 'login' %}" role="button">Login</a>
-                        </div>
-                        <div class="col-md-6">
-                            <a class="btn btn-success btn-block" href="{% url 'signup' %}" role="button">Sign up</a>
-                        </div>
-                    </div>
-                </div>
+                <p>Now, go forth and create! Also, please come check us out on <a href="https://www.reddit.com/r/dungeonomics/" target="_blank">Reddit</a> to give us feedback and to receive updates.</p>
+                
+                <p>
+                    <a class="btn btn-default btn-lg" href="{% url 'login' %}" role="button">Login</a>
+                    <a class="btn btn-success btn-lg" href="{% url 'signup' %}" role="button">Sign up</a>
+                </p>
             </div>
         </div>
-
         <div class="row campaign-row">
             <div class="col-md-6 col-md-offset-3">
                 <div class="panel panel-default">
