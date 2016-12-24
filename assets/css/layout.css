@@ -150,7 +150,7 @@ a.home-panel:hover {
     background: #333;
 }
 .fancy img {
-    border: 2px solid #aaa;
+    border: 5px solid #fff;
     margin: 0 10px;
 }
 
@@ -203,5 +203,13 @@ a.home-panel:hover {
   color: rgba(255,255,255, 1) !important;
 }
 #jumbotron-home a:hover {
+    color: #fff;
+}
+#features-images {
+    width: 900px;
+    margin: auto;
+    text-align: center;
+}
+#jumbotron-features .container h1 {
     color: #fff;
 }
