@@ -152,6 +152,7 @@ a.home-panel:hover {
 .fancy img {
     border: 5px solid #fff;
     margin: 0 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 /* Footer */
@@ -207,6 +208,7 @@ a.home-panel:hover {
 }
 #jumbotron-features {
     background: none;
+    padding-top: 0;
 }
 #features-images {
     width: 916px;
@@ -215,4 +217,5 @@ a.home-panel:hover {
 }
 #jumbotron-features .container h1 {
     color: #fff;
+    padding-bottom: 10px;
 }
