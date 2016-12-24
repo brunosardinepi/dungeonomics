@@ -151,6 +151,7 @@ a.home-panel:hover {
 }
 .fancy img {
     border: 2px solid #aaa;
+    margin: 0 10px;
 }
 
 /* Footer */
