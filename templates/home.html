@@ -8,8 +8,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css" media="screen" />
 {% endblock %}
 
-{% block body_content %}
-    {% if user.is_authenticated %}
+{% if user.is_authenticated %}
+    {% block body_content %}
         <div class="row campaign-row">
             <div class="col-md-4">
                 <div class="panel panel-default">
@@ -82,7 +82,9 @@
                 </div>
             </div>
         </div>
-    {% else %}
+    {% endblock %}
+{% else %}
+    {% block jumbotron %}
         <div id="jumbotron-home" class="jumbotron">
             <div class="container">
                 <h1>Streamlined Roleplaying</h1>
@@ -184,8 +186,8 @@
                 </div>
             </div>
         </div>
-    {% endif %}
-{% endblock %}
+    {% endblock %}
+{% endif %}
 
 {% block end_static %}
     <script type="text/javascript">
