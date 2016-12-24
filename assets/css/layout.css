@@ -5,7 +5,7 @@ html {
 body {
     /*min-height: 2000px;*/
     padding-top: 51px;
-    background: url("../img/body_bg.png") no-repeat center center fixed; 
+    background: url("../img/body_bg.png") no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -194,6 +194,5 @@ a.home-panel:hover {
     color: #666;
 }
 #jumbotron-home {
-   background: rgb(0, 0, 0) !important;
-   background: rgba(0, 0, 0, 0.7) !important; 
+   background: url("../img/jumobotron_home.png") top left repeat-x;
 }
