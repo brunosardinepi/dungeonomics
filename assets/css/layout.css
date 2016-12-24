@@ -194,6 +194,6 @@ a.home-panel:hover {
     color: #666;
 }
 .jumbotron-home {
-   background: rgb(0, 0, 0);
-   background: rgba(0, 0, 0, 0.7); 
+   background: rgb(0, 0, 0) !important;
+   background: rgba(0, 0, 0, 0.7) !important; 
 }
