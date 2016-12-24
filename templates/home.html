@@ -103,11 +103,15 @@
             <div class="container">
                 <h1 class="text-center">Features</h1>
                 <div id="features-images">
-                    <a class="fancy" href="{% static 'img/screenshot_01_full.png' %}" data-caption="Here, you can enter your notes and create chapters as your party progresses through the plot, allowing for a seamless progression."><img src="{% static 'img/screenshot_01_thumb.png' %}" alt=""/></a>
-                    <a class="fancy" href="{% static 'img/screenshot_04_full.png' %}" data-caption="Using our monster and NPC tools, you can create your own characters to use in your campaigns. We have created a way for you to input all the information you'll need for any monster or NPC in any RPG system, not just D&D."><img src="{% static 'img/screenshot_04_thumb.png' %}" alt=""/></a>
-                    <a class="fancy" href="{% static 'img/screenshot_03_full.png' %}" data-caption="When you create monsters and NPCs, quickly pull up their stats by tagging them in your campaign."><img src="{% static 'img/screenshot_03_thumb.png' %}" alt=""/></a>
-                    <a class="fancy" href="{% static 'img/screenshot_05_full.png' %}" data-caption="When you've tagged a monster or NPC, it will automatically create a link to that character in your campaign. All you have to do is click that generated link and it will take you to your monster or NPC statblock."><img src="{% static 'img/screenshot_05_thumb.png' %}" alt=""/></a>
-                    <a class="fancy" href="{% static 'img/screenshot_05_full.png' %}" data-caption="We have a wiki that is constantly being updated to help with any questions you have. We also have thousands of registered users and the generous support of the reddit community."><img src="{% static 'img/screenshot_05_thumb.png' %}" alt=""/></a>
+                    <a class="fancy" rel="group1" href="{% static 'img/screenshot_01_full.png' %}" title="Here, you can enter your notes and create chapters as your party progresses through the plot, allowing for a seamless progression."><img src="{% static 'img/screenshot_01_thumb.png' %}" alt=""/></a>
+
+                    <a class="fancy" rel="group1" href="{% static 'img/screenshot_04_full.png' %}" title="Using our monster and NPC tools, you can create your own characters to use in your campaigns. We have created a way for you to input all the information you'll need for any monster or NPC in any RPG system, not just D&D."><img src="{% static 'img/screenshot_04_thumb.png' %}" alt=""/></a>
+
+                    <a class="fancy" rel="group1" href="{% static 'img/screenshot_02_full.png' %}" title="When you create monsters and NPCs, quickly pull up their stats by tagging them in your campaign."><img src="{% static 'img/screenshot_03_thumb.png' %}" alt=""/></a>
+
+                    <a class="fancy" rel="group1" href="{% static 'img/screenshot_03_full.png' %}" title="When you've tagged a monster or NPC, it will automatically create a link to that character in your campaign. All you have to do is click that generated link and it will take you to your monster or NPC statblock."><img src="{% static 'img/screenshot_05_thumb.png' %}" alt=""/></a>
+
+                    <a class="fancy" rel="group1" href="{% static 'img/screenshot_05_full.png' %}" title="We have a wiki that is constantly being updated to help with any questions you have. We also have thousands of registered users and the generous support of the reddit community."><img src="{% static 'img/screenshot_05_thumb.png' %}" alt=""/></a>
                 </div>
             </div>
         </div>
@@ -126,10 +130,7 @@
                 'transitionOut'	:	'elastic',
                 'speedIn'		:	600, 
                 'speedOut'		:	200, 
-                'overlayShow'	:	false,
-                'beforeShow'    :   function(){
-                                        this.title =  $(this.element).data("caption");
-                                    }
+                'overlayShow'	:	false
             });
         });
     </script>

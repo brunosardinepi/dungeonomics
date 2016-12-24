@@ -205,8 +205,11 @@ a.home-panel:hover {
 #jumbotron-home a:hover {
     color: #fff;
 }
+#jumbotron-features {
+    background: none;
+}
 #features-images {
-    width: 900px;
+    width: 916px;
     margin: auto;
     text-align: center;
 }
