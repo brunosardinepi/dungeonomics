@@ -197,7 +197,7 @@ a.home-panel:hover {
 }
 #jumbotron-home {
    background: rgb(0, 0, 0);
-   background: rgba(0, 0, 0, 0.4);
+   background: rgba(0, 0, 0, 0.6);
 }
 #jumbotron-footer {
    background: rgb(0, 0, 0);
