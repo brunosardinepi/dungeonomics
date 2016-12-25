@@ -1,6 +1,5 @@
 {% extends 'layout.html' %}
 {% load static from staticfiles %}
-{% load humanize %}
 
 {% block title %} Home | {{ block.super }}{% endblock %}
 
@@ -122,17 +121,17 @@
                 <div class="col-md-4">
                     <p class="text-center"><i class="fa fa-users fa-5x" aria-hidden="true"></i></p>
                     <h2 class="text-center stats">Users</h2>
-                    <h2 class="text-center stats">{{ users|intcomma }}</h2>
+                    <h2 class="text-center stats">{{ users }}</h2>
                 </div>
                 <div class="col-md-4">
                     <p class="text-center"><i class="fa fa-book fa-5x" aria-hidden="true"></i></p>
                     <h2 class="text-center stats">Campaigns</h2>
-                    <h2 class="text-center stats">{{ campaigns|intcomma }}</h2>
+                    <h2 class="text-center stats">{{ campaigns }}</h2>
                 </div>
                 <div class="col-md-4">
                     <p class="text-center"><i class="fa fa-paw fa-5x" aria-hidden="true"></i></p>
                     <h2 class="text-center stats">Creatures</h2>
-                    <h2 class="text-center stats">{{ characters|intcomma }}</h2>
+                    <h2 class="text-center stats">{{ characters }}</h2>
                 </div>
             </div>
         </div>
