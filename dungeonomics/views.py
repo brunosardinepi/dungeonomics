@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Count
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render, render_to_response
 from django.template import RequestContext
 from django.views.generic import TemplateView
@@ -26,12 +26,15 @@ def home_view(request):
             this_campaign = campaigns[0]
             return render(request, 'home.html', {'this_campaign': this_campaign})
     else:
-        users = '1'
-        campaigns = '2'
-        monsters = '3'
-        npcs = '4'
-        characters = monsters + npcs
-        return render(request, 'home.html', {'users': users})
+        try:
+            users = 1
+            campaigns = 2
+            monsters = 3
+            npcs = 4
+            characters = monsters + npcs
+            return render(request, 'home.html', {'users': users, 'campaigns': campaigns, 'characters': characters})
+        except:
+            raise Http404
 
 @login_required
 def profile_detail(request):
