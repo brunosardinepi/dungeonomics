@@ -26,10 +26,10 @@ def home_view(request):
             this_campaign = campaigns[0]
             return render(request, 'home.html', {'this_campaign': this_campaign})
     else:
-        users =  allauth_models.EmailAddress.objects.all().count()
-        campaigns = campaign_models.Campaign.objects.all().count()
-        monsters = character_models.Monster.objects.all().count()
-        npcs = character_models.NPC.objects.all().count()
+        users =  allauth_models.EmailAddress.objects.count()
+        campaigns = campaign_models.Campaign.objects.count()
+        monsters = character_models.Monster.objects.count()
+        npcs = character_models.NPC.objects.count()
         characters = monsters + npcs
         return render(request, 'home.html', {'users': users, 'campaigns': campaigns, 'characters': characters})
 
