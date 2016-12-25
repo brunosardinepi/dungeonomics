@@ -31,7 +31,7 @@ def home_view(request):
         monsters = '3'
         npcs = '4'
         characters = monsters + npcs
-        return render(request, 'home.html', {'users': users, 'campaigns': campaigns, 'characters': characters})
+        return render(request, 'home.html', {'users': users})
 
 @login_required
 def profile_detail(request):
