@@ -26,10 +26,10 @@ def home_view(request):
             this_campaign = campaigns[0]
             return render(request, 'home.html', {'this_campaign': this_campaign})
     else:
-        users = '2'
-        campaigns = campaign_models.Campaign.objects.count()
-        monsters = character_models.Monster.objects.count()
-        npcs = character_models.NPC.objects.count()
+        users = '1'
+        campaigns = '2'
+        monsters = '3'
+        npcs = '4'
         characters = monsters + npcs
         return render(request, 'home.html', {'users': users, 'campaigns': campaigns, 'characters': characters})
 
