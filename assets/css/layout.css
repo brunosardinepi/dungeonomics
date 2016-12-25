@@ -199,11 +199,15 @@ a.home-panel:hover {
    background: rgb(0, 0, 0);
    background: rgba(0, 0, 0, 0.4);
 }
-#jumbotron-home h1, #jumbotron-home p, #jumbotron-home a {
+#jumbotron-footer {
+   background: rgb(0, 0, 0);
+   background: rgba(0, 0, 0, 0.5);
+}
+#jumbotron-home h1, #jumbotron-home p, #jumbotron-home a, #jumbotron-footer h1, #jumbotron-footer p, #jumbotron-footer a {
   color: #fff !important;
   color: rgba(255,255,255, 1) !important;
 }
-#jumbotron-home a:hover {
+#jumbotron-home a:hover, #jumbotron-footer a:hover {
     color: #fff;
 }
 #jumbotron-features {
