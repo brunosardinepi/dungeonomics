@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Count
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, render_to_response
 from django.template import RequestContext
 from django.views.generic import TemplateView
@@ -21,20 +21,14 @@ class HomeView(TemplateView):
 
 def home_view(request):
     if request.user.is_authenticated():
-        campaigns = campaign_models.Campaign.objects.filter(user=request.user)
-        if len(campaigns) > 0:
-            this_campaign = campaigns[0]
-            return render(request, 'home.html', {'this_campaign': this_campaign})
+        return render(request, 'home.html')
     else:
-        try:
-            users = 1
-            campaigns = 2
-            monsters = 3
-            npcs = 4
-            characters = monsters + npcs
-            return render(request, 'home.html', {'users': users, 'campaigns': campaigns, 'characters': characters})
-        except:
-            raise Http404
+        users = allauth_models.EmailAddress.objects.count()
+        campaigns = campaign_models.Campaign.objects.count()
+        monsters = character_models.Monster.objects.count()
+        npcs = character_models.NPC.objects.count()
+        characters = monsters + npcs
+        return render(request, 'home.html', {'users': users, 'campaigns': campaigns, 'characters': characters})
 
 @login_required
 def profile_detail(request):
