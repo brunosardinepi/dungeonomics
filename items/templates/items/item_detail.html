@@ -33,7 +33,7 @@
                         {% if items %}
                             {% for item in items %}
                                 <li class="li-content">
-                                    <a href="{% url 'items:item_detail' item_pk=this_item.pk %}">
+                                    <a href="{% url 'items:item_detail' item_pk=item.pk %}">
                                         {{ item.name }}
                                     </a>
                                 </li>
