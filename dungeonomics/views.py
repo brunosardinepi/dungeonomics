@@ -10,6 +10,7 @@ from django.views.generic import TemplateView
 from allauth.account import views
 
 from . import forms
+from allauth.account import models as allauth_models
 from campaign import models as campaign_models
 from characters import models as character_models
 
@@ -25,7 +26,12 @@ def home_view(request):
             this_campaign = campaigns[0]
             return render(request, 'home.html', {'this_campaign': this_campaign})
     else:
-        return render(request, 'home.html')
+        users =  allauth_models.EmailAddress.objects.all().count()
+        campaigns = campaign_models.Campaign.objects.all().count()
+        monsters = character_models.Monster.objects.all().count()
+        npcs = character_models.NPC.objects.all().count()
+        characters = monsters + npcs
+        return render(request, 'home.html', {'users': users, 'campaigns': campaigns, 'characters': characters})
 
 @login_required
 def profile_detail(request):
