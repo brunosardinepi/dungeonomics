@@ -90,7 +90,7 @@
 
                 <p>Just so we're clear, we believe that there's no substitute for the real thing. Getting together with other adventurers in person will always be the best way to play D&D. Our goal is to enhance that and make it easier for you to immerse yourself in the game by eliminating the need to flip through a bunch of papers, which can sometimes pull you out of the experience.</p>
 
-                <p>Now, go forth and create! Also, please come check us out on <a href="https://www.reddit.com/r/dungeonomics/" target="_blank"><strong>Reddit</strong></a> to give us feedback and to receive updates.</p>
+                <p>Now, go forth and create! Also, please come check us out on <a href="https://www.reddit.com/r/dungeonomics/" target="_blank"><strong>Reddit</strong></a> or <a href="mailto:dungeonomics@gmail.com"><strong>email us</strong></a> to give us feedback and to receive updates.</p>
                 
                 <p>
                     <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Login</a>
@@ -118,12 +118,21 @@
 
         <div id="jumbotron-footer" class="jumbotron">
             <div class="container">
-                <p>Users: {{ users }}</p>
-                <p>Campaigns: {{ campaigns }}</p>
-                <p>Characters: {{ characters }}</p>
-                
-                <h1>Questions?</h1>
-                <p>We love questions! Come find us on <a href="https://www.reddit.com/r/dungeonomics/" target="_blank"><strong>Reddit</strong></a> or send us an <a href="mailto:dungeonomics@gmail.com"><strong>email</strong></a>. We are average joes who love D&D and we promise we won't bite. We love talking to everyone about the site and encourage feedback.</p>
+                <div class="col-md-4">
+                    <p class="text-center"><i class="fa fa-users fa-5x" aria-hidden="true"></i></p>
+                    <h2 class="text-center">Users</h2>
+                    <p class="text-center">{{ users }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p class="text-center"><i class="fa fa-book fa-5x" aria-hidden="true"></i></p>
+                    <h2 class="text-center">Campaigns</h2>
+                    <p class="text-center">{{ campaigns }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p class="text-center"><i class="fa fa-paw fa-5x" aria-hidden="true"></i></p>
+                    <h2 class="text-center">Creatures</h2>
+                    <p class="text-center">{{ characters }}</p>
+                </div>
             </div>
         </div>
     {% endif %}
