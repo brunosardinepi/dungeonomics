@@ -15,7 +15,7 @@
     {{ form.media.js }}
     
     <script type="text/javascript">
-        var monsters = [];
+        var taggable = [];
         var monsters_dict = {{monsters|safe}};
         for (var key in monsters_dict) {
             monsters.push({
@@ -26,7 +26,7 @@
         }
         var npcs_dict = {{npcs|safe}};
         for (var key in npcs_dict) {
-            monsters.push({
+            taggable.push({
                     'name': npcs_dict[key],
                     'id': key,
                     'type': 'npc'
@@ -34,10 +34,18 @@
         }
         var items_dict = {{items|safe}};
         for (var key in items_dict) {
-            monsters.push({
+            taggable.push({
                     'name': items_dict[key],
                     'id': key,
                     'type': 'item'
+                });
+        }
+        var players_dict = {{players|safe}};
+        for (var key in players_dict) {
+            taggable.push({
+                    'character_name': players_dict[key],
+                    'id': key,
+                    'type': 'player'
                 });
         }
         tinymce.init({
@@ -58,7 +66,7 @@
             paste_as_text: true,
             fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
             mentions: {
-                source: monsters,
+                source: taggable,
                 delay: 0,
                 insert: function(item) {
                     if (item.type == 'item') {
@@ -76,7 +84,7 @@
 {% block body_content %}
     <div class="alert alert-info alert-dismissible" role="alert" style="margin-top: 30px;">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        Type '@' to get a dropdown list that will automatically link to the monsters or NPCs in your campaign content!
+        Type '@' to get a dropdown list that will automatically link to the monsters, NPCs, items and Players in your campaign content!
     </div>
     <div class="row campaign-row">
         <div class="col-md-12">
