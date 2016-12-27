@@ -18,7 +18,7 @@
         var taggable = [];
         var monsters_dict = {{monsters|safe}};
         for (var key in monsters_dict) {
-            monsters.push({
+            taggable.push({
                     'name': monsters_dict[key],
                     'id': key,
                     'type': 'monster'
