@@ -112,6 +112,10 @@ def chapter_create(request, campaign_pk):
         items = {}
         for item in items_raw:
             items[item.pk] = item.name
+        players_raw = characters_models.Player.objects.filter(user=request.user).order_by('character_name')
+        players = {}
+        for player in player_raw:
+            player[player.pk] = player.name
 
         form = forms.ChapterForm()
         if request.method == 'POST':
@@ -125,7 +129,7 @@ def chapter_create(request, campaign_pk):
                 return HttpResponseRedirect(chapter.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'campaign/chapter_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'campaign': campaign})
+    return render(request, 'campaign/chapter_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'campaign': campaign})
 
 @login_required
 def section_create(request, campaign_pk, chapter_pk):
@@ -144,6 +148,10 @@ def section_create(request, campaign_pk, chapter_pk):
         items = {}
         for item in items_raw:
             items[item.pk] = item.name
+        players_raw = character_models.Player.objects.filter(user=request.user).order_by('character_name')
+        players = {}
+        for player in players_raw:
+            players[player.pk] = player.name
 
         form = forms.SectionForm()
         if request.method == 'POST':
@@ -158,7 +166,7 @@ def section_create(request, campaign_pk, chapter_pk):
                 return HttpResponseRedirect(section.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'campaign': campaign, 'chapter': chapter})
+    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'campaign': campaign, 'chapter': chapter})
 
 
 @login_required
@@ -202,6 +210,10 @@ def chapter_update(request, campaign_pk, chapter_pk):
         items = {}
         for item in items_raw:
             items[item.pk] = item.name
+        players_raw = character_models.Player.objects.filter(user=request.user).order_by('character_name')
+        players = {}
+        for player in players_raw:
+            players[player.pk] = player.name
 
         form = forms.ChapterForm(instance=chapter)
         section_forms = forms.SectionInlineFormSet(queryset=form.instance.section_set.all())
@@ -221,7 +233,7 @@ def chapter_update(request, campaign_pk, chapter_pk):
                 return HttpResponseRedirect(chapter.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'campaign/chapter_form.html', {'form': form, 'formset': section_forms, 'monsters': monsters, 'npcs': npcs, 'items': items, 'campaign': chapter.campaign, 'chapter': chapter, 'sections': sections})
+    return render(request, 'campaign/chapter_form.html', {'form': form, 'formset': section_forms, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'campaign': chapter.campaign, 'chapter': chapter, 'sections': sections})
 
 @login_required
 def section_update(request, campaign_pk, chapter_pk, section_pk):
@@ -239,6 +251,10 @@ def section_update(request, campaign_pk, chapter_pk, section_pk):
         items = {}
         for item in items_raw:
             items[item.pk] = item.name
+        players_raw = character_models.Player.objects.filter(user=request.user).order_by('character_name')
+        players = {}
+        for player in players_raw:
+            players[player.pk] = player.name
 
         form = forms.SectionForm(instance=section)
         if request.method == 'POST':
@@ -249,7 +265,7 @@ def section_update(request, campaign_pk, chapter_pk, section_pk):
                 return HttpResponseRedirect(section.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'campaign': section.chapter.campaign, 'chapter': section.chapter, 'section': section})
+    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'campaign': section.chapter.campaign, 'chapter': section.chapter, 'section': section})
 
 @login_required
 def campaign_print(request, campaign_pk):
