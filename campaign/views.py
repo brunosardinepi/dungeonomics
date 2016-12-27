@@ -115,7 +115,7 @@ def chapter_create(request, campaign_pk):
         players_raw = characters_models.Player.objects.filter(user=request.user).order_by('character_name')
         players = {}
         for player in player_raw:
-            player[player.pk] = player.name
+            player[player.pk] = player.character_name
 
         form = forms.ChapterForm()
         if request.method == 'POST':
@@ -151,7 +151,7 @@ def section_create(request, campaign_pk, chapter_pk):
         players_raw = character_models.Player.objects.filter(user=request.user).order_by('character_name')
         players = {}
         for player in players_raw:
-            players[player.pk] = player.name
+            players[player.pk] = player.character_name
 
         form = forms.SectionForm()
         if request.method == 'POST':
@@ -213,7 +213,7 @@ def chapter_update(request, campaign_pk, chapter_pk):
         players_raw = character_models.Player.objects.filter(user=request.user).order_by('character_name')
         players = {}
         for player in players_raw:
-            players[player.pk] = player.name
+            players[player.pk] = player.character_name
 
         form = forms.ChapterForm(instance=chapter)
         section_forms = forms.SectionInlineFormSet(queryset=form.instance.section_set.all())
@@ -254,7 +254,7 @@ def section_update(request, campaign_pk, chapter_pk, section_pk):
         players_raw = character_models.Player.objects.filter(user=request.user).order_by('character_name')
         players = {}
         for player in players_raw:
-            players[player.pk] = player.name
+            players[player.pk] = player.character_name
 
         form = forms.SectionForm(instance=section)
         if request.method == 'POST':
