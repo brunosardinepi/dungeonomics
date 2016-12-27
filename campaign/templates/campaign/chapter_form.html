@@ -40,6 +40,14 @@
                     'type': 'item'
                 });
         }
+        var players_dict = {{players|safe}};
+        for (var key in players_dict) {
+            taggable.push({
+                    'name': players_dict[key],
+                    'id': key,
+                    'type': 'player'
+                });
+        }
         tinymce.init({
             selector: "#id_content",
             height : "250",
