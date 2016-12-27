@@ -112,7 +112,7 @@ def chapter_create(request, campaign_pk):
         items = {}
         for item in items_raw:
             items[item.pk] = item.name
-        players_raw = characters_models.Player.objects.filter(user=request.user).order_by('character_name')
+        players_raw = character_models.Player.objects.filter(user=request.user).order_by('character_name')
         players = {}
         for player in player_raw:
             player[player.pk] = player.character_name
