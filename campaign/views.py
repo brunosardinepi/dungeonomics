@@ -114,7 +114,7 @@ def chapter_create(request, campaign_pk):
             items[item.pk] = item.name
         players_raw = character_models.Player.objects.filter(user=request.user).order_by('character_name')
         players = {}
-        for player in player_raw:
+        for player in players_raw:
             player[player.pk] = player.character_name
 
         form = forms.ChapterForm()
