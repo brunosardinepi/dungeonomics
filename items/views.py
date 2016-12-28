@@ -43,7 +43,7 @@ def item_create(request):
             item = form.save(commit=False)
             item.user = request.user
             item.save()
-            messages.add_message(request, messages.SUCCESS, "Item created!")
+            messages.add_message(request, messages.SUCCESS, "Item/Spell created!")
             return HttpResponseRedirect(item.get_absolute_url())
     return render(request, 'items/item_form.html', {'form': form})
 
@@ -56,7 +56,7 @@ def item_update(request, item_pk):
             form = forms.ItemForm(instance=item, data=request.POST)
             if form.is_valid():
                 form.save()
-                messages.add_message(request, messages.SUCCESS, "Updated item: {}".format(form.cleaned_data['name']))
+                messages.add_message(request, messages.SUCCESS, "Updated item/spell: {}".format(form.cleaned_data['name']))
                 return HttpResponseRedirect(item.get_absolute_url())
     else:
         raise Http404
@@ -71,7 +71,7 @@ def item_delete(request, item_pk):
             form = forms.DeleteItemForm(request.POST, instance=item)
             if item.user.pk == request.user.pk:
                 item.delete()
-                messages.add_message(request, messages.SUCCESS, "Item deleted!")
+                messages.add_message(request, messages.SUCCESS, "Item/Spell deleted!")
                 return HttpResponseRedirect(reverse('items:item_detail'))
     else:
         raise Http404
@@ -88,7 +88,7 @@ def item_copy(request, item_pk):
                 item.pk = None
                 item.name = item.name + "_Copy"
                 item.save()
-                messages.add_message(request, messages.SUCCESS, "Item copied!")
+                messages.add_message(request, messages.SUCCESS, "Item/Spell copied!")
                 return HttpResponseRedirect(item.get_absolute_url())
     else:
         raise Http404
