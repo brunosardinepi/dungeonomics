@@ -54,6 +54,10 @@ class EmailVerificationSentView(views.EmailVerificationSentView):
     template_name = 'verification_sent.html'
 
 
+class EmailView(views.EmailView):
+    template_name = 'email.html'
+
+
 class PasswordResetView(views.PasswordResetView):
     template_name = 'password_reset.html'
 
