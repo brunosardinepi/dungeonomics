@@ -3,9 +3,9 @@
 
 {% block title %}
     {% if item.pk %}
-        Update Item 
+        Update Item/Spell 
     {% else %}
-        New Item 
+        New Item/Spell 
     {% endif %}
     | {{ block.super }}
 {% endblock %}
@@ -41,9 +41,9 @@
             <div class="panel-heading">
                 <h3 class="panel-title">
                     {% if item.pk %}
-                        <strong>Update item:</strong> {{ item.name }}
+                        <strong>Update item/spell:</strong> {{ item.name }}
                     {% else %}
-                        <strong>New item</strong>
+                        <strong>New item/spell</strong>
                     {% endif %}
                 </h3>
             </div>
@@ -55,10 +55,10 @@
             <div class="panel-footer clearfix">
                 {% if item.pk %}
                     <a href="{% url 'items:item_detail' item_pk=item.pk %}" class="btn btn-default">Cancel</a>
-                    <input type="submit" class="btn btn-primary pull-right" value="Update item">
+                    <input type="submit" class="btn btn-primary pull-right" value="Update item/spell">
                 {% else %}
                     <a href="{% url 'items:item_detail' %}" class="btn btn-default">Cancel</a>
-                    <input type="submit" class="btn btn-primary pull-right" value="Create item">
+                    <input type="submit" class="btn btn-primary pull-right" value="Create item/spell">
                 {% endif %}
                 </form>
             </div>
