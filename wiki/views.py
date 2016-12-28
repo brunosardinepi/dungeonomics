@@ -114,50 +114,6 @@ class SectionDelete(LoginRequiredMixin, DeleteView):
         section = super(SectionDelete, self).get_object()
         return section
 
-# @staff_member_required
-# def section_delete(request, section_pk):
-#     section = get_object_or_404(models.Section, pk=section_pk)
-#     form = forms.SectionForm(instance=section)
-#     if request.method == 'POST':
-#         form = forms.SectionForm(request.POST, instance=section)
-#         if form.is_valid():
-#             section.delete()
-#             messages.add_message(request, messages.SUCCESS, "Deleted section: {}".format(form.cleaned_data['title']))
-#             return HttpResponseRedirect('wiki:home')
-#         else:
-#             raise Http404
-#     return render(request, 'wiki/section_confirm_delete.html', {'form': form, 'section': section})
-
-
-# class ChapterDelete(LoginRequiredMixin, DeleteView):
-#     model = models.Chapter
-#     success_url = reverse_lazy('home')
-#     slug_field = "pk"
-#     slug_url_kwarg = "chapter_pk"
-
-#     def delete(self, request, *args, **kwargs):
-#         messages.add_message(self.request, messages.SUCCESS, "Chapter deleted!")
-#         return super(ChapterDelete, self).delete(request, *args, **kwargs)
-
-#     def get_object(self, queryset=None):
-#         chapter = super(ChapterDelete, self).get_object()
-#         if not chapter.user == self.request.user:
-#             raise Http404
-#         else:
-#             return chapter
-
-# @staff_member_required
-# def subsection_delete(request, section_pk, subsection_pk):
-#     subsection = get_object_or_404(models.Subsection, pk=subsection_pk, section_id=section_pk)
-#     form = forms.SubsectionForm(instance=subsection)
-#     if request.method == 'POST':
-#         form = forms.SubsectionForm(request.POST, instance=subsection)
-#         if form.is_valid():
-#             subsection.delete()
-#             messages.add_message(request, messages.SUCCESS, "Deleted subsection: {}".format(form.cleaned_data['title']))
-#             return HttpResponseRedirect('wiki:home')
-#     return render(request, 'wiki/subsection_confirm_delete.html', {'form': form, 'section': subsection.section, 'subsection': subsection})
-
 class SubsectionDelete(LoginRequiredMixin, DeleteView):
     model = models.Subsection
     success_url = reverse_lazy('wiki:home')
