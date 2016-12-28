@@ -74,7 +74,7 @@
                     <p>STR</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_npc.strength }}</p>
+                    <p>{{ this_npc.strength }} ({{ this_npc.strength_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -82,7 +82,7 @@
                     <p>DEX</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_npc.dexterity }}</p>
+                    <p>{{ this_npc.dexterity }} ({{ this_npc.dexterity_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -90,15 +90,7 @@
                     <p>CON</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_npc.constitution }}</p>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="character-label">
-                    <p>WIS</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_npc.wisdom }}</p>
+                    <p>{{ this_npc.constitution }} ({{ this_npc.constitution_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -106,7 +98,15 @@
                     <p>INT</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_npc.intelligence }}</p>
+                    <p>{{ this_npc.intelligence }} ({{ this_npc.intelligence_mod }})</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>WIS</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_npc.wisdom }} ({{ this_npc.wisdom_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -114,7 +114,7 @@
                     <p>CHA</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_npc.charisma }}</p>
+                    <p>{{ this_npc.charisma }} ({{ this_npc.charisma_mod }})</p>
                 </div>
             </div>
         </div>
