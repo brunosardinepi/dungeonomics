@@ -6,7 +6,7 @@
 {% block body_content %}
     <div class="row campaign-row">
         <div class="col-md-6 col-md-offset-3">
-            <div class="panel panel-primary">
+            <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         E-mail Addresses
@@ -31,12 +31,12 @@
                                             {% else %}
                                                 <span class="unverified text-danger">Unverified</span>
                                             {% endif %}
-                                            {% if emailaddress.primary %}<span class="primary text-primary">/Primary</span>{% endif %}
+                                            {% if emailaddress.primary %}<span class="primary text-primary">Primary</span>{% endif %}
                                         </label>
                                     </div>
                                 {% endfor %}
 
-                                <div class="buttonHolder">
+                                <div class="buttonHolder" style="margin-top: 10px;">
                                     <button class="secondaryAction btn btn-default" type="submit" name="action_primary" >Make Primary</button>
                                     <button class="secondaryAction btn btn-default" type="submit" name="action_send" >Re-send Verification</button>
                                     <button class="primaryAction btn btn-danger" type="submit" name="action_remove" >Remove</button>
@@ -55,7 +55,7 @@
                     <form method="post" action="{% url 'account_email' %}" class="add_email">
                         {% csrf_token %}
                         {% bootstrap_form form %}
-                        <button name="action_add" class="btn btn-default" type="submit">Add E-mail</button>
+                        <button name="action_add" class="btn btn-primary" type="submit">Add E-mail</button>
                     </form>
                 </div>
             </div>
