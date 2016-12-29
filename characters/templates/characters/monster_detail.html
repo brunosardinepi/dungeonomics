@@ -76,7 +76,7 @@
                     <p>STR</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_monster.strength }}</p>
+                    <p>{{ this_monster.strength }} ({{ this_monster.strength_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -84,7 +84,7 @@
                     <p>DEX</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_monster.dexterity }}</p>
+                    <p>{{ this_monster.dexterity }} ({{ this_monster.dexterity_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -92,15 +92,7 @@
                     <p>CON</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_monster.constitution }}</p>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="character-label">
-                    <p>WIS</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_monster.wisdom }}</p>
+                    <p>{{ this_monster.constitution }} ({{ this_monster.constitution_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -108,7 +100,15 @@
                     <p>INT</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_monster.intelligence }}</p>
+                    <p>{{ this_monster.intelligence }} ({{ this_monster.intelligence_mod }})</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>WIS</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_monster.wisdom }} ({{ this_monster.wisdom_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -116,7 +116,7 @@
                     <p>CHA</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_monster.charisma }}</p>
+                    <p>{{ this_monster.charisma }} ({{ this_monster.charisma_mod }})</p>
                 </div>
             </div>
         </div>

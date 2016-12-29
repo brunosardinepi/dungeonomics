@@ -75,7 +75,7 @@
                     <p>STR</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_player.strength }}</p>
+                    <p>{{ this_player.strength }} ({{ this_player.strength_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -83,7 +83,7 @@
                     <p>DEX</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_player.dexterity }}</p>
+                    <p>{{ this_player.dexterity }} ({{ this_player.dexterity_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -91,15 +91,7 @@
                     <p>CON</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_player.constitution }}</p>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="character-label">
-                    <p>WIS</p>
-                </div>
-                <div class="character-details">
-                    <p>{{ this_player.wisdom }}</p>
+                    <p>{{ this_player.constitution }} ({{ this_player.constitution_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -107,7 +99,15 @@
                     <p>INT</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_player.intelligence }}</p>
+                    <p>{{ this_player.intelligence }} ({{ this_player.intelligence_mod }})</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>WIS</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ this_player.wisdom }} ({{ this_player.wisdom_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -115,7 +115,7 @@
                     <p>CHA</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_player.charisma }}</p>
+                    <p>{{ this_player.charisma }} ({{ this_player.charisma_mod }})</p>
                 </div>
             </div>
         </div>

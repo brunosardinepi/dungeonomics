@@ -2,6 +2,11 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from math import floor
+
+
+def score_to_mod_string(score):
+    return "{:+d}".format(floor((score - 10) / 2))
 
 
 class Character(models.Model):
@@ -50,6 +55,30 @@ class Character(models.Model):
     speed = models.CharField(max_length=255, default='', blank=True)
     saving_throws = models.CharField(max_length=255, default='', blank=True)
     skills = models.CharField(max_length=255, default='', blank=True)
+
+    @property
+    def strength_mod(self):
+        return score_to_mod_string(self.strength)
+
+    @property
+    def dexterity_mod(self):
+        return score_to_mod_string(self.dexterity)
+
+    @property
+    def constitution_mod(self):
+        return score_to_mod_string(self.constitution)
+
+    @property
+    def intelligence_mod(self):
+        return score_to_mod_string(self.intelligence)
+
+    @property
+    def wisdom_mod(self):
+        return score_to_mod_string(self.wisdom)
+
+    @property
+    def charisma_mod(self):
+        return score_to_mod_string(self.charisma)
 
     class Meta:
         abstract = True
