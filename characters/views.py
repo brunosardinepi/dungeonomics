@@ -408,9 +408,12 @@ def monster_srd(request):
         form = forms.MonsterForm(request.POST)
         selected_monsters = []
         for monster_pk in request.POST.getlist('monster'):
+            # get the monster.pk = good
+            # get the monster object based on the pk
+            # append the monster object to a list
             monster = models.Monster.objects.get(pk=monster_pk)
             selected_monsters.append(monster)
-            return HttpResponse(monster_pk)
+            return HttpResponse(type(monster))
         empty_queryset = models.Monster.objects.none()
         monster_queryset = list(chain(empty_queryset, selected_monsters))
         # return render(request, 'characters/monster_export.html', {'monsters': monster_queryset})
