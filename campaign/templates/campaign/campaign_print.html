@@ -48,7 +48,7 @@
         {% endfor %}
 
         {% if monsters %}
-            <h1>Appendix A: Monsters</h1>
+            <h1>Monsters</h1>
 
             {% for monster in monsters %}
                 <h2>{{ monster.name }}</h2>
@@ -82,7 +82,7 @@
         {% endif %}
 
         {% if npcs %}
-            <h1>Appendix B: NPCs</h1>
+            <h1 style="margin-top: 60px;">NPCs</h1>
 
             {% for npc in npcs %}
                 <h2>{{ npc.name }}</h2>
@@ -122,7 +122,7 @@
         {% endif %}
 
         {% if items %}
-            <h1>Appendix C: Items/Spells</h1>
+            <h1 style="margin-top: 60px;">Items/Spells</h1>
 
             {% for item in items %}
                 <h2>{{ item.name }}</h2>
