@@ -408,7 +408,7 @@ def monster_srd(request):
         form = forms.MonsterForm(request.POST)
         selected_monsters = []
         for monster_pk in request.POST.getlist('monster'):
-            monster = models.Monster.objects.filter(pk=monster_pk)
+            monster = models.Monster.objects.get(pk=monster_pk)
             selected_monsters.append(monster)
             return HttpResponse(monster)
         empty_queryset = models.Monster.objects.none()
