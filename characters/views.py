@@ -13,6 +13,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from . import forms
 from . import models
 
+import json
+
 
 @login_required
 def monster_detail(request, monster_pk=None):
