@@ -402,7 +402,8 @@ def campaign_import(request):
                         senses=monster_attributes["senses"],
                         challenge_rating=monster_attributes["challenge_rating"],
                         traits=monster_attributes["traits"],
-                        actions=monster_attributes["actions"]
+                        actions=monster_attributes["actions"],
+                        notes=monster_attributes["notes"]
                     )
                     new_monster.save()
             if "npcs" in user_import:
@@ -474,6 +475,7 @@ def campaign_export(request, campaign_pk):
         for monster in monsters:
             monster.traits = json.dumps(monster.traits)
             monster.actions = json.dumps(monster.actions)
+            monster.notes = json.dumps(monster.notes)
         for npc in npcs:
             npc.traits = json.dumps(npc.traits)
             npc.actions = json.dumps(npc.actions)

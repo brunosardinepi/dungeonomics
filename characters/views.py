@@ -308,7 +308,8 @@ def monster_import(request):
                     senses=monster_attributes["senses"],
                     challenge_rating=monster_attributes["challenge_rating"],
                     traits=monster_attributes["traits"],
-                    actions=monster_attributes["actions"]
+                    actions=monster_attributes["actions"],
+                    notes=monster_attributes["notes"]
                 )
                 new_monster.save()
             return HttpResponseRedirect(reverse('characters:monster_detail'))
@@ -376,6 +377,7 @@ def monster_export(request):
         for monster in monsters:
             monster.traits = json.dumps(monster.traits)
             monster.actions = json.dumps(monster.actions)
+            monster.notes = json.dumps(monster.notes)
         return render(request, 'characters/monster_export.html', {'monsters': monsters})
     else:
         raise Http404
