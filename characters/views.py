@@ -409,11 +409,12 @@ def monster_srd(request):
         selected_monsters = []
         for monster_pk in request.POST.getlist('monster'):
             monster = models.Monster.objects.get(pk=monster_pk)
-            monster.traits = json.dumps(monster.traits)
-            monster.actions = json.dumps(monster.actions)
-            monster.notes = json.dumps(monster.notes)
             selected_monsters.append(monster)
         empty_queryset = models.Monster.objects.none()
         monster_queryset = list(chain(empty_queryset, selected_monsters))
+        for monster in monster_queryset:
+            monster.traits = json.dumps(monster.traits)
+            monster.actions = json.dumps(monster.actions)
+            monster.notes = json.dumps(monster.notes)
         return render(request, 'characters/monster_export.html', {'monsters': monster_queryset})
     return render(request, 'characters/monster_srd_form.html', {'form': form, 'monsters': monsters})
