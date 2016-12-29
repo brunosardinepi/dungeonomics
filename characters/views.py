@@ -283,7 +283,7 @@ def monster_import(request):
         form = forms.ImportMonsterForm(request.POST)
         if "monsters" in user_import: 
             for monster, monster_attributes in user_import["monsters"].items():
-                new_monster = character_models.Monster(
+                new_monster = models.Monster(
                     user=request.user,
                     name=monster,
                     alignment=monster_attributes["alignment"],
@@ -328,7 +328,7 @@ def npc_import(request):
         if form.is_valid():
             if "npcs" in user_import:
                 for npc, npc_attributes in user_import["npcs"].items():
-                    new_npc = character_models.NPC(
+                    new_npc = models.NPC(
                         user=request.user,
                         name=npc,
                         alignment=npc_attributes["alignment"],
