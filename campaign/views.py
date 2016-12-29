@@ -349,7 +349,7 @@ def campaign_import(request):
             user_import = request.POST.get('user_import')
             user_import = json.loads(user_import, strict=False)
         else:
-            return HttpResponse("no user_import to get")
+            return Http404
         form = forms.ImportCampaignForm(request.POST)
         if form.is_valid():
             campaign = form.save(commit=False)

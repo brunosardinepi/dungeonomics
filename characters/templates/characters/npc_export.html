@@ -1,0 +1,73 @@
+{% extends 'layout.html' %}
+{% load bootstrap3 %}
+{% load campaign_extras %}
+
+{% block title %}Export NPCs | {{ block.super }}{% endblock %}
+
+{% block static %}<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"></script>{% endblock %}
+
+{% block body_content %}
+    <div class="alert alert-info alert-dismissible" role="alert" style="margin-top: 30px;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        Copy the following code and then share it with friends! They will need to <a href="{% url 'characters:npc_import' %}" class="alert-link">import</a> it in order to view it.
+    </div>
+    <div class="row campaign-row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Export NPCs</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="pre-scrollable" style="max-height: 400px;">
+                    {% autoescape on %}
+<pre id="code">
+{
+    {% if npcs %}"npcs": { {% for npc in npcs %}
+        "{{ npc.name }}": {
+            "npc_class": "{{ npc.npc_class }}",
+            "age": "{{ npc.age }}",
+            "height": "{{ npc.height }}",
+            "weight": "{{ npc.weight }}",
+            "alignment": "{{ npc.alignment }}",
+            "size": "{{ npc.size }}",
+            "languages": "{{ npc.languages }}",
+            "strength": "{{ npc.strength }}",
+            "dexterity": "{{ npc.dexterity }}",
+            "constitution": "{{ npc.constitution }}",
+            "intelligence": "{{ npc.intelligence }}",
+            "wisdom": "{{ npc.wisdom }}",
+            "charisma": "{{ npc.charisma }}",
+            "armor_class": "{{ npc.armor_class }}",
+            "hit_points": "{{ npc.hit_points }}",
+            "speed": "{{ npc.speed }}",
+            "saving_throws": "{{ npc.saving_throws }}",
+            "skills": "{{ npc.skills }}",
+            "creature_type": "{{ npc.creature_type }}",
+            "damage_vulnerabilities": "{{ npc.damage_vulnerabilities }}",
+            "damage_immunities": "{{ npc.damage_immunities }}",
+            "damage_resistances": "{{ npc.damage_resistances }}",
+            "condition_immunities": "{{ npc.condition_immunities }}",
+            "senses": "{{ npc.senses }}",
+            "challenge_rating": "{{ npc.challenge_rating }}",
+            "traits": {{ npc.traits }},
+            "actions": {{ npc.actions }},
+            "notes": {{ npc.notes }}
+        {% if forloop.last %}}}{% else %}},{% endif %}{% endfor %}{% endif %}
+}
+</pre>
+                    {% endautoescape %}
+                    </div>
+                </div>
+                <div class="panel-footer clearfix">
+                    <button class="btn btn-primary btn-copy pull-right" data-clipboard-target="#code">Copy to clipboard</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block end_static %}
+    <script>
+        new Clipboard('.btn-copy');
+    </script>
+{% endblock %}

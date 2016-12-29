@@ -156,3 +156,18 @@ class CopyPlayerForm(forms.ModelForm):
     class Meta:
         model = models.Player
         fields = ['player_name']
+
+
+class ImportMonsterForm(forms.ModelForm):
+    class Meta:
+        model = models.Monster
+        fields = [
+            'name',
+        ]
+
+class ImportNPCForm(forms.ModelForm):
+    class Meta:
+        model = models.NPC
+        fields = [
+            'name',
+        ]

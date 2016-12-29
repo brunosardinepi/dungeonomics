@@ -1,0 +1,68 @@
+{% extends 'layout.html' %}
+{% load bootstrap3 %}
+{% load campaign_extras %}
+
+{% block title %}Export Monsters | {{ block.super }}{% endblock %}
+
+{% block static %}<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"></script>{% endblock %}
+
+{% block body_content %}
+    <div class="alert alert-info alert-dismissible" role="alert" style="margin-top: 30px;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        Copy the following code and then share it with friends! They will need to <a href="{% url 'characters:monster_import' %}" class="alert-link">import</a> it in order to view it.
+    </div>
+    <div class="row campaign-row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Export monsters</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="pre-scrollable" style="max-height: 400px;">
+                    {% autoescape on %}
+<pre id="code">
+{
+    {% if monsters %}"monsters": { {% for monster in monsters %}
+        "{{ monster.name }}": {
+            "alignment": "{{ monster.alignment }}",
+            "size": "{{ monster.size }}",
+            "languages": "{{ monster.languages }}",
+            "strength": "{{ monster.strength }}",
+            "dexterity": "{{ monster.dexterity }}",
+            "constitution": "{{ monster.constitution }}",
+            "intelligence": "{{ monster.intelligence }}",
+            "wisdom": "{{ monster.wisdom }}",
+            "charisma": "{{ monster.charisma }}",
+            "armor_class": "{{ monster.armor_class }}",
+            "hit_points": "{{ monster.hit_points }}",
+            "speed": "{{ monster.speed }}",
+            "saving_throws": "{{ monster.saving_throws }}",
+            "skills": "{{ monster.skills }}",
+            "creature_type": "{{ monster.creature_type }}",
+            "damage_vulnerabilities": "{{ monster.damage_vulnerabilities }}",
+            "damage_immunities": "{{ monster.damage_immunities }}",
+            "damage_resistances": "{{ monster.damage_resistances }}",
+            "condition_immunities": "{{ monster.condition_immunities }}",
+            "senses": "{{ monster.senses }}",
+            "challenge_rating": "{{ monster.challenge_rating }}",
+            "traits": {{ monster.traits }},
+            "actions": {{ monster.actions }}
+        {% if forloop.last %}}}{% else %}},{% endif %}{% endfor %}{% endif %}
+}
+</pre>
+                    {% endautoescape %}
+                    </div>
+                </div>
+                <div class="panel-footer clearfix">
+                    <button class="btn btn-primary btn-copy pull-right" data-clipboard-target="#code">Copy to clipboard</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block end_static %}
+    <script>
+        new Clipboard('.btn-copy');
+    </script>
+{% endblock %}

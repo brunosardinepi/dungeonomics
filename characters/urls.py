@@ -26,4 +26,9 @@ urlpatterns = [
     url(r'monster/(?P<monster_pk>\d+)/copy/$', views.monster_copy, name='monster_copy'),
     url(r'npc/(?P<npc_pk>\d+)/copy/$', views.npc_copy, name='npc_copy'),
     url(r'player/(?P<player_pk>\d+)/copy/$', views.player_copy, name='player_copy'),
+
+    url(r'^monster/export/$', views.monster_export, name='monster_export'),    
+    url(r'^npc/export/$', views.npc_export, name='npc_export'),
+    url(r'^monster/import/$', views.monster_import, name='monster_import'),
+    url(r'^npc/import/$', views.npc_import, name='npc_import'),
 ]
