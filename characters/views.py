@@ -326,43 +326,42 @@ def npc_import(request):
         else:
             return Http404
         form = forms.ImportNPCForm(request.POST)
-        if form.is_valid():
-            if "npcs" in user_import:
-                for npc, npc_attributes in user_import["npcs"].items():
-                    new_npc = models.NPC(
-                        user=request.user,
-                        name=npc,
-                        alignment=npc_attributes["alignment"],
-                        size=npc_attributes["size"],
-                        languages=npc_attributes["languages"],
-                        strength=npc_attributes["strength"],
-                        dexterity=npc_attributes["dexterity"],
-                        constitution=npc_attributes["constitution"],
-                        intelligence=npc_attributes["intelligence"],
-                        wisdom=npc_attributes["wisdom"],
-                        charisma=npc_attributes["charisma"],
-                        armor_class=npc_attributes["armor_class"],
-                        hit_points=npc_attributes["hit_points"],
-                        speed=npc_attributes["speed"],
-                        saving_throws=npc_attributes["saving_throws"],
-                        skills=npc_attributes["skills"],
-                        npc_class=npc_attributes["npc_class"],
-                        age=npc_attributes["age"],
-                        height=npc_attributes["height"],
-                        weight=npc_attributes["weight"],
-                        creature_type=npc_attributes["creature_type"],
-                        damage_vulnerabilities=npc_attributes["damage_vulnerabilities"],
-                        damage_immunities=npc_attributes["damage_immunities"],
-                        damage_resistances=npc_attributes["damage_resistances"],
-                        condition_immunities=npc_attributes["condition_immunities"],
-                        senses=npc_attributes["senses"],
-                        challenge_rating=npc_attributes["challenge_rating"],
-                        traits=npc_attributes["traits"],
-                        actions=npc_attributes["actions"],
-                        notes=npc_attributes["notes"]
-                    )
-                    new_npc.save()
-            return HttpResponseRedirect(reverse('characters:npc_detail'))
+        if "npcs" in user_import:
+            for npc, npc_attributes in user_import["npcs"].items():
+                new_npc = models.NPC(
+                    user=request.user,
+                    name=npc,
+                    alignment=npc_attributes["alignment"],
+                    size=npc_attributes["size"],
+                    languages=npc_attributes["languages"],
+                    strength=npc_attributes["strength"],
+                    dexterity=npc_attributes["dexterity"],
+                    constitution=npc_attributes["constitution"],
+                    intelligence=npc_attributes["intelligence"],
+                    wisdom=npc_attributes["wisdom"],
+                    charisma=npc_attributes["charisma"],
+                    armor_class=npc_attributes["armor_class"],
+                    hit_points=npc_attributes["hit_points"],
+                    speed=npc_attributes["speed"],
+                    saving_throws=npc_attributes["saving_throws"],
+                    skills=npc_attributes["skills"],
+                    npc_class=npc_attributes["npc_class"],
+                    age=npc_attributes["age"],
+                    height=npc_attributes["height"],
+                    weight=npc_attributes["weight"],
+                    creature_type=npc_attributes["creature_type"],
+                    damage_vulnerabilities=npc_attributes["damage_vulnerabilities"],
+                    damage_immunities=npc_attributes["damage_immunities"],
+                    damage_resistances=npc_attributes["damage_resistances"],
+                    condition_immunities=npc_attributes["condition_immunities"],
+                    senses=npc_attributes["senses"],
+                    challenge_rating=npc_attributes["challenge_rating"],
+                    traits=npc_attributes["traits"],
+                    actions=npc_attributes["actions"],
+                    notes=npc_attributes["notes"]
+                )
+                new_npc.save()
+        return HttpResponseRedirect(reverse('characters:npc_detail'))
     return render(request, 'characters/npc_import.html', {'form': form, 'user_import': user_import})
 
 @login_required

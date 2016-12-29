@@ -13,7 +13,6 @@
                 <div class="panel-body">
                     <form method="POST" action="">
                         {% csrf_token %}
-                        {% bootstrap_form form %}
                         <textarea class="form-control" name="user_import" placeholder="Paste exported NPCs here" rows="10"></textarea>
                 </div>
                 <div class="panel-footer clearfix">
