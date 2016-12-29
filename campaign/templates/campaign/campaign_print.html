@@ -47,87 +47,89 @@
             <hr>
         {% endfor %}
 
-        <h1>Appendix A: Monsters</h1>
+        {% if monsters %}
+            <h1>Appendix A: Monsters</h1>
 
-        {% for monster in monsters %}
-            <h2>{{ monster.name }}</h2>
-            <p>{% if monster.level %}Level {{ monster.level }} {% endif %}{% if monster.size %}{{ monster.size }} {% endif %}{% if monster.creature_type %}{{ monster.creature_type }} {% endif %}{% if monster.get_alignment_display %}({{ monster.get_alignment_display }}){% endif %}</p>   
-            <br />
-            {% if monster.languages %}<p>Languages: {{ monster.languages }}</p>{% endif %}
-            {% if monster.senses %}<p>Senses: {{ monster.senses }}</p>{% endif %}
-            {% if monster.challenge_rating %}<p>Challenge rating: {{ monster.challenge_rating }}</p>{% endif %}
-            <br />
-            {% if monster.strength %}<p>STR: {{ monster.strength }}</p>{% endif %}
-            {% if monster.dexterity %}<p>DEX: {{ monster.dexterity }}</p>{% endif %}
-            {% if monster.constitution %}<p>CON: {{ monster.constitution }}</p>{% endif %}
-            {% if monster.intelligence %}<p>INT: {{ monster.intelligence }}</p>{% endif %}
-            {% if monster.wisdom %}<p>WIS: {{ monster.wisdom }}</p>{% endif %}
-            {% if monster.charisma %}<p>CHA: {{ monster.charisma }}</p>{% endif %}
-            <br />
-            {% if monster.armor_class %}<p>Armor class: {{ monster.armor_class }}</p>{% endif %}
-            {% if monster.hit_points %}<p>Hit points: {{ monster.hit_points }}</p>{% endif %}
-            {% if monster.speed %}<p>Speed: {{ monster.speed }}</p>{% endif %}
-            {% if monster.saving_throws %}<p>Saving throws: {{ monster.saving_throws }}</p>{% endif %}
-            {% if monster.skills %}<p>Skills: {{ monster.skills }}</p>{% endif %}
-            <br />
-            {% if monster.damage_vulnerabilities %}<p>Damage vulnerabilities: {{ monster.damage_vulnerabilities }}</p>{% endif %}
-            {% if monster.damage_immunities %}<p>Damage immunities: {{ monster.damage_immunities }}</p>{% endif %}
-            {% if monster.damage_resistances %}<p>Damage resistances: {{ monster.damage_resistances }}</p>{% endif %}
-            {% if monster.condition_immunities %}<p>Condition immunities: {{ monster.condition_immunities }}</p>{% endif %}
-            <br />
-            {% if monster.traits %}<p>Traits {{ monster.traits|safe }}</p>{% endif %}
-            {% if monster.actions %}<p>Actions {{ monster.actions|safe }}</p>{% endif %}
-        {% endfor %}
+            {% for monster in monsters %}
+                <h2>{{ monster.name }}</h2>
+                <p>{% if monster.level %}Level {{ monster.level }} {% endif %}{% if monster.size %}{{ monster.size }} {% endif %}{% if monster.creature_type %}{{ monster.creature_type }} {% endif %}{% if monster.get_alignment_display %}({{ monster.get_alignment_display }}){% endif %}</p>   
+                <br />
+                {% if monster.languages %}<p>Languages: {{ monster.languages }}</p>{% endif %}
+                {% if monster.senses %}<p>Senses: {{ monster.senses }}</p>{% endif %}
+                {% if monster.challenge_rating %}<p>Challenge rating: {{ monster.challenge_rating }}</p>{% endif %}
+                <br />
+                {% if monster.strength %}<p>STR: {{ monster.strength }}</p>{% endif %}
+                {% if monster.dexterity %}<p>DEX: {{ monster.dexterity }}</p>{% endif %}
+                {% if monster.constitution %}<p>CON: {{ monster.constitution }}</p>{% endif %}
+                {% if monster.intelligence %}<p>INT: {{ monster.intelligence }}</p>{% endif %}
+                {% if monster.wisdom %}<p>WIS: {{ monster.wisdom }}</p>{% endif %}
+                {% if monster.charisma %}<p>CHA: {{ monster.charisma }}</p>{% endif %}
+                <br />
+                {% if monster.armor_class %}<p>Armor class: {{ monster.armor_class }}</p>{% endif %}
+                {% if monster.hit_points %}<p>Hit points: {{ monster.hit_points }}</p>{% endif %}
+                {% if monster.speed %}<p>Speed: {{ monster.speed }}</p>{% endif %}
+                {% if monster.saving_throws %}<p>Saving throws: {{ monster.saving_throws }}</p>{% endif %}
+                {% if monster.skills %}<p>Skills: {{ monster.skills }}</p>{% endif %}
+                <br />
+                {% if monster.damage_vulnerabilities %}<p>Damage vulnerabilities: {{ monster.damage_vulnerabilities }}</p>{% endif %}
+                {% if monster.damage_immunities %}<p>Damage immunities: {{ monster.damage_immunities }}</p>{% endif %}
+                {% if monster.damage_resistances %}<p>Damage resistances: {{ monster.damage_resistances }}</p>{% endif %}
+                {% if monster.condition_immunities %}<p>Condition immunities: {{ monster.condition_immunities }}</p>{% endif %}
+                <br />
+                {% if monster.traits %}<p>Traits {{ monster.traits|safe }}</p>{% endif %}
+                {% if monster.actions %}<p>Actions {{ monster.actions|safe }}</p>{% endif %}
+            {% endfor %}
+        {% endif %}
 
-        <hr>
+        {% if npcs %}
+            <h1>Appendix B: NPCs</h1>
 
-        <h1>Appendix B: NPCs</h1>
+            {% for npc in npcs %}
+                <h2>{{ npc.name }}</h2>
+                <p>{% if npc.level %}Level {{ npc.level }} {% endif %}{% if npc.npc_class %}{{ npc.npc_class }} {% endif %}{% if npc.get_alignment_display %}({{ npc.get_alignment_display }}){% endif %}</p>
+                {% if npc.size %}<p>Size: {{ npc.size }}</p>{% endif %}
+                {% if npc.creature_type %}<p>{{ npc.creature_type }}</p>{% endif %}
+                <br />
+                {% if npc.age %}<p>Age: {{ npc.age }}</p>{% endif %}
+                {% if npc.height %}<p>Height: {{ npc.height }}</p>{% endif %}
+                {% if npc.weight %}<p>Weight: {{ npc.weight }}</p>{% endif %}
+                {% if npc.languages %}<p>Languages: {{ npc.languages }}</p>{% endif %}
+                {% if npc.senses %}<p>Senses: {{ npc.senses }}</p>{% endif %}
+                {% if npc.challenge_rating %}<p>Challenge rating: {{ npc.challenge_rating }}</p>{% endif %}
+                <br />
+                {% if npc.strength %}<p>STR: {{ npc.strength }}</p>{% endif %}
+                {% if npc.dexterity %}<p>DEX: {{ npc.dexterity }}</p>{% endif %}
+                {% if npc.constitution %}<p>CON: {{ npc.constitution }}</p>{% endif %}
+                {% if npc.intelligence %}<p>INT: {{ npc.intelligence }}</p>{% endif %}
+                {% if npc.wisdom %}<p>WIS: {{ npc.wisdom }}</p>{% endif %}
+                {% if npc.charisma %}<p>CHA: {{ npc.charisma }}</p>{% endif %}
+                <br />
+                {% if npc.armor_class %}<p>Armor class: {{ npc.armor_class }}</p>{% endif %}
+                {% if npc.hit_points %}<p>Hit points: {{ npc.hit_points }}</p>{% endif %}
+                {% if npc.speed %}<p>Speed: {{ npc.speed }}</p>{% endif %}
+                {% if npc.saving_throws %}<p>Saving throws: {{ npc.saving_throws }}</p>{% endif %}
+                {% if npc.skills %}<p>Skills: {{ npc.skills }}</p>{% endif %}
+                <br />
+                {% if npc.damage_vulnerabilities %}<p>Damage vulnerabilities: {{ npc.damage_vulnerabilities }}</p>{% endif %}
+                {% if npc.damage_immunities %}<p>Damage immunities: {{ npc.damage_immunities }}</p>{% endif %}
+                {% if npc.damage_resistances %}<p>Damage resistances: {{ npc.damage_resistances }}</p>{% endif %}
+                {% if npc.condition_immunities %}<p>Condition immunities: {{ npc.condition_immunities }}</p>{% endif %}
+                <br />
+                {% if npc.traits %}<p>Traits {{ npc.traits|safe }}</p>{% endif %}
+                {% if npc.actions %}<p>Actions {{ npc.actions|safe }}</p>{% endif %}
+                {% if npc.notes %}<p>Notes {{ npc.notes|safe }}</p>{% endif %}
+            {% endfor %}
+        {% endif %}
 
-        {% for npc in npcs %}
-            <h2>{{ npc.name }}</h2>
-            <p>{% if npc.level %}Level {{ npc.level }} {% endif %}{% if npc.npc_class %}{{ npc.npc_class }} {% endif %}{% if npc.get_alignment_display %}({{ npc.get_alignment_display }}){% endif %}</p>
-            {% if npc.size %}<p>Size: {{ npc.size }}</p>{% endif %}
-            {% if npc.creature_type %}<p>{{ npc.creature_type }}</p>{% endif %}
-            <br />
-            {% if npc.age %}<p>Age: {{ npc.age }}</p>{% endif %}
-            {% if npc.height %}<p>Height: {{ npc.height }}</p>{% endif %}
-            {% if npc.weight %}<p>Weight: {{ npc.weight }}</p>{% endif %}
-            {% if npc.languages %}<p>Languages: {{ npc.languages }}</p>{% endif %}
-            {% if npc.senses %}<p>Senses: {{ npc.senses }}</p>{% endif %}
-            {% if npc.challenge_rating %}<p>Challenge rating: {{ npc.challenge_rating }}</p>{% endif %}
-            <br />
-            {% if npc.strength %}<p>STR: {{ npc.strength }}</p>{% endif %}
-            {% if npc.dexterity %}<p>DEX: {{ npc.dexterity }}</p>{% endif %}
-            {% if npc.constitution %}<p>CON: {{ npc.constitution }}</p>{% endif %}
-            {% if npc.intelligence %}<p>INT: {{ npc.intelligence }}</p>{% endif %}
-            {% if npc.wisdom %}<p>WIS: {{ npc.wisdom }}</p>{% endif %}
-            {% if npc.charisma %}<p>CHA: {{ npc.charisma }}</p>{% endif %}
-            <br />
-            {% if npc.armor_class %}<p>Armor class: {{ npc.armor_class }}</p>{% endif %}
-            {% if npc.hit_points %}<p>Hit points: {{ npc.hit_points }}</p>{% endif %}
-            {% if npc.speed %}<p>Speed: {{ npc.speed }}</p>{% endif %}
-            {% if npc.saving_throws %}<p>Saving throws: {{ npc.saving_throws }}</p>{% endif %}
-            {% if npc.skills %}<p>Skills: {{ npc.skills }}</p>{% endif %}
-            <br />
-            {% if npc.damage_vulnerabilities %}<p>Damage vulnerabilities: {{ npc.damage_vulnerabilities }}</p>{% endif %}
-            {% if npc.damage_immunities %}<p>Damage immunities: {{ npc.damage_immunities }}</p>{% endif %}
-            {% if npc.damage_resistances %}<p>Damage resistances: {{ npc.damage_resistances }}</p>{% endif %}
-            {% if npc.condition_immunities %}<p>Condition immunities: {{ npc.condition_immunities }}</p>{% endif %}
-            <br />
-            {% if npc.traits %}<p>Traits {{ npc.traits|safe }}</p>{% endif %}
-            {% if npc.actions %}<p>Actions {{ npc.actions|safe }}</p>{% endif %}
-            {% if npc.notes %}<p>Notes {{ npc.notes|safe }}</p>{% endif %}
-        {% endfor %}
+        {% if items %}
+            <h1>Appendix C: Items/Spells</h1>
 
-        <hr>
-
-        <h1>Appendix C: Items/Spells</h1>
-
-        {% for item in items %}
-            <h2>{{ item.name }}</h2>
-            <p><em>{% if item.item_type %}{{ item.item_type }}{% endif %}{% if item.rarity and item.item_type %}, {{ item.rarity }}{% elif item.rarity %}{{ item.rarity }}{% else %}{% endif %}</em></p>
-            <p>{{ item.description|safe }}</p>
-        {% endfor %}
+            {% for item in items %}
+                <h2>{{ item.name }}</h2>
+                <p><em>{% if item.item_type %}{{ item.item_type }}{% endif %}{% if item.rarity and item.item_type %}, {{ item.rarity }}{% elif item.rarity %}{{ item.rarity }}{% else %}{% endif %}</em></p>
+                <p>{{ item.description|safe }}</p>
+            {% endfor %}
+        {% endif %}
 
     </body>
 </html>
