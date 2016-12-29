@@ -27,6 +27,8 @@
 
 {% block character_contents_extra %}
     <li><a href="{% url 'characters:monster_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create monster</span></a></li>
+    <li><a href="{% url 'characters:monster_export' %}"><span class="text-primary"><i class="fa fa-fw fa-download" aria-hidden="true"></i> Export monsters</span></a></li>
+    <li><a href="{% url 'characters:monster_import' %}"><span class="text-primary"><i class="fa fa-fw fa-upload" aria-hidden="true"></i> Import monsters</span></a></li>
 {% endblock %}
 
 {% block character_detail_title %}
