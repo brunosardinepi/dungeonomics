@@ -58,7 +58,8 @@
             "senses": "{{ monster.senses }}",
             "challenge_rating": "{{ monster.challenge_rating }}",
             "traits": {{ monster.traits }},
-            "actions": {{ monster.actions }}
+            "actions": {{ monster.actions }},
+            "notes": {{ monster.notes }}
         {% if forloop.last %}}}{% else %}},{% endif %}{% endfor %}{% endif %}
     {% if npcs %},{% endif %}
     {% if npcs %}"npcs": { {% for npc in npcs %}

@@ -311,7 +311,7 @@ def monster_import(request):
                     actions=monster_attributes["actions"]
                 )
                 new_monster.save()
-            return HttpResponseRedirect('characters:monster_detail')
+            return HttpResponseRedirect(reverse('characters:monster_detail'))
     return render(request, 'characters/monster_import.html', {'form': form, 'user_import': user_import})
 
 @login_required
@@ -361,7 +361,7 @@ def npc_import(request):
                         notes=npc_attributes["notes"]
                     )
                     new_npc.save()
-            return HttpResponseRedirect('characters:npc_detail')
+            return HttpResponseRedirect(reverse('characters:npc_detail'))
     return render(request, 'characters/npc_import.html', {'form': form, 'user_import': user_import})
 
 @login_required
