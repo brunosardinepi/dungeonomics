@@ -1,5 +1,3 @@
-from itertools import chain
-
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,6 +7,8 @@ from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
+from itertools import chain
 
 from . import forms
 from . import models
@@ -397,3 +397,20 @@ def npc_export(request):
         return render(request, 'characters/npc_export.html', {'npcs': npcs})
     else:
         raise Http404
+
+@login_required
+def monster_srd(request):
+    form = forms.SRDMonsterForm()
+    monsters = sorted(models.Monster.objects.filter(user='gnowak'),
+        key=lambda monster: monster.name.lower()
+        )
+    if request.method == 'POST':
+        form = forms.MonsterForm(request.POST)
+        selected_monsters = []
+        for monster_pk in request.POST.getlist('monster'):
+            monster = models.Monster.objects.filter(pk=monster_pk)
+            selected_monsters.append(monster)
+        empty_queryset = models.Monster.objects.none()
+        monster_queryset = list(chain(empty_queryset, selected_monsters))
+        return render(request, 'characters/monster_export.html', {'monsters': monster_queryset})
+    return render(request, 'characters/monster_srd_form.html', {'form': form, 'monsters': monsters})

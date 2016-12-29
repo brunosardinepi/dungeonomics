@@ -165,9 +165,16 @@ class ImportMonsterForm(forms.ModelForm):
             'name',
         ]
 
+
 class ImportNPCForm(forms.ModelForm):
     class Meta:
         model = models.NPC
         fields = [
             'name',
         ]
+
+
+class SRDMonsterForm(forms.ModelForm):
+    class Meta:
+        model = models.Monster
+        fields = ['name']

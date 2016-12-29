@@ -31,4 +31,6 @@ urlpatterns = [
     url(r'^npc/export/$', views.npc_export, name='npc_export'),
     url(r'^monster/import/$', views.monster_import, name='monster_import'),
     url(r'^npc/import/$', views.npc_import, name='npc_import'),
+
+    url(r'^monster/srd/$', views.monster_srd, name='monster_srd'),
 ]
