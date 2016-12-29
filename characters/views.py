@@ -413,9 +413,8 @@ def monster_srd(request):
             # append the monster object to a list
             monster = models.Monster.objects.get(pk=monster_pk)
             selected_monsters.append(monster)
-            return HttpResponse(type(selected_monsters))
         empty_queryset = models.Monster.objects.none()
         monster_queryset = list(chain(empty_queryset, selected_monsters))
         # return render(request, 'characters/monster_export.html', {'monsters': monster_queryset})
-        # return HttpResponse(selected_monsters)
+        return HttpResponse(monster_queryset)
     return render(request, 'characters/monster_srd_form.html', {'form': form, 'monsters': monsters})
