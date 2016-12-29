@@ -408,10 +408,10 @@ def monster_srd(request):
         form = forms.MonsterForm(request.POST)
         selected_monsters = []
         for monster_pk in request.POST.getlist('monster'):
-            # get the monster.pk = good
-            # get the monster object based on the pk = good
-            # append the monster object to a list
             monster = models.Monster.objects.get(pk=monster_pk)
+            monster.traits = json.dumps(monster.traits)
+            monster.actions = json.dumps(monster.actions)
+            monster.notes = json.dumps(monster.notes)
             selected_monsters.append(monster)
         empty_queryset = models.Monster.objects.none()
         monster_queryset = list(chain(empty_queryset, selected_monsters))
