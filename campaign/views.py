@@ -282,8 +282,11 @@ def campaign_print(request, campaign_pk):
             )
         npcs = sorted(character_models.NPC.objects.filter(user=request.user),
             key=lambda npc: npc.name.lower()
-            ) 
-        return render(request, 'campaign/campaign_print.html', {'campaign': campaign, 'chapters': chapters, 'sections': sections, 'monsters': monsters, 'npcs': npcs})
+            )
+        items = sorted(item_models.Item.objects.filter(user=request.user),
+            key=lambda item: item.name.lower()
+            )
+        return render(request, 'campaign/campaign_print.html', {'campaign': campaign, 'chapters': chapters, 'sections': sections, 'monsters': monsters, 'npcs': npcs, 'items': items})
     else:
         raise Http404
     

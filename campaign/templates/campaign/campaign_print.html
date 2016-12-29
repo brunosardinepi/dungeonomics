@@ -119,5 +119,15 @@
             {% if npc.notes %}<p>Notes {{ npc.notes|safe }}</p>{% endif %}
         {% endfor %}
 
+        <hr>
+
+        <h1>Appendix C: Items/Spells</h1>
+
+        {% for item in items %}
+            <h2>{{ item.name }}</h2>
+            <p><em>{% if item.item_type %}{{ item.item_type }}{% endif %}{% if item.rarity and item.item_type %}, {{ item.rarity }}{% elif item.rarity %}{{ item.rarity }}{% else %}{% endif %}</em></p>
+            <p>{{ item.description|safe }}</p>
+        {% endfor %}
+
     </body>
 </html>
