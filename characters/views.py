@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -412,5 +412,6 @@ def monster_srd(request):
             selected_monsters.append(monster)
         empty_queryset = models.Monster.objects.none()
         monster_queryset = list(chain(empty_queryset, selected_monsters))
-        return render(request, 'characters/monster_export.html', {'monsters': monster_queryset})
+        # return render(request, 'characters/monster_export.html', {'monsters': monster_queryset})
+        return HttpResponse(monster_queryset)
     return render(request, 'characters/monster_srd_form.html', {'form': form, 'monsters': monsters})
