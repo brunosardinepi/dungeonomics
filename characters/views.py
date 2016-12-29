@@ -407,12 +407,12 @@ def monster_srd(request):
     if request.method == 'POST':
         form = forms.MonsterForm(request.POST)
         selected_monsters = []
-        selected_monsters2 = ['test']
         for monster_pk in request.POST.getlist('monster'):
             monster = models.Monster.objects.filter(pk=monster_pk)
             selected_monsters.append(monster)
+            return HttpResponse(monster)
         empty_queryset = models.Monster.objects.none()
         monster_queryset = list(chain(empty_queryset, selected_monsters))
         # return render(request, 'characters/monster_export.html', {'monsters': monster_queryset})
-        return HttpResponse(selected_monsters2)
+        # return HttpResponse(selected_monsters)
     return render(request, 'characters/monster_srd_form.html', {'form': form, 'monsters': monsters})
