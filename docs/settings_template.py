@@ -21,7 +21,6 @@ SECRET_KEY = [removed]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-#DEBUG = True
 
 ALLOWED_HOSTS = ['dungeonomics.com']
 
@@ -32,6 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.humanize',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.sites',
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'campaign',
     'characters',
     'wiki',
+    'items',
 ]
 
 MIDDLEWARE = [
