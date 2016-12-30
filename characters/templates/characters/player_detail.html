@@ -47,7 +47,7 @@
     {% endif %}
 {% endblock %}
 
-{% block character_stats %}
+{% block character_detail %}
     {% if this_player %}
         <div class="row">
             <div class="col-md-12">
@@ -124,16 +124,6 @@
 
         <div class="row">
             <div class="col-md-12">
-                {% if this_player.age %}<p><strong>Age</strong> {{ this_player.age }}</p>{% endif %}
-                {% if this_player.height %}<p><strong>Height</strong> {{ this_player.height }}</p>{% endif %}
-                {% if this_player.weight %}<p><strong>Weight</strong> {{ this_player.weight }}</p>{% endif %}
-            </div>
-        </div>
-
-        <hr>
-
-        <div class="row">
-            <div class="col-md-12">
                 {% if this_player.saving_throws %}<p><strong>Saving Throws</strong> {{ this_player.saving_throws }}</p>{% endif %}
                 {% if this_player.skills %}<p><strong>Skills</strong> {{ this_player.skills }}</p>{% endif %}
                 {% if this_player.senses %}<p><strong>Senses</strong> {{ this_player.senses }}</p>{% endif %}
@@ -145,24 +135,21 @@
 
         <div class="row">
             <div class="col-md-12">
+                {% if this_player.age %}<p><strong>Age</strong> {{ this_player.age }}</p>{% endif %}
+                {% if this_player.height %}<p><strong>Height</strong> {{ this_player.height }}</p>{% endif %}
+                {% if this_player.weight %}<p><strong>Weight</strong> {{ this_player.weight }}</p>{% endif %}
                 {% if this_player.personality %}<p><strong>Personality Traits</strong> {{ this_player.personality|safe }}</p>{% endif %}
                 {% if this_player.ideals %}<p><strong>Ideals</strong> {{ this_player.ideals|safe }}</p>{% endif %}
                 {% if this_player.bonds %}<p><strong>Bonds</strong> {{ this_player.bonds|safe }}</p>{% endif %}
                 {% if this_player.flaws %}<p><strong>Flaws</strong> {{ this_player.flaws|safe }}</p>{% endif %}
             </div>
         </div>
-    {% else %}
-        <p>You haven't created any Players yet!</p>
-    {% endif %}
-{% endblock %}
-
-{% block character_detail %}
-    {% if this_player %}
 
         {% if this_player.attacks %}
+            <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <p><strong>Attacks and Spellcasting</strong> {{ this_player.attacks|safe }}</p>
+                    <h3>Attacks and Spellcasting</h3><p>{{ this_player.attacks|safe }}</p>
                 </div>
             </div>
         {% endif %}
@@ -171,7 +158,7 @@
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <p><strong>Equipment</strong> {{ this_player.equipment|safe }}</p>
+                    <h3>Equipment</h3><p>{{ this_player.equipment|safe }}</p>
                 </div>
             </div>
         {% endif %}
@@ -180,7 +167,7 @@
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <p><strong>Features and Traits</strong> {{ this_player.feats|safe }}</p>
+                    <h3>Features and Traits</h3><p>{{ this_player.feats|safe }}</p>
                 </div>
             </div>
         {% endif %}
@@ -189,7 +176,7 @@
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <p><strong>Proficiencies</strong> {{ this_player.proficiencies|safe }}</p>
+                    <h3>Proficiencies</h3><p>{{ this_player.proficiencies|safe }}</p>
                 </div>
             </div>
         {% endif %}
@@ -198,7 +185,7 @@
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <p><strong>Spells</strong> {{ this_player.spells|safe }}</p>
+                    <h3>Spells</h3><p>{{ this_player.spells|safe }}</p>
                 </div>
             </div>
         {% endif %}
@@ -207,9 +194,11 @@
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <p><strong>Notes</strong> {{ this_player.notes|safe }}</p>
+                    <h3>Notes</h3><p>{{ this_player.notes|safe }}</p>
                 </div>
             </div>
         {% endif %}
+    {% else %}
+        <p>You haven't created any Players yet!</p>
     {% endif %}
 {% endblock %}
