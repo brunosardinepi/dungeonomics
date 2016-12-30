@@ -50,7 +50,7 @@ class Character(models.Model):
     intelligence = models.IntegerField(default=10, blank=True)
     wisdom = models.IntegerField(default=10, blank=True)
     charisma = models.IntegerField(default=10, blank=True)
-    armor_class = models.IntegerField(default=0, blank=True)
+    armor_class = models.CharField(max_length=255, blank=True)
     hit_points = models.CharField(max_length=255, blank=True)
     speed = models.CharField(max_length=255, default='', blank=True)
     saving_throws = models.CharField(max_length=255, default='', blank=True)
