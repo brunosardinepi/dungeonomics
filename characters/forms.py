@@ -178,3 +178,9 @@ class SRDMonsterForm(forms.ModelForm):
     class Meta:
         model = models.Monster
         fields = ['name']
+
+
+class SRDNPCForm(forms.ModelForm):
+    class Meta:
+        model = models.NPC
+        fields = ['name']

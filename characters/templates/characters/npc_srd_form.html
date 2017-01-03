@@ -1,34 +1,34 @@
 {% extends 'layout.html' %}
 {% load bootstrap3 %}
 
-{% block title %}SRD Monsters | {{ block.super }}{% endblock %}
+{% block title %}SRD NPCs | {{ block.super }}{% endblock %}
 
 {% block body_content %}
     <div class="col-md-6 col-md-offset-3">
         <div class="panel panel-default panel-campaign">
             <div class="panel-heading">
-                <h3 class="panel-title"><strong>SRD Monsters</strong></h3>
+                <h3 class="panel-title"><strong>SRD NPCs</strong></h3>
             </div>
             <div class="panel-body">
                 <form method="POST" action="" style="margin-bottom:0;">
                     {% csrf_token %}
-                    <p>Select the monsters from the SRD that you'd like to import to your account:</p>
+                    <p>Select the NPCs from the SRD that you'd like to import to your account:</p>
                     <input type="checkbox" onClick="toggle(this)" /> Select all
                     <hr>
-                    {% for monster in monsters %}
+                    {% for npc in npcs %}
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="monster" value="{{ monster.pk }}"> {{ monster.name }}
+                            <input type="checkbox" name="npc" value="{{ npc.pk }}"> {{ npc.name }}
                         </label>
                     </div>
                     {% endfor %}
                     
                     <hr>
 
-                    <p>These monsters are provided by the <a href="http://dnd.wizards.com/articles/features/systems-reference-document-srd" target="_blank">SRD</a> and used in accordance with the <a href="http://www.opengamingfoundation.org/ogl.html" target="_blank">Open Gaming License</a>.<p>
+                    <p>These NPCs are provided by the <a href="http://dnd.wizards.com/articles/features/systems-reference-document-srd" target="_blank">SRD</a> and used in accordance with the <a href="http://www.opengamingfoundation.org/ogl.html" target="_blank">Open Gaming License</a>.<p>
             </div>
             <div class="panel-footer clearfix">
-                    <a href="{% url 'characters:monster_detail' %}" class="btn btn-default">Cancel</a>
+                    <a href="{% url 'characters:npc_detail' %}" class="btn btn-default">Cancel</a>
                     <input type="submit" class="btn btn-primary pull-right" value="Continue">
                 </form>
             </div>
@@ -39,7 +39,7 @@
 {% block end_static %}
 <script language='JavaScript'>
 function toggle(source) {
-  checkboxes = document.getElementsByName('monster');
+  checkboxes = document.getElementsByName('npc');
   for(var i=0, n=checkboxes.length;i<n;i++) {
     checkboxes[i].checked = source.checked;
   }

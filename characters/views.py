@@ -418,3 +418,24 @@ def monster_srd(request):
             monster.notes = json.dumps(monster.notes)
         return render(request, 'characters/monster_export.html', {'monsters': monster_queryset})
     return render(request, 'characters/monster_srd_form.html', {'form': form, 'monsters': monsters})
+
+@login_required
+def npc_srd(request):
+    form = forms.SRDNPCForm()
+    npcs = sorted(models.NPC.objects.filter(user=1),
+        key=lambda npc: npc.name.lower()
+        )
+    if request.method == 'POST':
+        form = forms.NPCForm(request.POST)
+        selected_npcs = []
+        for npc_pk in request.POST.getlist('npc'):
+            npc = models.NPC.objects.get(pk=npc_pk)
+            selected_npc.append(npc)
+        empty_queryset = models.NPC.objects.none()
+        npc_queryset = list(chain(empty_queryset, selected_npcs))
+        for npc in npc_queryset:
+            npc.traits = json.dumps(npc.traits)
+            npc.actions = json.dumps(npc.actions)
+            npc.notes = json.dumps(npc.notes)
+        return render(request, 'characters/npc_export.html', {'npc': npc_queryset})
+    return render(request, 'characters/npc_srd_form.html', {'form': form, 'npcs': npcs})
