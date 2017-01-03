@@ -430,7 +430,7 @@ def npc_srd(request):
         selected_npcs = []
         for npc_pk in request.POST.getlist('npc'):
             npc = models.NPC.objects.get(pk=npc_pk)
-            selected_npc.append(npc)
+            selected_npcs.append(npc)
         empty_queryset = models.NPC.objects.none()
         npc_queryset = list(chain(empty_queryset, selected_npcs))
         for npc in npc_queryset:
