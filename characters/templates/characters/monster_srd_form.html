@@ -13,6 +13,7 @@
                 <form method="POST" action="" style="margin-bottom:0;">
                     {% csrf_token %}
                     <p>Select the monsters from the SRD that you'd like to import to your account:</p>
+                    <button id="selectAll" class="btn btn-primary">Select all</button>
                     {% for monster in monsters %}
                     <div class="checkbox">
                         <label>
@@ -32,4 +33,14 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block end_static %}
+<script type='text/javascript'>
+$(document).ready(function(){
+    $("#selectAll").change(function() {
+        $("input[type=checkbox]").attr('checked', this.checked);
+    });
+});
+</script>
 {% endblock %}
