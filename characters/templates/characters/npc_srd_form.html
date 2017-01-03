@@ -13,7 +13,7 @@
                 <form method="POST" action="" style="margin-bottom:0;">
                     {% csrf_token %}
                     <p>Select the NPCs from the SRD that you'd like to import to your account:</p>
-                    <input type="checkbox" onClick="toggle(this)" /> Select all
+                    <input type="checkbox" onClick="toggle(this)" style="margin-right: 4px;" />Select all
                     <hr>
                     {% for npc in npcs %}
                     <div class="checkbox">
