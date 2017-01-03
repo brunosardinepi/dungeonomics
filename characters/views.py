@@ -437,5 +437,5 @@ def npc_srd(request):
             npc.traits = json.dumps(npc.traits)
             npc.actions = json.dumps(npc.actions)
             npc.notes = json.dumps(npc.notes)
-        return render(request, 'characters/npc_export.html', {'npc': npc_queryset})
+        return render(request, 'characters/npc_export.html', {'npcs': npc_queryset})
     return render(request, 'characters/npc_srd_form.html', {'form': form, 'npcs': npcs})
