@@ -401,7 +401,7 @@ def npc_export(request):
 @login_required
 def monster_srd(request):
     form = forms.SRDMonsterForm()
-    monsters = sorted(models.Monster.objects.filter(user=1),
+    monsters = sorted(models.Monster.objects.filter(user=3029),
         key=lambda monster: monster.name.lower()
         )
     if request.method == 'POST':
@@ -422,7 +422,7 @@ def monster_srd(request):
 @login_required
 def npc_srd(request):
     form = forms.SRDNPCForm()
-    npcs = sorted(models.NPC.objects.filter(user=1),
+    npcs = sorted(models.NPC.objects.filter(user=3029),
         key=lambda npc: npc.name.lower()
         )
     if request.method == 'POST':
