@@ -33,4 +33,5 @@ urlpatterns = [
     url(r'^npc/import/$', views.npc_import, name='npc_import'),
 
     url(r'^monster/srd/$', views.monster_srd, name='monster_srd'),
+    url(r'^npc/srd/$', views.npc_srd, name='npc_srd'),
 ]
