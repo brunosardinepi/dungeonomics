@@ -226,3 +226,6 @@ a.home-panel:hover {
 .stats {
     color: #fff;
 }
+.panel-body table td {
+    padding: 5px;
+}
