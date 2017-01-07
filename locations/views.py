@@ -49,7 +49,7 @@ def location_detail(request, world_pk=None, location_pk=None):
         if request.user.is_authenticated():
             user = request.user.pk
         if len(worlds) > 0:
-            this_world = world[0]
+            this_world = worlds[0]
             if len(locations) > 0:
                 this_location = locations[0]
             else:
