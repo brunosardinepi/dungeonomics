@@ -97,7 +97,10 @@ a.dropdown-cog:hover, a.dropdown-cog:active, li.open a.dropdown-cog {
 .width-eighty {
     width: 80%;
 }
-.width-ten input[id*='order'], .width-ten  input[id*='title'], .width-eighty input[id*='order'], .width-eighty  input[id*='title'] {
+.width-ninety {
+    width: 90%;
+}
+.width-ten input[id*='order'], .width-ten  input[id*='title'], .width-eighty input[id*='order'], .width-eighty  input[id*='title'], .width-ninety input[id*='order'], .width-ninety input[id*='name'] {
     width: 100%;
     height: 34px;
     padding: 6px 12px;

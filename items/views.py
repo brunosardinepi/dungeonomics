@@ -17,9 +17,7 @@ def item_detail(request, item_pk=None):
     user = None
     if request.user.is_authenticated():
         user = request.user.pk
-    items = sorted(models.Item.objects.filter(user=user),
-        key=lambda item: item.name.lower()
-        )
+    items = sorted(models.Item.objects.filter(user=user), key=lambda item: item.name.lower())
     if item_pk:
         this_item = get_object_or_404(models.Item, pk=item_pk)
         if this_item.user == request.user:
