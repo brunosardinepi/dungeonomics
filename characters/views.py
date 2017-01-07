@@ -14,6 +14,7 @@ from . import forms
 from . import models
 
 from items import models as item_models
+from locations import models as location_models
 
 import json
 
