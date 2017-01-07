@@ -23,7 +23,7 @@ def location_detail(request, world_pk=None, location_pk=None):
     for world in worlds:
         locations.append(sorted(
             models.Location.objects.filter(world=world),
-            key=lambda location: location.name
+            key=lambda location: location.name.lower()
             ))
     locations = [item for sublist in locations for item in sublist]
 
