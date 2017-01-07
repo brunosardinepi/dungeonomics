@@ -117,7 +117,7 @@
                             <tbody>
                                 {% for form in formset %}
                                     <tr>
-                                        <td class="width-ninety">{{ form.id }}{{ form.title }}</td>
+                                        <td class="width-ninety">{{ form.id }}{{ form.name }}</td>
                                         {% if form.instance.pk %}
                                             <td class="text-center width-ten">{{ form.DELETE }}</td>
                                         {% else %}
