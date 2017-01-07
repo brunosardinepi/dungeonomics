@@ -46,7 +46,7 @@
                         {% if worlds %}
                             {% for world in worlds %}
                                 <li class="li-content">
-                                    <a href="{% url 'locations:location_detail' world_pk=this_world.pk %}">
+                                    <a href="{% url 'locations:location_detail' world_pk=world.pk %}">
                                         {{ world.name }}
                                     </a>
                                 </li>
