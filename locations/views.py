@@ -63,6 +63,14 @@ def world_create(request):
     players = {}
     for player in players_raw:
         players[player.pk] = player.player_name
+    worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
+    worlds = {}
+    for world in worlds_raw:
+        worlds[world.pk] = world.name
+    locations_raw = location_models.Location.objects.filter(user=request.user).order_by('name')
+    locations = {}
+    for location in locations_raw:
+        locations[location.pk] = location.name
 
     form = forms.WorldForm()
     if request.method == 'POST':
@@ -73,7 +81,7 @@ def world_create(request):
             world.save()
             messages.add_message(request, messages.SUCCESS, "World created!")
             return HttpResponseRedirect(world.get_absolute_url())
-    return render(request, 'locations/world_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players})
+    return render(request, 'locations/world_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'worlds': worlds, 'locations': locations})
 
 @login_required
 def location_create(request, world_pk):
@@ -94,6 +102,15 @@ def location_create(request, world_pk):
     players = {}
     for player in players_raw:
         players[player.pk] = player.player_name
+    worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
+    worlds = {}
+    for world in worlds_raw:
+        worlds[world.pk] = world.name
+    locations_raw = location_models.Location.objects.filter(user=request.user).order_by('name')
+    locations = {}
+    for location in locations_raw:
+        locations[location.pk] = location.name
+
     if world.user == request.user:
         form = forms.LocationForm()
         if request.method == 'POST':
@@ -107,7 +124,7 @@ def location_create(request, world_pk):
                 return HttpResponseRedirect(location.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'locations/location_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'world': world})
+    return render(request, 'locations/location_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'world': world, 'worlds': worlds, 'locations': locations})
 
 @login_required
 def world_update(request, world_pk):
@@ -128,6 +145,15 @@ def world_update(request, world_pk):
     players = {}
     for player in players_raw:
         players[player.pk] = player.player_name
+    worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
+    worlds = {}
+    for world in worlds_raw:
+        worlds[world.pk] = world.name
+    locations_raw = location_models.Location.objects.filter(user=request.user).order_by('name')
+    locations = {}
+    for location in locations_raw:
+        locations[location.pk] = location.name
+
     if world.user == request.user:
         form = forms.WorldForm(instance=world)
         location_forms = forms.LocationInlineFormSet(queryset=form.instance.location_set.all())
@@ -147,7 +173,7 @@ def world_update(request, world_pk):
                 return HttpResponseRedirect(world.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'locations/world_form.html', {'form': form, 'formset': location_forms, 'world': world, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players})
+    return render(request, 'locations/world_form.html', {'form': form, 'formset': location_forms, 'world': world, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'worlds': worlds, 'locations': locations})
 
 @login_required
 def location_update(request, world_pk, location_pk):
@@ -168,6 +194,15 @@ def location_update(request, world_pk, location_pk):
     players = {}
     for player in players_raw:
         players[player.pk] = player.player_name
+    worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
+    worlds = {}
+    for world in worlds_raw:
+        worlds[world.pk] = world.name
+    locations_raw = location_models.Location.objects.filter(user=request.user).order_by('name')
+    locations = {}
+    for location in locations_raw:
+        locations[location.pk] = location.name
+    
     if location.user == request.user:
         form = forms.LocationForm(instance=location)
         if request.method == 'POST':
@@ -178,7 +213,7 @@ def location_update(request, world_pk, location_pk):
                 return HttpResponseRedirect(location.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'locations/location_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'world': location.world, 'location': location})
+    return render(request, 'locations/location_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'world': location.world, 'location': location, 'worlds': worlds, 'locations': locations})
 
 @login_required
 def world_delete(request, world_pk):
@@ -211,149 +246,3 @@ def location_delete(request, world_pk, location_pk):
     else:
         raise Http404
     return render(request, 'locations/location_delete.html', {'form': form, 'location': location})
-
-# @login_required
-# def campaign_import(request):
-#     user_import = None
-#     form = forms.ImportCampaignForm()
-#     if request.method == 'POST':
-#         if request.POST.get('user_import'):
-#             user_import = request.POST.get('user_import')
-#             user_import = json.loads(user_import, strict=False)
-#         else:
-#             return Http404
-#         form = forms.ImportCampaignForm(request.POST)
-#         if form.is_valid():
-#             campaign = form.save(commit=False)
-#             campaign.user = request.user
-#             campaign.save()
-#             for chapter_order, chapter_attributes in user_import["chapters"].items():
-#                 new_chapter = models.Chapter(
-#                     title=chapter_attributes["title"],
-#                     user=request.user,
-#                     campaign=campaign,
-#                     order=chapter_order,
-#                     content=chapter_attributes["content"]
-#                     )
-#                 new_chapter.save()
-#                 if "sections" in chapter_attributes:
-#                     for section_order, section_attributes in chapter_attributes["sections"].items():
-#                         new_section = models.Section(
-#                             title=section_attributes["title"],
-#                             user=request.user,
-#                             campaign=campaign,
-#                             chapter=new_chapter,
-#                             order=section_order,
-#                             content=section_attributes["content"]
-#                             )
-#                         new_section.save()
-#             if "monsters" in user_import: 
-#                 for monster, monster_attributes in user_import["monsters"].items():
-#                     new_monster = character_models.Monster(
-#                         user=request.user,
-#                         name=monster,
-#                         alignment=monster_attributes["alignment"],
-#                         size=monster_attributes["size"],
-#                         languages=monster_attributes["languages"],
-#                         strength=monster_attributes["strength"],
-#                         dexterity=monster_attributes["dexterity"],
-#                         constitution=monster_attributes["constitution"],
-#                         intelligence=monster_attributes["intelligence"],
-#                         wisdom=monster_attributes["wisdom"],
-#                         charisma=monster_attributes["charisma"],
-#                         armor_class=monster_attributes["armor_class"],
-#                         hit_points=monster_attributes["hit_points"],
-#                         speed=monster_attributes["speed"],
-#                         saving_throws=monster_attributes["saving_throws"],
-#                         skills=monster_attributes["skills"],
-#                         creature_type=monster_attributes["creature_type"],
-#                         damage_vulnerabilities=monster_attributes["damage_vulnerabilities"],
-#                         damage_immunities=monster_attributes["damage_immunities"],
-#                         damage_resistances=monster_attributes["damage_resistances"],
-#                         condition_immunities=monster_attributes["condition_immunities"],
-#                         senses=monster_attributes["senses"],
-#                         challenge_rating=monster_attributes["challenge_rating"],
-#                         traits=monster_attributes["traits"],
-#                         actions=monster_attributes["actions"],
-#                         notes=monster_attributes["notes"]
-#                     )
-#                     new_monster.save()
-#             if "npcs" in user_import:
-#                 for npc, npc_attributes in user_import["npcs"].items():
-#                     new_npc = character_models.NPC(
-#                         user=request.user,
-#                         name=npc,
-#                         alignment=npc_attributes["alignment"],
-#                         size=npc_attributes["size"],
-#                         languages=npc_attributes["languages"],
-#                         strength=npc_attributes["strength"],
-#                         dexterity=npc_attributes["dexterity"],
-#                         constitution=npc_attributes["constitution"],
-#                         intelligence=npc_attributes["intelligence"],
-#                         wisdom=npc_attributes["wisdom"],
-#                         charisma=npc_attributes["charisma"],
-#                         armor_class=npc_attributes["armor_class"],
-#                         hit_points=npc_attributes["hit_points"],
-#                         speed=npc_attributes["speed"],
-#                         saving_throws=npc_attributes["saving_throws"],
-#                         skills=npc_attributes["skills"],
-#                         npc_class=npc_attributes["npc_class"],
-#                         age=npc_attributes["age"],
-#                         height=npc_attributes["height"],
-#                         weight=npc_attributes["weight"],
-#                         creature_type=npc_attributes["creature_type"],
-#                         damage_vulnerabilities=npc_attributes["damage_vulnerabilities"],
-#                         damage_immunities=npc_attributes["damage_immunities"],
-#                         damage_resistances=npc_attributes["damage_resistances"],
-#                         condition_immunities=npc_attributes["condition_immunities"],
-#                         senses=npc_attributes["senses"],
-#                         challenge_rating=npc_attributes["challenge_rating"],
-#                         traits=npc_attributes["traits"],
-#                         actions=npc_attributes["actions"],
-#                         notes=npc_attributes["notes"]
-#                     )
-#                     new_npc.save()
-#             if "items" in user_import:
-#                 for item, item_attributes in user_import["items"].items():
-#                     new_item = item_models.Item(
-#                         user=request.user,
-#                         name=item,
-#                         item_type=item_attributes["item_type"],
-#                         rarity=item_attributes["rarity"],
-#                         description=item_attributes["description"]
-#                     )
-#                     new_item.save()
-#             return HttpResponseRedirect(campaign.get_absolute_url())
-#     return render(request, 'campaign/campaign_import.html', {'form': form, 'user_import': user_import})
-
-# @login_required
-# def campaign_export(request, campaign_pk):
-#     if campaign_pk:
-#         campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-#         chapters = sorted(models.Chapter.objects.filter(campaign=campaign),
-#             key=lambda chapter: chapter.order
-#             )
-#         monsters = sorted(character_models.Monster.objects.filter(user=request.user),
-#             key=lambda monster: monster.name.lower()
-#             )
-#         npcs = sorted(character_models.NPC.objects.filter(user=request.user),
-#             key=lambda npc: npc.name.lower()
-#             )
-#         items = sorted(item_models.Item.objects.filter(user=request.user),
-#             key=lambda item: item.name.lower()
-#             )
-#         for chapter in chapters:
-#             chapter.content = json.dumps(chapter.content)
-#         for monster in monsters:
-#             monster.traits = json.dumps(monster.traits)
-#             monster.actions = json.dumps(monster.actions)
-#             monster.notes = json.dumps(monster.notes)
-#         for npc in npcs:
-#             npc.traits = json.dumps(npc.traits)
-#             npc.actions = json.dumps(npc.actions)
-#             npc.notes = json.dumps(npc.notes)
-#         for item in items:
-#             item.description = json.dumps(item.description)
-#         return render(request, 'campaign/campaign_export.html', {'campaign': campaign, 'chapters': chapters, 'monsters': monsters, 'npcs': npcs, 'items': items})
-#     else:
-#         raise Http404
