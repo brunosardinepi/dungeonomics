@@ -71,10 +71,10 @@ def world_create(request):
     items = {}
     for item in items_raw:
         items[item.pk] = item.name
-    players_raw = character_models.Player.objects.filter(user=request.user).order_by('character_name')
+    players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
     players = {}
     for player in players_raw:
-        players[player.pk] = player.character_name
+        players[player.pk] = player.player_name
 
     form = forms.WorldForm()
     if request.method == 'POST':
@@ -90,24 +90,23 @@ def world_create(request):
 @login_required
 def location_create(request, world_pk):
     world = get_object_or_404(models.World, pk=world_pk)
+    monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
+    monsters = {}
+    for monster in monsters_raw:
+        monsters[monster.pk] = monster.name
+    npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
+    npcs = {}
+    for npc in npcs_raw:
+        npcs[npc.pk] = npc.name
+    items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
+    items = {}
+    for item in items_raw:
+        items[item.pk] = item.name
+    players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
+    players = {}
+    for player in players_raw:
+        players[player.pk] = player.player_name
     if world.user == request.user:
-        monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
-        monsters = {}
-        for monster in monsters_raw:
-            monsters[monster.pk] = monster.name
-        npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
-        npcs = {}
-        for npc in npcs_raw:
-            npcs[npc.pk] = npc.name
-        items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
-        items = {}
-        for item in items_raw:
-            items[item.pk] = item.name
-        players_raw = character_models.Player.objects.filter(user=request.user).order_by('character_name')
-        players = {}
-        for player in players_raw:
-            players[player.pk] = player.character_name
-
         form = forms.LocationForm()
         if request.method == 'POST':
             form = forms.LocationForm(request.POST)
@@ -125,6 +124,22 @@ def location_create(request, world_pk):
 @login_required
 def world_update(request, world_pk):
     world = get_object_or_404(models.World, pk=world_pk)
+    monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
+    monsters = {}
+    for monster in monsters_raw:
+        monsters[monster.pk] = monster.name
+    npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
+    npcs = {}
+    for npc in npcs_raw:
+        npcs[npc.pk] = npc.name
+    items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
+    items = {}
+    for item in items_raw:
+        items[item.pk] = item.name
+    players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
+    players = {}
+    for player in players_raw:
+        players[player.pk] = player.player_name
     if world.user == request.user:
         form = forms.WorldForm(instance=world)
         location_forms = forms.LocationInlineFormSet(queryset=form.instance.location_set.all())
@@ -144,29 +159,28 @@ def world_update(request, world_pk):
                 return HttpResponseRedirect(world.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'locations/world_form.html', {'form': form, 'formset': chapter_forms, 'world': world})
+    return render(request, 'locations/world_form.html', {'form': form, 'formset': chapter_forms, 'world': world, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players})
 
 @login_required
 def location_update(request, world_pk, location_pk):
     location = get_object_or_404(models.Location, pk=location_pk, world_id=world_pk)
+    monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
+    monsters = {}
+    for monster in monsters_raw:
+        monsters[monster.pk] = monster.name
+    npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
+    npcs = {}
+    for npc in npcs_raw:
+        npcs[npc.pk] = npc.name
+    items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
+    items = {}
+    for item in items_raw:
+        items[item.pk] = item.name
+    players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
+    players = {}
+    for player in players_raw:
+        players[player.pk] = player.player_name
     if location.user == request.user:
-        monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
-        monsters = {}
-        for monster in monsters_raw:
-            monsters[monster.pk] = monster.name
-        npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
-        npcs = {}
-        for npc in npcs_raw:
-            npcs[npc.pk] = npc.name
-        items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
-        items = {}
-        for item in items_raw:
-            items[item.pk] = item.name
-        players_raw = character_models.Player.objects.filter(user=request.user).order_by('character_name')
-        players = {}
-        for player in players_raw:
-            players[player.pk] = player.character_name
-
         form = forms.LocationForm(instance=location)
         if request.method == 'POST':
             form = forms.LocationForm(request.POST, instance=location)
