@@ -18,13 +18,10 @@ import json
 
 @login_required
 def location_detail(request, world_pk=None, location_pk=None):
-    worlds = sorted(models.World.objects.filter(user=request.user), key=lambda world: world.name)
+    worlds = sorted(models.World.objects.filter(user=request.user), key=lambda world: world.name.lower())
     locations = []
     for world in worlds:
-        locations.append(sorted(
-            models.Location.objects.filter(world=world),
-            key=lambda location: location.name.lower()
-            ))
+        locations.append(sorted(models.Location.objects.filter(world=world), key=lambda location: location.name.lower()))
     locations = [item for sublist in locations for item in sublist]
 
     if world_pk:
