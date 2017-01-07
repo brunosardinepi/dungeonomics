@@ -188,7 +188,7 @@ def world_delete(request, world_pk):
             if world.user.pk == request.user.pk:
                 world.delete()
                 messages.add_message(request, messages.SUCCESS, "World deleted!")
-                return HttpResponseRedirect(reverse('home'))
+                return HttpResponseRedirect(reverse('locations:location_detail'))
     else:
         raise Http404
     return render(request, 'locations/world_delete.html', {'form': form, 'world': world})
