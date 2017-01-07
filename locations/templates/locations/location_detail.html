@@ -1,0 +1,136 @@
+{% extends 'layout.html' %}
+
+{% block title %}{{ this_world.name }} | {{ block.super }}{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="jumbotron breadcrumbs">
+        <div class="container">
+            <span>
+                <span>
+                    <a href="{% url 'locations:location_detail' world_pk=this_world.pk %}">{{ this_world.name }}</a>
+                </span>
+                <span>
+                    {% if this_location %}
+                        <span class="breadcrumbs_separator"> / </span>
+                            {{ this_location.name }}
+                        {% endif %}
+                    {% endif %}
+                </span>
+            </span>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body_content %}
+    <div class="row campaign-row">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading panel-heading-cog clearfix">
+                    <span class="pull-left">
+                        <h3 class="panel-title panel-title-cog">Locations</h3>
+                    </span>
+                    <span class="pull-right">
+                        <ul class="nav navbar-nav navbar-right navbar-cog">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{% url 'locations:world_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create world</span></a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </span>
+                </div>
+                <div class="panel-body">
+                    <ul class="contents_list">
+                        {% if worlds %}
+                            {% for world in worlds %}
+                                <li class="li-content">
+                                    <a href="{% url 'locations:location_detail' world_pk=this_world.pk %}">
+                                        {{ world.name }}
+                                    </a>
+                                </li>
+                                <ul style="padding-left: 30px;">
+                                    {% for location in locations %}
+                                        {% if location.world.pk == world.pk %}
+                                            <li class="li-content">
+                                                <a href="{% url 'locations:location_detail' world_pk=this_world.pk location_pk=location.pk %}">
+                                                    {{ location.name }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            {% endfor %}
+                        {% else %}
+                            <li>You haven't created any worlds yet!</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                {% if this_world %}
+                    {% if not this_location %}
+                        <div class="panel-heading panel-heading-cog clearfix">
+                            <span class="pull-left">
+                                <h3 class="panel-title panel-title-cog">{{ this_world.name }}</h3>
+                            </span>
+                            <span class="pull-right">
+                                <ul class="nav navbar-nav navbar-right navbar-cog">
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="{% url 'locations:location_create' world_pk=this_world.pk %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create location</span></a></li>
+                                            <li><a href="{% url 'locations:world_update' world_pk=this_world.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit world</span></a></li>
+                                            <li><a href="{% url 'locations:world_delete' world_pk=this_world.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete world</span></a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </span>
+                        </div>
+                        <div class="panel-body">
+                            <p>{{ this_world.content|safe }}</p>
+                        </div>
+                    {% elif this_location %}
+                        <div class="panel-heading panel-heading-cog clearfix">
+                            <span class="pull-left">
+                                <h3 class="panel-title panel-title-cog">{{ this_location.name }}</h3>
+                            </span>
+                            <span class="pull-right">
+                                <ul class="nav navbar-nav navbar-right navbar-cog">
+                                    <li class="dropdown">
+                                        <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="{% url 'locations:location_update' world_pk=this_world.pk location_pk=this_location.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit location</span></a></li>
+                                            <li><a href="{% url 'locations:location_delete' world_pk=this_world.pk location_pk=this_location.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete location</span></a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </span>
+                        </div>
+                        <div class="panel-body">
+                            <p>{{ this_location.content|safe }}</p>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div class="panel-heading panel-heading-cog clearfix">
+                        <span class="pull-right">
+                            <ul class="nav navbar-nav navbar-right navbar-cog">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{% url 'locations:world_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create world</span></a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p>You haven't created any worlds yet!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
