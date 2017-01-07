@@ -84,7 +84,7 @@ def world_create(request):
             world.user = request.user
             world.save()
             messages.add_message(request, messages.SUCCESS, "World created!")
-            return HttpResponseRedirect(location.get_absolute_url())
+            return HttpResponseRedirect(world.get_absolute_url())
     return render(request, 'locations/world_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players})
 
 @login_required
