@@ -48,6 +48,22 @@
                     'type': 'player'
                 });
         }
+        var worlds_dict = {{worlds|safe}};
+        for (var key in worlds_dict) {
+            taggable.push({
+                    'name': worlds_dict[key],
+                    'id': key,
+                    'type': 'world'
+                });
+        }
+        var locations_dict = {{locations|safe}};
+        for (var key in locations_dict) {
+            taggable.push({
+                    'name': locations_dict[key],
+                    'id': key,
+                    'type': 'location'
+                });
+        }
         tinymce.init({
             selector: "#id_content",
             height : "250",
@@ -71,6 +87,10 @@
                 insert: function(item) {
                     if (item.type == 'item') {
                         var url = "{% url 'items:item_detail' item_pk=999999999999 %}".replace(999999999999, item.id);
+                    } else if (item.type == 'world') {
+                        var url = "{% url 'locations:location_detail' world_pk=999999999999 %}".replace(999999999999, item.id);
+                    } else if (item.type == 'location') {
+                        var url = "{% url 'locations:location_detail' location_pk=999999999999 %}".replace(999999999999, item.id);
                     } else {
                         var url = "{% url 'characters:monster_detail' monster_pk=999999999999 %}".replace(999999999999, item.id).replace(/monster/g, item.type);
                     }
