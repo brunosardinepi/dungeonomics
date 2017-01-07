@@ -63,11 +63,11 @@ def world_create(request):
     players = {}
     for player in players_raw:
         players[player.pk] = player.player_name
-    worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
+    worlds_raw = models.World.objects.filter(user=request.user).order_by('name')
     worlds = {}
     for world in worlds_raw:
         worlds[world.pk] = world.name
-    locations_raw = location_models.Location.objects.filter(user=request.user).order_by('name')
+    locations_raw = models.Location.objects.filter(user=request.user).order_by('name')
     locations = {}
     for location in locations_raw:
         locations[location.pk] = location.name
@@ -102,11 +102,11 @@ def location_create(request, world_pk):
     players = {}
     for player in players_raw:
         players[player.pk] = player.player_name
-    worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
+    worlds_raw = models.World.objects.filter(user=request.user).order_by('name')
     worlds = {}
     for world in worlds_raw:
         worlds[world.pk] = world.name
-    locations_raw = location_models.Location.objects.filter(user=request.user).order_by('name')
+    locations_raw = models.Location.objects.filter(user=request.user).order_by('name')
     locations = {}
     for location in locations_raw:
         locations[location.pk] = location.name
@@ -145,11 +145,11 @@ def world_update(request, world_pk):
     players = {}
     for player in players_raw:
         players[player.pk] = player.player_name
-    worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
+    worlds_raw = models.World.objects.filter(user=request.user).order_by('name')
     worlds = {}
     for world in worlds_raw:
         worlds[world.pk] = world.name
-    locations_raw = location_models.Location.objects.filter(user=request.user).order_by('name')
+    locations_raw = models.Location.objects.filter(user=request.user).order_by('name')
     locations = {}
     for location in locations_raw:
         locations[location.pk] = location.name
@@ -194,11 +194,11 @@ def location_update(request, world_pk, location_pk):
     players = {}
     for player in players_raw:
         players[player.pk] = player.player_name
-    worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
+    worlds_raw = models.World.objects.filter(user=request.user).order_by('name')
     worlds = {}
     for world in worlds_raw:
         worlds[world.pk] = world.name
-    locations_raw = location_models.Location.objects.filter(user=request.user).order_by('name')
+    locations_raw = models.Location.objects.filter(user=request.user).order_by('name')
     locations = {}
     for location in locations_raw:
         locations[location.pk] = location.name
