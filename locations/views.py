@@ -180,7 +180,7 @@ def location_update(request, world_pk, location_pk):
 
 @login_required
 def world_delete(request, world_pk):
-    world = get_object_or_404(models.world, pk=world_pk)
+    world = get_object_or_404(models.World, pk=world_pk)
     if world.user == request.user:
         form = forms.DeleteWorldForm(instance=world)
         if request.method == 'POST':
