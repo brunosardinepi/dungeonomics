@@ -18,7 +18,7 @@ import json
 
 @login_required
 def location_detail(request, world_pk=None, location_pk=None):
-    worlds = sorted(models.World.objects.filter(user=user), key=lambda world: world.name)
+    worlds = sorted(models.World.objects.filter(user=request.user), key=lambda world: world.name)
     locations = []
     for world in worlds:
         locations.append(sorted(
