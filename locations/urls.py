@@ -6,7 +6,7 @@ urlpatterns = [
     url(r'^(?P<world_pk>\d+)/$', views.location_detail, name='location_detail'),
     url(r'^(?P<world_pk>\d+)/(?P<location_pk>\d+)/$', views.location_detail, name='location_detail'),
 
-    url(r'^world/create/$', views.WorldCreate.as_view(), name='world_create'),
+    url(r'^world/create/$', views.world_create, name='world_create'),
     url(r'^(?P<world_pk>\d+)/location/create/$', views.location_create, name='location_create'),
 
     url(r'^(?P<world_pk>\d+)/edit/$', views.world_update, name='world_update'),
@@ -17,6 +17,6 @@ urlpatterns = [
 
     url(r'^(?P<world_pk>\d+)/delete/$', views.world_delete, name='world_delete'),
     url(r'^(?P<world_pk>\d+)/(?P<location_pk>\d+)/delete/$', views.location_delete, name='location_delete'),
-    
+
     url(r'^$', views.location_detail, name='location_detail'),
 ]
