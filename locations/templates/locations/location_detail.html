@@ -3,23 +3,25 @@
 {% block title %}{{ this_world.name }} | {{ block.super }}{% endblock %}
 
 {% block breadcrumbs %}
-    {% if this_world %}
-        <div class="jumbotron breadcrumbs">
-            <div class="container">
+    <div class="jumbotron breadcrumbs">
+        <div class="container">
+            <span>
                 <span>
-                    <span>
+                    {% if this_world %}
                         <a href="{% url 'locations:location_detail' world_pk=this_world.pk %}">{{ this_world.name }}</a>
-                    </span>
-                    <span>
-                        {% if this_location %}
-                            <span class="breadcrumbs_separator"> / </span>
-                                {{ this_location.name }}
-                        {% endif %}
-                    </span>
+                    {% elif this_location %}
+                        <a href="{% url 'locations:location_detail' world_pk=this_location.world.pk %}">{{ this_location.world.name }}</a>
+                    {% endif %}
                 </span>
-            </div>
+                <span>
+                    {% if this_location %}
+                        <span class="breadcrumbs_separator"> / </span>
+                            {{ this_location.name }}
+                    {% endif %}
+                </span>
+            </span>
         </div>
-    {% endif %}
+    </div>
 {% endblock %}
 
 {% block body_content %}
