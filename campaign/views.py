@@ -125,7 +125,7 @@ def chapter_create(request, campaign_pk):
         locations = {}
         for location in locations_raw:
             locations[location.pk] = location.name
-            locations[location.name] = location.world
+            locations[location.name] = json.dumps(location.world)
 
         form = forms.ChapterForm()
         if request.method == 'POST':
