@@ -97,7 +97,7 @@
                     } else {
                         var url = "{% url 'characters:monster_detail' monster_pk=999999999999 %}".replace(999999999999, item.id).replace(/monster/g, item.type);
                     }
-                    return "<a href='" + url + "'>" + item.name + "</a>";
+                    return "<a href=" + url + ">" + item.name + "</a>";
                 }
             }
         });

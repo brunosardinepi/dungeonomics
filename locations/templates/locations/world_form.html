@@ -81,6 +81,9 @@
             browser_spellcheck: true,
             paste_as_text: true,
             fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
+            relative_urls : false,
+            remove_script_host : false,
+            convert_urls : true,
             mentions: {
                 source: taggable,
                 delay: 0,
@@ -88,9 +91,9 @@
                     if (item.type == 'item') {
                         var url = "{% url 'items:item_detail' item_pk=999999999999 %}".replace(999999999999, item.id);
                     } else if (item.type == 'world') {
-                        var url = "http://dungeonomics.com/locations/world/" + item.id + "/";
+                        var url = "{% url 'locations:location_detail' world_pk=999999999999 %}".replace(999999999999, item.id);
                     } else if (item.type == 'location') {
-                        var url = "http://dungeonomics.com/locations/location/" + item.id + "/";
+                        var url = "{% url 'locations:location_detail' location_pk=999999999999 %}".replace(999999999999, item.id);
                     } else {
                         var url = "{% url 'characters:monster_detail' monster_pk=999999999999 %}".replace(999999999999, item.id).replace(/monster/g, item.type);
                     }
