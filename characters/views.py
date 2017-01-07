@@ -107,7 +107,7 @@ def monster_create(request):
     players_raw = models.Player.objects.filter(user=request.user).order_by('player_name')
     players = {}
     for player in players_raw:
-        players[player.pk] = player.character_name
+        players[player.pk] = player.player_name
     form = forms.MonsterForm()
     if request.method == 'POST':
         form = forms.MonsterForm(request.POST)
@@ -136,7 +136,7 @@ def npc_create(request):
     players_raw = models.Player.objects.filter(user=request.user).order_by('player_name')
     players = {}
     for player in players_raw:
-        players[player.pk] = player.character_name
+        players[player.pk] = player.player_name
     form = forms.NPCForm()
     if request.method == 'POST':
         form = forms.NPCForm(request.POST)
@@ -165,7 +165,7 @@ def player_create(request):
     players_raw = models.Player.objects.filter(user=request.user).order_by('player_name')
     players = {}
     for player in players_raw:
-        players[player.pk] = player.character_name
+        players[player.pk] = player.player_name
     form = forms.PlayerForm()
     if request.method == 'POST':
         form = forms.PlayerForm(request.POST)
@@ -194,7 +194,7 @@ def monster_update(request, monster_pk):
     players_raw = models.Player.objects.filter(user=request.user).order_by('player_name')
     players = {}
     for player in players_raw:
-        players[player.pk] = player.character_name
+        players[player.pk] = player.player_name
     monster = get_object_or_404(models.Monster, pk=monster_pk)
     if monster.user == request.user:
         form = forms.MonsterForm(instance=monster)
@@ -225,7 +225,7 @@ def npc_update(request, npc_pk):
     players_raw = models.Player.objects.filter(user=request.user).order_by('player_name')
     players = {}
     for player in players_raw:
-        players[player.pk] = player.character_name
+        players[player.pk] = player.player_name
     npc = get_object_or_404(models.NPC, pk=npc_pk)
     if npc.user == request.user:
         form = forms.NPCForm(instance=npc)
@@ -256,7 +256,7 @@ def player_update(request, player_pk):
     players_raw = models.Player.objects.filter(user=request.user).order_by('player_name')
     players = {}
     for player in players_raw:
-        players[player.pk] = player.character_name
+        players[player.pk] = player.player_name
     player = get_object_or_404(models.Player, pk=player_pk)
     if player.user == request.user:
         form = forms.PlayerForm(instance=player)

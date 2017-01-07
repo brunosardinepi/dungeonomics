@@ -53,7 +53,7 @@ def item_create(request):
     players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
     players = {}
     for player in players_raw:
-        players[player.pk] = player.character_name
+        players[player.pk] = player.player_name
     form = forms.ItemForm()
     if request.method == 'POST':
         form = forms.ItemForm(request.POST)
@@ -82,7 +82,7 @@ def item_update(request, item_pk):
     players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
     players = {}
     for player in players_raw:
-        players[player.pk] = player.character_name
+        players[player.pk] = player.player_name
     item = get_object_or_404(models.Item, pk=item_pk)
     if item.user == request.user:
         form = forms.ItemForm(instance=item)
