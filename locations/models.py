@@ -37,6 +37,5 @@ class Location(LocationTemplate):
 
     def get_absolute_url(self):
         return reverse('locations:location_detail', kwargs={
-            'world_pk': self.world_id,
             'location_pk': self.pk
             })
