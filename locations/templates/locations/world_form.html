@@ -82,6 +82,10 @@
 {% endblock %}
 
 {% block body_content %}
+    <div class="alert alert-info alert-dismissible" role="alert" style="margin-top: 30px;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        Type '@' to get a dropdown list that will automatically link to the monsters, NPCs, items, spells, or Players in your content!
+    </div>
     <div class="col-md-12">
         <div class="panel panel-default panel-campaign">
             <div class="panel-heading">
@@ -131,7 +135,7 @@
                     <a href="{% url 'locations:location_detail' world_pk=world.pk %}" class="btn btn-default">Cancel</a>
                     <input type="submit" class="btn btn-primary pull-right" value="Update World">
                 {% else %}
-                    <a href="{% url 'home' %}" class="btn btn-default">Cancel</a>
+                    <a href="{% url 'locations:location_detail' %}" class="btn btn-default">Cancel</a>
                     <input type="submit" class="btn btn-primary pull-right" value="Create World">
                 {% endif %}
                 </form>

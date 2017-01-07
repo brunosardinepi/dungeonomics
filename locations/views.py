@@ -32,12 +32,6 @@ def location_detail(request, world_pk=None, location_pk=None):
         if this_world.user == request.user:
             if location_pk:
                 this_location = get_object_or_404(models.Location, pk=location_pk)
-            else:
-                if len(locations) > 0:
-                    this_location = locations[0]
-                else:
-                    this_location = None
-            if this_location:
                 return render(request, 'locations/location_detail.html', {'this_world': this_world, 'this_location': this_location, 'worlds': worlds, 'locations': locations})
             else:
                 return render(request, 'locations/location_detail.html', {'this_world': this_world, 'worlds': worlds, 'locations': locations})
@@ -50,11 +44,6 @@ def location_detail(request, world_pk=None, location_pk=None):
             user = request.user.pk
         if len(worlds) > 0:
             this_world = worlds[0]
-            if len(locations) > 0:
-                this_location = locations[0]
-            else:
-                this_location = None
-            return render(request, 'locations/location_detail.html', {'this_world': this_world, 'this_location': this_location, 'worlds': worlds, 'locations': locations})
         return render(request, 'locations/location_detail.html', {'this_world': this_world, 'worlds': worlds, 'locations': locations})
 
 @login_required
