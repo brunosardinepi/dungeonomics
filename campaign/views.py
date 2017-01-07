@@ -113,10 +113,10 @@ def chapter_create(request, campaign_pk):
         items = {}
         for item in items_raw:
             items[item.pk] = item.name
-        players_raw = character_models.Player.objects.filter(user=request.user).order_by('character_name')
+        players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
         players = {}
         for player in players_raw:
-            players[player.pk] = player.character_name
+            players[player.pk] = player.player_name
         worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
         worlds = {}
         for world in worlds_raw:
@@ -125,7 +125,6 @@ def chapter_create(request, campaign_pk):
         locations = {}
         for location in locations_raw:
             locations[location.pk] = location.name
-            # locations[str(location.pk) + "world"] = location.world.pk
 
         form = forms.ChapterForm()
         if request.method == 'POST':
@@ -158,10 +157,10 @@ def section_create(request, campaign_pk, chapter_pk):
         items = {}
         for item in items_raw:
             items[item.pk] = item.name
-        players_raw = character_models.Player.objects.filter(user=request.user).order_by('character_name')
+        players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
         players = {}
         for player in players_raw:
-            players[player.pk] = player.character_name
+            players[player.pk] = player.player_name
         worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
         worlds = {}
         for world in worlds_raw:
@@ -228,10 +227,10 @@ def chapter_update(request, campaign_pk, chapter_pk):
         items = {}
         for item in items_raw:
             items[item.pk] = item.name
-        players_raw = character_models.Player.objects.filter(user=request.user).order_by('character_name')
+        players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
         players = {}
         for player in players_raw:
-            players[player.pk] = player.character_name
+            players[player.pk] = player.player_name
         worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
         worlds = {}
         for world in worlds_raw:
@@ -277,10 +276,10 @@ def section_update(request, campaign_pk, chapter_pk, section_pk):
         items = {}
         for item in items_raw:
             items[item.pk] = item.name
-        players_raw = character_models.Player.objects.filter(user=request.user).order_by('character_name')
+        players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
         players = {}
         for player in players_raw:
-            players[player.pk] = player.character_name
+            players[player.pk] = player.player_name
         worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
         worlds = {}
         for world in worlds_raw:
