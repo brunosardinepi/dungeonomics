@@ -27,11 +27,13 @@ def location_detail(request, world_pk=None, location_pk=None):
     if world_pk:
         this_world = get_object_or_404(models.World, pk=world_pk)
         if this_world.user == request.user:
-            if location_pk:
-                this_location = get_object_or_404(models.Location, pk=location_pk)
-                return render(request, 'locations/location_detail.html', {'this_world': this_world, 'this_location': this_location, 'worlds': worlds, 'locations': locations})
-            else:
-                return render(request, 'locations/location_detail.html', {'this_world': this_world, 'worlds': worlds, 'locations': locations})
+            return render(request, 'locations/location_detail.html', {'this_world': this_world, 'worlds': worlds, 'locations': locations})
+        else:
+            raise Http404
+    elif location_pk:
+        this_location = get_object_or_404(models.Location, pk=location_pk)
+        if this_location.user == request.user:
+            return render(request, 'locations/location_detail.html', {'this_world': this_world, 'this_location': this_location, 'worlds': worlds, 'locations': locations})
         else:
             raise Http404
     else:
