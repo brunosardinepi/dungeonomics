@@ -85,7 +85,6 @@ def world_create(request):
 
 @login_required
 def location_create(request, world_pk):
-    world = get_object_or_404(models.World, pk=world_pk)
     monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
     monsters = {}
     for monster in monsters_raw:
@@ -111,6 +110,7 @@ def location_create(request, world_pk):
     for location in locations_raw:
         locations[location.pk] = location.name
 
+    world = get_object_or_404(models.World, pk=world_pk)
     if world.user == request.user:
         form = forms.LocationForm()
         if request.method == 'POST':
@@ -128,7 +128,6 @@ def location_create(request, world_pk):
 
 @login_required
 def world_update(request, world_pk):
-    world = get_object_or_404(models.World, pk=world_pk)
     monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
     monsters = {}
     for monster in monsters_raw:
@@ -154,6 +153,7 @@ def world_update(request, world_pk):
     for location in locations_raw:
         locations[location.pk] = location.name
 
+    world = get_object_or_404(models.World, pk=world_pk)
     if world.user == request.user:
         form = forms.WorldForm(instance=world)
         location_forms = forms.LocationInlineFormSet(queryset=form.instance.location_set.all())
@@ -177,7 +177,6 @@ def world_update(request, world_pk):
 
 @login_required
 def location_update(request, world_pk, location_pk):
-    location = get_object_or_404(models.Location, pk=location_pk, world_id=world_pk)
     monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
     monsters = {}
     for monster in monsters_raw:
@@ -203,6 +202,7 @@ def location_update(request, world_pk, location_pk):
     for location in locations_raw:
         locations[location.pk] = location.name
     
+    location = get_object_or_404(models.Location, pk=location_pk, world_id=world_pk)
     if location.user == request.user:
         form = forms.LocationForm(instance=location)
         if request.method == 'POST':
