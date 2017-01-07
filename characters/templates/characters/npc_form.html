@@ -15,46 +15,6 @@
     {{ form.media.js }}
     
     <script type="text/javascript">
-        tinymce.init({
-            selector: "#id_traits",
-            height : "100",
-            plugins: [
-            'paste autosave autolink print searchreplace table textcolor wordcount link image'
-            ],
-            menu: {
-            edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace'},
-            insert: {title: 'Insert', items: 'image'},
-            view: {title: 'View', items: 'visualaid'},
-            format: {title: 'Format', items: 'bold italic underline strikethrough superscript subscript | formats | removeformat'},
-            table: {title: 'Table', items: 'inserttable tableprops deletetable | cell row column'}
-            },
-            toolbar: 'print | fontsizeselect bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link | forecolor backcolor',
-            browser_spellcheck: true,
-            paste_as_text: true,
-            fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
-        });
-    </script>
-    <script type="text/javascript">
-        tinymce.init({
-            selector: "#id_actions",
-            height : "100",
-            plugins: [
-            'paste autosave autolink print searchreplace table textcolor wordcount link image'
-            ],
-            menu: {
-            edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace'},
-            insert: {title: 'Insert', items: 'image'},
-            view: {title: 'View', items: 'visualaid'},
-            format: {title: 'Format', items: 'bold italic underline strikethrough superscript subscript | formats | removeformat'},
-            table: {title: 'Table', items: 'inserttable tableprops deletetable | cell row column'}
-            },
-            toolbar: 'print | fontsizeselect bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link | forecolor backcolor',
-            browser_spellcheck: true,
-            paste_as_text: true,
-            fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
-        });
-    </script>
-    <script type="text/javascript">
         var taggable = [];
         var monsters_dict = {{monsters|safe}};
         for (var key in monsters_dict) {
@@ -89,7 +49,7 @@
                 });
         }
         tinymce.init({
-            selector: "#id_notes",
+            selector: "textarea",
             height : "100",
             plugins: [
             'paste autosave autolink print searchreplace table textcolor wordcount link image mention'
@@ -127,9 +87,9 @@
             <div class="panel-heading">
                 <h3 class="panel-title">
                     {% if npc.pk %}
-                        <strong>UPDATE NPC:</strong> {{ npc.name }}
+                        <strong>Update NPC:</strong> {{ npc.name }}
                     {% else %}
-                        <strong>NEW NPC</strong>
+                        <strong>New NPC</strong>
                     {% endif %}
                 </h3>
             </div>
