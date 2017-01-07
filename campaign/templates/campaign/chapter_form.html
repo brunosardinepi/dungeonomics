@@ -57,6 +57,7 @@
                 });
         }
         var locations_dict = {{locations|safe}};
+        console.log(locations_dict);
         for (var key in locations_dict) {
             taggable.push({
                     'name': locations_dict[key],
