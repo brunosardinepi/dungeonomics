@@ -10,6 +10,7 @@ from . import forms
 from . import models
 
 from characters import models as character_models
+from locations import models as location_models
 
 
 @login_required
@@ -52,6 +53,14 @@ def item_create(request):
     players = {}
     for player in players_raw:
         players[player.pk] = player.player_name
+    worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
+    worlds = {}
+    for world in worlds_raw:
+        worlds[world.pk] = world.name
+    locations_raw = location_models.Location.objects.filter(user=request.user).order_by('name')
+    locations = {}
+    for location in locations_raw:
+        locations[location.pk] = location.name
     form = forms.ItemForm()
     if request.method == 'POST':
         form = forms.ItemForm(request.POST)
@@ -61,7 +70,7 @@ def item_create(request):
             item.save()
             messages.add_message(request, messages.SUCCESS, "Item/Spell created!")
             return HttpResponseRedirect(item.get_absolute_url())
-    return render(request, 'items/item_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players})
+    return render(request, 'items/item_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'worlds': worlds, 'locations': locations})
 
 @login_required
 def item_update(request, item_pk):
@@ -81,6 +90,14 @@ def item_update(request, item_pk):
     players = {}
     for player in players_raw:
         players[player.pk] = player.player_name
+    worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
+    worlds = {}
+    for world in worlds_raw:
+        worlds[world.pk] = world.name
+    locations_raw = location_models.Location.objects.filter(user=request.user).order_by('name')
+    locations = {}
+    for location in locations_raw:
+        locations[location.pk] = location.name
     item = get_object_or_404(models.Item, pk=item_pk)
     if item.user == request.user:
         form = forms.ItemForm(instance=item)
@@ -92,7 +109,7 @@ def item_update(request, item_pk):
                 return HttpResponseRedirect(item.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'items/item_form.html', {'form': form, 'item': item, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players})
+    return render(request, 'items/item_form.html', {'form': form, 'item': item, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'worlds': worlds, 'locations': locations})
 
 @login_required
 def item_delete(request, item_pk):
