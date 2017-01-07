@@ -67,6 +67,6 @@ LocationInlineFormSet = forms.inlineformset_factory(
     models.World,
     models.Location,
     extra=0,
-    fields=('name'),
+    fields=('name',),
     formset=LocationFormSet,
 )
