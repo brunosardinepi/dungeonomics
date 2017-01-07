@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block head_extra %}
+    {{ form.media.css }}
     {{ form.media.js }}
     
     <script type="text/javascript">
@@ -54,11 +55,44 @@
         });
     </script>
     <script type="text/javascript">
+        var taggable = [];
+        var monsters_dict = {{monsters|safe}};
+        for (var key in monsters_dict) {
+            taggable.push({
+                    'name': monsters_dict[key],
+                    'id': key,
+                    'type': 'monster'
+                });
+        }
+        var npcs_dict = {{npcs|safe}};
+        for (var key in npcs_dict) {
+            taggable.push({
+                    'name': npcs_dict[key],
+                    'id': key,
+                    'type': 'npc'
+                });
+        }
+        var items_dict = {{items|safe}};
+        for (var key in items_dict) {
+            taggable.push({
+                    'name': items_dict[key],
+                    'id': key,
+                    'type': 'item'
+                });
+        }
+        var players_dict = {{players|safe}};
+        for (var key in players_dict) {
+            taggable.push({
+                    'name': players_dict[key],
+                    'id': key,
+                    'type': 'player'
+                });
+        }
         tinymce.init({
             selector: "#id_notes",
             height : "100",
             plugins: [
-            'paste autosave autolink print searchreplace table textcolor wordcount link image'
+            'paste autosave autolink print searchreplace table textcolor wordcount link image mention'
             ],
             menu: {
             edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace'},
@@ -71,6 +105,18 @@
             browser_spellcheck: true,
             paste_as_text: true,
             fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
+            mentions: {
+                source: taggable,
+                delay: 0,
+                insert: function(item) {
+                    if (item.type == 'item') {
+                        var url = "{% url 'items:item_detail' item_pk=999999999999 %}".replace(999999999999, item.id);
+                    } else {
+                        var url = "http://dungeonomics.com/characters/" + item.type + "/" + item.id + "/";
+                    }
+                    return "<a href=" + url + ">" + item.name + "</a>";
+                }
+            }
         });
     </script>
         <script type="text/javascript">
@@ -94,11 +140,44 @@
         });
     </script>
         <script type="text/javascript">
+        var taggable = [];
+        var monsters_dict = {{monsters|safe}};
+        for (var key in monsters_dict) {
+            taggable.push({
+                    'name': monsters_dict[key],
+                    'id': key,
+                    'type': 'monster'
+                });
+        }
+        var npcs_dict = {{npcs|safe}};
+        for (var key in npcs_dict) {
+            taggable.push({
+                    'name': npcs_dict[key],
+                    'id': key,
+                    'type': 'npc'
+                });
+        }
+        var items_dict = {{items|safe}};
+        for (var key in items_dict) {
+            taggable.push({
+                    'name': items_dict[key],
+                    'id': key,
+                    'type': 'item'
+                });
+        }
+        var players_dict = {{players|safe}};
+        for (var key in players_dict) {
+            taggable.push({
+                    'name': players_dict[key],
+                    'id': key,
+                    'type': 'player'
+                });
+        }
         tinymce.init({
             selector: "#id_spells",
             height : "100",
             plugins: [
-            'paste autosave autolink print searchreplace table textcolor wordcount link image'
+            'paste autosave autolink print searchreplace table textcolor wordcount link image mention'
             ],
             menu: {
             edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace'},
@@ -111,14 +190,59 @@
             browser_spellcheck: true,
             paste_as_text: true,
             fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
+            mentions: {
+                source: taggable,
+                delay: 0,
+                insert: function(item) {
+                    if (item.type == 'item') {
+                        var url = "{% url 'items:item_detail' item_pk=999999999999 %}".replace(999999999999, item.id);
+                    } else {
+                        var url = "http://dungeonomics.com/characters/" + item.type + "/" + item.id + "/";
+                    }
+                    return "<a href=" + url + ">" + item.name + "</a>";
+                }
+            }
         });
     </script>
         <script type="text/javascript">
+        var taggable = [];
+        var monsters_dict = {{monsters|safe}};
+        for (var key in monsters_dict) {
+            taggable.push({
+                    'name': monsters_dict[key],
+                    'id': key,
+                    'type': 'monster'
+                });
+        }
+        var npcs_dict = {{npcs|safe}};
+        for (var key in npcs_dict) {
+            taggable.push({
+                    'name': npcs_dict[key],
+                    'id': key,
+                    'type': 'npc'
+                });
+        }
+        var items_dict = {{items|safe}};
+        for (var key in items_dict) {
+            taggable.push({
+                    'name': items_dict[key],
+                    'id': key,
+                    'type': 'item'
+                });
+        }
+        var players_dict = {{players|safe}};
+        for (var key in players_dict) {
+            taggable.push({
+                    'name': players_dict[key],
+                    'id': key,
+                    'type': 'player'
+                });
+        }
         tinymce.init({
             selector: "#id_equipment",
             height : "100",
             plugins: [
-            'paste autosave autolink print searchreplace table textcolor wordcount link image'
+            'paste autosave autolink print searchreplace table textcolor wordcount link image mention'
             ],
             menu: {
             edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace'},
@@ -131,6 +255,18 @@
             browser_spellcheck: true,
             paste_as_text: true,
             fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
+            mentions: {
+                source: taggable,
+                delay: 0,
+                insert: function(item) {
+                    if (item.type == 'item') {
+                        var url = "{% url 'items:item_detail' item_pk=999999999999 %}".replace(999999999999, item.id);
+                    } else {
+                        var url = "http://dungeonomics.com/characters/" + item.type + "/" + item.id + "/";
+                    }
+                    return "<a href=" + url + ">" + item.name + "</a>";
+                }
+            }
         });
     </script>
         <script type="text/javascript">

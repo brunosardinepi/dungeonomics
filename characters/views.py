@@ -13,6 +13,8 @@ from itertools import chain
 from . import forms
 from . import models
 
+from items import models as item_models
+
 import json
 
 
@@ -90,6 +92,22 @@ def player_detail(request, player_pk=None):
 
 @login_required
 def monster_create(request):
+    monsters_raw = models.Monster.objects.filter(user=request.user).order_by('name')
+    monsters = {}
+    for monster in monsters_raw:
+        monsters[monster.pk] = monster.name
+    npcs_raw = models.NPC.objects.filter(user=request.user).order_by('name')
+    npcs = {}
+    for npc in npcs_raw:
+        npcs[npc.pk] = npc.name
+    items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
+    items = {}
+    for item in items_raw:
+        items[item.pk] = item.name
+    players_raw = models.Player.objects.filter(user=request.user).order_by('player_name')
+    players = {}
+    for player in players_raw:
+        players[player.pk] = player.character_name
     form = forms.MonsterForm()
     if request.method == 'POST':
         form = forms.MonsterForm(request.POST)
@@ -99,10 +117,26 @@ def monster_create(request):
             monster.save()
             messages.add_message(request, messages.SUCCESS, "Monster created!")
             return HttpResponseRedirect(monster.get_absolute_url())
-    return render(request, 'characters/monster_form.html', {'form': form})
+    return render(request, 'characters/monster_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players})
 
 @login_required
 def npc_create(request):
+    monsters_raw = models.Monster.objects.filter(user=request.user).order_by('name')
+    monsters = {}
+    for monster in monsters_raw:
+        monsters[monster.pk] = monster.name
+    npcs_raw = models.NPC.objects.filter(user=request.user).order_by('name')
+    npcs = {}
+    for npc in npcs_raw:
+        npcs[npc.pk] = npc.name
+    items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
+    items = {}
+    for item in items_raw:
+        items[item.pk] = item.name
+    players_raw = models.Player.objects.filter(user=request.user).order_by('player_name')
+    players = {}
+    for player in players_raw:
+        players[player.pk] = player.character_name
     form = forms.NPCForm()
     if request.method == 'POST':
         form = forms.NPCForm(request.POST)
@@ -112,10 +146,26 @@ def npc_create(request):
             npc.save()
             messages.add_message(request, messages.SUCCESS, "NPC created!")
             return HttpResponseRedirect(npc.get_absolute_url())
-    return render(request, 'characters/npc_form.html', {'form': form})
+    return render(request, 'characters/npc_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players})
 
 @login_required
 def player_create(request):
+    monsters_raw = models.Monster.objects.filter(user=request.user).order_by('name')
+    monsters = {}
+    for monster in monsters_raw:
+        monsters[monster.pk] = monster.name
+    npcs_raw = models.NPC.objects.filter(user=request.user).order_by('name')
+    npcs = {}
+    for npc in npcs_raw:
+        npcs[npc.pk] = npc.name
+    items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
+    items = {}
+    for item in items_raw:
+        items[item.pk] = item.name
+    players_raw = models.Player.objects.filter(user=request.user).order_by('player_name')
+    players = {}
+    for player in players_raw:
+        players[player.pk] = player.character_name
     form = forms.PlayerForm()
     if request.method == 'POST':
         form = forms.PlayerForm(request.POST)
@@ -125,10 +175,26 @@ def player_create(request):
             player.save()
             messages.add_message(request, messages.SUCCESS, "Player created!")
             return HttpResponseRedirect(player.get_absolute_url())
-    return render(request, 'characters/player_form.html', {'form': form})
+    return render(request, 'characters/player_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players})
 
 @login_required
 def monster_update(request, monster_pk):
+    monsters_raw = models.Monster.objects.filter(user=request.user).order_by('name')
+    monsters = {}
+    for monster in monsters_raw:
+        monsters[monster.pk] = monster.name
+    npcs_raw = models.NPC.objects.filter(user=request.user).order_by('name')
+    npcs = {}
+    for npc in npcs_raw:
+        npcs[npc.pk] = npc.name
+    items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
+    items = {}
+    for item in items_raw:
+        items[item.pk] = item.name
+    players_raw = models.Player.objects.filter(user=request.user).order_by('player_name')
+    players = {}
+    for player in players_raw:
+        players[player.pk] = player.character_name
     monster = get_object_or_404(models.Monster, pk=monster_pk)
     if monster.user == request.user:
         form = forms.MonsterForm(instance=monster)
@@ -140,10 +206,26 @@ def monster_update(request, monster_pk):
                 return HttpResponseRedirect(monster.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'characters/monster_form.html', {'form': form, 'monster': monster})
+    return render(request, 'characters/monster_form.html', {'form': form, 'monster': monster, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players})
 
 @login_required
 def npc_update(request, npc_pk):
+    monsters_raw = models.Monster.objects.filter(user=request.user).order_by('name')
+    monsters = {}
+    for monster in monsters_raw:
+        monsters[monster.pk] = monster.name
+    npcs_raw = models.NPC.objects.filter(user=request.user).order_by('name')
+    npcs = {}
+    for npc in npcs_raw:
+        npcs[npc.pk] = npc.name
+    items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
+    items = {}
+    for item in items_raw:
+        items[item.pk] = item.name
+    players_raw = models.Player.objects.filter(user=request.user).order_by('player_name')
+    players = {}
+    for player in players_raw:
+        players[player.pk] = player.character_name
     npc = get_object_or_404(models.NPC, pk=npc_pk)
     if npc.user == request.user:
         form = forms.NPCForm(instance=npc)
@@ -155,10 +237,26 @@ def npc_update(request, npc_pk):
                 return HttpResponseRedirect(npc.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'characters/npc_form.html', {'form': form, 'npc': npc})
+    return render(request, 'characters/npc_form.html', {'form': form, 'npc': npc, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players})
 
 @login_required
 def player_update(request, player_pk):
+    monsters_raw = models.Monster.objects.filter(user=request.user).order_by('name')
+    monsters = {}
+    for monster in monsters_raw:
+        monsters[monster.pk] = monster.name
+    npcs_raw = models.NPC.objects.filter(user=request.user).order_by('name')
+    npcs = {}
+    for npc in npcs_raw:
+        npcs[npc.pk] = npc.name
+    items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
+    items = {}
+    for item in items_raw:
+        items[item.pk] = item.name
+    players_raw = models.Player.objects.filter(user=request.user).order_by('player_name')
+    players = {}
+    for player in players_raw:
+        players[player.pk] = player.character_name
     player = get_object_or_404(models.Player, pk=player_pk)
     if player.user == request.user:
         form = forms.PlayerForm(instance=player)
@@ -170,7 +268,7 @@ def player_update(request, player_pk):
                 return HttpResponseRedirect(player.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'characters/player_form.html', {'form': form, 'player': player})
+    return render(request, 'characters/player_form.html', {'form': form, 'player': player, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players})
 
 @login_required
 def monster_delete(request, monster_pk):
