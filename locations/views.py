@@ -159,7 +159,7 @@ def world_update(request, world_pk):
                 return HttpResponseRedirect(world.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'locations/world_form.html', {'form': form, 'formset': chapter_forms, 'world': world, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players})
+    return render(request, 'locations/world_form.html', {'form': form, 'formset': location_forms, 'world': world, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players})
 
 @login_required
 def location_update(request, world_pk, location_pk):
