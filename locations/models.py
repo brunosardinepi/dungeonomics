@@ -20,7 +20,7 @@ class World(LocationTemplate):
     content = models.TextField(blank=True)
 
     class Meta:
-        ordering = ['title',]
+        ordering = ['name',]
 
     def get_absolute_url(self):
         return reverse('locations:location_detail', kwargs={
@@ -33,7 +33,7 @@ class Location(LocationTemplate):
     world = models.ForeignKey(World, on_delete=models.CASCADE)
 
     class Meta:
-        ordering = ['title',]
+        ordering = ['name',]
 
     def get_absolute_url(self):
         return reverse('locations:location_detail', kwargs={
