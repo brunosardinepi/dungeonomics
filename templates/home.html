@@ -11,86 +11,12 @@
 
 {% block body_content %}
     {% if user.is_authenticated %}
-        <div class="row campaign-row">
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <a href="{% url 'campaign:campaign_create' %}" class="home-panel">
-                        <div class="panel-body">
-                            <p class="text-center"><i class="fa fa-book fa-5x" aria-hidden="true"></i></p>
-                            <h2 class="text-center">New Campaign</h2>
-                        </div>
-                    </a>
-                </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">New home page and other updates <small>January 7, 2017</small></h3>
             </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <a href="{% url 'characters:monster_detail' %}" class="home-panel">
-                        <div class="panel-body">
-                            <p class="text-center"><i class="fa fa-paw fa-5x" aria-hidden="true"></i></p>
-                            <h2 class="text-center">Monsters</h2>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <a href="{% url 'characters:npc_detail' %}" class="home-panel">
-                        <div class="panel-body">
-                            <p class="text-center"><i class="fa fa-user-circle-o fa-5x" aria-hidden="true"></i></p>
-                            <h2 class="text-center">NPCs</h2>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <a href="{% url 'characters:player_detail' %}" class="home-panel">
-                        <div class="panel-body">
-                            <p class="text-center"><i class="fa fa-users fa-5x" aria-hidden="true"></i></p>
-                            <h2 class="text-center">Players</h2>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <a href="{% url 'locations:location_detail' %}" class="home-panel">
-                        <div class="panel-body">
-                            <p class="text-center"><i class="fa fa-globe fa-5x" aria-hidden="true"></i></p>
-                            <h2 class="text-center">Locations</h2>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <a href="{% url 'items:item_detail' %}" class="home-panel">
-                        <div class="panel-body">
-                            <p class="text-center"><i class="fa fa-diamond fa-5x" aria-hidden="true"></i></p>
-                            <h2 class="text-center">Items/Spells</h2>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <a href="{% url 'profile' %}" class="home-panel">
-                        <div class="panel-body">
-                            <p class="text-center"><i class="fa fa-key fa-5x" aria-hidden="true"></i></p>
-                            <h2 class="text-center">Account</h2>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="panel panel-default">
-                    <a href="{% url 'wiki:home' %}" class="home-panel">
-                        <div class="panel-body">
-                            <p class="text-center"><i class="fa fa-info-circle fa-5x" aria-hidden="true"></i></p>
-                            <h2 class="text-center">Wiki</h2>
-                        </div>
-                    </a>
-                </div>
+            <div class="panel-body">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis feugiat laoreet ex ac commodo. Nullam in orci vel neque imperdiet iaculis. Nulla tellus ligula, tristique at justo fermentum, bibendum suscipit felis. Ut dapibus purus enim, sit amet ullamcorper massa placerat ut. Fusce pulvinar, ex vel feugiat ultricies, nisl turpis mollis dolor, euismod ornare augue ante sit amet urna. Etiam justo orci, vulputate at diam ullamcorper, efficitur tincidunt justo. Quisque vel interdum risus. Suspendisse mollis leo et viverra eleifend.</p>
             </div>
         </div>
     {% else %}
