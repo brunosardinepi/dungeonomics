@@ -176,7 +176,7 @@ def world_update(request, world_pk):
     return render(request, 'locations/world_form.html', {'form': form, 'formset': location_forms, 'world': world, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'worlds': worlds, 'locations': locations})
 
 @login_required
-def location_update(request, world_pk, location_pk):
+def location_update(request, location_pk):
     monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
     monsters = {}
     for monster in monsters_raw:
@@ -202,7 +202,7 @@ def location_update(request, world_pk, location_pk):
     for location in locations_raw:
         locations[location.pk] = location.name
     
-    location = get_object_or_404(models.Location, pk=location_pk, world_id=world_pk)
+    location = get_object_or_404(models.Location, pk=location_pk)
     if location.user == request.user:
         form = forms.LocationForm(instance=location)
         if request.method == 'POST':
@@ -232,10 +232,10 @@ def world_delete(request, world_pk):
 
 
 @login_required
-def location_delete(request, world_pk, location_pk):
-    world = get_object_or_404(models.World, pk=world_pk)
+def location_delete(request, location_pk):
+    location = get_object_or_404(models.Location, pk=location_pk)
+    world = location.world
     if world.user == request.user:
-        location = get_object_or_404(models.Location, pk=location_pk)
         form = forms.DeleteLocationForm(instance=location)
         if request.method == 'POST':
             form = forms.DeleteLocationForm(request.POST, instance=location)
