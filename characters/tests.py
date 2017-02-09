@@ -3,34 +3,34 @@ from django.test import TestCase
 from . import forms
 
 
-# class MonsterTestCase(TestCase):
-#     form_data = {
-#         'name': 'Sir Bearington',
-#         'level': 20,
-#         'alignment': 'LG',
-#         'size': 'Large',
-#         'languages': 'Common, Bear',
-#         'strength': 20,
-#         'dexterity': 20,
-#         'constitution': 20,
-#         'intelligence': 20,
-#         'wisdom': 20,
-#         'charisma': 20,
-#         'armor_class': 18,
-#         'hit_points': 100,
-#         'speed': '30 ft.',
-#         'saving_throws': 'None',
-#         'skills': 'Cunning',
-#         'creature_type': 'Bear',
-#         'damage_vulnerabilities': 'Fire',
-#         'damage_immunities': 'Slashing',
-#         'condition_immunities': 'Blind',
-#         'senses': 'Darkvision',
-#         'challenge_rating': 10,
-#         'traits': 'Looks like a bear, fights like a ninja',
-#         'actions': 'Attacks you',
-#         }
-
+class MonsterTestCase(TestCase):
+    form_data = {
+        'name': 'Sir Bearington',
+        'level': 20,
+        'alignment': 'LG',
+        'size': 'Large',
+        'languages': 'Common, Bear',
+        'strength': 20,
+        'dexterity': 20,
+        'constitution': 20,
+        'intelligence': 20,
+        'wisdom': 20,
+        'charisma': 20,
+        'armor_class': 18,
+        'hit_points': 100,
+        'speed': '30 ft.',
+        'saving_throws': 'None',
+        'skills': 'Cunning',
+        'creature_type': 'Bear',
+        'damage_vulnerabilities': 'Fire',
+        'damage_immunities': 'Slashing',
+        'damage_resistances': 'Non-Magical Piercing',
+        'condition_immunities': 'Blind',
+        'senses': 'Darkvision',
+        'challenge_rating': 10,
+        'traits': 'Looks like a bear, fights like a ninja',
+        'actions': 'Attacks you',
+        }
 #     def test_monster_form_success(self):
 #         """Successfully create a monster"""
 #         form = forms.MonsterForm(data=self.form_data)
@@ -161,14 +161,19 @@ from . import forms
 #         form_data_test['damage_vulnerabilities'] = ''
 #         form = forms.MonsterForm(data=form_data_test)
 #         self.assertFalse(form.is_valid())
-        
-#     def test_monster_form_bad_damage_immunities(self):
-#         """Fail to create a monster because of no damage_immunities"""
-#         form_data_test = dict(self.form_data)
-#         form_data_test['damage_immunities'] = ''
-#         form = forms.MonsterForm(data=form_data_test)
-#         self.assertFalse(form.is_valid())
-        
+    def test_monster_form_bad_damage_immunities(self):
+        """Fail to create a monster because of no damage_immunities"""
+        form_data_test = dict(self.form_data)
+        form_data_test['damage_immunities'] = ''
+        form = forms.MonsterForm(data=form_data_test)
+        self.assertFalse(form.is_valid())
+
+    def test_monster_form_bad_damage_resistances(self):
+        """Fail to create a monster because of no damage_resistances"""
+        form_data_test = dict(self.form_data)
+        form_data_test['damage_resistances'] = ''
+        form = forms.MonsterForm(data=form_data_test)
+        self.assertFalse(form.is_valid())        
 #     def test_monster_form_bad_condition_immunities(self):
 #         """Fail to create a monster because of no condition_immunities"""
 #         form_data_test = dict(self.form_data)
@@ -381,14 +386,19 @@ from . import forms
 #         form_data_test['damage_vulnerabilities'] = ''
 #         form = forms.NPCForm(data=form_data_test)
 #         self.assertFalse(form.is_valid())
-        
-#     def test_npc_form_bad_damage_immunities(self):
-#         """Fail to create an npc because of no damage_immunities"""
-#         form_data_test = dict(self.form_data)
-#         form_data_test['damage_immunities'] = ''
-#         form = forms.NPCForm(data=form_data_test)
-#         self.assertFalse(form.is_valid())
-        
+    def test_npc_form_bad_damage_immunities(self):
+        """Fail to create an npc because of no damage_immunities"""
+        form_data_test = dict(self.form_data)
+        form_data_test['damage_immunities'] = ''
+        form = forms.NPCForm(data=form_data_test)
+        self.assertFalse(form.is_valid())
+
+    def test_npc_form_bad_damage_resistances(self):
+        """Fail to create an npc because of no damage_resistances"""
+        form_data_test = dict(self.form_data)
+        form_data_test['damage_resistances'] = ''
+        form = forms.NPCForm(data=form_data_test)
+        self.assertFalse(form.is_valid())
 #     def test_npc_form_bad_condition_immunities(self):
 #         """Fail to create an npc because of no condition_immunities"""
 #         form_data_test = dict(self.form_data)

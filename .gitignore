@@ -2,5 +2,9 @@ __pycache__/
 dungeonomicsenv/
 db.sqlite3
 .DS_Store
-.vscode/
 settings.py
+*.pyc
+
+## IDEs ##
+.idea/
+.vscode/
