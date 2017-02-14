@@ -104,9 +104,9 @@ def location_create(request, world_pk, location_pk=None):
 
     world = get_object_or_404(models.World, pk=world_pk)
     if world.user == request.user:
-        form = forms.LocationForm()
+        form = forms.LocationForm(world.pk)
         if request.method == 'POST':
-            form = forms.LocationForm(request.POST)
+            form = forms.LocationForm(world.pk, request.POST)
             if form.is_valid():
                 location = form.save(commit=False)
                 if location_pk:
@@ -200,9 +200,9 @@ def location_update(request, location_pk):
 
     location = get_object_or_404(models.Location, pk=location_pk)
     if location.user == request.user:
-        form = forms.LocationForm(instance=location)
+        form = forms.LocationForm(location.world.pk, location_pk, instance=location)
         if request.method == 'POST':
-            form = forms.LocationForm(request.POST, instance=location)
+            form = forms.LocationForm(location.world.pk, location_pk, request.POST, instance=location)
             if form.is_valid():
                 form.save()
                 messages.add_message(request, messages.SUCCESS, "Updated location: {}".format(form.cleaned_data['name']))

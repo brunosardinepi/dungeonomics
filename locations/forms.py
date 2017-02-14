@@ -37,6 +37,10 @@ class LocationForm(TinyMCEForm):
             'content',
         ]
 
+    def __init__(self, world_pk, location_pk, *args, **kwargs):
+        super (LocationForm, self).__init__(*args, **kwargs)
+        self.fields['parent_location'].queryset = models.Location.objects.filter(world=world_pk).exclude(pk=location_pk).exclude(parent_location=location_pk)
+
 
 class DeleteWorldForm(forms.ModelForm):
     class Meta:
