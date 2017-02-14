@@ -104,9 +104,9 @@ def location_create(request, world_pk, location_pk=None):
 
     world = get_object_or_404(models.World, pk=world_pk)
     if world.user == request.user:
-        form = forms.LocationForm(location_pk, world.pk)
+        form = forms.LocationForm(request.user.pk, location_pk, world.pk)
         if request.method == 'POST':
-            form = forms.LocationForm(location_pk, world.pk, request.POST)
+            form = forms.LocationForm(request.user.pk, location_pk, world.pk, request.POST)
             if form.is_valid():
                 location = form.save(commit=False)
                 if location_pk:
@@ -200,9 +200,9 @@ def location_update(request, location_pk):
 
     location = get_object_or_404(models.Location, pk=location_pk)
     if location.user == request.user:
-        form = forms.LocationForm(location.world.pk, location_pk, instance=location)
+        form = forms.LocationForm(request.user.pk, location.world.pk, location_pk, instance=location)
         if request.method == 'POST':
-            form = forms.LocationForm(location.world.pk, location_pk, request.POST, instance=location)
+            form = forms.LocationForm(request.user.pk, location.world.pk, location_pk, request.POST, instance=location)
             if form.is_valid():
                 form.save()
                 messages.add_message(request, messages.SUCCESS, "Updated location: {}".format(form.cleaned_data['name']))
@@ -229,11 +229,14 @@ def world_delete(request, world_pk):
 @login_required
 def location_delete(request, location_pk):
     location = get_object_or_404(models.Location, pk=location_pk)
-    form = forms.DeleteLocationForm(instance=location)
-    if request.method == 'POST':
-        form = forms.DeleteLocationForm(request.POST, instance=location)
-        if location.user.pk == request.user.pk:
-            location.delete()
-            messages.add_message(request, messages.SUCCESS, "Location deleted!")
-            return HttpResponseRedirect(reverse('locations:location_detail'))
+    if location.user == request.user:
+        form = forms.DeleteLocationForm(instance=location)
+        if request.method == 'POST':
+            form = forms.DeleteLocationForm(request.POST, instance=location)
+            if location.user.pk == request.user.pk:
+                location.delete()
+                messages.add_message(request, messages.SUCCESS, "Location deleted!")
+                return HttpResponseRedirect(reverse('locations:location_detail'))
+    else:
+        raise Http404
     return render(request, 'locations/location_delete.html', {'form': form, 'location': location})
