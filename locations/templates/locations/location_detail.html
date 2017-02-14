@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
+{% load locations_extras %}
 
-{% block title %}{{ this_world.name }} | {{ block.super }}{% endblock %}
+{% block title %}Locations | {{ block.super }}{% endblock %}
 
 {% block breadcrumbs %}
     <div class="jumbotron breadcrumbs">
@@ -52,17 +53,14 @@
                                         {{ world.name }}
                                     </a>
                                 </li>
-                                <ul style="padding-left: 30px;">
-                                    {% for location in locations %}
-                                        {% if location.world.pk == world.pk %}
-                                            <li class="li-content">
-                                                <a href="{% url 'locations:location_detail' location_pk=location.pk %}">
-                                                    {{ location.name }}
-                                                </a>
-                                            </li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
+                                {% get_world_locations world.pk as world_locations %}
+                                {% if world_locations %}
+                                    <ul style="padding-left: 30px;">
+                                        {% for world_location in world_locations %}
+                                            {% include "locations/tree_view_template.html" %}
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
                             {% endfor %}
                         {% else %}
                             <li>You haven't created any worlds yet!</li>

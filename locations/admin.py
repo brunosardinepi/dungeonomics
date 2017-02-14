@@ -8,9 +8,9 @@ class WorldAdmin(admin.ModelAdmin):
     ordering = ('name',)
 
 class LocationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'world',)
-    ordering = ('name', 'world',)
-    list_filter = ('name', 'world',)
+    list_display = ('name', 'world', 'parent_location',)
+    ordering = ('name', 'world', 'parent_location',)
+    list_filter = ('name', 'world', 'parent_location',)
 
 admin.site.register(models.World, WorldAdmin)
 admin.site.register(models.Location, LocationAdmin)
