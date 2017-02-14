@@ -33,6 +33,7 @@ class LocationForm(TinyMCEForm):
         model = models.Location
         fields = [
             'name',
+            'world',
             'parent_location',
             'content',
         ]
