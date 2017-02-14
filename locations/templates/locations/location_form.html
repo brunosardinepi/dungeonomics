@@ -48,6 +48,14 @@
                     'type': 'player'
                 });
         }
+        var worlds_dict = {{worlds|safe}};
+        for (var key in worlds_dict) {
+            taggable.push({
+                    'name': worlds_dict[key],
+                    'id': key,
+                    'type': 'world'
+                });
+        }
         var locations_dict = {{locations|safe}};
         for (var key in locations_dict) {
             taggable.push({
@@ -82,6 +90,8 @@
                 insert: function(item) {
                     if (item.type == 'item') {
                         var url = "{% url 'items:item_detail' item_pk=999999999999 %}".replace(999999999999, item.id);
+                    } else if (item.type == 'world') {
+                        var url = "{% url 'locations:location_detail' world_pk=999999999999 %}".replace(999999999999, item.id);
                     } else if (item.type == 'location') {
                         var url = "{% url 'locations:location_detail' location_pk=999999999999 %}".replace(999999999999, item.id);
                     } else {
@@ -105,7 +115,7 @@
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         {% if location.pk %}
-                            <strong>Update:</strong> {{ location }}
+                            <strong>Update:</strong> {{ world }} / {{ location }}
                         {% else %}
                             <strong>New location</strong>
                         {% endif %}
@@ -121,7 +131,7 @@
                         <a href="{% url 'locations:location_detail' location_pk=location.pk %}" class="btn btn-default">Cancel</a>
                         <input type="submit" class="btn btn-primary pull-right" value="Update Location">
                     {% else %}
-                        <a href="{% url 'locations:location_detail' %}" class="btn btn-default">Cancel</a>
+                        <a href="{% url 'locations:location_detail' world_pk=world.pk %}" class="btn btn-default">Cancel</a>
                         <input type="submit" class="btn btn-primary pull-right" value="Create Location">
                     {% endif %}
                     </form>
