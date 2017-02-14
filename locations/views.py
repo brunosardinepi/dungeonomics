@@ -104,9 +104,9 @@ def location_create(request, world_pk, location_pk=None):
 
     world = get_object_or_404(models.World, pk=world_pk)
     if world.user == request.user:
-        form = forms.LocationForm(world.pk)
+        form = forms.LocationForm(location_pk, world.pk)
         if request.method == 'POST':
-            form = forms.LocationForm(world.pk, request.POST)
+            form = forms.LocationForm(location_pk, world.pk, request.POST)
             if form.is_valid():
                 location = form.save(commit=False)
                 if location_pk:
