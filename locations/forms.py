@@ -19,28 +19,14 @@ class TinyMCEForm(forms.ModelForm):
             )
 
 
-class WorldForm(TinyMCEForm):
-    class Meta:
-        model = models.World
-        fields = [
-            'name',
-            'content',
-        ]
-
-
 class LocationForm(TinyMCEForm):
     class Meta:
         model = models.Location
         fields = [
             'name',
+            'parent',
             'content',
         ]
-
-
-class DeleteWorldForm(forms.ModelForm):
-    class Meta:
-        model = models.World
-        fields = ['name']
 
 
 class DeleteLocationForm(forms.ModelForm):
@@ -49,24 +35,16 @@ class DeleteLocationForm(forms.ModelForm):
         fields = ['name']
 
 
-# class ImportCampaignForm(forms.ModelForm):
-#     class Meta:
-#         model = models.Campaign
-#         fields = [
-#             'title',
-#         ]
-
-
 LocationFormSet = forms.modelformset_factory(
     models.Location,
     form=LocationForm,
     extra=0,
 )
 
-LocationInlineFormSet = forms.inlineformset_factory(
-    models.World,
-    models.Location,
-    extra=0,
-    fields=('name',),
-    formset=LocationFormSet,
-)
+#LocationInlineFormSet = forms.inlineformset_factory(
+#    models.World,
+#    models.Location,
+#    extra=0,
+#    fields=('name',),
+#    formset=LocationFormSet,
+#)

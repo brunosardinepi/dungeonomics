@@ -1,0 +1,17 @@
+{% load locations_extras %}
+
+<li class="li-content">
+    <a href="{% url 'locations:location_detail' location_pk=location.pk %}">
+        {{ location.name }}
+    </a>
+</li>
+{% get_child_locations location.pk as child_locations %}
+{% if child_locations %}
+    <ul>
+        {% for child_location in child_locations %}
+            {% with location=child_location template_name="locations/tree_view_template.html" %}
+                {% include template_name %}
+            {% endwith %}
+        {% endfor %}
+    </ul>
+{% endif %}
