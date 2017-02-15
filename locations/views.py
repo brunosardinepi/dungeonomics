@@ -19,31 +19,23 @@ import json
 @login_required
 def location_detail(request, world_pk=None, location_pk=None):
     worlds = sorted(models.World.objects.filter(user=request.user), key=lambda world: world.name.lower())
-    locations = []
-    for world in worlds:
-        locations.append(sorted(models.Location.objects.filter(world=world), key=lambda location: location.name.lower()))
-    locations = [item for sublist in locations for item in sublist]
-
     if world_pk:
         this_world = get_object_or_404(models.World, pk=world_pk)
         if this_world.user == request.user:
-            return render(request, 'locations/location_detail.html', {'this_world': this_world, 'worlds': worlds, 'locations': locations})
+            return render(request, 'locations/location_detail.html', {'this_world': this_world, 'worlds': worlds})
         else:
             raise Http404
     elif location_pk:
         this_location = get_object_or_404(models.Location, pk=location_pk)
         if this_location.user == request.user:
-            return render(request, 'locations/location_detail.html', {'this_location': this_location, 'worlds': worlds, 'locations': locations})
+            return render(request, 'locations/location_detail.html', {'this_location': this_location, 'worlds': worlds})
         else:
             raise Http404
     else:
         this_world = None
-        user = None
-        if request.user.is_authenticated():
-            user = request.user.pk
         if len(worlds) > 0:
             this_world = worlds[0]
-        return render(request, 'locations/location_detail.html', {'this_world': this_world, 'worlds': worlds, 'locations': locations})
+        return render(request, 'locations/location_detail.html', {'this_world': this_world, 'worlds': worlds})
 
 @login_required
 def world_create(request):
@@ -84,7 +76,7 @@ def world_create(request):
     return render(request, 'locations/world_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'worlds': worlds, 'locations': locations})
 
 @login_required
-def location_create(request, world_pk):
+def location_create(request, world_pk, location_pk=None):
     monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
     monsters = {}
     for monster in monsters_raw:
@@ -112,11 +104,15 @@ def location_create(request, world_pk):
 
     world = get_object_or_404(models.World, pk=world_pk)
     if world.user == request.user:
-        form = forms.LocationForm()
+        form = forms.LocationForm(request.user.pk, world_pk, location_pk, initial={'world': world})
         if request.method == 'POST':
-            form = forms.LocationForm(request.POST)
+            form = forms.LocationForm(request.user.pk, world_pk, location_pk, request.POST, initial={'world': world})
             if form.is_valid():
                 location = form.save(commit=False)
+                if location_pk:
+                    parent_location = get_object_or_404(models.Location, pk=location_pk)
+                    if parent_location.user == request.user:
+                        location.parent = parent_location
                 location.user = request.user
                 location.world = world
                 location.save()
@@ -124,7 +120,7 @@ def location_create(request, world_pk):
                 return HttpResponseRedirect(location.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'locations/location_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'world': world, 'worlds': worlds, 'locations': locations})
+    return render(request, 'locations/location_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'world': world, 'worlds': worlds,'locations': locations})
 
 @login_required
 def world_update(request, world_pk):
@@ -201,19 +197,19 @@ def location_update(request, location_pk):
     locations = {}
     for location in locations_raw:
         locations[location.pk] = location.name
-    
+
     location = get_object_or_404(models.Location, pk=location_pk)
     if location.user == request.user:
-        form = forms.LocationForm(instance=location)
+        form = forms.LocationForm(request.user.pk, location.world.pk, location_pk, instance=location)
         if request.method == 'POST':
-            form = forms.LocationForm(request.POST, instance=location)
+            form = forms.LocationForm(request.user.pk, location.world.pk, location_pk, request.POST, instance=location)
             if form.is_valid():
                 form.save()
                 messages.add_message(request, messages.SUCCESS, "Updated location: {}".format(form.cleaned_data['name']))
                 return HttpResponseRedirect(location.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'locations/location_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'world': location.world, 'location': location, 'worlds': worlds, 'locations': locations})
+    return render(request, 'locations/location_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'world': location.world, 'location': location, 'worlds': worlds,'locations': locations})
 
 @login_required
 def world_delete(request, world_pk):
@@ -230,19 +226,17 @@ def world_delete(request, world_pk):
         raise Http404
     return render(request, 'locations/world_delete.html', {'form': form, 'world': world})
 
-
 @login_required
 def location_delete(request, location_pk):
     location = get_object_or_404(models.Location, pk=location_pk)
-    world = location.world
-    if world.user == request.user:
+    if location.user == request.user:
         form = forms.DeleteLocationForm(instance=location)
         if request.method == 'POST':
             form = forms.DeleteLocationForm(request.POST, instance=location)
             if location.user.pk == request.user.pk:
                 location.delete()
                 messages.add_message(request, messages.SUCCESS, "Location deleted!")
-                return HttpResponseRedirect(reverse('locations:location_detail', kwargs={'world_pk': world.pk}))
+                return HttpResponseRedirect(reverse('locations:location_detail'))
     else:
         raise Http404
     return render(request, 'locations/location_delete.html', {'form': form, 'location': location})

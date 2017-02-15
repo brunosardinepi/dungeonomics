@@ -8,6 +8,7 @@ class LocationTemplate(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=255)
+    content = models.TextField(blank=True)
 
     class Meta:
         abstract = True
@@ -17,8 +18,6 @@ class LocationTemplate(models.Model):
 
 
 class World(LocationTemplate):
-    content = models.TextField(blank=True)
-
     class Meta:
         ordering = ['name',]
 
@@ -31,6 +30,7 @@ class World(LocationTemplate):
 class Location(LocationTemplate):
     content = models.TextField(blank=True)
     world = models.ForeignKey(World, on_delete=models.CASCADE)
+    parent_location = models.ForeignKey("self", null=True, blank=True, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['name',]

@@ -33,8 +33,18 @@ class LocationForm(TinyMCEForm):
         model = models.Location
         fields = [
             'name',
+            'world',
+            'parent_location',
             'content',
         ]
+
+    def __init__(self, user_pk, world_pk, location_pk, *args, **kwargs):
+        super (LocationForm, self).__init__(*args, **kwargs)
+        self.fields['world'].queryset = models.World.objects.filter(user=user_pk)
+        parent_locations = models.Location.objects.filter(world=world_pk).exclude(pk=location_pk)
+        if location_pk:
+            parent_locations = parent_locations.exclude(parent_location=location_pk)
+        self.fields['parent_location'].queryset = parent_locations
 
 
 class DeleteWorldForm(forms.ModelForm):
@@ -47,14 +57,6 @@ class DeleteLocationForm(forms.ModelForm):
     class Meta:
         model = models.Location
         fields = ['name']
-
-
-# class ImportCampaignForm(forms.ModelForm):
-#     class Meta:
-#         model = models.Campaign
-#         fields = [
-#             'title',
-#         ]
 
 
 LocationFormSet = forms.modelformset_factory(
