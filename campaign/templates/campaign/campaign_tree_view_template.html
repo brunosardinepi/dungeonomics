@@ -1,6 +1,7 @@
 {% load locations_extras %}
 
 <h3>{{ world_location.name }}</h3>
+<p>{{ world_location.content|safe  }}</p>
 {% get_child_locations world_location.pk as child_locations %}
 {% if child_locations %}
     {% for child_location in child_locations %}
