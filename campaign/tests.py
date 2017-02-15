@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.test import Client, RequestFactory, TestCase
 from django.utils import timezone
 
+import unittest
+
 from . import forms
 from . import models
 from . import views
@@ -127,6 +129,21 @@ class CampaignTest(TestCase):
         self.assertContains(response, self.chapter.title, status_code=200)
         self.assertContains(response, self.section.title, status_code=200)
         self.assertContains(response, self.chapter.content, status_code=200)
+
+    @unittest.expectedFailure
+    def test_campaign_page_bad_user(self):
+        """
+        Campaign page is inaccessible by the wrong user
+        """
+
+        # create an instance of a GET request
+        request = self.factory.get('home')
+
+        # simulate a logged-in user
+        request.user = self.user
+
+        # test the view
+        response = views.campaign_detail(request, self.campaign2.pk)
 
     def test_campaign_create(self):
         """
@@ -269,6 +286,21 @@ class CampaignTest(TestCase):
         self.assertContains(response, self.chapter.title, status_code=200)
         self.assertContains(response, self.chapter.content, status_code=200)
 
+    @unittest.expectedFailure
+    def test_chapter_page_bad_user(self):
+        """
+        Chapter page is inaccessible by the wrong user
+        """
+
+        # create an instance of a GET request
+        request = self.factory.get('home')
+
+        # simulate a logged-in user
+        request.user = self.user
+
+        # test the view
+        response = views.campaign_detail(request, self.campaign2.pk, self.chapter2.pk)
+
     def test_chapter_create_page(self):
         """
         Create chapter page loads
@@ -394,6 +426,21 @@ class CampaignTest(TestCase):
         self.assertContains(response, self.campaign.title, status_code=200)
         self.assertContains(response, self.section.title, status_code=200)
         self.assertContains(response, self.section.content, status_code=200)
+
+    @unittest.expectedFailure
+    def test_section_page_bad_user(self):
+        """
+        Section page is inaccessible by the wrong user
+        """
+
+        # create an instance of a GET request
+        request = self.factory.get('home')
+
+        # simulate a logged-in user
+        request.user = self.user
+
+        # test the view
+        response = views.campaign_detail(request, self.campaign2.pk, self.chapter2.pk, self.section2.pk)
 
     def test_section_create_page(self):
         """
