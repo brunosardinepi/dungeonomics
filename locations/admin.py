@@ -14,4 +14,3 @@ class LocationAdmin(admin.ModelAdmin):
 
 admin.site.register(models.World, WorldAdmin)
 admin.site.register(models.Location, LocationAdmin)
-
