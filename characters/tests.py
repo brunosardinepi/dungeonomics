@@ -87,6 +87,23 @@ class PlayerTest(TestCase):
         # test the view
         response = views.player_detail(request, self.player2.pk)
 
+    def test_player_create_page(self):
+        """
+        Create player page loads
+        """
+
+        # create an instance of a GET request
+        request = self.factory.get('home')
+
+        # simulate a logged-in user
+        request.user = self.user
+
+        # test the view
+        response = views.player_create(request)
+
+        # check that the response is 200 OK
+        self.assertEqual(response.status_code, 200)
+
     def test_player_create(self):
         """
         Create player
@@ -244,6 +261,23 @@ class MonsterTest(TestCase):
         # test the view
         response = views.player_detail(request, self.monster2.pk)
 
+    def test_monster_create_page(self):
+        """
+        Create monster page loads
+        """
+
+        # create an instance of a GET request
+        request = self.factory.get('home')
+
+        # simulate a logged-in user
+        request.user = self.user
+
+        # test the view
+        response = views.monster_create(request)
+
+        # check that the response is 200 OK
+        self.assertEqual(response.status_code, 200)
+
     def test_monster_create(self):
         """
         Create monster
@@ -398,6 +432,23 @@ class NPCTest(TestCase):
 
         # test the view
         response = views.player_detail(request, self.npc2.pk)
+
+    def test_npc_create_page(self):
+        """
+        Create NPC page loads
+        """
+
+        # create an instance of a GET request
+        request = self.factory.get('home')
+
+        # simulate a logged-in user
+        request.user = self.user
+
+        # test the view
+        response = views.npc_create(request)
+
+        # check that the response is 200 OK
+        self.assertEqual(response.status_code, 200)
 
     def test_npc_create(self):
         """
