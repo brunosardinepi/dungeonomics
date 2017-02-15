@@ -304,25 +304,16 @@ def section_update(request, campaign_pk, chapter_pk, section_pk):
 def campaign_print(request, campaign_pk):
     if campaign_pk:
         campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-        chapters = sorted(models.Chapter.objects.filter(campaign=campaign),
-            key=lambda chapter: chapter.order
-            )
-        sections = sorted(models.Section.objects.filter(campaign=campaign),
-            key=lambda section: section.order
-            )
-        monsters = sorted(character_models.Monster.objects.filter(user=request.user),
-            key=lambda monster: monster.name.lower()
-            )
-        npcs = sorted(character_models.NPC.objects.filter(user=request.user),
-            key=lambda npc: npc.name.lower()
-            )
-        items = sorted(item_models.Item.objects.filter(user=request.user),
-            key=lambda item: item.name.lower()
-            )
-        return render(request, 'campaign/campaign_print.html', {'campaign': campaign, 'chapters': chapters, 'sections': sections, 'monsters': monsters, 'npcs': npcs, 'items': items})
+        chapters = sorted(models.Chapter.objects.filter(campaign=campaign), key=lambda chapter: chapter.order)
+        sections = sorted(models.Section.objects.filter(campaign=campaign), key=lambda section: section.order)
+        monsters = sorted(character_models.Monster.objects.filter(user=request.user), key=lambda monster: monster.name.lower())
+        npcs = sorted(character_models.NPC.objects.filter(user=request.user), key=lambda npc: npc.name.lower())
+        items = sorted(item_models.Item.objects.filter(user=request.user), key=lambda item: item.name.lower())
+        worlds = sorted(location_models.World.objects.filter(user=request.user), key=lambda world: world.name.lower())
+        return render(request, 'campaign/campaign_print.html', {'campaign': campaign, 'chapters': chapters, 'sections': sections, 'monsters': monsters, 'npcs': npcs, 'items': items, 'worlds': worlds})
     else:
         raise Http404
-    
+
 
 @login_required
 def campaign_delete(request, campaign_pk):
@@ -408,7 +399,7 @@ def campaign_import(request):
                             content=section_attributes["content"]
                             )
                         new_section.save()
-            if "monsters" in user_import: 
+            if "monsters" in user_import:
                 for monster, monster_attributes in user_import["monsters"].items():
                     new_monster = character_models.Monster(
                         user=request.user,
@@ -491,18 +482,10 @@ def campaign_import(request):
 def campaign_export(request, campaign_pk):
     if campaign_pk:
         campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-        chapters = sorted(models.Chapter.objects.filter(campaign=campaign),
-            key=lambda chapter: chapter.order
-            )
-        monsters = sorted(character_models.Monster.objects.filter(user=request.user),
-            key=lambda monster: monster.name.lower()
-            )
-        npcs = sorted(character_models.NPC.objects.filter(user=request.user),
-            key=lambda npc: npc.name.lower()
-            )
-        items = sorted(item_models.Item.objects.filter(user=request.user),
-            key=lambda item: item.name.lower()
-            )
+        chapters = sorted(models.Chapter.objects.filter(campaign=campaign), key=lambda chapter: chapter.order)
+        monsters = sorted(character_models.Monster.objects.filter(user=request.user), key=lambda monster: monster.name.lower())
+        npcs = sorted(character_models.NPC.objects.filter(user=request.user), key=lambda npc: npc.name.lower())
+        items = sorted(item_models.Item.objects.filter(user=request.user), key=lambda item: item.name.lower())
         for chapter in chapters:
             chapter.content = json.dumps(chapter.content)
         for monster in monsters:

@@ -1,4 +1,5 @@
 {% load static from staticfiles %}
+{% load locations_extras %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -131,5 +132,17 @@
             {% endfor %}
         {% endif %}
 
+        {% if worlds %}
+            <h1 style="margin-top: 60px;">Worlds</h1>
+            {% for world in worlds %}
+                <h2>{{ world.name }}</h2>
+               {% get_world_locations world.pk as world_locations %}
+               {% if world_locations %}
+                   {% for world_location in world_locations %}
+                       {% include "campaign/campaign_tree_view_template.html" %}
+                   {% endfor %}
+               {% endif %}
+           {% endfor %}
+        {% endif %}
     </body>
 </html>

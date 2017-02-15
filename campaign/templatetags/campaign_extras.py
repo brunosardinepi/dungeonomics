@@ -7,9 +7,9 @@ import json
 from campaign import models
 
 
-register = template.Library() 
+register = template.Library()
 
-def jsonify(value): 
+def jsonify(value):
     '''Convert Django object to JSON object'''
     return serializers.serialize("json", value)
 
