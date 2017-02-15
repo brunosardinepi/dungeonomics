@@ -7,7 +7,7 @@
 </li>
 {% get_child_locations world_location.pk as child_locations %}
 {% if child_locations %}
-    <ul>
+    <ul style="padding-left: 20px;">
         {% for child_location in child_locations %}
             {% with world_location=child_location template_name="locations/tree_view_template.html" %}
                 {% include template_name %}

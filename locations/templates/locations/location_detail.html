@@ -55,7 +55,7 @@
                                 </li>
                                 {% get_world_locations world.pk as world_locations %}
                                 {% if world_locations %}
-                                    <ul style="padding-left: 30px;">
+                                    <ul style="padding-left: 20px;">
                                         {% for world_location in world_locations %}
                                             {% include "locations/tree_view_template.html" %}
                                         {% endfor %}
