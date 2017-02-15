@@ -304,13 +304,16 @@ def section_update(request, campaign_pk, chapter_pk, section_pk):
 def campaign_print(request, campaign_pk):
     if campaign_pk:
         campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-        chapters = sorted(models.Chapter.objects.filter(campaign=campaign), key=lambda chapter: chapter.order)
-        sections = sorted(models.Section.objects.filter(campaign=campaign), key=lambda section: section.order)
-        monsters = sorted(character_models.Monster.objects.filter(user=request.user), key=lambda monster: monster.name.lower())
-        npcs = sorted(character_models.NPC.objects.filter(user=request.user), key=lambda npc: npc.name.lower())
-        items = sorted(item_models.Item.objects.filter(user=request.user), key=lambda item: item.name.lower())
-        worlds = sorted(location_models.World.objects.filter(user=request.user), key=lambda world: world.name.lower())
-        return render(request, 'campaign/campaign_print.html', {'campaign': campaign, 'chapters': chapters, 'sections': sections, 'monsters': monsters, 'npcs': npcs, 'items': items, 'worlds': worlds})
+        if campaign.user == request.user:
+            chapters = sorted(models.Chapter.objects.filter(campaign=campaign), key=lambda chapter: chapter.order)
+            sections = sorted(models.Section.objects.filter(campaign=campaign), key=lambda section: section.order)
+            monsters = sorted(character_models.Monster.objects.filter(user=request.user), key=lambda monster: monster.name.lower())
+            npcs = sorted(character_models.NPC.objects.filter(user=request.user), key=lambda npc: npc.name.lower())
+            items = sorted(item_models.Item.objects.filter(user=request.user), key=lambda item: item.name.lower())
+            worlds = sorted(location_models.World.objects.filter(user=request.user), key=lambda world: world.name.lower())
+            return render(request, 'campaign/campaign_print.html', {'campaign': campaign, 'chapters': chapters, 'sections': sections, 'monsters': monsters, 'npcs': npcs, 'items': items, 'worlds': worlds})
+        else:
+            raise Http404
     else:
         raise Http404
 
@@ -482,22 +485,25 @@ def campaign_import(request):
 def campaign_export(request, campaign_pk):
     if campaign_pk:
         campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-        chapters = sorted(models.Chapter.objects.filter(campaign=campaign), key=lambda chapter: chapter.order)
-        monsters = sorted(character_models.Monster.objects.filter(user=request.user), key=lambda monster: monster.name.lower())
-        npcs = sorted(character_models.NPC.objects.filter(user=request.user), key=lambda npc: npc.name.lower())
-        items = sorted(item_models.Item.objects.filter(user=request.user), key=lambda item: item.name.lower())
-        for chapter in chapters:
-            chapter.content = json.dumps(chapter.content)
-        for monster in monsters:
-            monster.traits = json.dumps(monster.traits)
-            monster.actions = json.dumps(monster.actions)
-            monster.notes = json.dumps(monster.notes)
-        for npc in npcs:
-            npc.traits = json.dumps(npc.traits)
-            npc.actions = json.dumps(npc.actions)
-            npc.notes = json.dumps(npc.notes)
-        for item in items:
-            item.description = json.dumps(item.description)
-        return render(request, 'campaign/campaign_export.html', {'campaign': campaign, 'chapters': chapters, 'monsters': monsters, 'npcs': npcs, 'items': items})
+        if campaign.user == request.user:
+            chapters = sorted(models.Chapter.objects.filter(campaign=campaign), key=lambda chapter: chapter.order)
+            monsters = sorted(character_models.Monster.objects.filter(user=request.user), key=lambda monster: monster.name.lower())
+            npcs = sorted(character_models.NPC.objects.filter(user=request.user), key=lambda npc: npc.name.lower())
+            items = sorted(item_models.Item.objects.filter(user=request.user), key=lambda item: item.name.lower())
+            for chapter in chapters:
+                chapter.content = json.dumps(chapter.content)
+            for monster in monsters:
+                monster.traits = json.dumps(monster.traits)
+                monster.actions = json.dumps(monster.actions)
+                monster.notes = json.dumps(monster.notes)
+            for npc in npcs:
+                npc.traits = json.dumps(npc.traits)
+                npc.actions = json.dumps(npc.actions)
+                npc.notes = json.dumps(npc.notes)
+            for item in items:
+                item.description = json.dumps(item.description)
+            return render(request, 'campaign/campaign_export.html', {'campaign': campaign, 'chapters': chapters, 'monsters': monsters, 'npcs': npcs, 'items': items})
+        else:
+            raise Http404
     else:
         raise Http404
