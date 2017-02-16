@@ -87,34 +87,34 @@ class PlayerForm(TinyMCEForm):
             'xp',
             'race',
             'character_class',
-	        'background',
-	        'alignment',
-	        'armor_class',
+            'background',
+            'alignment',
+            'armor_class',
             'initiative',
-	        'speed',
-	        'proficiency_bonus',
- 	        'hit_points',
-	        'strength',
+            'speed',
+            'proficiency_bonus',
+            'hit_points',
+            'strength',
             'dexterity',
             'constitution',
             'intelligence',
             'wisdom',
             'charisma',
-	        'saving_throws',
-	        'skills',
-	        'age',
+            'saving_throws',
+            'skills',
+            'age',
             'height',
             'weight',
-            'languages',            
+            'languages',
             'personality',
-	        'ideals',
+            'ideals',
             'bonds',
             'flaws',
             'feats',
             'attacks',
             'spells',
-	        'proficiencies',
-	        'equipment',
+            'proficiencies',
+            'equipment',
             'notes',
         ]
 
@@ -184,3 +184,16 @@ class SRDNPCForm(forms.ModelForm):
     class Meta:
         model = models.NPC
         fields = ['name']
+
+
+MonsterFormSet = forms.modelformset_factory(
+    models.Monster,
+    form=MonsterForm,
+    extra=0,
+)
+
+NPCFormSet = forms.modelformset_factory(
+    models.NPC,
+    form=NPCForm,
+    extra=0,
+)

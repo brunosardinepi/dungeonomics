@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+{% load bootstrap3 %}
+
+{% block title %}Delete Monsters | {{ block.super }}{% endblock %}
+
+{% block body_content %}
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-default panel-campaign">
+            <div class="panel-heading">
+                <h3 class="panel-title"><strong>Delete Monsters</strong></h3>
+            </div>
+            <div class="panel-body">
+                <form method="POST" action="" style="margin-bottom:0;">
+                    {% csrf_token %}
+                    <p>Select the monsters that you'd like to delete:</p>
+                    <input type="checkbox" onClick="toggle(this)" style="margin-right: 8px;" />Select all
+                    <hr>
+                    {% for monster in monsters %}
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="monster" value="{{ monster.pk }}"> {{ monster.name }}
+                        </label>
+                    </div>
+                    {% endfor %}
+            </div>
+            <div class="panel-footer clearfix">
+                    <a href="{% url 'characters:monster_detail' %}" class="btn btn-default">Cancel</a>
+                    <input type="submit" class="btn btn-primary pull-right" value="Delete">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block end_static %}
+<script language='JavaScript'>
+function toggle(source) {
+  checkboxes = document.getElementsByName('monster');
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = source.checked;
+  }
+}
+</script>
+{% endblock %}
