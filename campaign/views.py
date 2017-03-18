@@ -12,6 +12,7 @@ from . import forms
 from . import models
 from characters import models as character_models
 from items import models as item_models
+from spells import models as spell_models
 from locations import models as location_models
 
 import json
@@ -113,6 +114,10 @@ def chapter_create(request, campaign_pk):
         items = {}
         for item in items_raw:
             items[item.pk] = item.name
+        spells_raw = spell_models.Spell.objects.filter(user=request.user).order_by('name')
+        spells = {}
+        for spell in spells_raw:
+            spells[spell.pk] = spell.name
         players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
         players = {}
         for player in players_raw:
@@ -138,7 +143,7 @@ def chapter_create(request, campaign_pk):
                 return HttpResponseRedirect(chapter.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'campaign/chapter_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'campaign': campaign, 'worlds': worlds, 'locations': locations})
+    return render(request, 'campaign/chapter_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'spells': spells, 'players': players, 'campaign': campaign, 'worlds': worlds, 'locations': locations})
 
 @login_required
 def section_create(request, campaign_pk, chapter_pk):
@@ -157,6 +162,10 @@ def section_create(request, campaign_pk, chapter_pk):
         items = {}
         for item in items_raw:
             items[item.pk] = item.name
+        spells_raw = spell_models.Spell.objects.filter(user=request.user).order_by('name')
+        spells = {}
+        for spell in spells_raw:
+            spells[spell.pk] = spell.name
         players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
         players = {}
         for player in players_raw:
@@ -183,7 +192,7 @@ def section_create(request, campaign_pk, chapter_pk):
                 return HttpResponseRedirect(section.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'campaign': campaign, 'chapter': chapter, 'worlds': worlds, 'locations': locations})
+    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'spells': spells, 'players': players, 'campaign': campaign, 'chapter': chapter, 'worlds': worlds, 'locations': locations})
 
 
 @login_required
@@ -227,6 +236,10 @@ def chapter_update(request, campaign_pk, chapter_pk):
         items = {}
         for item in items_raw:
             items[item.pk] = item.name
+        spells_raw = spell_models.Spell.objects.filter(user=request.user).order_by('name')
+        spells = {}
+        for spell in spells_raw:
+            spells[spell.pk] = spell.name
         players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
         players = {}
         for player in players_raw:
@@ -258,7 +271,7 @@ def chapter_update(request, campaign_pk, chapter_pk):
                 return HttpResponseRedirect(chapter.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'campaign/chapter_form.html', {'form': form, 'formset': section_forms, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'campaign': chapter.campaign, 'chapter': chapter, 'sections': sections, 'worlds': worlds, 'locations': locations})
+    return render(request, 'campaign/chapter_form.html', {'form': form, 'formset': section_forms, 'monsters': monsters, 'npcs': npcs, 'items': items, 'spells': spells, 'players': players, 'campaign': chapter.campaign, 'chapter': chapter, 'sections': sections, 'worlds': worlds, 'locations': locations})
 
 @login_required
 def section_update(request, campaign_pk, chapter_pk, section_pk):
@@ -276,6 +289,10 @@ def section_update(request, campaign_pk, chapter_pk, section_pk):
         items = {}
         for item in items_raw:
             items[item.pk] = item.name
+        spells_raw = spell_models.Spell.objects.filter(user=request.user).order_by('name')
+        spells = {}
+        for spell in spells_raw:
+            spells[spell.pk] = spell.name
         players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
         players = {}
         for player in players_raw:
@@ -298,7 +315,7 @@ def section_update(request, campaign_pk, chapter_pk, section_pk):
                 return HttpResponseRedirect(section.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'campaign': section.chapter.campaign, 'chapter': section.chapter, 'section': section, 'worlds': worlds, 'locations': locations})
+    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'spells': spells, 'players': players, 'campaign': section.chapter.campaign, 'chapter': section.chapter, 'section': section, 'worlds': worlds, 'locations': locations})
 
 @login_required
 def campaign_print(request, campaign_pk):
@@ -310,8 +327,9 @@ def campaign_print(request, campaign_pk):
             monsters = sorted(character_models.Monster.objects.filter(user=request.user), key=lambda monster: monster.name.lower())
             npcs = sorted(character_models.NPC.objects.filter(user=request.user), key=lambda npc: npc.name.lower())
             items = sorted(item_models.Item.objects.filter(user=request.user), key=lambda item: item.name.lower())
+            spells = sorted(spell_models.Spell.objects.filter(user=request.user), key=lambda spell: spell.name.lower())
             worlds = sorted(location_models.World.objects.filter(user=request.user), key=lambda world: world.name.lower())
-            return render(request, 'campaign/campaign_print.html', {'campaign': campaign, 'chapters': chapters, 'sections': sections, 'monsters': monsters, 'npcs': npcs, 'items': items, 'worlds': worlds})
+            return render(request, 'campaign/campaign_print.html', {'campaign': campaign, 'chapters': chapters, 'sections': sections, 'monsters': monsters, 'npcs': npcs, 'items': items, 'spells': spells, 'worlds': worlds})
         else:
             raise Http404
     else:
@@ -478,6 +496,16 @@ def campaign_import(request):
                         description=item_attributes["description"]
                     )
                     new_item.save()
+            if "spells" in user_import:
+                for spell, spell_attributes in user_import["spells"].items():
+                    new_spell = spell_models.Spell(
+                        user=request.user,
+                        name=spell,
+                        spell_type=spell_attributes["spell_type"],
+                        rarity=spell_attributes["rarity"],
+                        description=spell_attributes["description"]
+                    )
+                    new_spell.save()
             return HttpResponseRedirect(campaign.get_absolute_url())
     return render(request, 'campaign/campaign_import.html', {'form': form, 'user_import': user_import})
 
@@ -502,7 +530,9 @@ def campaign_export(request, campaign_pk):
                 npc.notes = json.dumps(npc.notes)
             for item in items:
                 item.description = json.dumps(item.description)
-            return render(request, 'campaign/campaign_export.html', {'campaign': campaign, 'chapters': chapters, 'monsters': monsters, 'npcs': npcs, 'items': items})
+            for spell in spells:
+                spell.description = json.dumps(spell.description)
+            return render(request, 'campaign/campaign_export.html', {'campaign': campaign, 'chapters': chapters, 'monsters': monsters, 'npcs': npcs, 'items': items, 'spells': spells})
         else:
             raise Http404
     else:

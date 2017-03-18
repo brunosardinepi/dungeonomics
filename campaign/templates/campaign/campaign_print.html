@@ -123,12 +123,22 @@
         {% endif %}
 
         {% if items %}
-            <h1 style="margin-top: 60px;">Items/Spells</h1>
+            <h1 style="margin-top: 60px;">Items</h1>
 
             {% for item in items %}
                 <h2>{{ item.name }}</h2>
                 <p><em>{% if item.item_type %}{{ item.item_type }}{% endif %}{% if item.rarity and item.item_type %}, {{ item.rarity }}{% elif item.rarity %}{{ item.rarity }}{% else %}{% endif %}</em></p>
                 <p>{{ item.description|safe }}</p>
+            {% endfor %}
+        {% endif %}
+		
+		{% if spells %}
+            <h1 style="margin-top: 60px;">Spells</h1>
+
+            {% for spell in spells %}
+                <h2>{{ spell.name }}</h2>
+                <p><em>{% if spell.spell_type %}{{ spell.spell_type }}{% endif %}{% if spell.rarity and spell.spell_type %}, {{ spell.rarity }}{% elif spell.rarity %}{{ spell.rarity }}{% else %}{% endif %}</em></p>
+                <p>{{ spell.description|safe }}</p>
             {% endfor %}
         {% endif %}
 
