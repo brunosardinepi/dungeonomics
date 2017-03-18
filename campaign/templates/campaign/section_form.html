@@ -40,6 +40,14 @@
                     'type': 'item'
                 });
         }
+		var spells_dict = {{spells|safe}};
+        for (var key in spells_dict) {
+            taggable.push({
+                    'name': spells_dict[key],
+                    'id': key,
+                    'type': 'spell'
+                });
+        }
         var players_dict = {{players|safe}};
         for (var key in players_dict) {
             taggable.push({
@@ -92,6 +100,8 @@
                         var url = "{% url 'items:item_detail' item_pk=999999999999 %}".replace(999999999999, item.id);
                     } else if (item.type == 'world') {
                         var url = "{% url 'locations:location_detail' world_pk=999999999999 %}".replace(999999999999, item.id);
+					} else if (item.type == 'spell') {
+                        var url = "{% url 'spells:spell_detail' spell_pk=999999999999 %}".replace(999999999999, item.id);
                     } else if (item.type == 'location') {
                         var url = "{% url 'locations:location_detail' location_pk=999999999999 %}".replace(999999999999, item.id);
                     } else {
