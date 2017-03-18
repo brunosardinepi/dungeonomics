@@ -1,0 +1,95 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    {% if this_spell.pk %}
+        {{ this_spell.name }} 
+    {% else %}
+        Spells 
+    {% endif %}
+    | {{ block.super }}
+{% endblock %}
+
+{% block body_content %}
+    <div class="row campaign-row">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading panel-heading-cog clearfix">
+                    <span class="pull-left">
+                        <h3 class="panel-title panel-title-cog">Spells</h3>
+                    </span>
+                    <span class="pull-right">
+                        <ul class="nav navbar-nav navbar-right navbar-cog">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="{% url 'spells:spell_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create spell</span></a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </span>
+                </div>
+                <div class="panel-body">
+                    <ul class="contents_list">
+                        {% if spells %}
+                            {% for spell in spells %}
+                                <li class="li-content">
+                                    <a href="{% url 'spells:spell_detail' spell_pk=spell.pk %}">
+                                        {{ spell.name }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                            <li>You haven't created any spells yet!</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                {% if this_spell %}
+                    <div class="panel-heading panel-heading-cog clearfix">
+                        <span class="pull-left">
+                            <h3 class="panel-title panel-title-cog">{{ this_spell.name }}</h3>
+                        </span>
+                        <span class="pull-right">
+                            <ul class="nav navbar-nav navbar-right navbar-cog">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{% url 'spells:spell_update' spell_pk=this_spell.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit spell</span></a></li>
+                                        <li><a href="{% url 'spells:spell_copy' spell_pk=this_spell.pk %}"><span class="text-success"><i class="fa fa-fw fa-files-o" aria-hidden="true"></i> Copy spell</span></a></li>
+                                        <li><a href="{% url 'spells:spell_delete' spell_pk=this_spell.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete spell</span></a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                            <p><em>{% if this_spell.spell_type %}{{ this_spell.spell_type }}{% endif %}{% if this_spell.rarity and this_spell.spell_type %}, {{ this_spell.rarity }}{% elif this_spell.rarity %}{{ this_spell.rarity }}{% else %}{% endif %}</em></p>
+
+                            <hr>
+                            
+                            <p>{{ this_spell.description|safe }}</p>
+                    </div>
+                {% else %}
+                    <div class="panel-heading panel-heading-cog clearfix">
+                        <span class="pull-right">
+                            <ul class="nav navbar-nav navbar-right navbar-cog">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{% url 'spells:spell_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create spell</span></a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </span>
+                    </div>
+                    <div class="panel-body">
+                        <p>You haven't created any spells yet!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
