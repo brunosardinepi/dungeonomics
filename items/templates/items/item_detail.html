@@ -4,7 +4,7 @@
     {% if this_item.pk %}
         {{ this_item.name }} 
     {% else %}
-        Items/Spells 
+        Items
     {% endif %}
     | {{ block.super }}
 {% endblock %}
@@ -15,14 +15,14 @@
             <div class="panel panel-default">
                 <div class="panel-heading panel-heading-cog clearfix">
                     <span class="pull-left">
-                        <h3 class="panel-title panel-title-cog">Items/Spells</h3>
+                        <h3 class="panel-title panel-title-cog">Items</h3>
                     </span>
                     <span class="pull-right">
                         <ul class="nav navbar-nav navbar-right navbar-cog">
                             <li class="dropdown">
                                 <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="{% url 'items:item_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create item/spell</span></a></li>
+                                    <li><a href="{% url 'items:item_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create item</span></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -39,7 +39,7 @@
                                 </li>
                             {% endfor %}
                         {% else %}
-                            <li>You haven't created any items/spells yet!</li>
+                            <li>You haven't created any items yet!</li>
                         {% endif %}
                     </ul>
                 </div>
@@ -57,9 +57,9 @@
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="{% url 'items:item_update' item_pk=this_item.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit item/spell</span></a></li>
-                                        <li><a href="{% url 'items:item_copy' item_pk=this_item.pk %}"><span class="text-success"><i class="fa fa-fw fa-files-o" aria-hidden="true"></i> Copy item/spell</span></a></li>
-                                        <li><a href="{% url 'items:item_delete' item_pk=this_item.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete item/spell</span></a></li>
+                                        <li><a href="{% url 'items:item_update' item_pk=this_item.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit item</span></a></li>
+                                        <li><a href="{% url 'items:item_copy' item_pk=this_item.pk %}"><span class="text-success"><i class="fa fa-fw fa-files-o" aria-hidden="true"></i> Copy item</span></a></li>
+                                        <li><a href="{% url 'items:item_delete' item_pk=this_item.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete item</span></a></li>
                                     </ul>
                                 </li>
                             </ul>
@@ -79,14 +79,14 @@
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="{% url 'items:item_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create item/spell</span></a></li>
+                                        <li><a href="{% url 'items:item_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create item</span></a></li>
                                     </ul>
                                 </li>
                             </ul>
                         </span>
                     </div>
                     <div class="panel-body">
-                        <p>You haven't created any items/spells yet!</p>
+                        <p>You haven't created any items yet!</p>
                     </div>
                 {% endif %}
             </div>

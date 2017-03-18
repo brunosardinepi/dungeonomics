@@ -1,24 +1,24 @@
 {% extends 'layout.html' %}
 {% load bootstrap3 %}
 
-{% block title %} Delete item/spell | {{ block.super }}{% endblock %}
+{% block title %} Delete item | {{ block.super }}{% endblock %}
 
 {% block body_content %}
     <div class="col-md-4 col-md-offset-4">
         <div class="panel panel-default panel-campaign">
             <div class="panel-heading">
-                <h3 class="panel-title"><strong>Delete item/spell</strong></h3>
+                <h3 class="panel-title"><strong>Delete item</strong></h3>
             </div>
             <div class="panel-body">
                 <form method="POST" action="" style="margin-bottom:0;">
                     {% csrf_token %}
-                    <p class="text-center">Please confirm that you want to delete the following item/spell:</p>
+                    <p class="text-center">Please confirm that you want to delete the following item:</p>
                     <p style="font-size: 18px; font-weight: bold;" class="text-center">{{ item.name }}</p>
-                    <p class="text-center margin-bottom-zero">This item/spell will be permanently deleted.</p>
+                    <p class="text-center margin-bottom-zero">This item will be permanently deleted.</p>
             </div>
             <div class="panel-footer clearfix">
                     <a href="{% url 'items:item_detail' item_pk=item.pk %}" class="btn btn-default">Cancel</a>
-                    <input type="submit" class="btn btn-primary pull-right" value="Delete item/spell">
+                    <input type="submit" class="btn btn-primary pull-right" value="Delete item">
                 </form>
             </div>
         </div>
