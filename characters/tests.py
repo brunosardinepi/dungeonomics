@@ -1,14 +1,13 @@
 from django.contrib.auth.models import User
-from django.test import Client, RequestFactory, TestCase
+from django.test import Client, TestCase
 
 import unittest
 
 from . import forms
 from . import models
-from . import views
 
 
-class PlayerTest(TestCase):
+class CharacterTest(TestCase):
     player_form_data = {
         'player_name': 'test player name',
         'character_name': 'test character name',
@@ -18,176 +17,6 @@ class PlayerTest(TestCase):
         'name': 'test player name'
     }
 
-    def setUp(self):
-        self.factory = RequestFactory()
-        self.client = Client()
-
-        # create a test user
-        self.user = User.objects.create_user(username='testuser', email='test@test.test', password='testpassword')
-
-        # create a test user
-        self.user2 = User.objects.create_user(username='testuser2', email='test2@test.test', password='testpassword')
-
-        # create a test player for testuser
-        self.player = models.Player.objects.create(
-            user=self.user,
-            player_name="test player",
-            character_name="test character",
-        )
-
-        # create a test player for testuser2
-        self.player2 = models.Player.objects.create(
-            user=self.user2,
-            player_name="test 2 player",
-            character_name="test 2 character",
-        )
-
-    def test_player_exists(self):
-        """
-        Test players exist
-        """
-
-        # get queryset that contains all players
-        players = models.Player.objects.all()
-
-        # make sure the test players exist in the queryset
-        self.assertIn(self.player, players)
-        self.assertIn(self.player2, players)
-
-    def test_player_page(self):
-        """
-        Player page contains the correct information
-        """
-
-        # create an instance of a GET request
-        request = self.factory.get('home')
-
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.player_detail(request, self.player.pk)
-
-        # make sure the player information is on the page
-        self.assertContains(response, self.player.name, status_code=200)
-        self.assertContains(response, self.player.character_name, status_code=200)
-
-    @unittest.expectedFailure
-    def test_player_page_bad_user(self):
-        """
-        Player page is inaccessible by the wrong user
-        """
-
-        # create an instance of a GET request
-        request = self.factory.get('home')
-
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.player_detail(request, self.player2.pk)
-
-    def test_player_create_page(self):
-        """
-        Create player page loads
-        """
-
-        # create an instance of a GET request
-        request = self.factory.get('home')
-
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.player_create(request)
-
-        # check that the response is 200 OK
-        self.assertEqual(response.status_code, 200)
-
-    def test_player_create(self):
-        """
-        Create player
-        """
-
-        form = forms.PlayerForm(data=self.player_form_data)
-        new_player = form.save(commit=False)
-        new_player.user = self.user
-        new_player.save()
-
-        new_player = models.Player.objects.get(pk=new_player.pk)
-        players = models.Player.objects.all()
-
-        self.assertTrue(form.is_valid())
-        self.assertIn(new_player, players)
-
-    def test_player_edit_page(self):
-        """
-        Edit player page contains the correct information
-        """
-
-        # create an instance of a GET request
-        request = self.factory.get('home')
-
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.player_update(request, self.player.pk)
-
-        # make sure the player information is on the page
-        self.assertContains(response, self.player.name, status_code=200)
-        self.assertContains(response, self.player.character_name, status_code=200)
-
-    def test_player_edit(self):
-        """
-        Edit player
-        """
-
-        self.player_form_data['name'] = "test player name EDIT"
-        form = forms.PlayerForm(data=self.player_form_data)
-        new_player = form.save(commit=False)
-        new_player.user = self.user
-        new_player.save()
-
-        verify_player = models.Player.objects.get(pk=new_player.pk)
-        players = models.Player.objects.all()
-
-        self.assertTrue(form.is_valid())
-        #self.assertIn(new_player, players)
-        self.assertEqual(new_player.name, verify_player.name)
-
-    def test_player_delete_page(self):
-        """
-        Delete player page contains the correct information
-        """
-
-        # create an instance of a GET request
-        request = self.factory.get('home')
-
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.player_delete(request, self.player.pk)
-
-        # make sure the player information is on the page
-        self.assertContains(response, self.player.name, status_code=200)
-        self.assertContains(response, self.player.character_name, status_code=200)
-
-    def test_player_delete(self):
-        """
-        Delete player
-        """
-
-        form = forms.DeletePlayerForm(data=self.player_form_data)
-        new_player = form.save(commit=False)
-        new_player.user = self.user
-        new_player.save()
-
-        self.assertTrue(form.is_valid())
-
-
-class MonsterTest(TestCase):
     monster_form_data = {
         'name': 'test monster name',
         'level': 1,
@@ -195,171 +24,6 @@ class MonsterTest(TestCase):
         'size': 'Medium'
     }
 
-    def setUp(self):
-        self.factory = RequestFactory()
-        self.client = Client()
-
-        # create a test user
-        self.user = User.objects.create_user(username='testuser', email='test@test.test', password='testpassword')
-
-        # create a test user
-        self.user2 = User.objects.create_user(username='testuser2', email='test2@test.test', password='testpassword')
-
-        # create a test monster for testuser
-        self.monster = models.Monster.objects.create(
-            user=self.user,
-            name="test monster",
-        )
-
-        # create a test monster for testuser2
-        self.monster2 = models.Monster.objects.create(
-            user=self.user2,
-            name="test 2 monster",
-        )
-
-    def test_monster_exists(self):
-        """
-        Test monsters exist
-        """
-
-        # get queryset that contains all monsters
-        monsters = models.Monster.objects.all()
-
-        # make sure the test monsters exist in the queryset
-        self.assertIn(self.monster, monsters)
-        self.assertIn(self.monster2, monsters)
-
-    def test_monster_page(self):
-        """
-        Monster page contains the correct information
-        """
-
-        # create an instance of a GET request
-        request = self.factory.get('home')
-
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.monster_detail(request, self.monster.pk)
-
-        # make sure the monster information is on the page
-        self.assertContains(response, self.monster.name, status_code=200)
-
-    @unittest.expectedFailure
-    def test_monster_page_bad_user(self):
-        """
-        Monster page is inaccessible by the wrong user
-        """
-
-        # create an instance of a GET request
-        request = self.factory.get('home')
-
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.player_detail(request, self.monster2.pk)
-
-    def test_monster_create_page(self):
-        """
-        Create monster page loads
-        """
-
-        # create an instance of a GET request
-        request = self.factory.get('home')
-
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.monster_create(request)
-
-        # check that the response is 200 OK
-        self.assertEqual(response.status_code, 200)
-
-    def test_monster_create(self):
-        """
-        Create monster
-        """
-
-        form = forms.MonsterForm(data=self.monster_form_data)
-        new_monster = form.save(commit=False)
-        new_monster.user = self.user
-        new_monster.save()
-
-        new_monster = models.Monster.objects.get(pk=new_monster.pk)
-        monsters = models.Monster.objects.all()
-
-        self.assertTrue(form.is_valid())
-        self.assertIn(new_monster, monsters)
-
-    def test_monster_edit_page(self):
-        """
-        Edit monster page contains the correct information
-        """
-
-        # create an instance of a GET request
-        request = self.factory.get('home')
-
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.monster_update(request, self.monster.pk)
-
-        # make sure the monster information is on the page
-        self.assertContains(response, self.monster.name, status_code=200)
-
-    def test_monster_edit(self):
-        """
-        Edit monster
-        """
-
-        self.monster_form_data['name'] = "test monster name EDIT"
-        form = forms.MonsterForm(data=self.monster_form_data)
-        new_monster = form.save(commit=False)
-        new_monster.user = self.user
-        new_monster.save()
-
-        verify_monster = models.Monster.objects.get(pk=new_monster.pk)
-        monsters = models.Monster.objects.all()
-
-        self.assertTrue(form.is_valid())
-        #self.assertIn(new_monster, monsters)
-        self.assertEqual(new_monster.name, verify_monster.name)
-
-    def test_monster_delete_page(self):
-        """
-        Delete monster page contains the correct information
-        """
-
-        # create an instance of a GET request
-        request = self.factory.get('home')
-
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.monster_delete(request, self.monster.pk)
-
-        # make sure the monster information is on the page
-        self.assertContains(response, self.monster.name, status_code=200)
-
-    def test_monster_delete(self):
-        """
-        Delete monster
-        """
-
-        form = forms.DeleteMonsterForm(data=self.monster_form_data)
-        new_monster = form.save(commit=False)
-        new_monster.user = self.user
-        new_monster.save()
-
-        self.assertTrue(form.is_valid())
-
-
-class NPCTest(TestCase):
     npc_form_data = {
         'name': 'test npc name',
         'level': 1,
@@ -368,164 +32,238 @@ class NPCTest(TestCase):
     }
 
     def setUp(self):
-        self.factory = RequestFactory()
         self.client = Client()
 
-        # create a test user
-        self.user = User.objects.create_user(username='testuser', email='test@test.test', password='testpassword')
+        self.user = User.objects.create_user(
+            username='testuser',
+            email='test@test.test',
+            password='testpassword',
+        )
 
-        # create a test user
-        self.user2 = User.objects.create_user(username='testuser2', email='test2@test.test', password='testpassword')
+        self.user2 = User.objects.create_user(
+            username='testuser2',
+            email='test2@test.test',
+            password='testpassword',
+        )
 
-        # create a test npc for testuser
+        self.player = models.Player.objects.create(
+            user=self.user,
+            player_name="test player",
+            character_name="test character",
+        )
+
+        self.player2 = models.Player.objects.create(
+            user=self.user2,
+            player_name="test 2 player",
+            character_name="test 2 character",
+        )
+
+        self.monster = models.Monster.objects.create(
+            user=self.user,
+            name="test monster",
+        )
+
+        self.monster2 = models.Monster.objects.create(
+            user=self.user2,
+            name="test 2 monster",
+        )
+
         self.npc = models.NPC.objects.create(
             user=self.user,
             name="test npc",
         )
 
-        # create a test npc for testuser2
         self.npc2 = models.NPC.objects.create(
             user=self.user2,
             name="test 2 npc",
         )
 
+    def test_player_exists(self):
+        players = models.Player.objects.all()
+
+        self.assertIn(self.player, players)
+        self.assertIn(self.player2, players)
+
+    def test_player_page(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/characters/player/{}/'.format(self.player.pk))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.player.name)
+        self.assertContains(response, self.player.character_name)
+
+    def test_player_page_bad_user(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/characters/player/{}/'.format(self.player2.pk))
+        self.assertEqual(response.status_code, 404)
+
+    def test_player_create_page(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/characters/player/create/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_player_create(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.post('/characters/player/create/', self.player_form_data)
+        player = models.Player.objects.get(character_name='test character name')
+        self.assertRedirects(response, '/characters/player/{}/'.format(player.pk), 302, 200)
+
+        players = models.Player.objects.all()
+        self.assertIn(player, players)
+
+    def test_player_edit_page(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/characters/player/{}/edit/'.format(self.player.pk))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.player.name)
+        self.assertContains(response, self.player.character_name)
+
+    def test_player_edit(self):
+        self.client.login(username='testuser', password='testpassword')
+        self.player_form_data['character_name'] = "test character name EDIT"
+        response = self.client.post('/characters/player/{}/edit/'.format(self.player.pk), self.player_form_data)
+        self.assertRedirects(response, '/characters/player/{}/'.format(self.player.pk), 302, 200)
+
+        response = self.client.get('/characters/player/{}/'.format(self.player.pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'test character name EDIT')
+
+    def test_player_delete_page(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/characters/player/{}/delete/'.format(self.player.pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.player.name)
+        self.assertContains(response, self.player.character_name)
+
+    def test_player_delete(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.post('/characters/player/{}/delete/'.format(self.player.pk), {})
+        self.assertRedirects(response, '/characters/player/', 302, 200)
+
+        players = models.Player.objects.all()
+        self.assertEqual(players.count(), 1)
+
+    def test_monster_exists(self):
+        monsters = models.Monster.objects.all()
+        self.assertIn(self.monster, monsters)
+        self.assertIn(self.monster2, monsters)
+
+    def test_monster_page(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/characters/monster/{}/'.format(self.monster.pk))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.monster.name)
+
+    def test_monster_page_bad_user(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/characters/monster/{}/'.format(self.monster2.pk))
+        self.assertEqual(response.status_code, 404)
+
+    def test_monster_create_page(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/characters/monster/create/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_monster_create(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.post('/characters/monster/create/', self.monster_form_data)
+        monster = models.Monster.objects.get(name='test monster name')
+        self.assertRedirects(response, '/characters/monster/{}/'.format(monster.pk), 302, 200)
+
+        monsters = models.Monster.objects.all()
+        self.assertIn(monster, monsters)
+
+    def test_monster_edit_page(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/characters/monster/{}/edit/'.format(self.monster.pk))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.monster.name)
+
+    def test_monster_edit(self):
+        self.client.login(username='testuser', password='testpassword')
+        self.monster_form_data['name'] = "test monster name EDIT"
+        response = self.client.post('/characters/monster/{}/edit/'.format(self.monster.pk), self.monster_form_data)
+        self.assertRedirects(response, '/characters/monster/{}/'.format(self.monster.pk), 302, 200)
+
+        response = self.client.get('/characters/monster/{}/'.format(self.monster.pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'test monster name EDIT')
+
+    def test_monster_delete_page(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/characters/monster/{}/delete/'.format(self.monster.pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.monster.name)
+
+    def test_monster_delete(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.post('/characters/monster/{}/delete/'.format(self.monster.pk), {})
+        self.assertRedirects(response, '/characters/monster/', 302, 200)
+
+        monsters = models.Monster.objects.all()
+        self.assertEqual(monsters.count(), 1)
+
     def test_npc_exists(self):
-        """
-        Test npcs exist
-        """
-
-        # get queryset that contains all npcs
         npcs = models.NPC.objects.all()
-
-        # make sure the test npcs exist in the queryset
         self.assertIn(self.npc, npcs)
         self.assertIn(self.npc2, npcs)
 
     def test_npc_page(self):
-        """
-        NPC page contains the correct information
-        """
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/characters/npc/{}/'.format(self.npc.pk))
 
-        # create an instance of a GET request
-        request = self.factory.get('home')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.npc.name)
 
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.npc_detail(request, self.npc.pk)
-
-        # make sure the npc information is on the page
-        self.assertContains(response, self.npc.name, status_code=200)
-
-    @unittest.expectedFailure
     def test_npc_page_bad_user(self):
-        """
-        NPC page is inaccessible by the wrong user
-        """
-
-        # create an instance of a GET request
-        request = self.factory.get('home')
-
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.player_detail(request, self.npc2.pk)
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/characters/npc/{}/'.format(self.npc2.pk))
+        self.assertEqual(response.status_code, 404)
 
     def test_npc_create_page(self):
-        """
-        Create NPC page loads
-        """
-
-        # create an instance of a GET request
-        request = self.factory.get('home')
-
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.npc_create(request)
-
-        # check that the response is 200 OK
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/characters/npc/create/')
         self.assertEqual(response.status_code, 200)
 
     def test_npc_create(self):
-        """
-        Create npc
-        """
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.post('/characters/npc/create/', self.npc_form_data)
+        npc = models.NPC.objects.get(name='test npc name')
+        self.assertRedirects(response, '/characters/npc/{}/'.format(npc.pk), 302, 200)
 
-        form = forms.NPCForm(data=self.npc_form_data)
-        new_npc = form.save(commit=False)
-        new_npc.user = self.user
-        new_npc.save()
-
-        new_npc = models.NPC.objects.get(pk=new_npc.pk)
         npcs = models.NPC.objects.all()
-
-        self.assertTrue(form.is_valid())
-        self.assertIn(new_npc, npcs)
+        self.assertIn(npc, npcs)
 
     def test_npc_edit_page(self):
-        """
-        Edit npc page contains the correct information
-        """
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/characters/npc/{}/edit/'.format(self.npc.pk))
 
-        # create an instance of a GET request
-        request = self.factory.get('home')
-
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.npc_update(request, self.npc.pk)
-
-        # make sure the npc information is on the page
-        self.assertContains(response, self.npc.name, status_code=200)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.npc.name)
 
     def test_npc_edit(self):
-        """
-        Edit npc
-        """
-
+        self.client.login(username='testuser', password='testpassword')
         self.npc_form_data['name'] = "test npc name EDIT"
-        form = forms.NPCForm(data=self.npc_form_data)
-        new_npc = form.save(commit=False)
-        new_npc.user = self.user
-        new_npc.save()
+        response = self.client.post('/characters/npc/{}/edit/'.format(self.npc.pk), self.npc_form_data)
+        self.assertRedirects(response, '/characters/npc/{}/'.format(self.npc.pk), 302, 200)
 
-        verify_npc = models.NPC.objects.get(pk=new_npc.pk)
-        npcs = models.NPC.objects.all()
-
-        self.assertTrue(form.is_valid())
-        #self.assertIn(new_npc, npcs)
-        self.assertEqual(new_npc.name, verify_npc.name)
+        response = self.client.get('/characters/npc/{}/'.format(self.npc.pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'test npc name EDIT')
 
     def test_npc_delete_page(self):
-        """
-        Delete npc page contains the correct information
-        """
-
-        # create an instance of a GET request
-        request = self.factory.get('home')
-
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.npc_delete(request, self.npc.pk)
-
-        # make sure the npc information is on the page
-        self.assertContains(response, self.npc.name, status_code=200)
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/characters/npc/{}/delete/'.format(self.npc.pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.npc.name)
 
     def test_npc_delete(self):
-        """
-        Delete npc
-        """
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.post('/characters/npc/{}/delete/'.format(self.npc.pk), {})
+        self.assertRedirects(response, '/characters/npc/', 302, 200)
 
-        form = forms.DeleteNPCForm(data=self.npc_form_data)
-        new_npc = form.save(commit=False)
-        new_npc.user = self.user
-        new_npc.save()
-
-        self.assertTrue(form.is_valid())
+        npcs = models.NPC.objects.all()
+        self.assertEqual(npcs.count(), 1)

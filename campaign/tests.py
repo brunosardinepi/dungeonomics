@@ -1,17 +1,15 @@
 from django.contrib.auth.models import User
-from django.test import Client, RequestFactory, TestCase
+from django.test import Client, TestCase
 from django.utils import timezone
 
 import unittest
 
 from . import forms
 from . import models
-from . import views
 
 
 class CampaignTest(TestCase):
     def setUp(self):
-        self.factory = RequestFactory()
         self.client = Client()
 
         self.user = User.objects.create_user(

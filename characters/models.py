@@ -156,11 +156,7 @@ class Player(Character):
     senses = models.CharField(max_length=255, default='', blank=True)
     equipment = models.TextField(blank=True)
 
-
-
-
     def get_absolute_url(self):
         return reverse('characters:player_detail', kwargs={
             'player_pk': self.pk
             })
-    
