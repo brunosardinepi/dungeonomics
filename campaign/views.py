@@ -206,6 +206,9 @@ def campaign_update(request, campaign_pk):
                     chapter.delete()
                 messages.add_message(request, messages.SUCCESS, "Updated campaign: {}".format(form.cleaned_data['title']))
                 return HttpResponseRedirect(campaign.get_absolute_url())
+            else:
+                print(form.errors)
+                print(chapter_forms.errors)
     else:
         raise Http404
     return render(request, 'campaign/campaign_form.html', {'form': form, 'formset': chapter_forms, 'campaign': campaign})
