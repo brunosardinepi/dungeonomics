@@ -3,4 +3,4 @@ dungeonomicsenv/
 db.sqlite3
 .DS_Store
 .vscode/
-settings.py
+config.py

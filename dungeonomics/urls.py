@@ -1,10 +1,12 @@
 from django.conf.urls import url, include
 from django.contrib import admin
 
+from . import config
 from . import views
 
+
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^{}/'.format(config.settings['admin']), admin.site.urls),
     url(r'^accounts/password/reset/done/', views.PasswordResetDoneView.as_view(), name='account_reset_password_done'),
     url(r'^accounts/password/reset/key/(?P<uidb36>[0-9A-Za-z]+)-(?P<key>.+)/$', views.CustomPasswordResetFromKeyView.as_view(), name="account_reset_password_from_key"),
     url(r'^accounts/password/reset/key/done/$', views.PasswordResetFromKeyDoneView.as_view(), name="account_reset_password_from_key_done"),
