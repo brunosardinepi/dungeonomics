@@ -23,11 +23,21 @@ body {
     left: 0;
     margin-top: auto;
 }
+.navbar {
+    background-color: #222;
+    border-color: #080808;
+}
+.nav-item {
+    margin: 0 0.5rem;
+}
 .navbar-toggle + #logo {
     display: none;
 }
 .navbar-toggle.collapsed + #logo {
     display: block;
+}
+a.dropdown-item:hover {
+    background-color: #eee !important;
 }
 ul.contents_list {
     padding: 0;
