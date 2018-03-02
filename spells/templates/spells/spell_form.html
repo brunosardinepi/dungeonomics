@@ -2,10 +2,10 @@
 {% load bootstrap3 %}
 
 {% block title %}
-    {% if item.pk %}
-        Update item 
+    {% if spell.pk %}
+        Update Spell 
     {% else %}
-        New item 
+        New Spell 
     {% endif %}
     | {{ block.super }}
 {% endblock %}
@@ -32,12 +32,12 @@
                     'type': 'npc'
                 });
         }
-        var items_dict = {{items|safe}};
-        for (var key in items_dict) {
+        var spells_dict = {{spells|safe}};
+        for (var key in spells_dict) {
             taggable.push({
-                    'name': items_dict[key],
+                    'name': spells_dict[key],
                     'id': key,
-                    'type': 'item'
+                    'type': 'spell'
                 });
         }
         var players_dict = {{players|safe}};
@@ -71,11 +71,11 @@
             'paste autosave autolink print searchreplace table textcolor wordcount link image mention'
             ],
             menu: {
-            edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace'},
-            insert: {title: 'Insert', items: 'image'},
-            view: {title: 'View', items: 'visualaid'},
-            format: {title: 'Format', items: 'bold italic underline strikethrough superscript subscript | formats | removeformat'},
-            table: {title: 'Table', items: 'inserttable tableprops deletetable | cell row column'}
+            edit: {title: 'Edit', spells: 'undo redo | cut copy paste pastetext | selectall | searchreplace'},
+            insert: {title: 'Insert', spells: 'image'},
+            view: {title: 'View', spells: 'visualaid'},
+            format: {title: 'Format', spells: 'bold italic underline strikethrough superscript subscript | formats | removeformat'},
+            table: {title: 'Table', spells: 'inserttable tableprops deletetable | cell row column'}
             },
             toolbar: 'print | fontsizeselect bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link | forecolor backcolor',
             browser_spellcheck: true,
@@ -87,17 +87,17 @@
             mentions: {
                 source: taggable,
                 delay: 0,
-                insert: function(item) {
-                    if (item.type == 'item') {
-                        var url = "{% url 'items:item_detail' item_pk=999999999999 %}".replace(999999999999, item.id);
-                    } else if (item.type == 'world') {
-                        var url = "{% url 'locations:location_detail' world_pk=999999999999 %}".replace(999999999999, item.id);
-                    } else if (item.type == 'location') {
-                        var url = "{% url 'locations:location_detail' location_pk=999999999999 %}".replace(999999999999, item.id);
+                insert: function(spell) {
+                    if (spell.type == 'spell') {
+                        var url = "{% url 'spells:spell_detail' spell_pk=999999999999 %}".replace(999999999999, spell.id);
+                    } else if (spell.type == 'world') {
+                        var url = "{% url 'locations:location_detail' world_pk=999999999999 %}".replace(999999999999, spell.id);
+                    } else if (spell.type == 'location') {
+                        var url = "{% url 'locations:location_detail' location_pk=999999999999 %}".replace(999999999999, spell.id);
                     } else {
-                        var url = "{% url 'characters:monster_detail' monster_pk=999999999999 %}".replace(999999999999, item.id).replace(/monster/g, item.type);
+                        var url = "{% url 'characters:monster_detail' monster_pk=999999999999 %}".replace(999999999999, spell.id).replace(/monster/g, spell.type);
                     }
-                    return "<a href=" + url + ">" + item.name + "</a>";
+                    return "<a href=" + url + ">" + spell.name + "</a>";
                 }
             }
         });
@@ -109,10 +109,10 @@
         <div class="panel panel-default panel-campaign">
             <div class="panel-heading">
                 <h3 class="panel-title">
-                    {% if item.pk %}
-                        <strong>Update item:</strong> {{ item.name }}
+                    {% if spell.pk %}
+                        <strong>Update spell:</strong> {{ spell.name }}
                     {% else %}
-                        <strong>New item</strong>
+                        <strong>New spell</strong>
                     {% endif %}
                 </h3>
             </div>
@@ -122,12 +122,12 @@
                     {% bootstrap_form form %}
             </div>
             <div class="panel-footer clearfix">
-                {% if item.pk %}
-                    <a href="{% url 'items:item_detail' item_pk=item.pk %}" class="btn btn-default">Cancel</a>
-                    <input type="submit" class="btn btn-primary pull-right" value="Update item">
+                {% if spell.pk %}
+                    <a href="{% url 'spells:spell_detail' spell_pk=spell.pk %}" class="btn btn-default">Cancel</a>
+                    <input type="submit" class="btn btn-primary pull-right" value="Update spell/spell">
                 {% else %}
-                    <a href="{% url 'items:item_detail' %}" class="btn btn-default">Cancel</a>
-                    <input type="submit" class="btn btn-primary pull-right" value="Create item">
+                    <a href="{% url 'spells:spell_detail' %}" class="btn btn-default">Cancel</a>
+                    <input type="submit" class="btn btn-primary pull-right" value="Create spell/spell">
                 {% endif %}
                 </form>
             </div>

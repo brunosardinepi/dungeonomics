@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% load bootstrap3 %}
+
+{% block title %} Delete spell | {{ block.super }}{% endblock %}
+
+{% block body_content %}
+    <div class="col-md-4 col-md-offset-4">
+        <div class="panel panel-default panel-campaign">
+            <div class="panel-heading">
+                <h3 class="panel-title"><strong>Delete spell</strong></h3>
+            </div>
+            <div class="panel-body">
+                <form method="POST" action="" style="margin-bottom:0;">
+                    {% csrf_token %}
+                    <p class="text-center">Please confirm that you want to delete the following spell/spell:</p>
+                    <p style="font-size: 18px; font-weight: bold;" class="text-center">{{ spell.name }}</p>
+                    <p class="text-center margin-bottom-zero">This spell will be permanently deleted.</p>
+            </div>
+            <div class="panel-footer clearfix">
+                    <a href="{% url 'spells:spell_detail' spell_pk=spell.pk %}" class="btn btn-default">Cancel</a>
+                    <input type="submit" class="btn btn-primary pull-right" value="Delete spell/spell">
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

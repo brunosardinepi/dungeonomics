@@ -1,10 +1,10 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-    {% if this_item.pk %}
-        {{ this_item.name }} 
+    {% if this_spell.pk %}
+        {{ this_spell.name }} 
     {% else %}
-        Items
+        Spells 
     {% endif %}
     | {{ block.super }}
 {% endblock %}
@@ -15,14 +15,14 @@
             <div class="panel panel-default">
                 <div class="panel-heading panel-heading-cog clearfix">
                     <span class="pull-left">
-                        <h3 class="panel-title panel-title-cog">Items</h3>
+                        <h3 class="panel-title panel-title-cog">Spells</h3>
                     </span>
                     <span class="pull-right">
                         <ul class="nav navbar-nav navbar-right navbar-cog">
                             <li class="dropdown">
                                 <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="{% url 'items:item_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create item</span></a></li>
+                                    <li><a href="{% url 'spells:spell_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create spell</span></a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -30,16 +30,16 @@
                 </div>
                 <div class="panel-body">
                     <ul class="contents_list">
-                        {% if items %}
-                            {% for item in items %}
+                        {% if spells %}
+                            {% for spell in spells %}
                                 <li class="li-content">
-                                    <a href="{% url 'items:item_detail' item_pk=item.pk %}">
-                                        {{ item.name }}
+                                    <a href="{% url 'spells:spell_detail' spell_pk=spell.pk %}">
+                                        {{ spell.name }}
                                     </a>
                                 </li>
                             {% endfor %}
                         {% else %}
-                            <li>You haven't created any items yet!</li>
+                            <li>You haven't created any spells yet!</li>
                         {% endif %}
                     </ul>
                 </div>
@@ -47,30 +47,30 @@
         </div>
         <div class="col-md-8">
             <div class="panel panel-default">
-                {% if this_item %}
+                {% if this_spell %}
                     <div class="panel-heading panel-heading-cog clearfix">
                         <span class="pull-left">
-                            <h3 class="panel-title panel-title-cog">{{ this_item.name }}</h3>
+                            <h3 class="panel-title panel-title-cog">{{ this_spell.name }}</h3>
                         </span>
                         <span class="pull-right">
                             <ul class="nav navbar-nav navbar-right navbar-cog">
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="{% url 'items:item_update' item_pk=this_item.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit item</span></a></li>
-                                        <li><a href="{% url 'items:item_copy' item_pk=this_item.pk %}"><span class="text-success"><i class="fa fa-fw fa-files-o" aria-hidden="true"></i> Copy item</span></a></li>
-                                        <li><a href="{% url 'items:item_delete' item_pk=this_item.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete item</span></a></li>
+                                        <li><a href="{% url 'spells:spell_update' spell_pk=this_spell.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit spell</span></a></li>
+                                        <li><a href="{% url 'spells:spell_copy' spell_pk=this_spell.pk %}"><span class="text-success"><i class="fa fa-fw fa-files-o" aria-hidden="true"></i> Copy spell</span></a></li>
+                                        <li><a href="{% url 'spells:spell_delete' spell_pk=this_spell.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete spell</span></a></li>
                                     </ul>
                                 </li>
                             </ul>
                         </span>
                     </div>
                     <div class="panel-body">
-                            <p><em>{% if this_item.item_type %}{{ this_item.item_type }}{% endif %}{% if this_item.rarity and this_item.item_type %}, {{ this_item.rarity }}{% elif this_item.rarity %}{{ this_item.rarity }}{% else %}{% endif %}</em></p>
+                            <p><em>{% if this_spell.spell_type %}{{ this_spell.spell_type }}{% endif %}{% if this_spell.rarity and this_spell.spell_type %}, {{ this_spell.rarity }}{% elif this_spell.rarity %}{{ this_spell.rarity }}{% else %}{% endif %}</em></p>
 
                             <hr>
                             
-                            <p>{{ this_item.description|safe }}</p>
+                            <p>{{ this_spell.description|safe }}</p>
                     </div>
                 {% else %}
                     <div class="panel-heading panel-heading-cog clearfix">
@@ -79,14 +79,14 @@
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="{% url 'items:item_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create item</span></a></li>
+                                        <li><a href="{% url 'spells:spell_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create spell</span></a></li>
                                     </ul>
                                 </li>
                             </ul>
                         </span>
                     </div>
                     <div class="panel-body">
-                        <p>You haven't created any items yet!</p>
+                        <p>You haven't created any spells yet!</p>
                     </div>
                 {% endif %}
             </div>
