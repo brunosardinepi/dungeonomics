@@ -3,7 +3,7 @@ html {
     min-height: 100%;
 }
 body {
-    padding-top: 76px;
+    padding-top: 56px;
     background: url("../img/body_bg.png") no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -48,10 +48,9 @@ ul.contents_list li {
     text-align: center;
 }
 .breadcrumbs {
-    padding: 5px 0;
-    background-color: #333;
+    background-color: #333!important;
     color: #fff;
-    margin-bottom: 0;
+    border-radius: 0!important;
 }
 .breadcrumbs a {
     color: #fff;

@@ -4,25 +4,19 @@
 {% block title %}{{ this_campaign.title }} | {{ block.super }}{% endblock %}
 
 {% block breadcrumbs %}
-    <div class="jumbotron breadcrumbs">
+    <div class="jumbotron py-1 px-0 breadcrumbs">
         <div class="container">
-            <span>
-                <span>
-                    <a href="{% url 'campaign:campaign_detail' campaign_pk=this_campaign.pk %}">{{ this_campaign.title }}</a>
-                </span>
-                <span>
-                    {% if this_chapter %}
-                        <span class="breadcrumbs_separator"> / </span>
-                        {% if this_section %}
-                            <a href="{% url 'campaign:campaign_detail' campaign_pk=this_campaign.pk chapter_pk=this_chapter.pk %}">{{ this_chapter.title }}</a>
-                            <span class="breadcrumbs_separator"> / </span>
-                            {{ this_section.title }}
-                        {% else %}
-                            {{ this_chapter.title }}
-                        {% endif %}
-                    {% endif %}
-                </span>
-            </span>
+            <a href="{% url 'campaign:campaign_detail' campaign_pk=this_campaign.pk %}">{{ this_campaign.title }}</a>
+            {% if this_chapter %}
+                <span class="breadcrumbs_separator"> / </span>
+                {% if this_section %}
+                    <a href="{% url 'campaign:campaign_detail' campaign_pk=this_campaign.pk chapter_pk=this_chapter.pk %}">{{ this_chapter.title }}</a>
+                    <span class="breadcrumbs_separator"> / </span>
+                    {{ this_section.title }}
+                {% else %}
+                    {{ this_chapter.title }}
+                {% endif %}
+            {% endif %}
         </div>
     </div>
 {% endblock %}
