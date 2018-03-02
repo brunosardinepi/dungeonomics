@@ -1,6 +1,6 @@
 {% for campaign in campaigns %} 
-    <li><a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.id %}">{{ campaign.title }}</a></li>
+    <a class="dropdown-item" href="{% url 'campaign:campaign_detail' campaign_pk=campaign.id %}">{{ campaign.title }}</a>
 {% endfor %}
 {% if campaigns %}
-    <li role="separator" class="divider"></li>
+    <div class="dropdown-divider"></div>
 {% endif %}

@@ -73,10 +73,7 @@
                                     Campaigns
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownCampaigns">
-                                    <a class="dropdown-item" href="#">Campaign 1</a>
-                                    <a class="dropdown-item" href="#">Campaign 2</a>
-                                    <a class="dropdown-item" href="#">Campaign 3</a>
-                                    <div class="dropdown-divider"></div>
+                                    {% nav_campaign_list request %}
                                     <a class="dropdown-item text-success" href="{% url 'campaign:campaign_create' %}">
                                         <i class="fal mr-1 fa-fw fa-plus"></i> Create campaign
                                     </a>
@@ -124,6 +121,7 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownAccount">
                                     <h6 class="dropdown-header">{{ user.email }}</h6>
+                                    <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{% url 'profile' %}">
                                         <i class="fal mr-1 fa-fw fa-user-alt"></i> Profile
                                     </a>
