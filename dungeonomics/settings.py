@@ -27,12 +27,12 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
     'lib',
-    'bootstrap3',
     'campaign',
     'characters',
     'wiki',
     'items',
     'locations',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
