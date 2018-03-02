@@ -11,9 +11,8 @@
 {% block title %}Login | {{ block.super }}{% endblock %}
 
 {% block body_content %}
-
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-lg-12">
             <div class="logo">
                 <a href="{% url 'home' %}" title="Dungeonomics">
                     <img src="/static/img/logo_login.png" alt="Dungeonomics">
@@ -22,66 +21,65 @@
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class="col-md-4">
+        <div class="col-lg-4">
             <div class="card">
                 <div class="card-body">
-                        <form class="login" method="POST" action="{% url 'account_login' %}">
-                            {% csrf_token %}
+                    <form class="login" method="POST" action="{% url 'account_login' %}">
+                        {% csrf_token %}
 
-                            {% if form.non_field_errors %}
-                                <div class="alert alert-danger" role="alert">
-                                    {{ form.non_field_errors }}
-                                </div>
-                            {% endif %}
-
-                            {% render_field form.login class+="form-control mb-3" %}
-                            {% if form.login.errors %}
-                                {% for error in form.login.errors %}
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ error|escape }}
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
-
-                            {% render_field form.password class+="form-control mb-3" %}
-                            {% if form.password.errors %}
-                                {% for error in form.password.errors %}
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ error|escape }}
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
-
-
-                            <div class="form-check mb-3">
-                                {% render_field form.remember class+="form-check-input" %}
-                                <label class="form-check-label" for="{{ form.remember.id_for_label }}">
-                                    Remember me
-                                </label>
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ form.non_field_errors }}
                             </div>
+                        {% endif %}
 
-                            {% if redirect_field_value %}
-                                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-                            {% endif %}
-                            <button class="primaryAction btn btn-success btn-block" type="submit">Sign in</button>
-                            <p class="small text-center mt-2"><a href="{% url 'account_reset_password' %}">Forgot password?</a></p>
-                        </form>
-                            {% get_providers as socialaccount_providers %}
+                        {% render_field form.login class+="form-control mb-3" %}
+                        {% if form.login.errors %}
+                            {% for error in form.login.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{ error|escape }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
 
-                            {% if socialaccount_providers %}
-                                {% for socialaccount_provider in socialaccount_providers %}
-                                    {% if socialaccount_provider.name|lower == 'facebook' %}
-                                        <a class="btn btn-block facebook" href="http://dungeonomics.com/accounts/facebook/login/?process=login"><i class="fab fa-fw fa-facebook-f mr-2"></i> Sign in with Facebook</a>
-                                    {% elif socialaccount_provider.name|lower == 'google' %}
-                                        <a class="btn btn-block google" href="http://dungeonomics.com/accounts/google/login/?process=login"><i class="fab fa-fw fa-google mr-2"></i> Sign in with Google</a>
-                                    {% endif %}
-                                {% endfor %}
-                                {% include "socialaccount/snippets/login_extra.html" %}
+                        {% render_field form.password class+="form-control mb-3" %}
+                        {% if form.password.errors %}
+                            {% for error in form.password.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{ error|escape }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+
+                        <div class="form-check mb-3">
+                            {% render_field form.remember class+="form-check-input" %}
+                            <label class="form-check-label" for="{{ form.remember.id_for_label }}">
+                                Remember me
+                            </label>
+                        </div>
+
+                        {% if redirect_field_value %}
+                            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                        {% endif %}
+                        <button class="primaryAction btn btn-success btn-block" type="submit">Sign in</button>
+                        <p class="small text-center mt-2"><a href="{% url 'account_reset_password' %}">Forgot password?</a></p>
+                    </form>
+                    {% get_providers as socialaccount_providers %}
+
+                    {% if socialaccount_providers %}
+                        {% for socialaccount_provider in socialaccount_providers %}
+                            {% if socialaccount_provider.name|lower == 'facebook' %}
+                                <a class="btn btn-block facebook" href="http://dungeonomics.com/accounts/facebook/login/?process=login"><i class="fab fa-fw fa-facebook-f mr-2"></i> Sign in with Facebook</a>
+                            {% elif socialaccount_provider.name|lower == 'google' %}
+                                <a class="btn btn-block google" href="http://dungeonomics.com/accounts/google/login/?process=login"><i class="fab fa-fw fa-google mr-2"></i> Sign in with Google</a>
                             {% endif %}
-                            <p class="text-center small mt-2">Don't have an account yet? <a href="{{ signup_url }}">Sign up!</a></p>
+                        {% endfor %}
+                        {% include "socialaccount/snippets/login_extra.html" %}
+                    {% endif %}
+                    <p class="text-center small mt-2">Don't have an account yet? <a href="{{ signup_url }}">Sign up!</a></p>
                 </div>
             </div>
         </div>
     </div>
-
 {% endblock %}
