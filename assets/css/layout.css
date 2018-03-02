@@ -3,8 +3,7 @@ html {
     min-height: 100%;
 }
 body {
-    /*min-height: 2000px;*/
-    padding-top: 46px;
+    padding-top: 76px;
     background: url("../img/body_bg.png") no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
