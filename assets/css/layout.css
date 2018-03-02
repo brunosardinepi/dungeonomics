@@ -4,13 +4,13 @@ html {
 }
 body {
     /*min-height: 2000px;*/
-    padding-top: 51px;
+    padding-top: 46px;
     background: url("../img/body_bg.png") no-repeat center center fixed; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
-    margin-bottom: 110px !important;
+    margin-bottom: 180px !important;
 }
 #logo_wrapper {
     position: relative;
@@ -173,35 +173,15 @@ a.home-panel:hover {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 110px;
+    height: 180px;
     background-color: #222;
 }
-.footer-div {
-    text-align: center;
-}
-#footer-nav, #footer-social {
-    height: 40px;
-    width: 221px;
-    margin: 0 auto;
-    padding: 0;
-}
-#footer-social {
-    width: 114px !important;
-}
-#footer-nav li, #footer-social li {
-    height: 40px;
-    display: inline-block;
-    text-align: center;
-    padding: 0 5px;
-}
-#footer-nav a, #footer-social a {
+.footer a {
     text-decoration: none;
-    height: 40px;
-    display: inline-block;
-    line-height: 40px;
     color: #9d9d9d;
+#    margin: 0 1rem;
 }
-#footer-nav a:hover, #footer-social a:hover {
+.footer a:hover {
     text-decoration: none;
     color: #fff;
 }
