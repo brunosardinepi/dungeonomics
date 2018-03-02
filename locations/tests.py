@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.test import Client, RequestFactory, TestCase
+from django.test import Client, TestCase
 
 import unittest
 
@@ -9,41 +9,33 @@ from . import views
 
 
 class LocationTest(TestCase):
-    world_form_data = {
-        'name': 'test world',
-        'content': 'this is test world',
-    }
-
-    location_form_data = {
-        'name': 'test location',
-        'content': 'location test',
-    }
-
     def setUp(self):
-        self.factory = RequestFactory()
         self.client = Client()
 
-        # create a test user
-        self.user = User.objects.create_user(username='testuser', email='test@test.test', password='testpassword')
+        self.user = User.objects.create_user(
+            username='testuser',
+            email='test@test.test',
+            password='testpassword',
+        )
 
-        # create a test user
-        self.user2 = User.objects.create_user(username='testuser2', email='test2@test.test', password='testpassword')
+        self.user2 = User.objects.create_user(
+            username='testuser2',
+            email='test2@test.test',
+            password='testpassword',
+        )
 
-        # create a test world for testuser
         self.world = models.World.objects.create(
             user=self.user,
             name="test world",
             content="this is test world",
         )
 
-        # create a test world for testuser2
         self.world2 = models.World.objects.create(
             user=self.user2,
             name="test 2 world",
             content="this is test 2 world",
         )
 
-        # create a test location for testuser
         self.location = models.Location.objects.create(
             user=self.user,
             name="test location",
@@ -51,7 +43,6 @@ class LocationTest(TestCase):
             content="this is test location",
         )
 
-        # create a test location for testuser2
         self.location2 = models.Location.objects.create(
             user=self.user2,
             name="test 2 location",
@@ -59,289 +50,159 @@ class LocationTest(TestCase):
             content="this is test 2 location",
         )
 
+        self.location3 = models.Location.objects.create(
+            user=self.user2,
+            name="test 3 location",
+            world=self.world2,
+            parent_location=self.location2,
+            content="this is test 3 location",
+        )
+
+        self.world_form_data = {
+            'name': 'test world name',
+            'content': 'this is test world',
+        }
+
+        self.location_form_data = {
+            'name': 'test location name',
+            'content': 'location test',
+            'world': self.world2.pk,
+            'parent_location': self.location2.pk,
+        }
+
     def test_world_exists(self):
-        """
-        Test worlds exist
-        """
-
-        # get queryset that contains all worlds
         worlds = models.World.objects.all()
-
-        # make sure the test worlds exist in the queryset
         self.assertIn(self.world, worlds)
         self.assertIn(self.world2, worlds)
 
     def test_world_page(self):
-        """
-        Location page contains the correct information
-        """
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/locations/world/{}/'.format(self.world.pk))
 
-        # create an instance of a GET request
-        request = self.factory.get('home')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.world.name)
+        self.assertContains(response, self.world.content)
 
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.location_detail(request, world_pk=self.world.pk)
-
-        # make sure the world information is on the page
-        self.assertContains(response, self.world.name, status_code=200)
-        self.assertContains(response, self.world.content, status_code=200)
-
-    @unittest.expectedFailure
     def test_world_page_bad_user(self):
-        """
-        Location page is inaccessible by the wrong user
-        """
-
-        # create an instance of a GET request
-        request = self.factory.get('home')
-
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.location_detail(request, world_pk=self.world2.pk)
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/locations/world/{}/'.format(self.world2.pk))
+        self.assertEqual(response.status_code, 404)
 
     def test_world_create_page(self):
-        """
-        Create world page loads
-        """
-
-        # create an instance of a GET request
-        request = self.factory.get('home')
-
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.world_create(request)
-
-        # check that the response is 200 OK
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/locations/world/create/')
         self.assertEqual(response.status_code, 200)
 
     def test_world_create(self):
-        """
-        Create world
-        """
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.post('/locations/world/create/', self.world_form_data)
+        world = models.World.objects.get(name='test world name')
+        self.assertRedirects(response, '/locations/world/{}/'.format(world.pk), 302, 200)
 
-        form = forms.WorldForm(data=self.world_form_data)
-        new_world = form.save(commit=False)
-        new_world.user = self.user
-        new_world.save()
-
-        new_world = models.World.objects.get(pk=new_world.pk)
         worlds = models.World.objects.all()
-
-        self.assertTrue(form.is_valid())
-        self.assertIn(new_world, worlds)
+        self.assertIn(world, worlds)
 
     def test_world_edit_page(self):
-        """
-        Edit world page contains the correct information
-        """
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/locations/world/{}/edit/'.format(self.world.pk))
 
-        # create an instance of a GET request
-        request = self.factory.get('home')
-
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.world_update(request, self.world.pk)
-
-        # make sure the world information is on the page
-        self.assertContains(response, self.world.name, status_code=200)
-        self.assertContains(response, self.world.content, status_code=200)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.world.name)
 
     def test_world_edit(self):
-        """
-        Edit world
-        """
+        self.client.login(username='testuser', password='testpassword')
+        data = {
+            'name': 'test world name EDIT',
+            'content': 'this is test world',
+            'form-TOTAL_FORMS': '1',
+            'form-INITIAL_FORMS': '1',
+            'form-MIN_NUM_FORMS': '0',
+            'form-MAX_NUM_FORMS': '1000',
+            'form-0-id': self.location.pk,
+            'form-0-order': 1,
+            'form-0-name': self.location.name,
+        }
 
-        self.world_form_data['name'] = "test EDIT world"
-        form = forms.WorldForm(data=self.world_form_data)
-        new_world = form.save(commit=False)
-        new_world.user = self.user
-        new_world.save()
+        response = self.client.post('/locations/world/{}/edit/'.format(self.world.pk), data)
+        self.assertRedirects(response, '/locations/world/{}/'.format(self.world.pk), 302, 200)
 
-        verify_world = models.World.objects.get(pk=new_world.pk)
-        worlds = models.World.objects.all()
-
-        self.assertTrue(form.is_valid())
-        self.assertEqual(new_world.name, verify_world.name)
+        response = self.client.get('/locations/world/{}/'.format(self.world.pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'test world name EDIT')
 
     def test_world_delete_page(self):
-        """
-        Delete world page contains the correct information
-        """
-
-        # create an instance of a GET request
-        request = self.factory.get('home')
-
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.world_delete(request, self.world.pk)
-
-        # make sure the world information is on the page
-        self.assertContains(response, self.world.name, status_code=200)
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/locations/world/{}/delete/'.format(self.world.pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.world.name)
 
     def test_world_delete(self):
-        """
-        Delete world
-        """
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.post('/locations/world/{}/delete/'.format(self.world.pk), {})
+        self.assertRedirects(response, '/locations/', 302, 200)
 
-        form = forms.DeleteWorldForm(data=self.world_form_data)
-        new_world = form.save(commit=False)
-        new_world.user = self.user
-        new_world.save()
-
-        self.assertTrue(form.is_valid())
+        worlds = models.World.objects.all()
+        self.assertEqual(worlds.count(), 1)
 
     def test_location_exists(self):
-        """
-        Test locations exist
-        """
-
-        # get queryset that contains all locations
         locations = models.Location.objects.all()
-
-        # make sure the test locations exist in the queryset
         self.assertIn(self.location, locations)
         self.assertIn(self.location2, locations)
 
     def test_location_page(self):
-        """
-        Location page contains the correct information
-        """
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/locations/location/{}/'.format(self.location.pk))
 
-        # create an instance of a GET request
-        request = self.factory.get('home')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.location.name)
+        self.assertContains(response, self.location.content)
 
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.location_detail(request, location_pk=self.location.pk)
-
-        # make sure the location information is on the page
-        self.assertContains(response, self.location.name, status_code=200)
-        self.assertContains(response, self.location.content, status_code=200)
-
-    @unittest.expectedFailure
     def test_location_page_bad_user(self):
-        """
-        Location page is inaccessible by the wrong user
-        """
-
-        # create an instance of a GET request
-        request = self.factory.get('home')
-
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.location_detail(request, self.location2.pk)
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/locations/location/{}/'.format(self.location2.pk))
+        self.assertEqual(response.status_code, 404)
 
     def test_location_create_page(self):
-        """
-        Create location page loads
-        """
-
-        # create an instance of a GET request
-        request = self.factory.get('home')
-
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.location_create(request, world_pk=self.world.pk)
-
-        # check that the response is 200 OK
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/locations/location/{}/create/'.format(self.world.pk))
         self.assertEqual(response.status_code, 200)
 
     def test_location_create(self):
-        """
-        Create location
-        """
+        self.client.login(username='testuser2', password='testpassword')
+        response = self.client.post('/locations/location/{}/create/'.format(self.world2.pk), self.location_form_data)
+        location = models.Location.objects.get(name='test location name')
+        self.assertRedirects(response, '/locations/location/{}/'.format(location.pk), 302, 200)
 
-        self.location_form_data['world'] = self.world.pk
-        form = forms.LocationForm(self.user.pk, self.world.pk, self.location.pk, data=self.location_form_data)
-        new_location = form.save(commit=False)
-        new_location.user = self.user
-        new_location.save()
-
-        new_location = models.Location.objects.get(pk=new_location.pk)
         locations = models.Location.objects.all()
-
-        self.assertTrue(form.is_valid())
-        self.assertIn(new_location, locations)
+        self.assertIn(location, locations)
 
     def test_location_edit_page(self):
-        """
-        Edit location page contains the correct information
-        """
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/locations/location/{}/edit/'.format(self.location.pk))
 
-        # create an instance of a GET request
-        request = self.factory.get('home')
-
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.location_update(request, self.location.pk)
-
-        # make sure the location information is on the page
-        self.assertContains(response, self.location.name, status_code=200)
-        self.assertContains(response, self.location.content, status_code=200)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.location.name)
 
     def test_location_edit(self):
-        """
-        Edit location
-        """
+        self.client.login(username='testuser2', password='testpassword')
+        self.location_form_data['name'] = "test location name EDIT"
+        response = self.client.post('/locations/location/{}/edit/'.format(self.location3.pk), self.location_form_data)
+        self.assertRedirects(response, '/locations/location/{}/'.format(self.location3.pk), 302, 200)
 
-        self.location_form_data['name'] = "test EDIT location"
-        self.location_form_data['world'] = self.world.pk
-        form = forms.LocationForm(self.user.pk, self.world.pk, self.location.pk, data=self.location_form_data)
-        new_location = form.save(commit=False)
-        new_location.user = self.user
-        new_location.save()
-
-        verify_location = models.Location.objects.get(pk=new_location.pk)
-        locations = models.Location.objects.all()
-
-        self.assertTrue(form.is_valid())
-        self.assertEqual(new_location.name, verify_location.name)
+        response = self.client.get('/locations/location/{}/'.format(self.location3.pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'test location name EDIT')
 
     def test_location_delete_page(self):
-        """
-        Delete location page contains the correct information
-        """
-
-        # create an instance of a GET request
-        request = self.factory.get('home')
-
-        # simulate a logged-in user
-        request.user = self.user
-
-        # test the view
-        response = views.location_delete(request, self.location.pk)
-
-        # make sure the location information is on the page
-        self.assertContains(response, self.location.name, status_code=200)
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/locations/location/{}/delete/'.format(self.location.pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.location.name)
 
     def test_location_delete(self):
-        """
-        Delete location
-        """
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.post('/locations/location/{}/delete/'.format(self.location.pk), {})
+        self.assertRedirects(response, '/locations/', 302, 200)
 
-        form = forms.DeleteLocationForm(data=self.location_form_data)
-        new_location = form.save(commit=False)
-        new_location.user = self.user
-        new_location.world = self.world
-        new_location.save()
-
-        self.assertTrue(form.is_valid())
+        locations = models.Location.objects.all()
+        self.assertEqual(locations.count(), 2)

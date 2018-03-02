@@ -5,7 +5,7 @@ from . import views
 urlpatterns = [
     url(r'^(?P<campaign_pk>\d+)/$', views.campaign_detail, name='campaign_detail'),
     url(r'^(?P<campaign_pk>\d+)/chapter/(?P<chapter_pk>\d+)/$', views.campaign_detail, name='campaign_detail'),
-    url(r'^(?P<campaign_pk>\d+)/chapter/(?P<chapter_pk>\d+)/section/(?P<section_pk>\d+)$', views.campaign_detail, name='campaign_detail'),
+    url(r'^(?P<campaign_pk>\d+)/chapter/(?P<chapter_pk>\d+)/section/(?P<section_pk>\d+)/$', views.campaign_detail, name='campaign_detail'),
 
     url(r'^create/$', views.CampaignCreate.as_view(), name='campaign_create'),
     url(r'^(?P<campaign_pk>\d+)/chapter/create/$', views.chapter_create, name='chapter_create'),

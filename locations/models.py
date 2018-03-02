@@ -28,7 +28,6 @@ class World(LocationTemplate):
 
 
 class Location(LocationTemplate):
-    content = models.TextField(blank=True)
     world = models.ForeignKey(World, on_delete=models.CASCADE)
     parent_location = models.ForeignKey("self", null=True, blank=True, on_delete=models.CASCADE)
 

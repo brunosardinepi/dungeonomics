@@ -24,49 +24,32 @@ class HomeTest(TestCase):
         self.client = Client()
 
         # create a test user
-        self.user = User.objects.create_user(username='testuser', email='test@test.test', password='testpassword')
+        self.user = User.objects.create_user(
+            username='testuser',
+            email='test@test.test',
+            password='testpassword'
+        )
 
-    def test_home_status(self):
-        """
-        Home page returns HTTP 200
-        """
+    def test_home_logged_out(self):
+        response = self.client.get('/')
 
-        # create GET request
-        request = self.factory.get('home')
-
-        # simulate logged-out user
-        request.user = AnonymousUser()
-
-        # test the view
-        response = views.home_view(request)
-
-        # check that the response is 200 OK
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Streamlined Roleplaying")
+        self.assertContains(response, "Login")
+        self.assertContains(response, "Sign up")
+        self.assertContains(response, "Features")
+        self.assertContains(response, "Users")
+        self.assertContains(response, "Campaigns")
+        self.assertContains(response, "Creatures")
+        self.assertContains(response, "Donate")
+        self.assertContains(response, "Copyright")
 
-    def test_home_content(self):
-        """
-        Home page returns correct content
-        """
+    def test_home_logged_in(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/')
 
-        # create GET request
-        request = self.factory.get('home')
-
-        # simulate logged-out user
-        request.user = AnonymousUser()
-
-        # test the view
-        response = views.home_view(request)
-
-        # check that the correct content is displayed
-        self.assertContains(response, "Streamlined Roleplaying", status_code=200)
-        self.assertContains(response, "Login", status_code=200)
-        self.assertContains(response, "Sign up", status_code=200)
-        self.assertContains(response, "Features", status_code=200)
-        self.assertContains(response, "Users", status_code=200)
-        self.assertContains(response, "Campaigns", status_code=200)
-        self.assertContains(response, "Creatures", status_code=200)
-        self.assertContains(response, "Donate", status_code=200)
-        self.assertContains(response, "Copyright", status_code=200)
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, "Streamlined Roleplaying")
 
 
 class AccountTests(TestCase):
