@@ -107,15 +107,7 @@
 {% endblock %}
 
 {% block breadcrumbs %}
-    <div class="jumbotron py-1 px-0 breadcrumbs">
-        <div class="container">
-            <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk %}">{{ campaign.title }}</a>
-            <span class="breadcrumbs_separator"> / </span>
-            <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}">{{ chapter.title }}</a>
-            <span class="breadcrumbs_separator"> / </span>
-            New section
-        </div>
-    </div>
+    {% include "breadcrumbs.html" with action="New section" %}
 {% endblock %}
 
 {% block body_content %}

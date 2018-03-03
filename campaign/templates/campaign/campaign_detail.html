@@ -4,24 +4,10 @@
 {% load campaign_extras %}
 
 
-{% block title %}{{ this_campaign.title }} | {{ block.super }}{% endblock %}
+{% block title %}{{ campaign.title }} | {{ block.super }}{% endblock %}
 
 {% block breadcrumbs %}
-    <div class="jumbotron py-1 px-0 breadcrumbs">
-        <div class="container">
-            <a href="{% url 'campaign:campaign_detail' campaign_pk=this_campaign.pk %}">{{ this_campaign.title }}</a>
-            {% if this_chapter %}
-                <span class="breadcrumbs_separator"> / </span>
-                {% if this_section %}
-                    <a href="{% url 'campaign:campaign_detail' campaign_pk=this_campaign.pk chapter_pk=this_chapter.pk %}">{{ this_chapter.title }}</a>
-                    <span class="breadcrumbs_separator"> / </span>
-                    {{ this_section.title }}
-                {% else %}
-                    {{ this_chapter.title }}
-                {% endif %}
-            {% endif %}
-        </div>
-    </div>
+    {% include "breadcrumbs.html" %}
 {% endblock %}
 
 {% block body_content %}
@@ -39,11 +25,11 @@
                                     <i class="fas fa-lg fa-cog"></i>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="table-of-contents-dropdown">
-                                    <a href="{% url 'campaign:chapter_create' campaign_pk=this_campaign.pk %}" class="dropdown-item text-success"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> Create chapter</a>
-                                    <a href="{% url 'campaign:campaign_update' campaign_pk=this_campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-edit" aria-hidden="true"></i> Edit campaign</a>
-                                    <a href="{% url 'campaign:campaign_print' campaign_pk=this_campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-print" aria-hidden="true"></i> Print campaign</a>
-                                    <a href="{% url 'campaign:campaign_export' campaign_pk=this_campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-cloud-download" aria-hidden="true"></i> Export campaign</a>
-                                    <a id="campaign-delete"  href="{% url 'campaign:campaign_delete' campaign_pk=this_campaign.pk %}" class="dropdown-item text-danger"><i class="mr-1 fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete campaign</a>
+                                    <a href="{% url 'campaign:chapter_create' campaign_pk=campaign.pk %}" class="dropdown-item text-success"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> Create chapter</a>
+                                    <a href="{% url 'campaign:campaign_update' campaign_pk=campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-edit" aria-hidden="true"></i> Edit campaign</a>
+                                    <a href="{% url 'campaign:campaign_print' campaign_pk=campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-print" aria-hidden="true"></i> Print campaign</a>
+                                    <a href="{% url 'campaign:campaign_export' campaign_pk=campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-cloud-download" aria-hidden="true"></i> Export campaign</a>
+                                    <a id="campaign-delete"  href="{% url 'campaign:campaign_delete' campaign_pk=campaign.pk %}" class="dropdown-item text-danger"><i class="mr-1 fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete campaign</a>
                                 </div>
                             </div>
                         </div>
@@ -55,7 +41,7 @@
                             {% for chapter in chapters %}
                                 <li class="li-content">
                                     {{ chapter.order }}. 
-                                    <a href="{% url 'campaign:campaign_detail' campaign_pk=this_campaign.pk chapter_pk=chapter.pk %}">
+                                    <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}">
                                         {{ chapter.title }}
                                     </a>
                                 </li>
@@ -64,7 +50,7 @@
                                         {% if section.chapter.pk == chapter.pk %}
                                             <li class="li-content">
                                                 {{ section.order }}. 
-                                                <a href="{% url 'campaign:campaign_detail' campaign_pk=this_campaign.pk chapter_pk=chapter.pk section_pk=section.pk %}">
+                                                <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk section_pk=section.pk %}">
                                                     {{ section.title }}
                                                 </a>
                                             </li>
@@ -94,9 +80,9 @@
                                             <i class="fas fa-lg fa-cog"></i>
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="chapter-dropdown">
-                                            <a href="{% url 'campaign:section_create' campaign_pk=this_campaign.pk chapter_pk=this_chapter.pk %}" class="dropdown-item text-success"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> Create section</a>
-                                            <a href="{% url 'campaign:chapter_update' campaign_pk=this_campaign.pk chapter_pk=this_chapter.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-edit" aria-hidden="true"></i> Edit chapter</a>
-                                            <a href="{% url 'campaign:chapter_delete' campaign_pk=this_campaign.pk chapter_pk=this_chapter.pk %}" class="dropdown-item text-danger"><i class="mr-1 fal fa-fw fa-trash" aria-hidden="true"></i> Delete chapter</a>
+                                            <a href="{% url 'campaign:section_create' campaign_pk=campaign.pk chapter_pk=this_chapter.pk %}" class="dropdown-item text-success"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> Create section</a>
+                                            <a href="{% url 'campaign:chapter_update' campaign_pk=campaign.pk chapter_pk=this_chapter.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-edit" aria-hidden="true"></i> Edit chapter</a>
+                                            <a href="{% url 'campaign:chapter_delete' campaign_pk=campaign.pk chapter_pk=this_chapter.pk %}" class="dropdown-item text-danger"><i class="mr-1 fal fa-fw fa-trash" aria-hidden="true"></i> Delete chapter</a>
                                         </div>
                                     </div>
                                 </div>
@@ -115,8 +101,8 @@
                                     <li class="dropdown">
                                         <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
                                         <ul class="dropdown-menu">
-                                            <li><a href="{% url 'campaign:section_update' campaign_pk=this_campaign.pk chapter_pk=this_chapter.pk section_pk=this_section.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit section</span></a></li>
-                                            <li><a href="{% url 'campaign:section_delete' campaign_pk=this_campaign.pk chapter_pk=this_chapter.pk section_pk=this_section.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete section</span></a></li>
+                                            <li><a href="{% url 'campaign:section_update' campaign_pk=campaign.pk chapter_pk=this_chapter.pk section_pk=this_section.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit section</span></a></li>
+                                            <li><a href="{% url 'campaign:section_delete' campaign_pk=campaign.pk chapter_pk=this_chapter.pk section_pk=this_section.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete section</span></a></li>
                                         </ul>
                                     </li>
                                 </ul>
@@ -133,7 +119,7 @@
                                 <li class="dropdown">
                                     <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="{% url 'campaign:chapter_create' campaign_pk=this_campaign.pk %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create chapter</span></a></li>
+                                        <li><a href="{% url 'campaign:chapter_create' campaign_pk=campaign.pk %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create chapter</span></a></li>
                                     </ul>
                                 </li>
                             </ul>

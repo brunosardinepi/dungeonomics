@@ -24,7 +24,7 @@
             <div class="panel-body">
                 <form method="POST" action="">
                     {% csrf_token %}
-                    {% bootstrap_form form %}
+                    {{ form }}
 
                     {% if campaign.pk %}
                         <hr>
