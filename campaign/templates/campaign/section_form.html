@@ -1,5 +1,7 @@
 {% extends 'layout.html' %}
-{% load bootstrap3 %}
+
+{% load widget_tweaks %}
+
 
 {% block title %}
     {% if section.pk %}
@@ -104,36 +106,98 @@
     </script>
 {% endblock %}
 
-{% block body_content %}
-    <div class="alert alert-info alert-dismissible" role="alert" style="margin-top: 30px;">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        Type '@' to get a dropdown list that will automatically link to the monsters, NPCs, items, spells, or Players in your campaign content!
+{% block breadcrumbs %}
+    <div class="jumbotron py-1 px-0 breadcrumbs">
+        <div class="container">
+            <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk %}">{{ campaign.title }}</a>
+            <span class="breadcrumbs_separator"> / </span>
+            <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}">{{ chapter.title }}</a>
+            <span class="breadcrumbs_separator"> / </span>
+            New section
+        </div>
     </div>
-    <div class="row campaign-row">
+{% endblock %}
+
+{% block body_content %}
+    {% include "snippets/tag_info.html" %}
+
+    <div class="row mt-3 pb-5">
         <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="px-1 mb-0">
                         {% if section.pk %}
-                            <strong>UPDATE:</strong> {{ campaign }} / {{ chapter }} / {{ section }}
+                            <span class="font-weight-bold">Update:</span> {{ campaign }} / {{ chapter }} / {{ section }}
                         {% else %}
-                            <strong>NEW SECTION:</strong> {{ campaign }} / {{ chapter }}
+                            <span class="font-weight-bold">New section for:</span> {{ campaign }} / {{ chapter }}
                         {% endif %}
-                    </h3>
+                    </h5>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <form method="POST" action="">
                         {% csrf_token %}
-                        {% bootstrap_form form %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        <div class="form-group">
+                            <label for="{{ form.title.id_for_label }}">Title</label>
+                            {% render_field form.title class+="form-control mb-3" %}
+                            {% if form.title.errors %}
+                                {% for error in form.title.errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ error|escape }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.content.id_for_label }}">Content</label>
+                            {% render_field form.content class+="form-control mb-3" %}
+                            {% if form.content.errors %}
+                                {% for error in form.content.errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ error|escape }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.order.id_for_label }}">Order</label>
+                            {% render_field form.order class+="form-control mb-3" %}
+                            {% if form.order.errors %}
+                                {% for error in form.order.errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ error|escape }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
                 </div>
-                <div class="panel-footer clearfix">
-                    {% if section.pk %}
-                        <a href ="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk section_pk=section.pk %}" class="btn btn-default">Cancel</a>
-                        <input type="submit" class="btn btn-primary pull-right" value="Update Section">
-                    {% else %}
-                        <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="btn btn-default">Cancel</a>
-                        <input type="submit" class="btn btn-primary pull-right" value="Create Section">
-                    {% endif %}
+
+                <div class="card-footer">
+                    <div class="row justify-content-between">
+                        {% if section.pk %}
+                            <div class="col-auto">
+                                <a href ="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk section_pk=section.pk %}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                            <div class="col-auto">
+                                <input type="submit" class="btn btn-primary pull-right" value="Update section">
+                            </div>
+                        {% else %}
+                            <div class="col-auto">
+                                <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                            <div class="col-auto">
+                                <input type="submit" class="btn btn-primary pull-right" value="Create section">
+                            </div>
+                        {% endif %}
+                    </div>
                     </form>
                 </div>
             </div>

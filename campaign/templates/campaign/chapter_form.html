@@ -117,21 +117,19 @@
 {% endblock %}
 
 {% block body_content %}
-    <div class="alert alert-info" role="alert">
-        Type '@' to get a dropdown list that will automatically link to the monsters, NPCs, items, spells, or Players in your campaign content!
-    </div>
+    {% include "snippets/tag_info.html" %}
 
     <div class="row mt-3 pb-5">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="px-1 mb-0">
+                    <h5 class="px-1 mb-0">
                         {% if chapter.pk %}
                             <span class="font-weight-bold">Update:</span> {{ campaign }} / {{ chapter }}
                         {% else %}
                             <span class="font-weight-bold">New chapter for:</span> {{ campaign }}
                         {% endif %}
-                    </h4>
+                    </h5>
                 </div>
                 <div class="card-body">
                     <form method="POST" action="">
@@ -179,13 +177,9 @@
                             {% endif %}
                         </div>
 
-
-
                         {% if sections %}
                             <hr>
-
                             {{ formset.management_form }}
-
                             <table class="table table-striped table-hover" style="width: 100%;">
                                 <thead>
                                     <tr>
@@ -216,21 +210,21 @@
                 </div>
                 <div class="card-footer">
                     <div class="row justify-content-between">
-                    {% if chapter.pk %}
-                        <div class="col-auto">
-                        <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="btn btn-secondary">Cancel</a>
-                        </div>
-                        <div class="col-auto">
-                        <input type="submit" class="btn btn-primary pull-right" value="Update Chapter">
-                        </div>
-                    {% else %}
-                        <div class="col-auto">
-                        <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk %}" class="btn btn-secondary">Cancel</a>
-                        </div>
-                        <div class="col-auto">
-                        <input type="submit" class="btn btn-primary pull-right" value="Create Chapter">
-                        </div>
-                    {% endif %}
+                        {% if chapter.pk %}
+                            <div class="col-auto">
+                                <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                            <div class="col-auto">
+                                <input type="submit" class="btn btn-primary pull-right" value="Update chapter">
+                            </div>
+                        {% else %}
+                            <div class="col-auto">
+                                <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk %}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                            <div class="col-auto">
+                                <input type="submit" class="btn btn-primary pull-right" value="Create chapter">
+                            </div>
+                        {% endif %}
                     </div>
                     </form>
                 </div>
