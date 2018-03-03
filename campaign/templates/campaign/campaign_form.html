@@ -1,11 +1,10 @@
 {% extends 'layout.html' %}
-{% load bootstrap3 %}
 
 {% block title %}
     {% if campaign.pk %}
-        Update Campaign 
+        Update campaign 
     {% else %}
-        New Campaign 
+        New campaign 
     {% endif %}
     | {{ block.super }}
 {% endblock %}

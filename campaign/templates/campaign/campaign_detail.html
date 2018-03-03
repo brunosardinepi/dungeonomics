@@ -1,5 +1,8 @@
 {% extends 'layout.html' %}
+
+{% load static from staticfiles %}
 {% load campaign_extras %}
+
 
 {% block title %}{{ this_campaign.title }} | {{ block.super }}{% endblock %}
 
@@ -40,7 +43,7 @@
                                     <a href="{% url 'campaign:campaign_update' campaign_pk=this_campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-edit" aria-hidden="true"></i> Edit campaign</a>
                                     <a href="{% url 'campaign:campaign_print' campaign_pk=this_campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-print" aria-hidden="true"></i> Print campaign</a>
                                     <a href="{% url 'campaign:campaign_export' campaign_pk=this_campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-cloud-download" aria-hidden="true"></i> Export campaign</a>
-                                    <a href="{% url 'campaign:campaign_delete' campaign_pk=this_campaign.pk %}" class="dropdown-item text-danger"><i class="mr-1 fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete campaign</a>
+                                    <a id="campaign-delete"  href="{% url 'campaign:campaign_delete' campaign_pk=this_campaign.pk %}" class="dropdown-item text-danger"><i class="mr-1 fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete campaign</a>
                                 </div>
                             </div>
                         </div>
@@ -143,4 +146,8 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block body_extra %}
+    <script src="{% static 'js/campaign_delete.js' %}"></script>
 {% endblock %}

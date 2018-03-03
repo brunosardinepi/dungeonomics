@@ -325,17 +325,12 @@ def campaign_print(request, campaign_pk):
 def campaign_delete(request, campaign_pk):
     campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
     if campaign.user == request.user:
-        form = forms.DeleteCampaignForm(instance=campaign)
-        if request.method == 'POST':
-            form = forms.DeleteCampaignForm(request.POST, instance=campaign)
-            if campaign.user.pk == request.user.pk:
-                campaign.delete()
-                messages.add_message(request, messages.SUCCESS, "Campaign deleted!")
-                return HttpResponseRedirect(reverse('home'))
+        campaign.delete()
+        messages.success(request, 'Campaign deleted', fail_silently=True)
+#        messages.add_message(request, messages.SUCCESS, "Campaign deleted!")
+        return HttpResponseRedirect(reverse('home'))
     else:
         raise Http404
-    return render(request, 'campaign/campaign_delete.html', {'form': form, 'campaign': campaign})
-
 
 @login_required
 def chapter_delete(request, campaign_pk, chapter_pk):

@@ -140,6 +140,9 @@
         </nav>
 
         {% block breadcrumbs %}{% endblock %}
+
+        {% include "messages.html" %}
+
         {% block header_title %}{% endblock %}
 
         {% if user.is_authenticated %}
