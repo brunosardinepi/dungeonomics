@@ -21,10 +21,10 @@
                     {% elif obj|model_name == 'chapter' %}
                         <a href="{% url 'campaign:section_create' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="dropdown-item text-success"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> Create section</a>
                         <a href="{% url 'campaign:chapter_update' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-edit" aria-hidden="true"></i> Edit chapter</a>
-                        <a id="chapter-delete" href="{% url 'campaign:chapter_delete' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="dropdown-item text-danger"><i class="mr-1 fal fa-fw fa-trash" aria-hidden="true"></i> Delete chapter</a>
+                        <a id="chapter-delete" href="{% url 'campaign:chapter_delete' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="dropdown-item text-danger"><i class="mr-1 fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete chapter</a>
                     {% elif obj|model_name == 'section' %}
                         <a href="{% url 'campaign:section_update' campaign_pk=campaign.pk chapter_pk=chapter.pk section_pk=section.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-edit" aria-hidden="true"></i> Edit section</span></a>
-                        <a id="section-delete" href="{% url 'campaign:section_delete' campaign_pk=campaign.pk chapter_pk=chapter.pk section_pk=section.pk %}" class="dropdown-item text-danger"><i class="mr-1 fal fa-fw fa-trash" aria-hidden="true"></i> Delete section</span></a>
+                        <a id="section-delete" href="{% url 'campaign:section_delete' campaign_pk=campaign.pk chapter_pk=chapter.pk section_pk=section.pk %}" class="dropdown-item text-danger"><i class="mr-1 fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete section</span></a>
                     {% endif %}
                 </div>
             </div>
