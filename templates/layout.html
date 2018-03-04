@@ -27,12 +27,12 @@
         <meta name="msapplication-TileImage" content="{% static 'img/ms-icon-144x144.png' %}">
         <meta name="theme-color" content="#ffffff">
 
-		<link rel="stylesheet" href="{% static 'css/layout.css' %}?{% now 'U' %}">
-
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+		<link rel="stylesheet" href="{% static 'css/layout.css' %}?{% now 'U' %}">
 
         <script defer src="{% static 'js/fontawesome-all.min.js' %}"></script>
 
@@ -153,41 +153,7 @@
             </div>
         {% endif %}
         
-        <footer class="footer">
-            <div class="container d-flex h-100">
-                <div class="row text-center mx-auto my-auto">
-                    <div class="col-12">
-                        <ul class="list-inline">
-                            <li class="list-inline-item"><a href="{% url 'donate' %}">Donate</a></li>
-                            <li class="list-inline-item"><a href="mailto:dungeonomics@gmail.com">Contact</a></li>
-                            <li class="list-inline-item"><a href="{% url 'privacy' %}">Privacy Policy</a></li>
-                        </ul>
-                    </div>
-                    <div id="footer-social" class="col-12">
-                        <ul class="list-inline">
-                            <li class="list-inline-item">
-                                <a href="https://twitter.com/dungeonomics" target="_blank">
-                                    <i class="fab fa-2x fa-twitter"></i>
-                                </a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="https://www.reddit.com/r/dungeonomics/" target="_blank">
-                                    <i class="fab fa-2x fa-reddit-alien"></i>
-                                </a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="https://github.com/brunosardinepi/dungeonomics" target="_blank">
-                                    <i class="fab fa-2x fa-github"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-12">
-                        <span class="copyright">Copyright &copy; 2018 Dungeonomics</span>
-                    </div>
-                </div>
-            </div>
-        </footer>
+        {% include "footer.html" %}
 
     {% block body_extra %}{% endblock %}
 
