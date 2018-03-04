@@ -215,28 +215,18 @@ def location_update(request, location_pk):
 def world_delete(request, world_pk):
     world = get_object_or_404(models.World, pk=world_pk)
     if world.user == request.user:
-        form = forms.DeleteWorldForm(instance=world)
-        if request.method == 'POST':
-            form = forms.DeleteWorldForm(request.POST, instance=world)
-            if world.user.pk == request.user.pk:
-                world.delete()
-                messages.add_message(request, messages.SUCCESS, "World deleted!")
-                return HttpResponseRedirect(reverse('locations:location_detail'))
+        world.delete()
+        messages.success(request, 'World deleted', fail_silently=True)
+        return HttpResponseRedirect(reverse('locations:location_detail'))
     else:
         raise Http404
-    return render(request, 'locations/world_delete.html', {'form': form, 'world': world})
 
 @login_required
 def location_delete(request, location_pk):
     location = get_object_or_404(models.Location, pk=location_pk)
     if location.user == request.user:
-        form = forms.DeleteLocationForm(instance=location)
-        if request.method == 'POST':
-            form = forms.DeleteLocationForm(request.POST, instance=location)
-            if location.user.pk == request.user.pk:
-                location.delete()
-                messages.add_message(request, messages.SUCCESS, "Location deleted!")
-                return HttpResponseRedirect(reverse('locations:location_detail'))
+        location.delete()
+        messages.success(request, 'Location deleted', fail_silently=True)
+        return HttpResponseRedirect(reverse('locations:location_detail'))
     else:
         raise Http404
-    return render(request, 'locations/location_delete.html', {'form': form, 'location': location})

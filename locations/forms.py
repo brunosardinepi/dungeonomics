@@ -18,7 +18,6 @@ class TinyMCEForm(forms.ModelForm):
             '/static/js/tinymce/tinymce.min.js',
             )
 
-
 class WorldForm(TinyMCEForm):
     class Meta:
         model = models.World
@@ -26,7 +25,6 @@ class WorldForm(TinyMCEForm):
             'name',
             'content',
         ]
-
 
 class LocationForm(TinyMCEForm):
     class Meta:
@@ -45,19 +43,6 @@ class LocationForm(TinyMCEForm):
         if location_pk:
             parent_locations = parent_locations.exclude(parent_location=location_pk)
         self.fields['parent_location'].queryset = parent_locations
-
-
-class DeleteWorldForm(forms.ModelForm):
-    class Meta:
-        model = models.World
-        fields = ['name']
-
-
-class DeleteLocationForm(forms.ModelForm):
-    class Meta:
-        model = models.Location
-        fields = ['name']
-
 
 LocationFormSet = forms.modelformset_factory(
     models.Location,

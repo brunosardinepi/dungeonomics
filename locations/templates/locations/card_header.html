@@ -19,10 +19,10 @@
                     {% if obj|model_name == 'world' %}
                         <a href="{% url 'locations:location_create' world_pk=world.pk %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create location</a>
                         <a href="{% url 'locations:world_update' world_pk=world.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit world</a>
-                        <a href="{% url 'locations:world_delete' world_pk=world.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete world</a>
+                        <a id="world-delete" href="{% url 'locations:world_delete' world_pk=world.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete world</a>
                     {% elif obj|model_name == 'location' %}
                         <a href="{% url 'locations:location_update' location_pk=location.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit location</a>
-                        <a href="{% url 'locations:location_delete' location_pk=location.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete location</a>
+                        <a id="location-delete" href="{% url 'locations:location_delete' location_pk=location.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete location</a>
                     {% else %}
                         <a href="{% url 'locations:world_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create world</a>
                     {% endif %}

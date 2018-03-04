@@ -1,5 +1,8 @@
 {% extends 'layout.html' %}
+
 {% load locations_extras %}
+{% load static from staticfiles %}
+
 
 {% block title %}Locations | {{ block.super }}{% endblock %}
 
@@ -77,4 +80,8 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block body_extra %}
+    <script src="{% static 'js/location_delete.js' %}"></script>
 {% endblock %}
