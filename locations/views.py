@@ -20,22 +20,22 @@ import json
 def location_detail(request, world_pk=None, location_pk=None):
     worlds = sorted(models.World.objects.filter(user=request.user), key=lambda world: world.name.lower())
     if world_pk:
-        this_world = get_object_or_404(models.World, pk=world_pk)
-        if this_world.user == request.user:
-            return render(request, 'locations/location_detail.html', {'this_world': this_world, 'worlds': worlds})
+        world = get_object_or_404(models.World, pk=world_pk)
+        if world.user == request.user:
+            return render(request, 'locations/location_detail.html', {'world': world, 'worlds': worlds})
         else:
             raise Http404
     elif location_pk:
-        this_location = get_object_or_404(models.Location, pk=location_pk)
-        if this_location.user == request.user:
-            return render(request, 'locations/location_detail.html', {'this_location': this_location, 'worlds': worlds})
+        location = get_object_or_404(models.Location, pk=location_pk)
+        if location.user == request.user:
+            return render(request, 'locations/location_detail.html', {'location': location, 'worlds': worlds})
         else:
             raise Http404
     else:
-        this_world = None
+        world = None
         if len(worlds) > 0:
-            this_world = worlds[0]
-        return render(request, 'locations/location_detail.html', {'this_world': this_world, 'worlds': worlds})
+            world = worlds[0]
+        return render(request, 'locations/location_detail.html', {'world': world, 'worlds': worlds})
 
 @login_required
 def world_create(request):

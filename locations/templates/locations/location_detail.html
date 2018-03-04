@@ -58,15 +58,18 @@
 
         <div class="col-md-8">
             <div class="card">
-                {% if item %}
-                    {% include "locations/card_header.html" with obj=item %}
+                {% if world %}
+                    {% include "locations/card_header.html" with obj=world %}
                     <div class="card-body">
-                        <p>{% if item.item_type %}{{ item.item_type }}{% endif %}{% if item.rarity and item.item_type %}, {{ item.rarity }}{% elif item.rarity %}{{ item.rarity }}{% else %}{% endif %}</em></p>
-                        <hr>
-                        {{ item.description|safe }}
+                        {{ world.content|safe }}
+                    </div>
+                {% elif location %}
+                    {% include "locations/card_header.html" with obj=location %}
+                    <div class="card-body">
+                        {{ location.content|safe }}
                     </div>
                 {% else %}
-                    {% include "locations/card_header.html" with obj=item %}
+                    {% include "locations/card_header.html" %}
                     <div class="card-body">
                         <p>You haven't created any worlds yet!</p>
                     </div>
