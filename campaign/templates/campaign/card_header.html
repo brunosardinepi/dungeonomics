@@ -1,0 +1,33 @@
+{% load lib_extras %}
+
+
+<div class="card-header">
+    <div class="row justify-content-between align-items-center">
+        <div class="col-auto">
+            {% if obj|model_name == 'chapter' %}
+                <h4 class="px-1 mb-0">{{ chapter.title }}</h4>
+            {% elif obj|model_name == 'section' %}
+                <h4 class="px-1 mb-0">{{ section.title }}</h4>
+            {% endif %}
+        </div>
+        <div class="col-auto">
+            <div class="dropdown">
+                <a class="btn text-dark dropdown-toggle" href="#" role="button" id="contents-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-lg fa-cog"></i>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="contents-dropdown">
+                    {% if obj|model_name == 'campaign' %}
+                        <a href="{% url 'campaign:chapter_create' campaign_pk=campaign.pk %}" class="dropdown-item text-success"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> Create chapter</span></a>
+                    {% elif obj|model_name == 'chapter' %}
+                        <a href="{% url 'campaign:section_create' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="dropdown-item text-success"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> Create section</a>
+                        <a href="{% url 'campaign:chapter_update' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-edit" aria-hidden="true"></i> Edit chapter</a>
+                        <a href="{% url 'campaign:chapter_delete' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="dropdown-item text-danger"><i class="mr-1 fal fa-fw fa-trash" aria-hidden="true"></i> Delete chapter</a>
+                    {% elif obj|model_name == 'section' %}
+                        <a href="{% url 'campaign:section_update' campaign_pk=campaign.pk chapter_pk=chapter.pk section_pk=section.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-edit" aria-hidden="true"></i> Edit section</span></a>
+                        <a href="{% url 'campaign:section_delete' campaign_pk=campaign.pk chapter_pk=chapter.pk section_pk=section.pk %}" class="dropdown-item text-danger"><i class="mr-1 fal fa-fw fa-trash" aria-hidden="true"></i> Delete section</span></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

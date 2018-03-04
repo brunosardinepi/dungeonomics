@@ -13,3 +13,7 @@ def nav_campaign_list(request):
 
     campaigns = Campaign.objects.filter(user=user).order_by('title').values('id', 'title')
     return {'campaigns': campaigns}
+
+@register.filter
+def model_name(obj):
+    return obj.__class__.__name__.lower()
