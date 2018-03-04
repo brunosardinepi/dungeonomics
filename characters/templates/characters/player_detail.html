@@ -41,7 +41,7 @@
     {% if this_player %}
         <a href="{% url 'characters:player_update' player_pk=this_player.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit Player</a>
         <a href="{% url 'characters:player_copy' player_pk=this_player.pk %}" class="dropdown-item"><i class="fal fa-fw fa-copy" aria-hidden="true"></i> Copy Player</a>       
-        <a href="{% url 'characters:player_delete' player_pk=this_player.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete Player</a>
+        <a id="player-delete" href="{% url 'characters:player_delete' player_pk=this_player.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete Player</a>
     {% else %}
         <a href="{% url 'characters:player_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create Player</a>
     {% endif %}

@@ -9,7 +9,6 @@ class TinyMCEForm(forms.ModelForm):
             '/static/js/tinymce/tinymce.min.js',
             )
 
-
 class ItemForm(TinyMCEForm):
     class Meta:
         model = models.Item
@@ -19,13 +18,6 @@ class ItemForm(TinyMCEForm):
             'rarity',
             'description',
         ]
-
-
-class DeleteItemForm(forms.ModelForm):
-    class Meta:
-        model = models.Item
-        fields = ['name']
-
 
 class CopyItemForm(forms.ModelForm):
     class Meta:

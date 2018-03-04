@@ -323,46 +323,31 @@ def player_update(request, player_pk):
 def monster_delete(request, monster_pk):
     monster = get_object_or_404(models.Monster, pk=monster_pk)
     if monster.user == request.user:
-        form = forms.DeleteMonsterForm(instance=monster)
-        if request.method == 'POST':
-            form = forms.DeleteMonsterForm(request.POST, instance=monster)
-            if monster.user.pk == request.user.pk:
-                monster.delete()
-                messages.add_message(request, messages.SUCCESS, "Monster deleted!")
-                return HttpResponseRedirect(reverse('characters:monster_detail'))
+        monster.delete()
+        messages.success(request, 'Monster deleted', fail_silently=True)
+        return HttpResponseRedirect(reverse('characters:monster_detail'))
     else:
         raise Http404
-    return render(request, 'characters/monster_delete.html', {'form': form, 'monster': monster})
 
 @login_required
 def npc_delete(request, npc_pk):
     npc = get_object_or_404(models.NPC, pk=npc_pk)
     if npc.user == request.user:
-        form = forms.DeleteNPCForm(instance=npc)
-        if request.method == 'POST':
-            form = forms.DeleteNPCForm(request.POST, instance=npc)
-            if npc.user.pk == request.user.pk:
-                npc.delete()
-                messages.add_message(request, messages.SUCCESS, "NPC deleted!")
-                return HttpResponseRedirect(reverse('characters:npc_detail'))
+        npc.delete()
+        messages.success(request, 'NPC deleted', fail_silently=True)
+        return HttpResponseRedirect(reverse('characters:npc_detail'))
     else:
         raise Http404
-    return render(request, 'characters/npc_delete.html', {'form': form, 'npc': npc})
 
 @login_required
 def player_delete(request, player_pk):
     player = get_object_or_404(models.Player, pk=player_pk)
     if player.user == request.user:
-        form = forms.DeletePlayerForm(instance=player)
-        if request.method == 'POST':
-            form = forms.DeletePlayerForm(request.POST, instance=player)
-            if player.user.pk == request.user.pk:
-                player.delete()
-                messages.add_message(request, messages.SUCCESS, "Player deleted!")
-                return HttpResponseRedirect(reverse('characters:player_detail'))
+        player.delete()
+        messages.success(request, 'Player deleted', fail_silently=True)
+        return HttpResponseRedirect(reverse('characters:player_detail'))
     else:
         raise Http404
-    return render(request, 'characters/player_delete.html', {'form': form, 'player': player})
 
 @login_required
 def monster_copy(request, monster_pk):

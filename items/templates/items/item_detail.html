@@ -1,5 +1,8 @@
 {% extends 'layout.html' %}
 
+{% load static from staticfiles %}
+
+
 {% block title %}
     {% if item.pk %}
         {{ item.name }} 
@@ -69,4 +72,8 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block body_extra %}
+    <script src="{% static 'js/item_delete.js' %}"></script>
 {% endblock %}
