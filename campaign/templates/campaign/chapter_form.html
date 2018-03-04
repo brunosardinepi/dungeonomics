@@ -5,9 +5,9 @@
 
 {% block title %}
     {% if chapter.pk %}
-        Update Chapter 
+        Update chapter 
     {% else %}
-        New Chapter 
+        New chapter 
     {% endif %}
     | {{ block.super }}
 {% endblock %}
@@ -209,14 +209,14 @@
                                 <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="btn btn-secondary">Cancel</a>
                             </div>
                             <div class="col-auto">
-                                <input type="submit" class="btn btn-primary pull-right" value="Update chapter">
+                                <input type="submit" class="btn btn-primary" value="Update chapter">
                             </div>
                         {% else %}
                             <div class="col-auto">
                                 <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk %}" class="btn btn-secondary">Cancel</a>
                             </div>
                             <div class="col-auto">
-                                <input type="submit" class="btn btn-primary pull-right" value="Create chapter">
+                                <input type="submit" class="btn btn-primary" value="Create chapter">
                             </div>
                         {% endif %}
                     </div>
