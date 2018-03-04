@@ -18,14 +18,12 @@ class TinyMCEForm(forms.ModelForm):
             '/static/js/tinymce/tinymce.min.js',
             )
 
-
 class CampaignForm(forms.ModelForm):
     class Meta:
         model = models.Campaign
         fields = [
             'title',
         ]
-
 
 class ChapterForm(TinyMCEForm):
     class Meta:
@@ -36,7 +34,6 @@ class ChapterForm(TinyMCEForm):
             'order',
         ]
 
-
 class SectionForm(TinyMCEForm):
     class Meta:
         model = models.Section
@@ -46,32 +43,12 @@ class SectionForm(TinyMCEForm):
             'order',
         ]
 
-
-class DeleteSectionForm(forms.ModelForm):
-    class Meta:
-        model = models.Section
-        fields = ['title']
-
-
-class DeleteCampaignForm(forms.ModelForm):
-    class Meta:
-        model = models.Campaign
-        fields = ['title']
-
-
-class DeleteChapterForm(forms.ModelForm):
-    class Meta:
-        model = models.Chapter
-        fields = ['title']
-
-
 class ImportCampaignForm(forms.ModelForm):
     class Meta:
         model = models.Campaign
         fields = [
             'title',
         ]
-
 
 ChapterFormSet = forms.modelformset_factory(
     models.Chapter,

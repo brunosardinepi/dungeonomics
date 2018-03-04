@@ -336,7 +336,6 @@ def campaign_delete(request, campaign_pk):
     if campaign.user == request.user:
         campaign.delete()
         messages.success(request, 'Campaign deleted', fail_silently=True)
-#        messages.add_message(request, messages.SUCCESS, "Campaign deleted!")
         return HttpResponseRedirect(reverse('home'))
     else:
         raise Http404
@@ -346,16 +345,12 @@ def chapter_delete(request, campaign_pk, chapter_pk):
     campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
     if campaign.user == request.user:
         chapter = get_object_or_404(models.Chapter, pk=chapter_pk)
-        form = forms.DeleteChapterForm(instance=chapter)
-        if request.method == 'POST':
-            form = forms.DeleteChapterForm(request.POST, instance=chapter)
-            if chapter.user.pk == request.user.pk:
-                chapter.delete()
-                messages.add_message(request, messages.SUCCESS, "Chapter deleted!")
-                return HttpResponseRedirect(reverse('campaign:campaign_detail', kwargs={'campaign_pk': campaign.pk}))
+        if chapter.user == request.user:
+            chapter.delete()
+            messages.success(request, 'Chapter deleted', fail_silently=True)
+            return HttpResponseRedirect(reverse('campaign:campaign_detail', kwargs={'campaign_pk': campaign.pk}))
     else:
         raise Http404
-    return render(request, 'campaign/chapter_delete.html', {'form': form, 'chapter': chapter})
 
 @login_required
 def section_delete(request, campaign_pk, chapter_pk, section_pk):
@@ -363,16 +358,15 @@ def section_delete(request, campaign_pk, chapter_pk, section_pk):
     if campaign.user == request.user:
         chapter = get_object_or_404(models.Chapter, pk=chapter_pk)
         section = get_object_or_404(models.Section, pk=section_pk)
-        form = forms.DeleteSectionForm(instance=section)
-        if request.method == 'POST':
-            form = forms.DeleteSectionForm(request.POST, instance=section)
-            if section.user.pk == request.user.pk:
-                section.delete()
-                messages.add_message(request, messages.SUCCESS, "Section deleted!")
-                return HttpResponseRedirect(reverse('campaign:campaign_detail', kwargs={'campaign_pk': campaign.pk, 'chapter_pk': chapter.pk}))
+        if section.user == request.user:
+            section.delete()
+            messages.success(request, 'Section deleted', fail_silently=True)
+            return HttpResponseRedirect(reverse('campaign:campaign_detail', kwargs={
+                'campaign_pk': campaign.pk,
+                'chapter_pk': chapter.pk,
+            }))
     else:
         raise Http404
-    return render(request, 'campaign/section_delete.html', {'form': form, 'section': section})
 
 @login_required
 def campaign_import(request):
