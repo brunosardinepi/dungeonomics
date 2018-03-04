@@ -123,6 +123,12 @@
                     <form method="POST" action="">
                         {% csrf_token %}
 
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="{{ form.player_name.id_for_label }}">Player name</label>
