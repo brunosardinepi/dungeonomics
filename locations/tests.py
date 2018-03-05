@@ -130,12 +130,6 @@ class LocationTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'test world name EDIT')
 
-    def test_world_delete_page(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.get('/locations/world/{}/delete/'.format(self.world.pk))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.world.name)
-
     def test_world_delete(self):
         self.client.login(username='testuser', password='testpassword')
         response = self.client.post('/locations/world/{}/delete/'.format(self.world.pk), {})
@@ -192,12 +186,6 @@ class LocationTest(TestCase):
         response = self.client.get('/locations/location/{}/'.format(self.location3.pk))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'test location name EDIT')
-
-    def test_location_delete_page(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.get('/locations/location/{}/delete/'.format(self.location.pk))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.location.name)
 
     def test_location_delete(self):
         self.client.login(username='testuser', password='testpassword')

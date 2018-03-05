@@ -42,7 +42,6 @@ class HomeTest(TestCase):
         self.assertContains(response, "Campaigns")
         self.assertContains(response, "Creatures")
         self.assertContains(response, "Donate")
-        self.assertContains(response, "Copyright")
 
     def test_home_logged_in(self):
         self.client.login(username='testuser', password='testpassword')
