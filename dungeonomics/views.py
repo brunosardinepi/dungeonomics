@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Count
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render, render_to_response
 from django.template import RequestContext
 from django.views.generic import TemplateView
@@ -65,16 +65,11 @@ class PasswordResetView(views.PasswordResetView):
 @login_required
 def account_delete(request):
     user = get_object_or_404(User, pk=request.user.pk)
-    form = forms.DeleteUserForm(instance=user)
-    if request.method == 'POST':
-        form = forms.DeleteUserForm(request.POST, instance=user)
-        # if form.is_valid() and user.pk == request.user.pk:
-        if user.pk == request.user.pk:
-        # if form.is_valid():
-            user.delete()
-            return HttpResponseRedirect('home')
-    return render(request, 'delete_account.html', {'form': form, 'user': user})
-
+    if user == request.user:
+        user.delete()
+        return HttpResponseRedirect('home')
+    else:
+        raise Http404
 
 class PasswordResetDoneView(TemplateView):
     template_name = "password_reset_done.html"
