@@ -29,7 +29,6 @@ INSTALLED_APPS = [
     'lib',
     'campaign',
     'characters',
-    'wiki',
     'items',
     'locations',
     'widget_tweaks',

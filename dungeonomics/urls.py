@@ -25,6 +25,5 @@ urlpatterns = [
     url(r'^items/', include('items.urls', namespace='items')),
     url(r'^locations/', include('locations.urls', namespace='locations')),
     url(r'^privacy/', views.PrivacyView.as_view(), name='privacy'),
-    url(r'^wiki/', include('wiki.urls', namespace='wiki')),
     url(r'^$', views.home_view, name='home'),
 ]
