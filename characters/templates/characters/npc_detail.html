@@ -127,6 +127,7 @@
 
         <div class="row">
             <div class="col-md-12">
+                {% if this_npc.race %}<p><strong>Race</strong> {{ this_npc.race }}</p>{% endif %}
                 {% if this_npc.npc_class %}<p><strong>Class</strong> {{ this_npc.npc_class }}</p>{% endif %}
                 {% if this_npc.age %}<p><strong>Age</strong> {{ this_npc.age }}</p>{% endif %}
                 {% if this_npc.height %}<p><strong>Height</strong> {{ this_npc.height }}</p>{% endif %}

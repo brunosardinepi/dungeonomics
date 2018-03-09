@@ -177,7 +177,18 @@
                         </div>
 
                         <div class="form-row">
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-3">
+                                <label for="{{ form.race.id_for_label }}">Race</label>
+                                {% render_field form.race class+="form-control" %}
+                                {% if form.race.errors %}
+                                    {% for error in form.race.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-md-3">
                                 <label for="{{ form.challenge_rating.id_for_label }}">Challenge rating</label>
                                 {% render_field form.challenge_rating class+="form-control" %}
                                 {% if form.challenge_rating.errors %}
@@ -188,7 +199,7 @@
                                     {% endfor %}
                                 {% endif %}
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-3">
                                 <label for="{{ form.armor_class.id_for_label }}">Armor class</label>
                                 {% render_field form.armor_class class+="form-control" %}
                                 {% if form.armor_class.errors %}
@@ -199,7 +210,7 @@
                                     {% endfor %}
                                 {% endif %}
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-3">
                                 <label for="{{ form.hit_points.id_for_label }}">Hit points</label>
                                 {% render_field form.hit_points class+="form-control" %}
                                 {% if form.hit_points.errors %}

@@ -56,6 +56,7 @@ class NPCForm(TinyMCEForm):
             'intelligence',
             'wisdom',
             'charisma',
+            'race',
             'armor_class',
             'hit_points',
             'speed',
