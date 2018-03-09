@@ -8,6 +8,9 @@ from django.utils import timezone
 class Feature(models.Model):
     description = models.TextField()
 
+    def __str__(self):
+        return str(self.pk)
+
     def votes(self):
         return Vote.objects.filter(feature=self).count()
 
