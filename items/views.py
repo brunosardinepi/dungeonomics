@@ -20,20 +20,20 @@ def item_detail(request, item_pk=None):
         user = request.user.pk
     items = sorted(models.Item.objects.filter(user=user), key=lambda item: item.name.lower())
     if item_pk:
-        this_item = get_object_or_404(models.Item, pk=item_pk)
-        if this_item.user == request.user:
-            return render(request, 'items/item_detail.html', {'this_item': this_item, 'items': items})
+        item = get_object_or_404(models.Item, pk=item_pk)
+        if item.user == request.user:
+            return render(request, 'items/item_detail.html', {'item': item, 'items': items})
         else:
             raise Http404
     elif len(items) > 0:
-        this_item = items[0]
-        if this_item.user == request.user:
-            return render(request, 'items/item_detail.html', {'this_item': this_item, 'items': items})
+        item = items[0]
+        if item.user == request.user:
+            return render(request, 'items/item_detail.html', {'item': item, 'items': items})
         else:
             raise Http404
     else:
-        this_item = None
-    return render(request, 'items/item_detail.html', {'this_item': this_item, 'items': items})
+        item = None
+    return render(request, 'items/item_detail.html', {'item': item, 'items': items})
 
 @login_required
 def item_create(request):
@@ -115,16 +115,11 @@ def item_update(request, item_pk):
 def item_delete(request, item_pk):
     item = get_object_or_404(models.Item, pk=item_pk)
     if item.user == request.user:
-        form = forms.DeleteItemForm(instance=item)
-        if request.method == 'POST':
-            form = forms.DeleteItemForm(request.POST, instance=item)
-            if item.user.pk == request.user.pk:
-                item.delete()
-                messages.add_message(request, messages.SUCCESS, "Item/Spell deleted!")
-                return HttpResponseRedirect(reverse('items:item_detail'))
+        item.delete()
+        messages.success(request, 'Item/spell deleted', fail_silently=True)
+        return HttpResponseRedirect(reverse('items:item_detail'))
     else:
         raise Http404
-    return render(request, 'items/item_delete.html', {'form': form, 'item': item})
 
 @login_required
 def item_copy(request, item_pk):

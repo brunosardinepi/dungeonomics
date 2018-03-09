@@ -20,67 +20,67 @@ import json
 @login_required
 def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None):
     if campaign_pk:
-        this_campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-        if this_campaign.user == request.user:
-            chapters = sorted(models.Chapter.objects.filter(campaign=this_campaign),
+        campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+        if campaign.user == request.user:
+            chapters = sorted(models.Chapter.objects.filter(campaign=campaign),
             key=lambda chapter: chapter.order)
 
             if chapter_pk:
-                this_chapter = get_object_or_404(models.Chapter, pk=chapter_pk)
+                chapter = get_object_or_404(models.Chapter, pk=chapter_pk)
             else:
                 if len(chapters) > 0:
-                    this_chapter = chapters[0]
+                    chapter = chapters[0]
                 else:
-                    this_chapter = None
+                    chapter = None
 
             sections = []
-            for chapter in chapters:
+            for c in chapters:
                 sections.append(sorted(
-                    models.Section.objects.filter(chapter=chapter),
+                    models.Section.objects.filter(chapter=c),
                     key=lambda section: section.order
                     ))
             sections = [item for sublist in sections for item in sublist]
 
             if section_pk:
-                this_section = get_object_or_404(models.Section, pk=section_pk)
+                section = get_object_or_404(models.Section, pk=section_pk)
             else:
-                this_section = None
+                section = None
 
-            if this_chapter:
-                if this_section:
-                    return render(request, 'campaign/campaign_detail.html', {'this_campaign': this_campaign, 'this_chapter': this_chapter, 'this_section': this_section, 'chapters': chapters, 'sections': sections})
+            if chapter:
+                if section:
+                    return render(request, 'campaign/campaign_detail.html', {'campaign': campaign, 'chapter': chapter, 'section': section, 'chapters': chapters, 'sections': sections})
                 else:
-                    return render(request, 'campaign/campaign_detail.html', {'this_campaign': this_campaign, 'this_chapter': this_chapter, 'chapters': chapters, 'sections': sections})
+                    return render(request, 'campaign/campaign_detail.html', {'campaign': campaign, 'chapter': chapter, 'chapters': chapters, 'sections': sections})
             else:
-                return render(request, 'campaign/campaign_detail.html', {'this_campaign': this_campaign})
+                return render(request, 'campaign/campaign_detail.html', {'campaign': campaign})
         else:
             raise Http404
     else:
-        this_campaign = None
+        campaign = None
         user = None
         if request.user.is_authenticated():
             user = request.user.pk
         campaigns = sorted(models.Campaign.objects.filter(user=user),
             key=lambda campaign: campaign.title)
         if len(campaigns) > 0:
-            this_campaign = campaigns[0]
+            campaign = campaigns[0]
 
-            chapters = sorted(models.Chapter.objects.filter(campaign=this_campaign), key=lambda chapter: chapter.order)
+            chapters = sorted(models.Chapter.objects.filter(campaign=campaign), key=lambda chapter: chapter.order)
             if len(chapters) > 0:
-                this_chapter = chapters[0]
+                chapter = chapters[0]
             else:
-                this_chapter = None
+                chapter = None
 
             sections = []
-            for chapter in chapters:
+            for c in chapters:
                 sections.append(sorted(
-                    models.Section.objects.filter(chapter=chapter),
+                    models.Section.objects.filter(chapter=c),
                     key=lambda section: section.order
                     ))
             sections = [item for sublist in sections for item in sublist]
 
-            return render(request, 'campaign/campaign_detail.html', {'this_campaign': this_campaign, 'this_chapter': this_chapter, 'chapters': chapters, 'sections': sections})
-        return render(request, 'campaign/campaign_detail.html', {'this_campaign': this_campaign})
+            return render(request, 'campaign/campaign_detail.html', {'campaign': campaign, 'chapter': chapter, 'chapters': chapters, 'sections': sections})
+        return render(request, 'campaign/campaign_detail.html', {'campaign': campaign})
 
 
 class CampaignCreate(LoginRequiredMixin, CreateView):
@@ -138,7 +138,16 @@ def chapter_create(request, campaign_pk):
                 return HttpResponseRedirect(chapter.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'campaign/chapter_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'campaign': campaign, 'worlds': worlds, 'locations': locations})
+    return render(request, 'campaign/chapter_form.html', {
+        'form': form,
+        'monsters': monsters,
+        'npcs': npcs,
+        'items': items,
+        'players': players,
+        'campaign': campaign,
+        'worlds': worlds,
+        'locations': locations,
+    })
 
 @login_required
 def section_create(request, campaign_pk, chapter_pk):
@@ -325,33 +334,23 @@ def campaign_print(request, campaign_pk):
 def campaign_delete(request, campaign_pk):
     campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
     if campaign.user == request.user:
-        form = forms.DeleteCampaignForm(instance=campaign)
-        if request.method == 'POST':
-            form = forms.DeleteCampaignForm(request.POST, instance=campaign)
-            if campaign.user.pk == request.user.pk:
-                campaign.delete()
-                messages.add_message(request, messages.SUCCESS, "Campaign deleted!")
-                return HttpResponseRedirect(reverse('home'))
+        campaign.delete()
+        messages.success(request, 'Campaign deleted', fail_silently=True)
+        return HttpResponseRedirect(reverse('home'))
     else:
         raise Http404
-    return render(request, 'campaign/campaign_delete.html', {'form': form, 'campaign': campaign})
-
 
 @login_required
 def chapter_delete(request, campaign_pk, chapter_pk):
     campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
     if campaign.user == request.user:
         chapter = get_object_or_404(models.Chapter, pk=chapter_pk)
-        form = forms.DeleteChapterForm(instance=chapter)
-        if request.method == 'POST':
-            form = forms.DeleteChapterForm(request.POST, instance=chapter)
-            if chapter.user.pk == request.user.pk:
-                chapter.delete()
-                messages.add_message(request, messages.SUCCESS, "Chapter deleted!")
-                return HttpResponseRedirect(reverse('campaign:campaign_detail', kwargs={'campaign_pk': campaign.pk}))
+        if chapter.user == request.user:
+            chapter.delete()
+            messages.success(request, 'Chapter deleted', fail_silently=True)
+            return HttpResponseRedirect(reverse('campaign:campaign_detail', kwargs={'campaign_pk': campaign.pk}))
     else:
         raise Http404
-    return render(request, 'campaign/chapter_delete.html', {'form': form, 'chapter': chapter})
 
 @login_required
 def section_delete(request, campaign_pk, chapter_pk, section_pk):
@@ -359,16 +358,15 @@ def section_delete(request, campaign_pk, chapter_pk, section_pk):
     if campaign.user == request.user:
         chapter = get_object_or_404(models.Chapter, pk=chapter_pk)
         section = get_object_or_404(models.Section, pk=section_pk)
-        form = forms.DeleteSectionForm(instance=section)
-        if request.method == 'POST':
-            form = forms.DeleteSectionForm(request.POST, instance=section)
-            if section.user.pk == request.user.pk:
-                section.delete()
-                messages.add_message(request, messages.SUCCESS, "Section deleted!")
-                return HttpResponseRedirect(reverse('campaign:campaign_detail', kwargs={'campaign_pk': campaign.pk, 'chapter_pk': chapter.pk}))
+        if section.user == request.user:
+            section.delete()
+            messages.success(request, 'Section deleted', fail_silently=True)
+            return HttpResponseRedirect(reverse('campaign:campaign_detail', kwargs={
+                'campaign_pk': campaign.pk,
+                'chapter_pk': chapter.pk,
+            }))
     else:
         raise Http404
-    return render(request, 'campaign/section_delete.html', {'form': form, 'section': section})
 
 @login_required
 def campaign_import(request):

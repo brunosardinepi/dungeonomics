@@ -18,74 +18,13 @@ body {
 .control-label {
     display: none !important;
 }
-.auth-google, .auth-google:active {
-    position: relative;
-    padding: 8px 0;
-    margin-bottom: 5px;
-    width: 100%;
-    background-size: 16px 16px;
-    background-repeat: no-repeat;
-    background-position: left 10px center;
-    background-image: url("../img/logo_google.svg");
-    background-color: #4d90fe;
-    border: 1px solid #3079ed;
-    font-family: Arial;
-    font-weight: 700;
-    font-size: 13px;
-}
-.auth-google:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 36px;
-    border-left: 1px solid #3079ed;
-}
-.auth-google:hover {
-    background-color: #3079ed !important;
-}
-.auth-google:hover:before {
-    border-left: 1px solid #204d74;
-}
-.auth-google:active {
-    background-color: #1467eb !important;
-}
-.auth-facebook, .auth-facebook:active {
-    position: relative;
-    padding: 8px 0;
-    margin-bottom: 5px;
-    width: 100%;
-    background-size: 16px 16px;
-    background-repeat: no-repeat;
-    background-position: left 10px center;
-    background-image: url("../img/logo_facebook.svg");
-    background-color: #4267b2;
-    border: 1px solid #375695;
-    font-family: Helvetica, Arial, sans-serif;
-    font-weight: bold;
-    font-size: 13px;
-}
-.auth-facebook:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 36px;
-    border-left: 1px solid #375695;
-}
-.auth-facebook:hover {
-    background-color: #375695 !important;
-}
-.auth-facebook:hover:before {
-    border-left: 1px solid #294170;
-}
-.auth-facebook:active {
-    background-color: #304c82 !important;
-}
-.login-text {
-    font-size: 12px;
-    margin-bottom: 0;
-}
+
+.facebook, .google, .facebook:hover, .google:hover{color:#ffffff}
+.facebook{background-color:#4267b2;border-color:#29487d}
+.facebook:hover{background-color:#365899;border-color:#29487d}
+.google{background-color:#4285f4;border-color:#4285f4}
+.google:hover{background-color:#357ae8;border-color:#2f5bb7}
+
 form.login {
     margin-bottom: 0;
 }

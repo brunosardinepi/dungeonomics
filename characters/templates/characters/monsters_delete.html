@@ -1,32 +1,39 @@
 {% extends 'layout.html' %}
-{% load bootstrap3 %}
 
 {% block title %}Delete Monsters | {{ block.super }}{% endblock %}
 
 {% block body_content %}
-    <div class="col-md-6 col-md-offset-3">
-        <div class="panel panel-default panel-campaign">
-            <div class="panel-heading">
-                <h3 class="panel-title"><strong>Delete Monsters</strong></h3>
-            </div>
-            <div class="panel-body">
-                <form method="POST" action="" style="margin-bottom:0;">
-                    {% csrf_token %}
-                    <p>Select the monsters that you'd like to delete:</p>
-                    <input type="checkbox" onClick="toggle(this)" style="margin-right: 8px;" />Select all
-                    <hr>
-                    {% for monster in monsters %}
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="monster" value="{{ monster.pk }}"> {{ monster.name }}
-                        </label>
+    <div class="row justify-content-center mt-3 pb-3">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="px-1 mb-0">Delete Monsters</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <p>Select the monsters that you'd like to delete:</p>
+                        <input type="checkbox" onClick="toggle(this)" style="margin-right: 8px;" />Select all
+                        <hr>
+                        {% for monster in monsters %}
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="monster" value="{{ monster.pk }}"> {{ monster.name }}
+                            </label>
+                        </div>
+                        {% endfor %}
+                </div>
+                <div class="card-footer">
+                    <div class="row justify-content-between">
+                        <div class="col-auto">
+                            <a href="{% url 'characters:monster_detail' %}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                        <div class="col-auto">
+                            <input type="submit" class="btn btn-primary" value="Delete">
+                        </div>
                     </div>
-                    {% endfor %}
-            </div>
-            <div class="panel-footer clearfix">
-                    <a href="{% url 'characters:monster_detail' %}" class="btn btn-default">Cancel</a>
-                    <input type="submit" class="btn btn-primary pull-right" value="Delete">
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

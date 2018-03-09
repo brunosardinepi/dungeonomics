@@ -20,22 +20,22 @@ import json
 def location_detail(request, world_pk=None, location_pk=None):
     worlds = sorted(models.World.objects.filter(user=request.user), key=lambda world: world.name.lower())
     if world_pk:
-        this_world = get_object_or_404(models.World, pk=world_pk)
-        if this_world.user == request.user:
-            return render(request, 'locations/location_detail.html', {'this_world': this_world, 'worlds': worlds})
+        world = get_object_or_404(models.World, pk=world_pk)
+        if world.user == request.user:
+            return render(request, 'locations/location_detail.html', {'world': world, 'worlds': worlds})
         else:
             raise Http404
     elif location_pk:
-        this_location = get_object_or_404(models.Location, pk=location_pk)
-        if this_location.user == request.user:
-            return render(request, 'locations/location_detail.html', {'this_location': this_location, 'worlds': worlds})
+        location = get_object_or_404(models.Location, pk=location_pk)
+        if location.user == request.user:
+            return render(request, 'locations/location_detail.html', {'location': location, 'worlds': worlds})
         else:
             raise Http404
     else:
-        this_world = None
+        world = None
         if len(worlds) > 0:
-            this_world = worlds[0]
-        return render(request, 'locations/location_detail.html', {'this_world': this_world, 'worlds': worlds})
+            world = worlds[0]
+        return render(request, 'locations/location_detail.html', {'world': world, 'worlds': worlds})
 
 @login_required
 def world_create(request):
@@ -215,28 +215,18 @@ def location_update(request, location_pk):
 def world_delete(request, world_pk):
     world = get_object_or_404(models.World, pk=world_pk)
     if world.user == request.user:
-        form = forms.DeleteWorldForm(instance=world)
-        if request.method == 'POST':
-            form = forms.DeleteWorldForm(request.POST, instance=world)
-            if world.user.pk == request.user.pk:
-                world.delete()
-                messages.add_message(request, messages.SUCCESS, "World deleted!")
-                return HttpResponseRedirect(reverse('locations:location_detail'))
+        world.delete()
+        messages.success(request, 'World deleted', fail_silently=True)
+        return HttpResponseRedirect(reverse('locations:location_detail'))
     else:
         raise Http404
-    return render(request, 'locations/world_delete.html', {'form': form, 'world': world})
 
 @login_required
 def location_delete(request, location_pk):
     location = get_object_or_404(models.Location, pk=location_pk)
     if location.user == request.user:
-        form = forms.DeleteLocationForm(instance=location)
-        if request.method == 'POST':
-            form = forms.DeleteLocationForm(request.POST, instance=location)
-            if location.user.pk == request.user.pk:
-                location.delete()
-                messages.add_message(request, messages.SUCCESS, "Location deleted!")
-                return HttpResponseRedirect(reverse('locations:location_detail'))
+        location.delete()
+        messages.success(request, 'Location deleted', fail_silently=True)
+        return HttpResponseRedirect(reverse('locations:location_detail'))
     else:
         raise Http404
-    return render(request, 'locations/location_delete.html', {'form': form, 'location': location})

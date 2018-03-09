@@ -89,12 +89,6 @@ class ItemTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'test item name EDIT')
 
-    def test_item_delete_page(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.get('/items/{}/delete/'.format(self.item.pk))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.item.name)
-
     def test_item_delete(self):
         self.client.login(username='testuser', password='testpassword')
         response = self.client.post('/items/{}/delete/'.format(self.item.pk), {})

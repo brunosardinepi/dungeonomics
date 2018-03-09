@@ -148,11 +148,6 @@ class CampaignTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'test campaign title EDIT')
 
-    def test_campaign_delete_page(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.get('/campaign/{}/delete/'.format(self.campaign.pk))
-        self.assertEqual(response.status_code, 200)
-
     def test_campaign_delete(self):
         self.client.login(username='testuser', password='testpassword')
         response = self.client.post('/campaign/{}/delete/'.format(self.campaign.pk), {})
@@ -248,11 +243,6 @@ class CampaignTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'test chapter title EDIT')
 
-    def test_chapter_delete_page(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.get('/campaign/{}/chapter/{}/delete/'.format(self.campaign.pk, self.chapter.pk))
-        self.assertEqual(response.status_code, 200)
-
     def test_chapter_delete(self):
         self.client.login(username='testuser', password='testpassword')
         response = self.client.post('/campaign/{}/chapter/{}/delete/'.format(self.campaign.pk, self.chapter.pk), {})
@@ -318,11 +308,6 @@ class CampaignTest(TestCase):
         response = self.client.get('/campaign/{}/chapter/{}/section/{}/'.format(self.campaign.pk, self.chapter.pk, self.section.pk))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'test section title EDIT')
-
-    def test_section_delete_page(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.get('/campaign/{}/chapter/{}/section/{}/delete/'.format(self.campaign.pk, self.chapter.pk, self.section.pk))
-        self.assertEqual(response.status_code, 200)
 
     def test_section_delete(self):
         self.client.login(username='testuser', password='testpassword')

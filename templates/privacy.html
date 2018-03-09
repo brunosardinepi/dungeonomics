@@ -1,21 +1,20 @@
 {% extends 'layout.html' %}
-{% load bootstrap3 %}
 
 {% block title %}Privacy Policy | {{ block.super }}{% endblock %}
 
 {% block body_content %}
-    <div class="row campaign-row">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <p class="text-center">We are collecting the following data from you:</p>
-                    <p class="text-center">
-                        <strong>First and last name</strong>
+    <div class="row mt-3 justify-content-center">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <p>We are collecting the following data from you:</p>
+                    <p>
+                        <span class="font-weight-bold">First and last name</span>
                         <br />
-                        <strong>Email address</strong>
+                        <span class="font-weight-bold">Email address</span>
                     </p>
-                    <p class="text-center">We are using this data to link your account to you. We do not give this information out to anyone. It is only being used to identify you upon login.</p>
-                    <p class="text-center">If you have questions about our privacy policy, please <a href="mailto:dungeonomics@gmail.com">contact us</a>.</p>
+                    <p>We are using this data to link your account to you. We do not give this information out to anyone. It is only being used to identify you upon login.</p>
+                    <p>If you have questions about our privacy policy, please <a href="mailto:dungeonomics@gmail.com">contact us</a>.</p>
                 </div>
             </div>
         </div>

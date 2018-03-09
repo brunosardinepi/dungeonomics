@@ -1,52 +1,64 @@
 {% extends 'layout.html' %}
 
+{% load static from staticfiles %}
+
+
 {% block body_content %}
-    <div class="row" style="margin-top: 30px;">
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div style="padding: 0;" class="panel-heading panel-heading-cog clearfix">
-                    <span class="pull-left">
-                        <h3 class="panel-title panel-title-cog">{% block character_list_title %}{% endblock %}</h3>
-                    </span>
-                    <span class="pull-right">
-                        <ul style="margin-right: 0;" class="nav navbar-nav navbar-right">
-                            <li class="dropdown">
-                                <a style="padding: 0 15px; line-height: 37px; color: #000;" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
-                                <ul class="dropdown-menu">
+    <div class="row mt-3 pb-5">
+        <div class="col-lg-4 mb-3">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-auto">
+                            <h5 class="px-1 mb-0">{% block character_list_title %}{% endblock %}</h5>
+                        </div>
+                        <div class="col-auto">
+                            <div class="dropdown">
+                                <a class="btn btn-sm text-dark dropdown-toggle" href="#" role="button" id="table-of-contents-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-lg fa-cog"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="table-of-contents-dropdown">
                                     {% block character_contents_extra %}{% endblock %}
-                                </ul>
-                            </li>
-                        </ul>
-                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <ul class="contents_list">
                         {% block character_list %}{% endblock %}
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="col-md-8">
-            <div class="panel panel-default">
-                <div style="padding: 0;" class="panel-heading panel-heading-cog clearfix">
-                    <span class="pull-left">
-                        <h3 class="panel-title panel-title-cog">{% block character_detail_title %}{% endblock %}</h3>
-                    </span>
-                    <span class="pull-right">
-                        <ul style="margin-right: 0;" class="nav navbar-nav navbar-right">
-                            <li class="dropdown">
-                                <a style="padding: 0 15px; line-height: 37px; color: #000;" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
-                                <ul class="dropdown-menu">
+
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-auto">
+                            <h5 class="px-1 mb-0">{% block character_detail_title %}{% endblock %}</h5>
+                        </div>
+                        <div class="col-auto">
+                            <div class="dropdown">
+                                <a class="btn btn-sm text-dark dropdown-toggle" href="#" role="button" id="contents-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-lg fa-cog"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="contents-dropdown">
                                     {% block character_detail_extra %}{% endblock %}
-                                </ul>
-                            </li>
-                        </ul>
-                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     {% block character_detail %}{% endblock %}
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block body_extra %}
+    <script src="{% static 'js/character_delete.js' %}"></script>
 {% endblock %}

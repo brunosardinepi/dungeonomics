@@ -1,11 +1,13 @@
 {% extends 'layout.html' %}
-{% load bootstrap3 %}
+
+{% load widget_tweaks %}
+
 
 {% block title %}
     {% if monster.pk %}
-        Update Monster 
+        Update monster 
     {% else %}
-        New Monster 
+        New monster 
     {% endif %}
     | {{ block.super }}
 {% endblock %}
@@ -105,31 +107,345 @@
 {% endblock %}
 
 {% block body_content %}
-    <div class="col-md-12">
-        <div class="panel panel-default panel-campaign">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    {% if monster.pk %}
-                        <strong>Update monster:</strong> {{ monster.name }}
-                    {% else %}
-                        <strong>New monster</strong>
-                    {% endif %}
-                </h3>
-            </div>
-            <div class="panel-body">
-                <form method="POST" action="">
-                    {% csrf_token %}
-                    {% bootstrap_form form %}
-            </div>
-            <div class="panel-footer clearfix">
-                {% if monster.pk %}
-                    <a href="{% url 'characters:monster_detail' monster_pk=monster.pk %}" class="btn btn-default">Cancel</a>
-                    <input type="submit" class="btn btn-primary pull-right" value="Update Monster">
-                {% else %}
-                    <a href="{% url 'characters:monster_detail' %}" class="btn btn-default">Cancel</a>
-                    <input type="submit" class="btn btn-primary pull-right" value="Create Monster">
-                {% endif %}
-                </form>
+    <div class="row mt-3 pb-5">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="px-1 mb-0">
+                        {% if monster.pk %}
+                            <span class="font-weight-bold">Update monster:</span> {{ monster.name }}
+                        {% else %}
+                            <span class="font-weight-bold">New monster</span>
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="">
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="{{ form.name.id_for_label }}">Name</label>
+                                {% render_field form.name class+="form-control" %}
+                                {% if form.name.errors %}
+                                    {% for error in form.name.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="{{ form.creature_type.id_for_label }}">Creature type</label>
+                                {% render_field form.creature_type class+="form-control" %}
+                                {% if form.creature_type.errors %}
+                                    {% for error in form.creature_type.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="{{ form.alignment.id_for_label }}">Alignment</label>
+                                {% render_field form.alignment class+="form-control" %}
+                                {% if form.alignment.errors %}
+                                    {% for error in form.alignment.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="{{ form.challenge_rating.id_for_label }}">Challenge rating</label>
+                                {% render_field form.challenge_rating class+="form-control" %}
+                                {% if form.challenge_rating.errors %}
+                                    {% for error in form.challenge_rating.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="{{ form.armor_class.id_for_label }}">Armor class</label>
+                                {% render_field form.armor_class class+="form-control" %}
+                                {% if form.armor_class.errors %}
+                                    {% for error in form.armor_class.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="{{ form.hit_points.id_for_label }}">Hit points</label>
+                                {% render_field form.hit_points class+="form-control" %}
+                                {% if form.hit_points.errors %}
+                                    {% for error in form.hit_points.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-2">
+                                <label for="{{ form.strength.id_for_label }}">Strength</label>
+                                {% render_field form.strength class+="form-control" %}
+                                {% if form.strength.errors %}
+                                    {% for error in form.strength.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="{{ form.dexterity.id_for_label }}">Dexterity</label>
+                                {% render_field form.dexterity class+="form-control" %}
+                                {% if form.dexterity.errors %}
+                                    {% for error in form.dexterity.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="{{ form.constitution.id_for_label }}">Constitution</label>
+                                {% render_field form.constitution class+="form-control" %}
+                                {% if form.constitution.errors %}
+                                    {% for error in form.constitution.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="{{ form.intelligence.id_for_label }}">Intelligence</label>
+                                {% render_field form.intelligence class+="form-control" %}
+                                {% if form.intelligence.errors %}
+                                    {% for error in form.intelligence.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="{{ form.wisdom.id_for_label }}">Wisdom</label>
+                                {% render_field form.wisdom class+="form-control" %}
+                                {% if form.wisdom.errors %}
+                                    {% for error in form.wisdom.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="{{ form.charisma.id_for_label }}">Charisma</label>
+                                {% render_field form.charisma class+="form-control" %}
+                                {% if form.charisma.errors %}
+                                    {% for error in form.charisma.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="{{ form.saving_throws.id_for_label }}">Saving throws</label>
+                                {% render_field form.saving_throws class+="form-control" %}
+                                {% if form.saving_throws.errors %}
+                                    {% for error in form.saving_throws.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="{{ form.skills.id_for_label }}">Skills</label>
+                                {% render_field form.skills class+="form-control" %}
+                                {% if form.skills.errors %}
+                                    {% for error in form.skills.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="{{ form.damage_vulnerabilities.id_for_label }}">Damage vulnerabilities</label>
+                                {% render_field form.damage_vulnerabilities class+="form-control" %}
+                                {% if form.damage_vulnerabilities.errors %}
+                                    {% for error in form.damage_vulnerabilities.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="{{ form.damage_resistances.id_for_label }}">Damage resistances</label>
+                                {% render_field form.damage_resistances class+="form-control" %}
+                                {% if form.damage_resistances.errors %}
+                                    {% for error in form.damage_resistances.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="{{ form.damage_immunities.id_for_label }}">Damage immunities</label>
+                                {% render_field form.damage_immunities class+="form-control" %}
+                                {% if form.damage_immunities.errors %}
+                                    {% for error in form.damage_immunities.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="{{ form.condition_immunities.id_for_label }}">Condition immunities</label>
+                                {% render_field form.condition_immunities class+="form-control" %}
+                                {% if form.condition_immunities.errors %}
+                                    {% for error in form.condition_immunities.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-3">
+                                <label for="{{ form.size.id_for_label }}">Size</label>
+                                {% render_field form.size class+="form-control" %}
+                                {% if form.size.errors %}
+                                    {% for error in form.size.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="{{ form.speed.id_for_label }}">Speed</label>
+                                {% render_field form.speed class+="form-control" %}
+                                {% if form.speed.errors %}
+                                    {% for error in form.speed.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="{{ form.senses.id_for_label }}">Senses</label>
+                                {% render_field form.senses class+="form-control" %}
+                                {% if form.senses.errors %}
+                                    {% for error in form.senses.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="{{ form.languages.id_for_label }}">Languages</label>
+                                {% render_field form.languages class+="form-control" %}
+                                {% if form.languages.errors %}
+                                    {% for error in form.languages.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.traits.id_for_label }}">Traits</label>
+                            {% render_field form.traits class+="form-control" %}
+                            {% if form.traits.errors %}
+                                {% for error in form.traits.errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ error|escape }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.actions.id_for_label }}">Actions</label>
+                            {% render_field form.actions class+="form-control" %}
+                            {% if form.actions.errors %}
+                                {% for error in form.actions.errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ error|escape }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.notes.id_for_label }}">Notes</label>
+                            {% render_field form.notes class+="form-control" %}
+                            {% if form.notes.errors %}
+                                {% for error in form.notes.errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ error|escape }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                </div>
+                <div class="card-footer">
+                    <div class="row justify-content-between">
+                        {% if monster.pk %}
+                            <div class="col-auto">
+                                <a href="{% url 'characters:monster_detail' monster_pk=monster.pk%}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                            <div class="col-auto">
+                                <input type="submit" class="btn btn-primary" value="Update monster">
+                            </div>
+                        {% else %}
+                            <div class="col-auto">
+                                <a href="{% url 'characters:monster_detail' %}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                            <div class="col-auto">
+                                <input type="submit" class="btn btn-primary" value="Create monster">
+                            </div>
+                        {% endif %}
+                    </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

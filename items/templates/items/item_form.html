@@ -1,11 +1,13 @@
 {% extends 'layout.html' %}
-{% load bootstrap3 %}
+
+{% load widget_tweaks %}
+
 
 {% block title %}
     {% if item.pk %}
-        Update Item/Spell 
+        Update item/spell 
     {% else %}
-        New Item/Spell 
+        New item/spell 
     {% endif %}
     | {{ block.super }}
 {% endblock %}
@@ -105,31 +107,97 @@
 {% endblock %}
 
 {% block body_content %}
-    <div class="col-md-12">
-        <div class="panel panel-default panel-campaign">
-            <div class="panel-heading">
-                <h3 class="panel-title">
-                    {% if item.pk %}
-                        <strong>Update item/spell:</strong> {{ item.name }}
-                    {% else %}
-                        <strong>New item/spell</strong>
-                    {% endif %}
-                </h3>
-            </div>
-            <div class="panel-body">
-                <form method="POST" action="">
-                    {% csrf_token %}
-                    {% bootstrap_form form %}
-            </div>
-            <div class="panel-footer clearfix">
-                {% if item.pk %}
-                    <a href="{% url 'items:item_detail' item_pk=item.pk %}" class="btn btn-default">Cancel</a>
-                    <input type="submit" class="btn btn-primary pull-right" value="Update item/spell">
-                {% else %}
-                    <a href="{% url 'items:item_detail' %}" class="btn btn-default">Cancel</a>
-                    <input type="submit" class="btn btn-primary pull-right" value="Create item/spell">
-                {% endif %}
-                </form>
+    <div class="row mt-3 pb-5">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="px-1 mb-0">
+                        {% if item.pk %}
+                            <span class="font-weight-bold">Update item/spell:</span> {{ item.name }}
+                        {% else %}
+                            <span class="font-weight-bold">New item/spell</span>
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="">
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="{{ form.name.id_for_label }}">Name</label>
+                                {% render_field form.name class+="form-control" %}
+                                {% if form.name.errors %}
+                                    {% for error in form.name.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="{{ form.item_type.id_for_label }}">Type</label>
+                                {% render_field form.item_type class+="form-control" %}
+                                {% if form.item_type.errors %}
+                                    {% for error in form.item_type.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="{{ form.rarity.id_for_label }}">Rarity</label>
+                                {% render_field form.rarity class+="form-control" %}
+                                {% if form.rarity.errors %}
+                                    {% for error in form.rarity.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.description.id_for_label }}">Description</label>
+                            {% render_field form.description class+="form-control" %}
+                            {% if form.description.errors %}
+                                {% for error in form.description.errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ error|escape }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                </div>
+                <div class="card-footer">
+                    <div class="row justify-content-between">
+                        {% if item.pk %}
+                            <div class="col-auto">
+                                <a href="{% url 'items:item_detail' item_pk=item.pk %}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                            <div class="col-auto">
+                                <input type="submit" class="btn btn-primary" value="Update item/spell">
+                            </div>
+                        {% else %}
+                            <div class="col-auto">
+                                <a href="{% url 'items:item_detail' %}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                            <div class="col-auto">
+                                <input type="submit" class="btn btn-primary" value="Create item/spell">
+                            </div>
+                        {% endif %}
+                    </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

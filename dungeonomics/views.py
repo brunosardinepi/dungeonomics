@@ -1,8 +1,7 @@
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Count
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render, render_to_response
 from django.template import RequestContext
 from django.views.generic import TemplateView
@@ -13,6 +12,7 @@ from . import forms
 from allauth.account import models as allauth_models
 from campaign import models as campaign_models
 from characters import models as character_models
+from votes.models import Feature, Vote
 
 
 class HomeView(TemplateView):
@@ -21,7 +21,8 @@ class HomeView(TemplateView):
 
 def home_view(request):
     if request.user.is_authenticated():
-        return render(request, 'home.html')
+        features = Feature.objects.all().annotate(votes=Count('vote')).order_by('-votes')
+        return render(request, 'home.html', {'features': features})
     else:
         users = allauth_models.EmailAddress.objects.count()
         campaigns = campaign_models.Campaign.objects.count()
@@ -65,16 +66,11 @@ class PasswordResetView(views.PasswordResetView):
 @login_required
 def account_delete(request):
     user = get_object_or_404(User, pk=request.user.pk)
-    form = forms.DeleteUserForm(instance=user)
-    if request.method == 'POST':
-        form = forms.DeleteUserForm(request.POST, instance=user)
-        # if form.is_valid() and user.pk == request.user.pk:
-        if user.pk == request.user.pk:
-        # if form.is_valid():
-            user.delete()
-            return HttpResponseRedirect('home')
-    return render(request, 'delete_account.html', {'form': form, 'user': user})
-
+    if user == request.user:
+        user.delete()
+        return HttpResponseRedirect('home')
+    else:
+        raise Http404
 
 class PasswordResetDoneView(TemplateView):
     template_name = "password_reset_done.html"

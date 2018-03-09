@@ -14,7 +14,7 @@
 {% block character_list %}
     {% if npcs %}
         {% for npc in npcs %}
-            <li style="margin-bottom: 10px;">
+            <li>
                 <a href="{% url 'characters:npc_detail' npc_pk=npc.id %}">
                     {{ npc.name }}
                 </a>
@@ -26,11 +26,11 @@
 {% endblock %}
 
 {% block character_contents_extra %}
-    <li><a href="{% url 'characters:npc_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create NPC</span></a></li>
-    <li><a href="{% url 'characters:npc_export' %}"><span class="text-warning"><i class="fa fa-fw fa-download" aria-hidden="true"></i> Export NPCs</span></a></li>
-    <li><a href="{% url 'characters:npc_import' %}"><span class="text-primary"><i class="fa fa-fw fa-upload" aria-hidden="true"></i> Import NPCs</span></a></li>
-    <li><a href="{% url 'characters:npc_srd' %}"><span class="text-default"><i class="fa fa-fw fa-book" aria-hidden="true"></i> SRD NPCs</span></a></li>
-    <li><a href="{% url 'characters:npcs_delete' %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete NPCs</span></a></li>
+    <a href="{% url 'characters:npc_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create NPC</a>
+    <a href="{% url 'characters:npc_export' %}" class="dropdown-item"><i class="fal fa-fw fa-cloud-download" aria-hidden="true"></i> Export NPCs</a>
+    <a href="{% url 'characters:npc_import' %}" class="dropdown-item"><i class="fal fa-fw fa-cloud-upload" aria-hidden="true"></i> Import NPCs</a>
+    <a href="{% url 'characters:npc_srd' %}" class="dropdown-item"><i class="fal fa-fw fa-book" aria-hidden="true"></i> SRD NPCs</a>
+    <a href="{% url 'characters:npcs_delete' %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete NPCs</a>
 {% endblock %}
 
 {% block character_detail_title %}
@@ -43,11 +43,11 @@
 
 {% block character_detail_extra %}
     {% if this_npc %}
-        <li><a href="{% url 'characters:npc_update' npc_pk=this_npc.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit NPC</span></a></li>
-        <li><a href="{% url 'characters:npc_copy' npc_pk=this_npc.pk %}"><span class="text-success"><i class="fa fa-fw fa-files-o" aria-hidden="true"></i> Copy NPC</span></a></li>
-        <li><a href="{% url 'characters:npc_delete' npc_pk=this_npc.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete NPC</span></a></li>
+        <a href="{% url 'characters:npc_update' npc_pk=this_npc.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit NPC</a>
+        <a href="{% url 'characters:npc_copy' npc_pk=this_npc.pk %}" class="dropdown-item"><i class="fal fa-fw fa-copy" aria-hidden="true"></i> Copy NPC</a>
+        <a id="npc-delete" href="{% url 'characters:npc_delete' npc_pk=this_npc.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete NPC</a>
     {% else %}
-        <li><a href="{% url 'characters:npc_create' %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create NPC</span></a></li>
+        <a href="{% url 'characters:npc_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create NPC</a>
     {% endif %}
 {% endblock %}
 

@@ -1,48 +1,56 @@
 {% extends 'layout.html' %}
-{% load bootstrap3 %}
+
 
 {% block title %}SRD Monsters | {{ block.super }}{% endblock %}
 
 {% block body_content %}
-    <div class="col-md-6 col-md-offset-3">
-        <div class="panel panel-default panel-campaign">
-            <div class="panel-heading">
-                <h3 class="panel-title"><strong>SRD Monsters</strong></h3>
-            </div>
-            <div class="panel-body">
-                <form method="POST" action="" style="margin-bottom:0;">
-                    {% csrf_token %}
-                    <p>Select the monsters from the SRD that you'd like to import to your account:</p>
-                    <input type="checkbox" onClick="toggle(this)" style="margin-right: 8px;" />Select all
-                    <hr>
-                    {% for monster in monsters %}
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="monster" value="{{ monster.pk }}"> {{ monster.name }}
-                        </label>
+    <div class="row justify-content-center mt-3 pb-3">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="px-1 mb-0">SRD Monsters</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <p>Select the monsters from the SRD that you'd like to import to your account:</p>
+                        <input type="checkbox" onClick="toggle(this)" style="margin-right: 8px;" />Select all
+                        <hr>
+                        {% for monster in monsters %}
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="monster" value="{{ monster.pk }}"> {{ monster.name }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                        
+                        <hr>
+    
+                        <p>These monsters are provided by the <a href="http://dnd.wizards.com/articles/features/systems-reference-document-srd" target="_blank">SRD</a> and used in accordance with the <a href="http://www.opengamingfoundation.org/ogl.html" target="_blank">Open Gaming License</a>.<p>
+                </div>
+                <div class="card-footer">
+                    <div class="row justify-content-between">
+                        <div class="col-auto">
+                            <a href="{% url 'characters:monster_detail' %}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                        <div class="col-auto">
+                            <input type="submit" class="btn btn-primary" value="Continue">
+                        </div>
                     </div>
-                    {% endfor %}
-                    
-                    <hr>
-
-                    <p>These monsters are provided by the <a href="http://dnd.wizards.com/articles/features/systems-reference-document-srd" target="_blank">SRD</a> and used in accordance with the <a href="http://www.opengamingfoundation.org/ogl.html" target="_blank">Open Gaming License</a>.<p>
-            </div>
-            <div class="panel-footer clearfix">
-                    <a href="{% url 'characters:monster_detail' %}" class="btn btn-default">Cancel</a>
-                    <input type="submit" class="btn btn-primary pull-right" value="Continue">
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 {% endblock %}
 
-{% block end_static %}
-<script language='JavaScript'>
-function toggle(source) {
-  checkboxes = document.getElementsByName('monster');
-  for(var i=0, n=checkboxes.length;i<n;i++) {
-    checkboxes[i].checked = source.checked;
-  }
-}
-</script>
+{% block body_extra %}
+    <script>
+    function toggle(source) {
+      checkboxes = document.getElementsByName('monster');
+      for(var i=0, n=checkboxes.length;i<n;i++) {
+        checkboxes[i].checked = source.checked;
+      }
+    }
+    </script>
 {% endblock %}
