@@ -129,13 +129,6 @@ class CharacterTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'test character name EDIT')
 
-    def test_player_delete_page(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.get('/characters/player/{}/delete/'.format(self.player.pk))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.player.name)
-        self.assertContains(response, self.player.character_name)
-
     def test_player_delete(self):
         self.client.login(username='testuser', password='testpassword')
         response = self.client.post('/characters/player/{}/delete/'.format(self.player.pk), {})
@@ -192,12 +185,6 @@ class CharacterTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'test monster name EDIT')
 
-    def test_monster_delete_page(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.get('/characters/monster/{}/delete/'.format(self.monster.pk))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.monster.name)
-
     def test_monster_delete(self):
         self.client.login(username='testuser', password='testpassword')
         response = self.client.post('/characters/monster/{}/delete/'.format(self.monster.pk), {})
@@ -253,12 +240,6 @@ class CharacterTest(TestCase):
         response = self.client.get('/characters/npc/{}/'.format(self.npc.pk))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'test npc name EDIT')
-
-    def test_npc_delete_page(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.get('/characters/npc/{}/delete/'.format(self.npc.pk))
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.npc.name)
 
     def test_npc_delete(self):
         self.client.login(username='testuser', password='testpassword')

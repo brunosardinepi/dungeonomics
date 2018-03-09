@@ -1,42 +1,39 @@
 {% extends 'layout.html' %}
+
 {% load socialaccount %}
-{% load bootstrap3 %}
 {% load i18n %}
 
-{% block title %}Social Accounts | {{ block.super }}{% endblock %}
+
+{% block title %}Social accounts | {{ block.super }}{% endblock %}
 
 {% block body_content %}
     <div class="row campaign-row">
         <div class="col-md-4">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        Social Accounts
-                    </h3>
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="px-1 mb-0">Social Accounts</h5>
                 </div>
-                <div class="panel-body">
-                    <p>You currently have the following social accounts connected to Dungeonomics:</p>
+                <div class="card-body">
                     {% get_social_accounts user as accounts %}
                     {% if accounts %}
+                        <p>You currently have the following social accounts connected to Dungeonomics:</p>
                         <ul>
                             {% for account in accounts %}
                                 <li><strong>{{ account|capfirst }}</strong></li>
                             {% endfor %}
                         </ul>
                     {% else %}
-                        <p>None</p>
+                        <p>You don't have any social accounts connected to Dungeonomics.</p>
                     {% endif %}
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        Add Social Accounts
-                    </h3>
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="px-1 mb-0">Add Social Accounts</h5>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <p>The following social accounts can be linked to Dungeonomics:</p>
                     <ul class="socialaccount_providers">
                         {% include "socialaccount/snippets/provider_list.html" with process="connect" %}
@@ -46,15 +43,13 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="panel panel-danger">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        Remove Social Accounts
-                    </h3>
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="px-1 mb-0">Remove Social Accounts</h5>
                 </div>
-                <div class="panel-body">
-                    <p>You can remove the following social accounts from Dungeonomics:</p>
+                <div class="card-body">
                     {% if form.accounts %}
+                        <p>You can remove the following social accounts from Dungeonomics:</p>
                         <form method="post" action="{% url 'socialaccount_connections' %}" style="margin-bottom: 0;">
                         {% csrf_token %}
                             <fieldset>
@@ -76,7 +71,7 @@
                             </fieldset>
                         </form>
                     {% else %}
-                        <p>{% trans 'You have no social network accounts connected to Dungeonomics.' %}</p>
+                        <p>You don't have any social accounts connected to Dungeonomics.</p>
                     {% endif %}
                 </div>
             </div>

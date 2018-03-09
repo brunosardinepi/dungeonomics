@@ -1,0 +1,19 @@
+<div class="jumbotron py-1 px-0 mb-0 breadcrumbs">
+    <div class="container">
+        <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk %}">{{ campaign.title }}</a>
+        {% if chapter %}
+            <span class="breadcrumbs_separator"> / </span>
+            {% if section %}
+                <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}">{{ chapter.title }}</a>
+                <span class="breadcrumbs_separator"> / </span>
+                {{ section.title }}
+            {% else %}
+                {{ chapter.title }}
+            {% endif %}
+        {% endif %}
+        {% if action %}
+            <span class="breadcrumbs_separator"> / </span>
+            {{ action }}
+        {% endif %}
+    </div>
+</div>

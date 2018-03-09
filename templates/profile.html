@@ -1,42 +1,40 @@
 {% extends 'layout.html' %}
+
 {% load socialaccount %}
-{% load bootstrap3 %}
+{% load static from staticfiles %}
+
 
 {% block title %}Profile | {{ block.super }}{% endblock %}
 
 {% block body_content %}
-    <div class="row campaign-row">
+    <div class="row mt-3">
         <div class="col-md-4">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        Profile
-                    </h3>
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="px-1 mb-0">Profile</h5>
                 </div>
-                <div class="panel-body">
-                    <p><strong>Email:</strong> {{ user.email }} (<a href="{% url 'account_email' %}">Update</a>)</p>
+                <div class="card-body">
+                    <p><span class="font-weight-bold">Email:</span> {{ user.email }} (<a href="{% url 'account_email' %}">Update</a>)</p>
                     <hr>
                     <a href="{% url 'account_reset_password' %}" class="btn btn-primary btn-block">Reset password</a>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="panel panel-success">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        Social Accounts
-                    </h3>
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="px-1 mb-0">Social Accounts</h5>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <p>You currently have the following social accounts connected to Dungeonomics:</p>
                     <ul>
                         {% get_social_accounts user as accounts %}
                         {% if accounts %}
                             {% for account in accounts %}
-                                <li><strong>{{ account|capfirst }}</strong></li>
+                                <li><span class="font-weight-bold">{{ account|capfirst }}</span></li>
                             {% endfor %}
                         {% else %}
-                            <li><strong>None</strong></li>
+                            <li><span class="font-weight-bold">None</span></li>
                         {% endif %}
                     </ul>
                     <hr>
@@ -45,18 +43,20 @@
             </div>
         </div>
         <div class="col-md-4">
-            <div class="panel panel-danger">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        Delete Account
-                    </h3>
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="px-1 mb-0">Delete Account</h5>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <p>If you delete your account, it's gone forever.</p>
                     <hr>
-                    <a href="{% url 'account_delete' %}" class="btn btn-danger btn-block">Delete account</a>
+                    <a id="account-delete" href="{% url 'account_delete' %}" class="btn btn-danger btn-block">Delete account</a>
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block body_extra %}
+    <script src="{% static 'js/account_delete.js' %}"></script>
 {% endblock %}

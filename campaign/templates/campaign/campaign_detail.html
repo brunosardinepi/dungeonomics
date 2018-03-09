@@ -1,62 +1,48 @@
 {% extends 'layout.html' %}
+
+{% load static from staticfiles %}
 {% load campaign_extras %}
 
-{% block title %}{{ this_campaign.title }} | {{ block.super }}{% endblock %}
+
+{% block title %}{{ campaign.title }} | {{ block.super }}{% endblock %}
 
 {% block breadcrumbs %}
-    <div class="jumbotron breadcrumbs">
-        <div class="container">
-            <span>
-                <span>
-                    <a href="{% url 'campaign:campaign_detail' campaign_pk=this_campaign.pk %}">{{ this_campaign.title }}</a>
-                </span>
-                <span>
-                    {% if this_chapter %}
-                        <span class="breadcrumbs_separator"> / </span>
-                        {% if this_section %}
-                            <a href="{% url 'campaign:campaign_detail' campaign_pk=this_campaign.pk chapter_pk=this_chapter.pk %}">{{ this_chapter.title }}</a>
-                            <span class="breadcrumbs_separator"> / </span>
-                            {{ this_section.title }}
-                        {% else %}
-                            {{ this_chapter.title }}
-                        {% endif %}
-                    {% endif %}
-                </span>
-            </span>
-        </div>
-    </div>
+    {% include "campaign/breadcrumbs.html" %}
 {% endblock %}
 
 {% block body_content %}
-    <div class="row campaign-row">
+    {% include "messages.html" %}
+    <div class="row mt-3 pb-5">
         <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading panel-heading-cog clearfix">
-                    <span class="pull-left">
-                        <h3 class="panel-title panel-title-cog">Contents</h3>
-                    </span>
-                    <span class="pull-right">
-                        <ul class="nav navbar-nav navbar-right navbar-cog">
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="{% url 'campaign:chapter_create' campaign_pk=this_campaign.pk %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create chapter</span></a></li>
-                                    <li><a href="{% url 'campaign:campaign_update' campaign_pk=this_campaign.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit campaign</span></a></li>
-                                    <li><a href="{% url 'campaign:campaign_print' campaign_pk=this_campaign.pk %}"><span class="text-default"><i class="fa fa-fw fa-print" aria-hidden="true"></i> Print campaign</span></a></li>
-                                    <li><a href="{% url 'campaign:campaign_export' campaign_pk=this_campaign.pk %}"><span class="text-primary"><i class="fa fa-fw fa-download" aria-hidden="true"></i> Export campaign</span></a></li>
-                                    <li><a href="{% url 'campaign:campaign_delete' campaign_pk=this_campaign.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete campaign</span></a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </span>
+            <div class="card">
+                <div class="card-header">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-auto">
+                            <h5 class="px-1 mb-0">Contents</h5>
+                        </div>
+                        <div class="col-auto">
+                            <div class="dropdown">
+                                <a class="btn btn-sm text-dark dropdown-toggle" href="#" role="button" id="table-of-contents-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-lg fa-cog"></i>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="table-of-contents-dropdown">
+                                    <a href="{% url 'campaign:chapter_create' campaign_pk=campaign.pk %}" class="dropdown-item text-success"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> Create chapter</a>
+                                    <a href="{% url 'campaign:campaign_update' campaign_pk=campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-edit" aria-hidden="true"></i> Edit campaign</a>
+                                    <a href="{% url 'campaign:campaign_print' campaign_pk=campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-print" aria-hidden="true"></i> Print campaign</a>
+                                    <a href="{% url 'campaign:campaign_export' campaign_pk=campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-cloud-download" aria-hidden="true"></i> Export campaign</a>
+                                    <a id="campaign-delete"  href="{% url 'campaign:campaign_delete' campaign_pk=campaign.pk %}" class="dropdown-item text-danger"><i class="mr-1 fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete campaign</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <ul class="contents_list">
                         {% if chapters %}
                             {% for chapter in chapters %}
                                 <li class="li-content">
                                     {{ chapter.order }}. 
-                                    <a href="{% url 'campaign:campaign_detail' campaign_pk=this_campaign.pk chapter_pk=chapter.pk %}">
+                                    <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}">
                                         {{ chapter.title }}
                                     </a>
                                 </li>
@@ -65,7 +51,7 @@
                                         {% if section.chapter.pk == chapter.pk %}
                                             <li class="li-content">
                                                 {{ section.order }}. 
-                                                <a href="{% url 'campaign:campaign_detail' campaign_pk=this_campaign.pk chapter_pk=chapter.pk section_pk=section.pk %}">
+                                                <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk section_pk=section.pk %}">
                                                     {{ section.title }}
                                                 </a>
                                             </li>
@@ -81,68 +67,30 @@
             </div>
         </div>
         <div class="col-md-8">
-            <div class="panel panel-default">
-                {% if this_chapter %}
-                    {% if not this_section %}
-                        <div class="panel-heading panel-heading-cog clearfix">
-                            <span class="pull-left">
-                                <h3 class="panel-title panel-title-cog">{{ this_chapter.title }}</h3>
-                            </span>
-                            <span class="pull-right">
-                                <ul class="nav navbar-nav navbar-right navbar-cog">
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="{% url 'campaign:section_create' campaign_pk=this_campaign.pk chapter_pk=this_chapter.pk %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create section</span></a></li>
-                                            <li><a href="{% url 'campaign:chapter_update' campaign_pk=this_campaign.pk chapter_pk=this_chapter.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit chapter</span></a></li>
-                                            <li><a href="{% url 'campaign:chapter_delete' campaign_pk=this_campaign.pk chapter_pk=this_chapter.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete chapter</span></a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </span>
+            <div class="card">
+                {% if chapter %}
+                    {% if not section %}
+                        {% include "campaign/card_header.html" with obj=chapter %}
+                        <div class="card-body">
+                            {{ chapter.content|safe }}
                         </div>
-                        <div class="panel-body">
-                            <p>{{ this_chapter.content|safe }}</p>
-                        </div>
-                    {% elif this_section %}
-                        <div class="panel-heading panel-heading-cog clearfix">
-                            <span class="pull-left">
-                                <h3 class="panel-title panel-title-cog">{{ this_section.title }}</h3>
-                            </span>
-                            <span class="pull-right">
-                                <ul class="nav navbar-nav navbar-right navbar-cog">
-                                    <li class="dropdown">
-                                        <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
-                                        <ul class="dropdown-menu">
-                                            <li><a href="{% url 'campaign:section_update' campaign_pk=this_campaign.pk chapter_pk=this_chapter.pk section_pk=this_section.pk %}"><span class="text-warning"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit section</span></a></li>
-                                            <li><a href="{% url 'campaign:section_delete' campaign_pk=this_campaign.pk chapter_pk=this_chapter.pk section_pk=this_section.pk %}"><span class="text-danger"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete section</span></a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </span>
-                        </div>
-                        <div class="panel-body">
-                            <p>{{ this_section.content|safe }}</p>
+                    {% elif section %}
+                        {% include "campaign/card_header.html" with obj=section %}
+                        <div class="card-body">
+                            {{ section.content|safe }}
                         </div>
                     {% endif %}
                 {% else %}
-                    <div class="panel-heading panel-heading-cog clearfix">
-                        <span class="pull-right">
-                            <ul class="nav navbar-nav navbar-right navbar-cog">
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-cog dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-lg fa-cog" aria-hidden="true"></i> <span class="caret"></span></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="{% url 'campaign:chapter_create' campaign_pk=this_campaign.pk %}"><span class="text-success"><i class="fa fa-fw fa-plus" aria-hidden="true"></i> Create chapter</span></a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </span>
-                    </div>
-                    <div class="panel-body">
+                    {% include "campaign/card_header.html" with obj=campaign %}
+                    <div class="card-body">
                         <p>You haven't created any content yet!</p>
                     </div>
                 {% endif %}
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block body_extra %}
+    <script src="{% static 'js/campaign_delete.js' %}"></script>
 {% endblock %}

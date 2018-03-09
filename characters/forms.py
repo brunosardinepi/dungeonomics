@@ -118,45 +118,20 @@ class PlayerForm(TinyMCEForm):
             'notes',
         ]
 
-
-class DeleteMonsterForm(forms.ModelForm):
-    class Meta:
-        model = models.Monster
-        fields = ['name']
-
-
-class DeleteNPCForm(forms.ModelForm):
-    class Meta:
-        model = models.NPC
-        fields = ['name']
-
-
-class DeletePlayerForm(forms.ModelForm):
-    class Meta:
-        model = models.Player
-        fields = [
-            'name',
-            'character_name',
-            ]
-
-
 class CopyMonsterForm(forms.ModelForm):
     class Meta:
         model = models.Monster
         fields = ['name']
-
 
 class CopyNPCForm(forms.ModelForm):
     class Meta:
         model = models.NPC
         fields = ['name']
 
-
 class CopyPlayerForm(forms.ModelForm):
     class Meta:
         model = models.Player
         fields = ['player_name']
-
 
 class ImportMonsterForm(forms.ModelForm):
     class Meta:
@@ -165,7 +140,6 @@ class ImportMonsterForm(forms.ModelForm):
             'name',
         ]
 
-
 class ImportNPCForm(forms.ModelForm):
     class Meta:
         model = models.NPC
@@ -173,18 +147,15 @@ class ImportNPCForm(forms.ModelForm):
             'name',
         ]
 
-
 class SRDMonsterForm(forms.ModelForm):
     class Meta:
         model = models.Monster
         fields = ['name']
 
-
 class SRDNPCForm(forms.ModelForm):
     class Meta:
         model = models.NPC
         fields = ['name']
-
 
 MonsterFormSet = forms.modelformset_factory(
     models.Monster,

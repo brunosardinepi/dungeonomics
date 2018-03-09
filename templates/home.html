@@ -5,16 +5,22 @@
 {% block title %} Home | {{ block.super }}{% endblock %}
 
 {% block static %}
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.pack.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" type="text/css" media="screen" />
+    <link href="{% static 'lightbox/css/lightbox.min.css' %}" rel="stylesheet">
+
+    <style>
+        .jumbotron{border-radius:0}
+    </style>
 {% endblock %}
 
 {% block body_content %}
     {% if user.is_authenticated %}
-        <div class="row campaign-row">
+        <div class="row mt-4 pb-3">
             <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-body">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="font-weight-bold">March 2, 2018</span>
+                    </div>
+                    <div class="card-body">
                         <p>Hey everyone! It's 11/09/2017 and I just wanted to chime in and give y'all an update about the site. I'm currently focused on work and haven't had time to work on Dungeonomics. I still have a list of things I want to accomplish, it's just not something I have the time for at the moment.</p>
                         <p>I get regular emails from users and I take notes on your feedback, and I appreciate the kind words you all have. I especially appreciate the donations that help me pay for the servers to keep this running. I check back in every few days and it surprises me to see the user count steadily growing. I'm humbled by the extremely nice things you continue to send me and I will do my best to continue taking your feedback and advice so that when I do have the time to get back into it, I can properly adjust based on what the community wants.</p>
                         <p>I'm going to keep the site up as long as possible. While it's not even close to the dream I had for it, I believe it still serves a purpose based on the feedback I've gotten from everyone. Even if it isn't perfect, I hope it helps some of you and makes your lives a bit easier.</p>
@@ -26,75 +32,92 @@
     {% else %}
         <div id="jumbotron-home" class="jumbotron">
             <div class="container">
-                <h1>Streamlined Roleplaying</h1>
-                <p>Dungeonomics is a place where DMs can manage their campaigns without the hassle of sifting through a mountain of paper. DMs control all aspects of their campaign from plot creation and setting up encounters to looking up/creating monsters or NPCs.</p>
-
-                <p>Just so we're clear, we believe that there's no substitute for the real thing. Getting together with other adventurers in person will always be the best way to play D&D. Our goal is to enhance that and make it easier for you to immerse yourself in the game by eliminating the need to flip through a bunch of papers, which can sometimes pull you out of the experience.</p>
-
-                <p>Now, go forth and create! Also, please come check us out on <a href="https://www.reddit.com/r/dungeonomics/" target="_blank"><strong>Reddit</strong></a> or <a href="mailto:dungeonomics@gmail.com"><strong>email us</strong></a> to give us feedback and to receive updates.</p>
-                
-                <p>
-                    <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Login</a>
-                    <a class="btn btn-success btn-lg" href="{% url 'signup' %}" role="button">Sign up</a>
-                </p>
+                <div class="row">
+                    <div class="col-12">
+                        <h1>Streamlined Roleplaying</h1>
+                        <p>Dungeonomics is a place where DMs can manage their campaigns without the hassle of sifting through a mountain of paper. DMs control all aspects of their campaign from plot creation and setting up encounters to looking up/creating monsters or NPCs.</p>
+                        <p>Just so we're clear, we believe that there's no substitute for the real thing. Getting together with other adventurers in person will always be the best way to play D&D. Our goal is to enhance that and make it easier for you to immerse yourself in the game by eliminating the need to flip through a bunch of papers, which can sometimes pull you out of the experience.</p>
+                        <p>Now, go forth and create! Also, please come check us out on <a href="https://twitter.com/dungeonomics" target="_blank" class="font-weight-bold">Twitter</a>, <a href="https://www.reddit.com/r/dungeonomics/" target="_blank" class="font-weight-bold">Reddit</a>, or <a href="mailto:dungeonomics@gmail.com" class="font-weight-bold">email us</a> to give us feedback and to receive updates.</p>
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-3">
+                    <div class="col-md-3 mb-3">
+                        <a class="btn btn-block btn-success btn-lg" href="{% url 'signup' %}" role="button">Sign up</a>
+                    </div>
+                    <div class="col-md-3">
+                        <a class="btn btn-block btn-primary btn-lg" href="{% url 'login' %}" role="button">Login</a>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div id="jumbotron-features" class="jumbotron">
+        <div id="jumbotron-features" class="jumbotron text-center">
             <div class="container">
                 <h1 class="text-center">Features</h1>
-                <!--<div id="features-images">-->
-                    <div class="col-md-2 col-md-offset-1">
-                        <a class="fancy" rel="group1" href="{% static 'img/screenshot_01_full.png' %}" title="Here, you can enter your notes and create chapters as your party progresses through the plot, allowing for a seamless progression."><img src="{% static 'img/screenshot_01_thumb.png' %}" alt=""/></a>
+                <div class="row justify-content-between">
+                    <div class="col-md-auto mb-3">
+                        <a href="{% static 'img/screenshot_01_full.png' %}"
+                            data-lightbox="features"
+                            data-title="Here, you can enter your notes and create chapters as your party progresses through the plot, allowing for a seamless progression.">
+                            <img src="{% static 'img/screenshot_01_thumb.png' %}" class="img-thumbnail">
+                        </a>
                     </div>
-                    <div class="col-md-2">
-                        <a class="fancy" rel="group1" href="{% static 'img/screenshot_04_full.png' %}" title="Using our monster and NPC tools, you can create your own characters to use in your campaigns. We have created a way for you to input all the information you'll need for any monster or NPC in any RPG system, not just D&D."><img src="{% static 'img/screenshot_04_thumb.png' %}" alt=""/></a>
+                    <div class="col-md-auto mb-3">
+                        <a href="{% static 'img/screenshot_04_full.png' %}"
+                            data-lightbox="features"
+                            data-title="Using our monster and NPC tools, you can create your own characters to use in your campaigns. We have created a way for you to input all the information you'll need for any monster or NPC in any RPG system, not just D&D.">
+                            <img src="{% static 'img/screenshot_04_thumb.png' %}" class="img-thumbnail">
+                        </a>
                     </div>
-                    <div class="col-md-2">
-                        <a class="fancy" rel="group1" href="{% static 'img/screenshot_02_full.png' %}" title="When you create monsters and NPCs, quickly pull up their stats by tagging them in your campaign."><img src="{% static 'img/screenshot_02_thumb.png' %}" alt=""/></a>
+                    <div class="col-md-auto mb-3">
+                        <a href="{% static 'img/screenshot_02_full.png' %}"
+                            data-lightbox="features"
+                            data-title="When you create monsters and NPCs, quickly pull up their stats by tagging them in your campaign.">
+                            <img src="{% static 'img/screenshot_02_thumb.png' %}" class="img-thumbnail">
+                        </a>
                     </div>
-                    <div class="col-md-2">
-                        <a class="fancy" rel="group1" href="{% static 'img/screenshot_03_full.png' %}" title="When you've tagged a monster or NPC, it will automatically create a link to that character in your campaign. All you have to do is click that generated link and it will take you to your monster or NPC statblock."><img src="{% static 'img/screenshot_03_thumb.png' %}" alt=""/></a>
+                    <div class="col-md-auto mb-3">
+                        <a href="{% static 'img/screenshot_03_full.png' %}"
+                            data-lightbox="features"
+                            data-title="When you've tagged a monster or NPC, it will automatically create a link to that character in your campaign. All you have to do is click that generated link and it will take you to your monster or NPC statblock.">
+                            <img src="{% static 'img/screenshot_03_thumb.png' %}" class="img-thumbnail">
+                        </a>
                     </div>
-                    <div class="col-md-2">
-                        <a class="fancy" rel="group1" href="{% static 'img/screenshot_05_full.png' %}" title="We have a wiki that is constantly being updated to help with any questions you have. We also have thousands of registered users and the generous support of the reddit community."><img src="{% static 'img/screenshot_05_thumb.png' %}" alt=""/></a>
+                    <div class="col-md-auto mb-3">
+                        <a href="{% static 'img/screenshot_05_full.png' %}"
+                            data-lightbox="features"
+                            data-title="We have a wiki that is constantly being updated to help with any questions you have. We also have thousands of registered users and the generous support of the reddit community.">
+                            <img src="{% static 'img/screenshot_05_thumb.png' %}" class="img-thumbnail">
+                        </a>
                     </div>
-                <!--</div>-->
+                </div>
             </div>
         </div>
 
         <div id="jumbotron-footer" class="jumbotron">
             <div class="container">
-                <div class="col-md-4">
-                    <p class="text-center"><i class="fa fa-users fa-5x" aria-hidden="true"></i></p>
-                    <h2 class="text-center stats">Users</h2>
-                    <h2 class="text-center stats">{{ users|intcomma }}</h2>
-                </div>
-                <div class="col-md-4">
-                    <p class="text-center"><i class="fa fa-book fa-5x" aria-hidden="true"></i></p>
-                    <h2 class="text-center stats">Campaigns</h2>
-                    <h2 class="text-center stats">{{ campaigns|intcomma }}</h2>
-                </div>
-                <div class="col-md-4">
-                    <p class="text-center"><i class="fa fa-paw fa-5x" aria-hidden="true"></i></p>
-                    <h2 class="text-center stats">Creatures</h2>
-                    <h2 class="text-center stats">{{ characters|intcomma }}</h2>
+                <div class="row justify-content-center" style="color:#fff;">
+                    <div class="col-md-4 text-center">
+                        <p><i class="fas fa-users fa-5x" aria-hidden="true"></i></p>
+                        <h2>Users</h2>
+                        <h2>{{ users|intcomma }}</h2>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <p><i class="fas fa-book fa-5x" aria-hidden="true"></i></p>
+                        <h2>Campaigns</h2>
+                        <h2>{{ campaigns|intcomma }}</h2>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <p><i class="fas fa-paw fa-5x" aria-hidden="true"></i></p>
+                        <h2>Creatures</h2>
+                        <h2>{{ characters|intcomma }}</h2>
+                    </div>
                 </div>
             </div>
         </div>
     {% endif %}
 {% endblock %}
 
-{% block end_static %}
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $("a.fancy").fancybox({
-                'transitionIn'	:	'elastic',
-                'transitionOut'	:	'elastic',
-                'speedIn'		:	600, 
-                'speedOut'		:	200, 
-                'overlayShow'	:	false
-            });
-        });
-    </script>
+{% block body_extra %}
+    <script src="{% static 'lightbox/js/lightbox.min.js' %}"></script>
 {% endblock %}

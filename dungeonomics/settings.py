@@ -27,12 +27,11 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
     'lib',
-    'bootstrap3',
     'campaign',
     'characters',
-    'wiki',
     'items',
     'locations',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -129,8 +128,22 @@ EMAIL_HOST_PASSWORD = config.settings['email_password']
 DEFAULT_FROM_EMAIL = config.settings['email_from']
 
 
+#STATIC_URL = '/static/'
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+#STATICFILES_DIRS = (
+#    os.path.join(BASE_DIR, 'assets'),
+#)
+
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'assets'),
 )
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+# media
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+UPLOAD_TYPES = ['image']
+MAX_IMAGE_UPLOAD_SIZE = 4*1024*1024
+FILE_UPLOAD_MAX_MEMORY_SIZE = 4*1024*1024
+FILE_UPLOAD_PERMISSIONS = 0o644

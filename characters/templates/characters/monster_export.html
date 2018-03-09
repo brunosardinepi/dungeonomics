@@ -1,23 +1,26 @@
 {% extends 'layout.html' %}
-{% load bootstrap3 %}
+
 {% load campaign_extras %}
 
-{% block title %}Export Monsters | {{ block.super }}{% endblock %}
 
-{% block static %}<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.16/clipboard.min.js"></script>{% endblock %}
+{% block title %}Export monsters | {{ block.super }}{% endblock %}
+
+{% block head_extra %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+{% endblock %}
 
 {% block body_content %}
-    <div class="alert alert-info alert-dismissible" role="alert" style="margin-top: 30px;">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <div class="alert alert-info mt-3" role="alert">
         Copy the following code and then share it with friends! They will need to <a href="{% url 'characters:monster_import' %}" class="alert-link">import</a> it in order to view it.
     </div>
-    <div class="row campaign-row">
+
+    <div class="row mt-3">
         <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Export monsters</h3>
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="px-1 mb-0">Export monsters</h5>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     <div class="pre-scrollable" style="max-height: 400px;">
                     {% autoescape on %}
 <pre id="code">
@@ -54,16 +57,20 @@
                     {% endautoescape %}
                     </div>
                 </div>
-                <div class="panel-footer clearfix">
-                    <button class="btn btn-primary btn-copy pull-right" data-clipboard-target="#code">Copy to clipboard</button>
+                <div class="card-footer">
+                    <div class="row justify-content-end">
+                        <div class="col-auto">
+                            <button class="btn btn-primary btn-copy" data-clipboard-target="#code">Copy to clipboard</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 {% endblock %}
 
-{% block end_static %}
+{% block body_extra %}
     <script>
-        new Clipboard('.btn-copy');
+        new ClipboardJS('.btn-copy');
     </script>
 {% endblock %}
