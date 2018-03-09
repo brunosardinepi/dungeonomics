@@ -15,6 +15,7 @@ Release date: TBD
 
 * Moved admin site location
 * Added settings.py to repo and hid info in local config.py
+* #98 -- moved donate link from PayPal to PageFund
 
 ### Fixes
 
