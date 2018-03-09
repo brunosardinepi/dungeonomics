@@ -15,36 +15,36 @@
 {% block body_content %}
     {% if user.is_authenticated %}
         <div class="row mt-4 pb-3">
-            <div class="col-lg-4 mb-3">
-                <div class="card">
+            <div class="col-lg-8 mb-3">
+                <div class="card mb-3">
                     <div class="card-body">
-                        <h1>March 9, 2018</h1>
+                        <h2>March 9, 2018</h2>
                         <p>We released a big site design refresh today so please let us know if you run into anything weird. It was a lot to do in a short amount of time so we're bound to have made mistakes.</p>
                         <p>Here's a full list of changes made today:</p>
                         <ul>
                             <li>Site design refresh</li>
+                            <li>Voting for features (see below)</li>
                             <li>Donation platform moved from PayPal to <a href="https://page.fund/dungeonomics" target="_blank">PageFund</a></li>
                             <li>Twitter feed added to home page</li>
                         </ul>
 
                         <p>Upcoming changes:</p>
                         <ul>
-                            <li>We want to implement a voting feature on the home page so you can vote for the site features that you want the most.</li>
+                            <li>Vote (see below) for what you want to see added next</li>
                         </ul>
                         <p>As always, feel free to send us an <a href="mailto:dungeonomics@gmail.com">email</a> if you need anything.</p>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4 mb-3">
                 <div class="list-group">
                     <li class="list-group-item list-group-item-info">
-                        <h5>Feature voting</h5>
-                        <p class="mb-0">Click on the features that you want to see added to the site. You can vote once on each feature, and can vote for as many features as you want.</p>
+                        <h2>Feature voting</h2>
+                        <p>Click on the features that you want to see added to the site. You can vote once on each feature, and can vote for as many features as you want. The total votes for each feature are to the right in the blue circle. Click again to remove your vote.</p>
+                        <p class="mb-0">These are all the requests you've sent us to be added. If you want to see your request on here, <a class="alert-link" href="mailto:dungeonomics@gmail.com">email us</a> and we'll add it. Every week, we'll take the top requests and work on adding them to the site.</p>
                     </li>
                     {% for feature in features %}
-                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <a href="{% url 'votes:vote_view' feature_pk=feature.pk %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                             {{ feature.description|safe }}
-                            <span class="badge badge-primary badge-pill">{{ feature.votes }}</span>
+                            <span class="badge badge-primary badge-pill ml-3">{{ feature.votes }}</span>
                         </a>
                     {% endfor %}
                 </div>

@@ -11,6 +11,7 @@ Release date: TBD
 
 * #95 -- Twitter feed on home page
 * #96 -- OpenGraph/Twitter metadata and structured data
+* #86 -- voting platform for new features
 
 ### Changes
 
