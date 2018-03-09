@@ -129,6 +129,13 @@
                                     </a>
                                 </div>
                             </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'signup' %}">Signup</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'login' %}">Login</a>
+                            </li>
                         {% endif %}
                     </ul>
                 </div>
@@ -139,15 +146,10 @@
 
         {% block header_title %}{% endblock %}
 
-        {% if user.is_authenticated %}
-            <div class="container">
-        {% endif %}
-
-        {% block body_content %}{% endblock %}
-        
-        {% if user.is_authenticated %}
-            </div>
-        {% endif %}
+        <div class="container">
+            {% include "messages.html" %}
+            {% block body_content %}{% endblock %}
+        </div>
         
         {% include "footer.html" %}
 

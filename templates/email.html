@@ -1,18 +1,17 @@
 {% extends 'layout.html' %}
-{% load bootstrap3 %}
 
 {% block title %}Email | {{ block.super }}{% endblock %}
 
 {% block body_content %}
-    <div class="row campaign-row">
-        <div class="col-md-6 col-md-offset-3">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">
-                        E-mail Addresses
-                    </h3>
+    <div class="row justify-content-center mt-3">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="px-1 mb-0">
+                        E-mail addresses
+                    </h5>
                 </div>
-                <div class="panel-body">
+                <div class="card-body">
                     {% if user.emailaddress_set.all %}
                         <p>The following e-mail addresses are associated with your account:</p>
                         <form action="{% url 'account_email' %}" class="email_list" method="post">
@@ -45,7 +44,7 @@
                             </fieldset>
                         </form>
                     {% else %}
-                        <p><strong>Warning:</strong> You currently do not have an e-mail address set up. Please add an e-mail address.</p>
+                        <p><span class="font-weight-bold">Warning:</span> You currently do not have an e-mail address set up. Please add an e-mail address.</p>
                     {% endif %}
 
                     <hr>
@@ -54,7 +53,7 @@
 
                     <form method="post" action="{% url 'account_email' %}" class="add_email">
                         {% csrf_token %}
-                        {% bootstrap_form form %}
+                        {{ form.as_p }}
                         <button name="action_add" class="btn btn-primary" type="submit">Add E-mail</button>
                     </form>
                 </div>
