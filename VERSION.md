@@ -10,6 +10,7 @@ Release date: TBD
 ### Additions
 
 * #95 -- Twitter feed on home page
+* #96 -- OpenGraph/Twitter metadata and structured data
 
 ### Changes
 
