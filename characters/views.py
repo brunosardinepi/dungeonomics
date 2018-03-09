@@ -28,20 +28,20 @@ def monster_detail(request, monster_pk=None):
         key=lambda monster: monster.name.lower()
         )
     if monster_pk:
-        this_monster = get_object_or_404(models.Monster, pk=monster_pk)
-        if this_monster.user == request.user:
-            return render(request, 'characters/monster_detail.html', {'this_monster': this_monster, 'monsters': monsters})
+        monster = get_object_or_404(models.Monster, pk=monster_pk)
+        if monster.user == request.user:
+            return render(request, 'characters/monster_detail.html', {'monster': monster, 'monsters': monsters})
         else:
             raise Http404
     elif len(monsters) > 0:
-        this_monster = monsters[0]
-        if this_monster.user == request.user:
-            return render(request, 'characters/monster_detail.html', {'this_monster': this_monster, 'monsters': monsters})
+        monster = monsters[0]
+        if monster.user == request.user:
+            return render(request, 'characters/monster_detail.html', {'monster': monster, 'monsters': monsters})
         else:
             raise Http404
     else:
-        this_monster = None
-    return render(request, 'characters/monster_detail.html', {'this_monster': this_monster, 'monsters': monsters})
+        monster = None
+    return render(request, 'characters/monster_detail.html', {'monster': monster, 'monsters': monsters})
 
 @login_required
 def npc_detail(request, npc_pk=''):
@@ -52,20 +52,20 @@ def npc_detail(request, npc_pk=''):
         key=lambda npc: npc.name.lower()
         )
     if npc_pk:
-        this_npc = get_object_or_404(models.NPC, pk=npc_pk)
-        if this_npc.user == request.user:
-            return render(request, 'characters/npc_detail.html', {'this_npc': this_npc, 'npcs': npcs})
+        npc = get_object_or_404(models.NPC, pk=npc_pk)
+        if npc.user == request.user:
+            return render(request, 'characters/npc_detail.html', {'npc': npc, 'npcs': npcs})
         else:
             raise Http404
     elif len(npcs) > 0:
-        this_npc = npcs[0]
-        if this_npc.user == request.user:
-            return render(request, 'characters/npc_detail.html', {'this_npc': this_npc, 'npcs': npcs})
+        npc = npcs[0]
+        if npc.user == request.user:
+            return render(request, 'characters/npc_detail.html', {'npc': npc, 'npcs': npcs})
         else:
             raise Http404
     else:
-        this_npc = None
-    return render(request, 'characters/npc_detail.html', {'this_npc': this_npc, 'npcs': npcs})
+        npc = None
+    return render(request, 'characters/npc_detail.html', {'npc': npc, 'npcs': npcs})
 
 @login_required
 def player_detail(request, player_pk=None):
@@ -76,20 +76,20 @@ def player_detail(request, player_pk=None):
         key=lambda player: player.player_name.lower()
         )
     if player_pk:
-        this_player = get_object_or_404(models.Player, pk=player_pk)
-        if this_player.user == request.user:
-            return render(request, 'characters/player_detail.html', {'this_player': this_player, 'players': players})
+        player = get_object_or_404(models.Player, pk=player_pk)
+        if player.user == request.user:
+            return render(request, 'characters/player_detail.html', {'player': player, 'players': players})
         else:
             raise Http404
     elif len(players) > 0:
-        this_player = players[0]
-        if this_player.user == request.user:
-            return render(request, 'characters/player_detail.html', {'this_player': this_player, 'players': players})
+        player = players[0]
+        if player.user == request.user:
+            return render(request, 'characters/player_detail.html', {'player': player, 'players': players})
         else:
             raise Http404
     else:
-        this_player = None
-    return render(request, 'characters/player_detail.html', {'this_player': this_player, 'players': players})
+        player = None
+    return render(request, 'characters/player_detail.html', {'player': player, 'players': players})
 
 @login_required
 def monster_create(request):

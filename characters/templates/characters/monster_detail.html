@@ -1,8 +1,8 @@
 {% extends 'characters/character_layout.html' %}
 
 {% block title %}
-    {% if this_monster.pk %}
-        {{ this_monster.name }} 
+    {% if monster.pk %}
+        {{ monster.name }} 
     {% else %}
         Monsters 
     {% endif %}
@@ -34,28 +34,28 @@
 {% endblock %}
 
 {% block character_detail_title %}
-    {% if this_monster %}
-        {{ this_monster.name }}
+    {% if monster %}
+        {{ monster.name }}
     {% else %}
         Monsters
     {% endif %}
 {% endblock %}
 
 {% block character_detail_extra %}
-    {% if this_monster %}
-        <a href="{% url 'characters:monster_update' monster_pk=this_monster.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit monster</a>
-        <a href="{% url 'characters:monster_copy' monster_pk=this_monster.pk %}" class="dropdown-item"><i class="fal fa-fw fa-copy" aria-hidden="true"></i> Copy monster</a>
-        <a id="monster-delete" href="{% url 'characters:monster_delete' monster_pk=this_monster.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete monster</a>
+    {% if monster %}
+        <a href="{% url 'characters:monster_update' monster_pk=monster.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit monster</a>
+        <a href="{% url 'characters:monster_copy' monster_pk=monster.pk %}" class="dropdown-item"><i class="fal fa-fw fa-copy" aria-hidden="true"></i> Copy monster</a>
+        <a id="monster-delete" href="{% url 'characters:monster_delete' monster_pk=monster.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete monster</a>
     {% else %}
         <a href="{% url 'characters:monster_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create monster</a>
     {% endif %}
 {% endblock %}
 
 {% block character_detail %}
-    {% if this_monster %}
+    {% if monster %}
         <div class="row">
             <div class="col-md-12">
-                <p>{% if this_monster.get_size_display %} {{ this_monster.get_size_display }}{% endif %}{% if this_monster.creature_type %} {{ this_monster.creature_type }}{% endif %}{% if this_monster.get_alignment_display %}, {{ this_monster.get_alignment_display }}{% endif %}</p>
+                <p>{% if monster.get_size_display %} {{ monster.get_size_display }}{% endif %}{% if monster.creature_type %} {{ monster.creature_type }}{% endif %}{% if monster.get_alignment_display %}, {{ monster.get_alignment_display }}{% endif %}</p>
             </div>
         </div>
 
@@ -63,10 +63,10 @@
 
         <div class="row">
             <div class="col-md-12">
-                {% if this_monster.challenge_rating %}<p><strong>Challenge Rating</strong> {{ this_monster.challenge_rating }}</p>{% endif %}
-                {% if this_monster.armor_class %}<p><strong>Armor Class</strong> {{ this_monster.armor_class }}</p>{% endif %}
-                {% if this_monster.hit_points %}<p><strong>Hit Points</strong> {{ this_monster.hit_points }}</p>{% endif %}
-                {% if this_monster.speed %}<p><strong>Speed</strong> {{ this_monster.speed }}</p>{% endif %}
+                {% if monster.challenge_rating %}<p><span class="font-weight-bold">Challenge Rating</span> {{ monster.challenge_rating }}</p>{% endif %}
+                {% if monster.armor_class %}<p><span class="font-weight-bold">Armor Class</span> {{ monster.armor_class }}</p>{% endif %}
+                {% if monster.hit_points %}<p><span class="font-weight-bold">Hit Points</span> {{ monster.hit_points }}</p>{% endif %}
+                {% if monster.speed %}<p><span class="font-weight-bold">Speed</span> {{ monster.speed }}</p>{% endif %}
             </div>
         </div>
 
@@ -78,7 +78,7 @@
                     <p>STR</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_monster.strength }} ({{ this_monster.strength_mod }})</p>
+                    <p>{{ monster.strength }} ({{ monster.strength_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -86,7 +86,7 @@
                     <p>DEX</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_monster.dexterity }} ({{ this_monster.dexterity_mod }})</p>
+                    <p>{{ monster.dexterity }} ({{ monster.dexterity_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -94,7 +94,7 @@
                     <p>CON</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_monster.constitution }} ({{ this_monster.constitution_mod }})</p>
+                    <p>{{ monster.constitution }} ({{ monster.constitution_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -102,7 +102,7 @@
                     <p>INT</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_monster.intelligence }} ({{ this_monster.intelligence_mod }})</p>
+                    <p>{{ monster.intelligence }} ({{ monster.intelligence_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -110,7 +110,7 @@
                     <p>WIS</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_monster.wisdom }} ({{ this_monster.wisdom_mod }})</p>
+                    <p>{{ monster.wisdom }} ({{ monster.wisdom_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -118,7 +118,7 @@
                     <p>CHA</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_monster.charisma }} ({{ this_monster.charisma_mod }})</p>
+                    <p>{{ monster.charisma }} ({{ monster.charisma_mod }})</p>
                 </div>
             </div>
         </div>
@@ -127,40 +127,40 @@
 
         <div class="row">
             <div class="col-md-12">
-                {% if this_monster.saving_throws %}<p><strong>Saving Throws</strong> {{ this_monster.saving_throws }}</p>{% endif %}
-                {% if this_monster.skills %}<p><strong>Skills</strong> {{ this_monster.skills }}</p>{% endif %}
-                {% if this_monster.senses %}<p><strong>Senses</strong> {{ this_monster.senses }}</p>{% endif %}
-                {% if this_monster.languages %}<p><strong>Languages</strong> {{ this_monster.languages }}</p>{% endif %}
-                {% if this_monster.damage_vulnerabilities %}<p><strong>Damage Vulnerabilities</strong> {{ this_monster.damage_vulnerabilities }}</p>{% endif %}
-                {% if this_monster.damage_immunities %}<p><strong>Damage Immunities</strong> {{ this_monster.damage_immunities }}</p>{% endif %}
-                {% if this_monster.damage_resistances %}<p><strong>Damage Resistances</strong> {{ this_monster.damage_resistances }}</p>{% endif %}
-                {% if this_monster.condition_immunities %}<p><strong>Condition Immunities</strong> {{ this_monster.condition_immunities }}</p>{% endif %}
+                {% if monster.saving_throws %}<p><span class="font-weight-bold">Saving Throws</span> {{ monster.saving_throws }}</p>{% endif %}
+                {% if monster.skills %}<p><span class="font-weight-bold">Skills</span> {{ monster.skills }}</p>{% endif %}
+                {% if monster.senses %}<p><span class="font-weight-bold">Senses</span> {{ monster.senses }}</p>{% endif %}
+                {% if monster.languages %}<p><span class="font-weight-bold">Languages</span> {{ monster.languages }}</p>{% endif %}
+                {% if monster.damage_vulnerabilities %}<p><span class="font-weight-bold">Damage Vulnerabilities</span> {{ monster.damage_vulnerabilities }}</p>{% endif %}
+                {% if monster.damage_immunities %}<p><span class="font-weight-bold">Damage Immunities</span> {{ monster.damage_immunities }}</p>{% endif %}
+                {% if monster.damage_resistances %}<p><span class="font-weight-bold">Damage Resistances</span> {{ monster.damage_resistances }}</p>{% endif %}
+                {% if monster.condition_immunities %}<p><span class="font-weight-bold">Condition Immunities</span> {{ monster.condition_immunities }}</p>{% endif %}
             </div>
         </div>
 
-        {% if this_monster.traits %}
+        {% if monster.traits %}
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <h3>Traits</h3><p>{{ this_monster.traits|safe }}</p>
+                    <h3>Traits</h3><p>{{ monster.traits|safe }}</p>
                 </div>
             </div>
         {% endif %}
 
-        {% if this_monster.actions %}
+        {% if monster.actions %}
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <h3>Actions</h3><p>{{ this_monster.actions|safe }}</p>
+                    <h3>Actions</h3><p>{{ monster.actions|safe }}</p>
                 </div>
             </div>
         {% endif %}
 
-        {% if this_monster.notes %}
+        {% if monster.notes %}
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <h3>Notes</h3><p>{{ this_monster.notes|safe }}</p>
+                    <h3>Notes</h3><p>{{ monster.notes|safe }}</p>
                 </div>
             </div>
         {% endif %}
