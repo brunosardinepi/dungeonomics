@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'items',
     'locations',
     'widget_tweaks',
+    'votes',
 ]
 
 MIDDLEWARE = [

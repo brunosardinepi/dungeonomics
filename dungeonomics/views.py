@@ -12,6 +12,7 @@ from . import forms
 from allauth.account import models as allauth_models
 from campaign import models as campaign_models
 from characters import models as character_models
+from votes.models import Feature, Vote
 
 
 class HomeView(TemplateView):
@@ -20,7 +21,8 @@ class HomeView(TemplateView):
 
 def home_view(request):
     if request.user.is_authenticated():
-        return render(request, 'home.html')
+        features = Feature.objects.all().annotate(votes=Count('vote')).order_by('-votes')
+        return render(request, 'home.html', {'features': features})
     else:
         users = allauth_models.EmailAddress.objects.count()
         campaigns = campaign_models.Campaign.objects.count()

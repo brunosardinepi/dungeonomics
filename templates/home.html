@@ -15,7 +15,7 @@
 {% block body_content %}
     {% if user.is_authenticated %}
         <div class="row mt-4 pb-3">
-            <div class="col-lg-8 mb-3">
+            <div class="col-lg-4 mb-3">
                 <div class="card">
                     <div class="card-body">
                         <h1>March 9, 2018</h1>
@@ -33,6 +33,20 @@
                         </ul>
                         <p>As always, feel free to send us an <a href="mailto:dungeonomics@gmail.com">email</a> if you need anything.</p>
                     </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-3">
+                <div class="list-group">
+                    <li class="list-group-item list-group-item-info">
+                        <h5>Feature voting</h5>
+                        <p class="mb-0">Click on the features that you want to see added to the site. You can vote once on each feature, and can vote for as many features as you want.</p>
+                    </li>
+                    {% for feature in features %}
+                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            {{ feature.description|safe }}
+                            <span class="badge badge-primary badge-pill">{{ feature.votes }}</span>
+                        </a>
+                    {% endfor %}
                 </div>
             </div>
             <div class="col-lg-4">
