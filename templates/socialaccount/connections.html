@@ -8,7 +8,7 @@
 
 {% block body_content %}
     <div class="row campaign-row">
-        <div class="col-md-4">
+        <div class="col-lg-4 mb-3">
             <div class="card">
                 <div class="card-header">
                     <h5 class="px-1 mb-0">Social Accounts</h5>
@@ -28,7 +28,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-lg-4 mb-3">
             <div class="card">
                 <div class="card-header">
                     <h5 class="px-1 mb-0">Add Social Accounts</h5>
@@ -42,7 +42,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-lg-4">
             <div class="card">
                 <div class="card-header">
                     <h5 class="px-1 mb-0">Remove Social Accounts</h5>
@@ -58,7 +58,7 @@
                                 {% endif %}
                                 {% for base_account in form.accounts %}
                                     {% with base_account.get_provider_account as account %}
-                                        <div class="col-md-12">
+                                        <div class="col-lg-12">
                                             <label for="id_account_{{ base_account.id }}">
                                                 <input id="id_account_{{ base_account.id }}" type="radio" name="account" value="{{ base_account.id }}"/> 
                                                 <span class="socialaccount_provider {{ base_account.provider }} {{ account.get_brand.id }}">{{account.get_brand.name}}</span>
