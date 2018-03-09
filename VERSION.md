@@ -9,7 +9,7 @@ Release date: TBD
 
 ### Additions
 
-* None
+* #95 -- Twitter feed on home page
 
 ### Changes
 

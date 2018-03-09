@@ -15,7 +15,7 @@
 {% block body_content %}
     {% if user.is_authenticated %}
         <div class="row mt-4 pb-3">
-            <div class="col-lg-12">
+            <div class="col-lg-8 mb-3">
                 <div class="card">
                     <div class="card-body">
                         <h1>March 9, 2018</h1>
@@ -24,6 +24,7 @@
                         <ul>
                             <li>Site design refresh</li>
                             <li>Donation platform moved from PayPal to <a href="https://page.fund/dungeonomics" target="_blank">PageFund</a></li>
+                            <li>Twitter feed added to home page</li>
                         </ul>
 
                         <p>Upcoming changes:</p>
@@ -33,6 +34,9 @@
                         <p>As always, feel free to send us an <a href="mailto:dungeonomics@gmail.com">email</a> if you need anything.</p>
                     </div>
                 </div>
+            </div>
+            <div class="col-lg-4">
+                <a class="twitter-timeline" href="https://twitter.com/dungeonomics?ref_src=twsrc%5Etfw">Tweets by dungeonomics</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
             </div>
         </div>
     {% else %}
