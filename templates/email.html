@@ -1,19 +1,22 @@
 {% extends 'layout.html' %}
 
+{% load widget_tweaks %}
+
+
 {% block title %}Email | {{ block.super }}{% endblock %}
 
 {% block body_content %}
-    <div class="row justify-content-center mt-3">
-        <div class="col-md-6">
+    <div class="row justify-content-center mt-3 pb-3">
+        <div class="col-lg-6">
             <div class="card">
                 <div class="card-header">
                     <h5 class="px-1 mb-0">
-                        E-mail addresses
+                        Email addresses
                     </h5>
                 </div>
                 <div class="card-body">
                     {% if user.emailaddress_set.all %}
-                        <p>The following e-mail addresses are associated with your account:</p>
+                        <p>The following email addresses are associated with your account:</p>
                         <form action="{% url 'account_email' %}" class="email_list" method="post">
                             {% csrf_token %}
                             <fieldset class="blockLabels">
@@ -44,17 +47,32 @@
                             </fieldset>
                         </form>
                     {% else %}
-                        <p><span class="font-weight-bold">Warning:</span> You currently do not have an e-mail address set up. Please add an e-mail address.</p>
+                        <p><span class="font-weight-bold">Warning:</span> You currently do not have an email address set up. Please add an email address.</p>
                     {% endif %}
 
                     <hr>
 
-                    <h2>Add E-mail Address</h2>
+                    <h2>Add email address</h2>
 
                     <form method="post" action="{% url 'account_email' %}" class="add_email">
                         {% csrf_token %}
-                        {{ form.as_p }}
-                        <button name="action_add" class="btn btn-primary" type="submit">Add E-mail</button>
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        {% render_field form.email class+="form-control mb-3" %}
+                        {% if form.email.errors %}
+                            {% for error in form.email.errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {{ error|escape }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        <button name="action_add" class="btn btn-primary" type="submit">Add email</button>
                     </form>
                 </div>
             </div>
@@ -66,7 +84,7 @@
 {% block end_static %}
 <script type="text/javascript">
 (function() {
-  var message = "Do you really want to remove the selected e-mail address?";
+  var message = "Do you really want to remove the selected email address?";
   var actions = document.getElementsByName('action_remove');
   if (actions.length) {
     actions[0].addEventListener("click", function(e) {

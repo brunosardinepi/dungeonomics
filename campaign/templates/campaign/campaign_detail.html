@@ -24,7 +24,7 @@
                                 <a class="btn btn-sm text-dark dropdown-toggle" href="#" role="button" id="table-of-contents-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-lg fa-cog"></i>
                                 </a>
-                                <div class="dropdown-menu" aria-labelledby="table-of-contents-dropdown">
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="table-of-contents-dropdown">
                                     <a href="{% url 'campaign:chapter_create' campaign_pk=campaign.pk %}" class="dropdown-item text-success"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> Create chapter</a>
                                     <a href="{% url 'campaign:campaign_update' campaign_pk=campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-edit" aria-hidden="true"></i> Edit campaign</a>
                                     <a href="{% url 'campaign:campaign_print' campaign_pk=campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-print" aria-hidden="true"></i> Print campaign</a>

@@ -34,9 +34,9 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
                     chapter = None
 
             sections = []
-            for chapter in chapters:
+            for c in chapters:
                 sections.append(sorted(
-                    models.Section.objects.filter(chapter=chapter),
+                    models.Section.objects.filter(chapter=c),
                     key=lambda section: section.order
                     ))
             sections = [item for sublist in sections for item in sublist]
@@ -72,9 +72,9 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
                 chapter = None
 
             sections = []
-            for chapter in chapters:
+            for c in chapters:
                 sections.append(sorted(
-                    models.Section.objects.filter(chapter=chapter),
+                    models.Section.objects.filter(chapter=c),
                     key=lambda section: section.order
                     ))
             sections = [item for sublist in sections for item in sublist]
