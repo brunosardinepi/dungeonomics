@@ -1,5 +1,6 @@
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.views.generic import TemplateView
 
 from . import config
 from . import views
@@ -26,5 +27,10 @@ urlpatterns = [
     url(r'^locations/', include('locations.urls', namespace='locations')),
     url(r'^privacy/', views.PrivacyView.as_view(), name='privacy'),
     url(r'^votes/', include('votes.urls', namespace='votes')),
+
+    url(r'^robots.txt$', TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
+    url(r'^sitemap.xml$', TemplateView.as_view(template_name="sitemap.xml", content_type="application/xml")),
+    url(r'^google35fe4699b1e0423b.html$', TemplateView.as_view(template_name="google35fe4699b1e0423b.html")),
+
     url(r'^$', views.home_view, name='home'),
 ]
