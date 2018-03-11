@@ -1,8 +1,8 @@
 {% extends 'characters/character_layout.html' %}
 
 {% block title %}
-    {% if this_player.pk %}
-        {{ this_player.player_name }} 
+    {% if player.pk %}
+        {{ player.player_name }} 
     {% else %}
         Players 
     {% endif %}
@@ -30,28 +30,28 @@
 {% endblock %}
 
 {% block character_detail_title %}
-    {% if this_player %}
-        {{ this_player.player_name }} ({{ this_player.character_name }})
+    {% if player %}
+        {{ player.player_name }} ({{ player.character_name }})
     {% else %}
         Players
     {% endif %}
 {% endblock %}
 
 {% block character_detail_extra %}
-    {% if this_player %}
-        <a href="{% url 'characters:player_update' player_pk=this_player.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit Player</a>
-        <a href="{% url 'characters:player_copy' player_pk=this_player.pk %}" class="dropdown-item"><i class="fal fa-fw fa-copy" aria-hidden="true"></i> Copy Player</a>       
-        <a id="player-delete" href="{% url 'characters:player_delete' player_pk=this_player.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete Player</a>
+    {% if player %}
+        <a href="{% url 'characters:player_update' player_pk=player.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit Player</a>
+        <a href="{% url 'characters:player_copy' player_pk=player.pk %}" class="dropdown-item"><i class="fal fa-fw fa-copy" aria-hidden="true"></i> Copy Player</a>       
+        <a id="player-delete" href="{% url 'characters:player_delete' player_pk=player.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete Player</a>
     {% else %}
         <a href="{% url 'characters:player_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create Player</a>
     {% endif %}
 {% endblock %}
 
 {% block character_detail %}
-    {% if this_player %}
+    {% if player %}
         <div class="row">
             <div class="col-md-12">
-                <p>{% if this_player.level %}Level {{ this_player.level }}{% endif %}{% if this_player.race %} {{ this_player.race }}{% endif %}{% if this_player.character_class %} {{ this_player.character_class }}{% endif %}{% if this_player.get_alignment_display %}, {{ this_player.get_alignment_display }}{% endif %}</p>
+                <p>{% if player.level %}Level {{ player.level }}{% endif %}{% if player.race %} {{ player.race }}{% endif %}{% if player.character_class %} {{ player.character_class }}{% endif %}{% if player.get_alignment_display %}, {{ player.get_alignment_display }}{% endif %}</p>
             </div>
         </div>
 
@@ -59,12 +59,12 @@
 
         <div class="row">
             <div class="col-md-12">
-                {% if this_player.xp %}<p><strong>XP</strong> {{ this_player.xp }}</p>{% endif %}
-                {% if this_player.proficiency_bonus %}<p><strong>Proficiency Bonus</strong> {{ this_player.proficiency_bonus }}</p>{% endif %}
-                {% if this_player.armor_class %}<p><strong>Armor Class</strong> {{ this_player.armor_class }}</p>{% endif %}
-                {% if this_player.hit_points %}<p><strong>Hit Points</strong> {{ this_player.hit_points }}</p>{% endif %}
-                {% if this_player.initiative %}<p><strong>Initiative</strong> {{ this_player.initiative }}</p>{% endif %}
-                {% if this_player.speed %}<p><strong>Speed</strong> {{ this_player.speed }}</p>{% endif %}
+                {% if player.xp %}<p><span class="font-weight-bold">XP</span> {{ player.xp }}</p>{% endif %}
+                {% if player.proficiency_bonus %}<p><span class="font-weight-bold">Proficiency Bonus</span> {{ player.proficiency_bonus }}</p>{% endif %}
+                {% if player.armor_class %}<p><span class="font-weight-bold">Armor Class</span> {{ player.armor_class }}</p>{% endif %}
+                {% if player.hit_points %}<p><span class="font-weight-bold">Hit Points</span> {{ player.hit_points }}</p>{% endif %}
+                {% if player.initiative %}<p><span class="font-weight-bold">Initiative</span> {{ player.initiative }}</p>{% endif %}
+                {% if player.speed %}<p><span class="font-weight-bold">Speed</span> {{ player.speed }}</p>{% endif %}
             </div>
         </div>
 
@@ -76,7 +76,7 @@
                     <p>STR</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_player.strength }} ({{ this_player.strength_mod }})</p>
+                    <p>{{ player.strength }} ({{ player.strength_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -84,7 +84,7 @@
                     <p>DEX</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_player.dexterity }} ({{ this_player.dexterity_mod }})</p>
+                    <p>{{ player.dexterity }} ({{ player.dexterity_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -92,7 +92,7 @@
                     <p>CON</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_player.constitution }} ({{ this_player.constitution_mod }})</p>
+                    <p>{{ player.constitution }} ({{ player.constitution_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -100,7 +100,7 @@
                     <p>INT</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_player.intelligence }} ({{ this_player.intelligence_mod }})</p>
+                    <p>{{ player.intelligence }} ({{ player.intelligence_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -108,7 +108,7 @@
                     <p>WIS</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_player.wisdom }} ({{ this_player.wisdom_mod }})</p>
+                    <p>{{ player.wisdom }} ({{ player.wisdom_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -116,7 +116,7 @@
                     <p>CHA</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_player.charisma }} ({{ this_player.charisma_mod }})</p>
+                    <p>{{ player.charisma }} ({{ player.charisma_mod }})</p>
                 </div>
             </div>
         </div>
@@ -125,10 +125,10 @@
 
         <div class="row">
             <div class="col-md-12">
-                {% if this_player.saving_throws %}<p><strong>Saving Throws</strong> {{ this_player.saving_throws }}</p>{% endif %}
-                {% if this_player.skills %}<p><strong>Skills</strong> {{ this_player.skills }}</p>{% endif %}
-                {% if this_player.senses %}<p><strong>Senses</strong> {{ this_player.senses }}</p>{% endif %}
-                {% if this_player.languages %}<p><strong>Languages</strong> {{ this_player.languages }}</p>{% endif %}
+                {% if player.saving_throws %}<p><span class="font-weight-bold">Saving Throws</span> {{ player.saving_throws }}</p>{% endif %}
+                {% if player.skills %}<p><span class="font-weight-bold">Skills</span> {{ player.skills }}</p>{% endif %}
+                {% if player.senses %}<p><span class="font-weight-bold">Senses</span> {{ player.senses }}</p>{% endif %}
+                {% if player.languages %}<p><span class="font-weight-bold">Languages</span> {{ player.languages }}</p>{% endif %}
             </div>
         </div>
 
@@ -136,66 +136,66 @@
 
         <div class="row">
             <div class="col-md-12">
-                {% if this_player.age %}<p><strong>Age</strong> {{ this_player.age }}</p>{% endif %}
-                {% if this_player.height %}<p><strong>Height</strong> {{ this_player.height }}</p>{% endif %}
-                {% if this_player.weight %}<p><strong>Weight</strong> {{ this_player.weight }}</p>{% endif %}
-                {% if this_player.personality %}<p><strong>Personality Traits</strong> {{ this_player.personality|safe }}</p>{% endif %}
-                {% if this_player.ideals %}<p><strong>Ideals</strong> {{ this_player.ideals|safe }}</p>{% endif %}
-                {% if this_player.bonds %}<p><strong>Bonds</strong> {{ this_player.bonds|safe }}</p>{% endif %}
-                {% if this_player.flaws %}<p><strong>Flaws</strong> {{ this_player.flaws|safe }}</p>{% endif %}
+                {% if player.age %}<p><span class="font-weight-bold">Age</span> {{ player.age }}</p>{% endif %}
+                {% if player.height %}<p><span class="font-weight-bold">Height</span> {{ player.height }}</p>{% endif %}
+                {% if player.weight %}<p><span class="font-weight-bold">Weight</span> {{ player.weight }}</p>{% endif %}
+                {% if player.personality %}<p><span class="font-weight-bold">Personality Traits</span> {{ player.personality|safe }}</p>{% endif %}
+                {% if player.ideals %}<p><span class="font-weight-bold">Ideals</span> {{ player.ideals|safe }}</p>{% endif %}
+                {% if player.bonds %}<p><span class="font-weight-bold">Bonds</span> {{ player.bonds|safe }}</p>{% endif %}
+                {% if player.flaws %}<p><span class="font-weight-bold">Flaws</span> {{ player.flaws|safe }}</p>{% endif %}
             </div>
         </div>
 
-        {% if this_player.attacks %}
+        {% if player.attacks %}
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <h3>Attacks and Spellcasting</h3><p>{{ this_player.attacks|safe }}</p>
+                    <h3>Attacks and Spellcasting</h3><p>{{ player.attacks|safe }}</p>
                 </div>
             </div>
         {% endif %}
 
-        {% if this_player.equipment %}
+        {% if player.equipment %}
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <h3>Equipment</h3><p>{{ this_player.equipment|safe }}</p>
+                    <h3>Equipment</h3><p>{{ player.equipment|safe }}</p>
                 </div>
             </div>
         {% endif %}
 
-        {% if this_player.feats %}
+        {% if player.feats %}
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <h3>Features and Traits</h3><p>{{ this_player.feats|safe }}</p>
+                    <h3>Features and Traits</h3><p>{{ player.feats|safe }}</p>
                 </div>
             </div>
         {% endif %}
 
-        {% if this_player.proficiencies %}
+        {% if player.proficiencies %}
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <h3>Proficiencies</h3><p>{{ this_player.proficiencies|safe }}</p>
+                    <h3>Proficiencies</h3><p>{{ player.proficiencies|safe }}</p>
                 </div>
             </div>
         {% endif %}
 
-        {% if this_player.spells %}
+        {% if player.spells %}
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <h3>Spells</h3><p>{{ this_player.spells|safe }}</p>
+                    <h3>Spells</h3><p>{{ player.spells|safe }}</p>
                 </div>
             </div>
         {% endif %}
 
-        {% if this_player.notes %}
+        {% if player.notes %}
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <h3>Notes</h3><p>{{ this_player.notes|safe }}</p>
+                    <h3>Notes</h3><p>{{ player.notes|safe }}</p>
                 </div>
             </div>
         {% endif %}

@@ -1,8 +1,8 @@
 {% extends 'characters/character_layout.html' %}
 
 {% block title %}
-    {% if this_npc.pk %}
-        {{ this_npc.name }} 
+    {% if npc.pk %}
+        {{ npc.name }} 
     {% else %}
         NPCs 
     {% endif %}
@@ -34,28 +34,28 @@
 {% endblock %}
 
 {% block character_detail_title %}
-    {% if this_npc %}
-        {{ this_npc.name }}
+    {% if npc %}
+        {{ npc.name }}
     {% else %}
         NPCs
     {% endif %}
 {% endblock %}
 
 {% block character_detail_extra %}
-    {% if this_npc %}
-        <a href="{% url 'characters:npc_update' npc_pk=this_npc.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit NPC</a>
-        <a href="{% url 'characters:npc_copy' npc_pk=this_npc.pk %}" class="dropdown-item"><i class="fal fa-fw fa-copy" aria-hidden="true"></i> Copy NPC</a>
-        <a id="npc-delete" href="{% url 'characters:npc_delete' npc_pk=this_npc.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete NPC</a>
+    {% if npc %}
+        <a href="{% url 'characters:npc_update' npc_pk=npc.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit NPC</a>
+        <a href="{% url 'characters:npc_copy' npc_pk=npc.pk %}" class="dropdown-item"><i class="fal fa-fw fa-copy" aria-hidden="true"></i> Copy NPC</a>
+        <a id="npc-delete" href="{% url 'characters:npc_delete' npc_pk=npc.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete NPC</a>
     {% else %}
         <a href="{% url 'characters:npc_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create NPC</a>
     {% endif %}
 {% endblock %}
 
 {% block character_detail %}
-    {% if this_npc %}
+    {% if npc %}
         <div class="row">
             <div class="col-md-12">
-                <p>{% if this_npc.get_size_display %} {{ this_npc.get_size_display }}{% endif %}{% if this_npc.creature_type %} {{ this_npc.creature_type }}{% endif %}{% if this_npc.get_alignment_display %}, {{ this_npc.get_alignment_display }}{% endif %}</p>
+                <p>{% if npc.get_size_display %} {{ npc.get_size_display }}{% endif %}{% if npc.creature_type %} {{ npc.creature_type }}{% endif %}{% if npc.get_alignment_display %}, {{ npc.get_alignment_display }}{% endif %}</p>
             </div>
         </div>
 
@@ -63,10 +63,10 @@
 
         <div class="row">
             <div class="col-md-12">
-                {% if this_npc.challenge_rating %}<p><strong>Challenge Rating</strong> {{ this_npc.challenge_rating }}</p>{% endif %}
-                {% if this_npc.armor_class %}<p><strong>Armor Class</strong> {{ this_npc.armor_class }}</p>{% endif %}
-                {% if this_npc.hit_points %}<p><strong>Hit Points</strong> {{ this_npc.hit_points }}</p>{% endif %}
-                {% if this_npc.speed %}<p><strong>Speed</strong> {{ this_npc.speed }}</p>{% endif %}
+                {% if npc.challenge_rating %}<p><span class="font-weight-bold">Challenge Rating</span> {{ npc.challenge_rating }}</p>{% endif %}
+                {% if npc.armor_class %}<p><span class="font-weight-bold">Armor Class</span> {{ npc.armor_class }}</p>{% endif %}
+                {% if npc.hit_points %}<p><span class="font-weight-bold">Hit Points</span> {{ npc.hit_points }}</p>{% endif %}
+                {% if npc.speed %}<p><span class="font-weight-bold">Speed</span> {{ npc.speed }}</p>{% endif %}
             </div>
         </div>
 
@@ -78,7 +78,7 @@
                     <p>STR</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_npc.strength }} ({{ this_npc.strength_mod }})</p>
+                    <p>{{ npc.strength }} ({{ npc.strength_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -86,7 +86,7 @@
                     <p>DEX</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_npc.dexterity }} ({{ this_npc.dexterity_mod }})</p>
+                    <p>{{ npc.dexterity }} ({{ npc.dexterity_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -94,7 +94,7 @@
                     <p>CON</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_npc.constitution }} ({{ this_npc.constitution_mod }})</p>
+                    <p>{{ npc.constitution }} ({{ npc.constitution_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -102,7 +102,7 @@
                     <p>INT</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_npc.intelligence }} ({{ this_npc.intelligence_mod }})</p>
+                    <p>{{ npc.intelligence }} ({{ npc.intelligence_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -110,7 +110,7 @@
                     <p>WIS</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_npc.wisdom }} ({{ this_npc.wisdom_mod }})</p>
+                    <p>{{ npc.wisdom }} ({{ npc.wisdom_mod }})</p>
                 </div>
             </div>
             <div class="col-md-2">
@@ -118,7 +118,7 @@
                     <p>CHA</p>
                 </div>
                 <div class="character-details">
-                    <p>{{ this_npc.charisma }} ({{ this_npc.charisma_mod }})</p>
+                    <p>{{ npc.charisma }} ({{ npc.charisma_mod }})</p>
                 </div>
             </div>
         </div>
@@ -127,51 +127,52 @@
 
         <div class="row">
             <div class="col-md-12">
-                {% if this_npc.npc_class %}<p><strong>Class</strong> {{ this_npc.npc_class }}</p>{% endif %}
-                {% if this_npc.age %}<p><strong>Age</strong> {{ this_npc.age }}</p>{% endif %}
-                {% if this_npc.height %}<p><strong>Height</strong> {{ this_npc.height }}</p>{% endif %}
-                {% if this_npc.weight %}<p><strong>Weight</strong> {{ this_npc.weight }}</p>{% endif %}
+                {% if npc.race %}<p><span class="font-weight-bold">Race</span> {{ npc.race }}</p>{% endif %}
+                {% if npc.npc_class %}<p><span class="font-weight-bold">Class</span> {{ npc.npc_class }}</p>{% endif %}
+                {% if npc.age %}<p><span class="font-weight-bold">Age</span> {{ npc.age }}</p>{% endif %}
+                {% if npc.height %}<p><span class="font-weight-bold">Height</span> {{ npc.height }}</p>{% endif %}
+                {% if npc.weight %}<p><span class="font-weight-bold">Weight</span> {{ npc.weight }}</p>{% endif %}
             </div>
         </div>
 
-        {% if this_npc.npc_class or this_npc.age or this_npc.height or this_npc.weight %}<hr>{% endif %}
+        {% if npc.npc_class or npc.age or npc.height or npc.weight %}<hr>{% endif %}
 
         <div class="row">
             <div class="col-md-12">
-                {% if this_npc.saving_throws %}<p><strong>Saving Throws</strong> {{ this_npc.saving_throws }}</p>{% endif %}
-                {% if this_npc.skills %}<p><strong>Skills</strong> {{ this_npc.skills }}</p>{% endif %}
-                {% if this_npc.senses %}<p><strong>Senses</strong> {{ this_npc.senses }}</p>{% endif %}
-                {% if this_npc.languages %}<p><strong>Languages</strong> {{ this_npc.languages }}</p>{% endif %}
-                {% if this_npc.damage_vulnerabilities %}<p><strong>Damage Vulnerabilities</strong> {{ this_npc.damage_vulnerabilities }}</p>{% endif %}
-                {% if this_npc.damage_immunities %}<p><strong>Damage Immunities</strong> {{ this_npc.damage_immunities }}</p>{% endif %}
-                {% if this_npc.damage_resistances %}<p><strong>Damage Resistances</strong> {{ this_npc.damage_resistances }}</p>{% endif %}
-                {% if this_npc.condition_immunities %}<p><strong>Condition Immunities</strong> {{ this_npc.condition_immunities }}</p>{% endif %}
+                {% if npc.saving_throws %}<p><span class="font-weight-bold">Saving Throws</span> {{ npc.saving_throws }}</p>{% endif %}
+                {% if npc.skills %}<p><span class="font-weight-bold">Skills</span> {{ npc.skills }}</p>{% endif %}
+                {% if npc.senses %}<p><span class="font-weight-bold">Senses</span> {{ npc.senses }}</p>{% endif %}
+                {% if npc.languages %}<p><span class="font-weight-bold">Languages</span> {{ npc.languages }}</p>{% endif %}
+                {% if npc.damage_vulnerabilities %}<p><span class="font-weight-bold">Damage Vulnerabilities</span> {{ npc.damage_vulnerabilities }}</p>{% endif %}
+                {% if npc.damage_immunities %}<p><span class="font-weight-bold">Damage Immunities</span> {{ npc.damage_immunities }}</p>{% endif %}
+                {% if npc.damage_resistances %}<p><span class="font-weight-bold">Damage Resistances</span> {{ npc.damage_resistances }}</p>{% endif %}
+                {% if npc.condition_immunities %}<p><span class="font-weight-bold">Condition Immunities</span> {{ npc.condition_immunities }}</p>{% endif %}
             </div>
         </div>
 
-        {% if this_npc.traits %}
+        {% if npc.traits %}
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <h3>Traits</h3><p>{{ this_npc.traits|safe }}</p>
+                    <h3>Traits</h3><p>{{ npc.traits|safe }}</p>
                 </div>
             </div>
         {% endif %}
 
-        {% if this_npc.actions %}
+        {% if npc.actions %}
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <h3>Actions</h3><p>{{ this_npc.actions|safe }}</p>
+                    <h3>Actions</h3><p>{{ npc.actions|safe }}</p>
                 </div>
             </div>
         {% endif %}
 
-        {% if this_npc.notes %}
+        {% if npc.notes %}
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <h3>Notes</h3><p>{{ this_npc.notes|safe }}</p>
+                    <h3>Notes</h3><p>{{ npc.notes|safe }}</p>
                 </div>
             </div>
         {% endif %}

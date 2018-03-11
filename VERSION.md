@@ -3,6 +3,23 @@
 This is the version history for Dungeonomics development.
 
 
+## Version 2.1.0
+
+Release date: TBD
+
+### Additions
+
+* #97 -- "race" field added to NPC
+
+### Changes
+
+* None
+
+### Fixes
+
+* None
+
+
 ## Version 2.0.0
 
 Release date: 03/09/2018

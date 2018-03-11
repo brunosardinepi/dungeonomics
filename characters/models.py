@@ -107,6 +107,7 @@ class Monster(Character):
 
 class NPC(Character):
     npc_class = models.CharField(verbose_name= _('Class'),max_length=255, default='', blank=True)
+    race = models.CharField(max_length=255, default='', blank=True)
     age = models.CharField(max_length=255, default='', blank=True)
     height = models.CharField(max_length=255, default='', blank=True)
     weight = models.CharField(max_length=255, default='', blank=True)
@@ -137,7 +138,7 @@ class Player(Character):
     player_name = models.CharField(max_length=255, default='', blank=True)
     character_class = models.CharField(max_length=255, default='', blank=True)
     race = models.CharField(max_length=255, default='', blank=True)
-    xp = models.IntegerField(verbose_name= _('XP'), default=0, blank=True)
+    xp = models.IntegerField(verbose_name= _('XP'), default=0, blank=True, null=True)
     background = models.CharField(max_length=255, default='', blank=True)
     age = models.CharField(max_length=255, default='', blank=True)
     height = models.CharField(max_length=255, default='', blank=True)
