@@ -64,7 +64,9 @@
                     {% include "locations/card_header.html" with obj=world %}
                     <div class="card-body">
                         {% if world.image %}
-                            <img class="location-image mb-5" src="{{ world.image.url }}" />
+                            <a href="{{ world.image.url }}" target="_blank">
+                                <img class="location-image mb-5" src="{{ world.image.url }}" />
+                            </a>
                         {% endif %}
                         {{ world.content|safe }}
                     </div>
@@ -72,7 +74,9 @@
                     {% include "locations/card_header.html" with obj=location %}
                     <div class="card-body">
                         {% if location.image %}
-                            <img class="location-image mb-5" src="{{ location.image.url }}" />
+                            <a href="{{ location.image.url }}" target="_blank">
+                                <img class="location-image mb-5" src="{{ location.image.url }}" />
+                            </a>
                         {% endif %}
                         {{ location.content|safe }}
                     </div>

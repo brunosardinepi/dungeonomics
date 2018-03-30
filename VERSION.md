@@ -3,9 +3,26 @@
 This is the version history for Dungeonomics development.
 
 
+## Version 2.2.0
+
+Release date: 04/06
+
+### Additions
+
+* #27 -- maps for Worlds/Locations
+
+### Changes
+
+* None
+
+### Fixes
+
+* None
+
+
 ## Version 2.1.0
 
-Release date: TBD
+Release date: 03/15
 
 ### Additions
 
