@@ -66,13 +66,21 @@ def world_create(request):
 
     form = forms.WorldForm()
     if request.method == 'POST':
-        form = forms.WorldForm(request.POST)
+        form = forms.WorldForm(request.POST, request.FILES)
         if form.is_valid():
+            print("form is valid")
             world = form.save(commit=False)
             world.user = request.user
+            print("image = {}".format(form.cleaned_data['image']))
+            world.image = form.cleaned_data['image']
+            print("world.image = {}".format(world.image))
             world.save()
+            print("saved image = {}".format(world.image))
             messages.add_message(request, messages.SUCCESS, "World created!")
             return HttpResponseRedirect(world.get_absolute_url())
+        else:
+            print("form is invalid")
+            print(form.errors)
     return render(request, 'locations/world_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'worlds': worlds, 'locations': locations})
 
 @login_required
@@ -106,7 +114,7 @@ def location_create(request, world_pk, location_pk=None):
     if world.user == request.user:
         form = forms.LocationForm(request.user.pk, world_pk, location_pk, initial={'world': world})
         if request.method == 'POST':
-            form = forms.LocationForm(request.user.pk, world_pk, location_pk, request.POST, initial={'world': world})
+            form = forms.LocationForm(request.user.pk, world_pk, location_pk, request.POST, request.FILES, initial={'world': world})
             if form.is_valid():
                 location = form.save(commit=False)
                 if location_pk:
@@ -154,8 +162,8 @@ def world_update(request, world_pk):
         form = forms.WorldForm(instance=world)
         location_forms = forms.LocationInlineFormSet(queryset=form.instance.location_set.all())
         if request.method == 'POST':
-            form = forms.WorldForm(request.POST, instance=world)
-            location_forms = forms.LocationInlineFormSet(request.POST, queryset=form.instance.location_set.all())
+            form = forms.WorldForm(request.POST, request.FILES, instance=world)
+            location_forms = forms.LocationInlineFormSet(request.POST, request.FILES, queryset=form.instance.location_set.all())
             if form.is_valid() and location_forms.is_valid():
                 form.save()
                 locations = location_forms.save(commit=False)
@@ -202,7 +210,7 @@ def location_update(request, location_pk):
     if location.user == request.user:
         form = forms.LocationForm(request.user.pk, location.world.pk, location_pk, instance=location)
         if request.method == 'POST':
-            form = forms.LocationForm(request.user.pk, location.world.pk, location_pk, request.POST, instance=location)
+            form = forms.LocationForm(request.user.pk, location.world.pk, location_pk, request.POST, request.FILES, instance=location)
             if form.is_valid():
                 form.save()
                 messages.add_message(request, messages.SUCCESS, "Updated location: {}".format(form.cleaned_data['name']))

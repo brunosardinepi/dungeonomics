@@ -63,11 +63,17 @@
                 {% if world %}
                     {% include "locations/card_header.html" with obj=world %}
                     <div class="card-body">
+                        {% if world.image %}
+                            <img class="location-image mb-5" src="{{ world.image.url }}" />
+                        {% endif %}
                         {{ world.content|safe }}
                     </div>
                 {% elif location %}
                     {% include "locations/card_header.html" with obj=location %}
                     <div class="card-body">
+                        {% if location.image %}
+                            <img class="location-image mb-5" src="{{ location.image.url }}" />
+                        {% endif %}
                         {{ location.content|safe }}
                     </div>
                 {% else %}
