@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.shortcuts import redirect
 
 
 def image_is_valid(request, form):
@@ -10,5 +9,7 @@ def image_is_valid(request, form):
             if image_type in settings.UPLOAD_TYPES:
                 if image_raw._size <= settings.MAX_IMAGE_UPLOAD_SIZE:
                     return True
+                else:
+                    return "bad size"
             else:
-                return redirect('/error/image-type/')
+                return "bad type"

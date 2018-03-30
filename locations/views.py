@@ -69,25 +69,19 @@ def world_create(request):
     if request.method == 'POST':
         form = forms.WorldForm(request.POST, request.FILES)
         if form.is_valid():
-            print("form is valid")
             world = form.save(commit=False)
             world.user = request.user
             if form.cleaned_data['image']:
-                if image_is_valid(request, form):
-                    print("image = {}".format(form.cleaned_data['image']))
+                image_validity_check = image_is_valid(request, form)
+                if image_validity_check == True:
                     world.image = form.cleaned_data['image']
-                    print("world.image = {}".format(world.image))
-                else:
-                    # redirect to error page
-                    print("image not valid, redirect to error page")
+                elif image_validity_check == "bad size":
                     return redirect('/error/image-size/')
+                elif image_validity_check == "bad type":
+                    return redirect('/error/image-type/')
             world.save()
-            print("saved image = {}".format(world.image))
             messages.add_message(request, messages.SUCCESS, "World created!")
             return HttpResponseRedirect(world.get_absolute_url())
-        else:
-            print("form is invalid")
-            print(form.errors)
     return render(request, 'locations/world_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'worlds': worlds, 'locations': locations})
 
 @login_required
@@ -129,6 +123,16 @@ def location_create(request, world_pk, location_pk=None):
                     if parent_location.user == request.user:
                         location.parent = parent_location
                 location.user = request.user
+
+                if form.cleaned_data['image']:
+                    image_validity_check = image_is_valid(request, form)
+                    if image_validity_check == True:
+                        location.image = form.cleaned_data['image']
+                    elif image_validity_check == "bad size":
+                        return redirect('/error/image-size/')
+                    elif image_validity_check == "bad type":
+                        return redirect('/error/image-type/')
+
                 location.world = world
                 location.save()
                 messages.add_message(request, messages.SUCCESS, "Location created!")
@@ -172,6 +176,16 @@ def world_update(request, world_pk):
             form = forms.WorldForm(request.POST, request.FILES, instance=world)
             location_forms = forms.LocationInlineFormSet(request.POST, request.FILES, queryset=form.instance.location_set.all())
             if form.is_valid() and location_forms.is_valid():
+
+                if form.cleaned_data['image']:
+                    image_validity_check = image_is_valid(request, form)
+                    if image_validity_check == True:
+                        pass
+                    elif image_validity_check == "bad size":
+                        return redirect('/error/image-size/')
+                    elif image_validity_check == "bad type":
+                        return redirect('/error/image-type/')
+
                 form.save()
                 locations = location_forms.save(commit=False)
                 for location in locations:
@@ -219,6 +233,16 @@ def location_update(request, location_pk):
         if request.method == 'POST':
             form = forms.LocationForm(request.user.pk, location.world.pk, location_pk, request.POST, request.FILES, instance=location)
             if form.is_valid():
+
+                if form.cleaned_data['image']:
+                    image_validity_check = image_is_valid(request, form)
+                    if image_validity_check == True:
+                        pass
+                    elif image_validity_check == "bad size":
+                        return redirect('/error/image-size/')
+                    elif image_validity_check == "bad type":
+                        return redirect('/error/image-type/')
+
                 form.save()
                 messages.add_message(request, messages.SUCCESS, "Updated location: {}".format(form.cleaned_data['name']))
                 return HttpResponseRedirect(location.get_absolute_url())
