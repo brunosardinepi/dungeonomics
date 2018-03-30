@@ -30,6 +30,9 @@ urlpatterns = [
     url(r'^privacy/', views.PrivacyView.as_view(), name='privacy'),
     url(r'^votes/', include('votes.urls', namespace='votes')),
 
+    url(r'^error/image-size/$', TemplateView.as_view(template_name="error_image_size.html")),
+    url(r'^error/image-type/$', TemplateView.as_view(template_name="error_image_type.html")),
+
     url(r'^robots.txt$', TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
     url(r'^sitemap.xml$', TemplateView.as_view(template_name="sitemap.xml", content_type="application/xml")),
     url(r'^google35fe4699b1e0423b.html$', TemplateView.as_view(template_name="google35fe4699b1e0423b.html")),

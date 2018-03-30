@@ -4,13 +4,14 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from . import forms
 from . import models
 from characters import models as character_models
+from dungeonomics.utils import image_is_valid
 from items import models as item_models
 
 import json
@@ -71,9 +72,15 @@ def world_create(request):
             print("form is valid")
             world = form.save(commit=False)
             world.user = request.user
-            print("image = {}".format(form.cleaned_data['image']))
-            world.image = form.cleaned_data['image']
-            print("world.image = {}".format(world.image))
+            if form.cleaned_data['image']:
+                if image_is_valid(request, form):
+                    print("image = {}".format(form.cleaned_data['image']))
+                    world.image = form.cleaned_data['image']
+                    print("world.image = {}".format(world.image))
+                else:
+                    # redirect to error page
+                    print("image not valid, redirect to error page")
+                    return redirect('/error/image-size/')
             world.save()
             print("saved image = {}".format(world.image))
             messages.add_message(request, messages.SUCCESS, "World created!")
