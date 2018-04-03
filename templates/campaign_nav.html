@@ -1,10 +1,18 @@
 {% load lib_extras %}
 
 
+{% nav_campaign_list request=request as campaigns %}
+
 {% for campaign in campaigns %}
-    {% has_players campaign_pk=campaign.id as player_check %}
-    <a class="dropdown-item" href="{% url 'campaign:campaign_detail' campaign_pk=campaign.id %}">{{ campaign.title }}{% if player_check == True %} <i class="fal fa-fw fa-users ml-1"></i>{% endif %}</a>
+    {% is_campaign_owner user=request.user campaign_pk=campaign.pk as owner_check %}
+    {% campaign_has_players campaign_pk=campaign.pk as player_check %}
+    {% if owner_check == True %}
+        <a class="dropdown-item" href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk %}">{{ campaign.title }}{% if player_check == True %} <i class="fal fa-fw fa-users ml-1"></i>{% endif %}</a>
+    {% else %}
+        <a class="dropdown-item" href="{% url 'campaign:campaign_party' campaign_pk=campaign.pk %}">{{ campaign.title }}{% if player_check == True %} <i class="fal fa-fw fa-users ml-1"></i>{% endif %}</a>
+    {% endif %}
 {% endfor %}
+
 {% if campaigns %}
     <div class="dropdown-divider"></div>
 {% endif %}

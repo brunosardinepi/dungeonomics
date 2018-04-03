@@ -77,7 +77,7 @@
                                     Campaigns
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownCampaigns">
-                                    {% nav_campaign_list request %}
+                                    {% include "campaign_nav.html" with request=request %}
                                     <a class="dropdown-item text-success" href="{% url 'campaign:campaign_create' %}">
                                         <i class="fal mr-1 fa-fw fa-plus"></i> Create campaign
                                     </a>
