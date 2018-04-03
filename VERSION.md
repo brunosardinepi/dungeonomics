@@ -17,7 +17,7 @@ Release date: 04/06
 
 ### Fixes
 
-* None
+* #101 -- styling for @ dropdown
 
 
 ## Version 2.1.0
