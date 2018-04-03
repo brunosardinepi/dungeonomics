@@ -72,6 +72,14 @@ class CampaignTest(TestCase):
         now = timezone.now()
         self.assertLess(campaign.created_at, now)
 
+    def test_unique_public_url(self):
+        campaign = models.Campaign.objects.create(
+            user=self.user,
+            title="testing uuid",
+        )
+        check = models.Campaign.objects.filter(public_url=campaign.public_url)
+        self.assertEqual(check.count(), 1)
+
     def test_campaign_exists(self):
         campaigns = models.Campaign.objects.all()
 
