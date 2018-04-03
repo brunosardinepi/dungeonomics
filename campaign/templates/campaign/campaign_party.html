@@ -1,0 +1,77 @@
+{% extends 'layout.html' %}
+
+{% load static from staticfiles %}
+{% load campaign_extras %}
+
+
+{% block title %}{{ campaign.title }} | {{ block.super }}{% endblock %}
+
+{% block breadcrumbs %}
+    {% include "campaign/breadcrumbs.html" %}
+{% endblock %}
+
+{% block body_content %}
+    <div class="row mt-3 pb-5">
+        <div class="col-lg-4 mb-3">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-auto">
+                            <h5 class="px-1 mb-0">Players</h5>
+                        </div>
+                        <div class="col-auto">
+                            <div class="dropdown">
+                                <a class="btn btn-sm text-dark dropdown-toggle" href="#" role="button" id="players-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-lg fa-cog"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="players-dropdown">
+                                    <a href="#" class="dropdown-item text-success"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> Invite players</a>
+                                    <a href="#" class="dropdown-item text-danger"><i class="mr-1 fal fa-fw fa-trash-alt" aria-hidden="true"></i> Remove players</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul class="contents_list">
+                        {% if campaign.players %}
+                            {% for player in players %}
+                                <li class="li-content">
+                                    <a href="#">
+                                        {{ player.name }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                            <li>You haven't invited anyone to your party!</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-auto">
+                            <h5 class="px-1 mb-0">Party feed</h5>
+                        </div>
+                        <div class="col-auto">
+                            <div class="dropdown">
+                                <a class="btn btn-sm text-dark dropdown-toggle" href="#" role="button" id="feed-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-lg fa-cog"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="feed-dropdown">
+                                    <a href="#" class="dropdown-item text-success"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> New post</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p>You haven't posted anything yet!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

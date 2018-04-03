@@ -33,6 +33,8 @@ class Campaign(CampaignTemplate):
             'campaign_pk': self.pk
             })
 
+    def players(self):
+        return self.player_set.all()
 
 class Chapter(CampaignTemplate):
     content = models.TextField(blank=True)

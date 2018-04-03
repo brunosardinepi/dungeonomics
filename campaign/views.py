@@ -7,6 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views import View
 
 from . import forms
 from . import models
@@ -508,3 +509,8 @@ def campaign_export(request, campaign_pk):
             raise Http404
     else:
         raise Http404
+
+class CampaignParty(View):
+    def get(self, request, campaign_pk):
+        campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+        return render(self.request, 'campaign/campaign_party.html', {'campaign': campaign})

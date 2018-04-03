@@ -133,6 +133,7 @@ class NPC(Character):
 
 
 class Player(Character):
+    campaigns = models.ManyToManyField('campaign.Campaign')
     character_name = models.CharField(max_length=255, default='')
     proficiency_bonus = models.CharField(max_length=255, default='', blank=True)
     player_name = models.CharField(max_length=255, default='', blank=True)
