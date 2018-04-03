@@ -333,13 +333,30 @@ class CampaignTest(TestCase):
         self.assertNotIn(self.section, sections)
         self.assertEqual(sections.count(), 1)
 
-    def test_campaign_party_invite_page(self):
+    def test_campaign_party_invite_page_players(self):
         self.client.login(username='testuser', password='testpassword')
         response = self.client.get('/campaign/{}/party/invite/'.format(self.campaign.pk))
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.campaign.title)
         self.assertContains(response, self.campaign.public_url)
+
+    def test_campaign_party_invite_accept_page_players(self):
+        self.client.login(username='testuser2', password='testpassword')
+        response = self.client.get('/campaign/{}/'.format(self.campaign.public_url))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.campaign.title)
+        self.assertContains(response, self.player.player_name)
+        self.assertContains(response, self.player.character_name)
+
+    def test_campaign_party_invite_accept_page_no_players(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/campaign/{}/'.format(self.campaign.public_url))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.campaign.title)
+        self.assertContains(response, "You haven't created any Players")
 
     def test_campaign_party_invite(self):
         self.client.login(username='testuser2', password='testpassword')
@@ -353,4 +370,3 @@ class CampaignTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.player.player_name)
         self.assertContains(response, self.player.character_name)
-
