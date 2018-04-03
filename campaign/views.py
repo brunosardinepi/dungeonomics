@@ -510,7 +510,14 @@ def campaign_export(request, campaign_pk):
     else:
         raise Http404
 
+
 class CampaignParty(View):
     def get(self, request, campaign_pk):
         campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
         return render(self.request, 'campaign/campaign_party.html', {'campaign': campaign})
+
+
+class CampaignPartyInvite(View):
+    def get(self, request, campaign_pk):
+        campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+        return render(self.request, 'campaign/campaign_party_invite.html', {'campaign': campaign})

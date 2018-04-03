@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+
+{% load static from staticfiles %}
+{% load campaign_extras %}
+
+
+{% block head_extra %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+{% endblock %}
+
+{% block title %}{{ campaign.title }} | {{ block.super }}{% endblock %}
+
+{% block breadcrumbs %}
+    {% include "campaign/breadcrumbs.html" with action="Invite" %}
+{% endblock %}
+
+{% block body_content %}
+    <div class="row mt-3 pb-5 justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="px-1 mb-0">Invite players</h5>
+                </div>
+                <div class="card-body">
+                    <p>Give this link to your friends so they can join your Campaign. Anyone who has this URL can join your <span class="font-weight-bold">{{ campaign.title }}</span> Campaign.</p>
+                    <p>To join, they need to go to this URL, choose a character to use, and join the Campaign.</p>
+                    <div class="input-group mb-3">
+                        <input id="public_url" type="text" class="form-control" value="https://dungeonomics.com/campaign/{{ campaign.public_url }}" readonly>
+                        <div class="input-group-append">
+                            <button class="btn btn-primary btn-copy" type="button" data-clipboard-target="#public_url">Copy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body_extra %}
+    <script>
+        new ClipboardJS('.btn-copy');
+    </script>
+{% endblock %}

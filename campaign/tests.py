@@ -325,3 +325,11 @@ class CampaignTest(TestCase):
         sections = models.Section.objects.all()
         self.assertNotIn(self.section, sections)
         self.assertEqual(sections.count(), 1)
+
+    def test_campaign_party_invite_page(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/campaign/{}/party/invite/'.format(self.campaign.pk))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.campaign.title)
+        self.assertContains(response, self.campaign.public_url)

@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^(?P<campaign_pk>\d+)/chapter/(?P<chapter_pk>\d+)/section/(?P<section_pk>\d+)/delete/$', views.section_delete, name='section_delete'),
 
     url(r'^(?P<campaign_pk>\d+)/party/$', views.CampaignParty.as_view(), name='campaign_party'),
+    url(r'^(?P<campaign_pk>\d+)/party/invite/$', views.CampaignPartyInvite.as_view(), name='campaign_party_invite'),
 
     url(r'^$', views.campaign_detail, name='campaign_detail'),
 ]
