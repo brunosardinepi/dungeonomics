@@ -5,7 +5,7 @@ import string
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models.signals import post_delete
+from django.db.models.signals import post_delete, post_save, pre_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 
@@ -66,6 +66,38 @@ class Location(LocationTemplate):
             'location_pk': self.pk
             })
 
+
+@receiver(pre_save, sender=World)
+def delete_old_world_image(sender, instance, **kwargs):
+    if not instance.pk:
+        return False
+
+    try:
+        old_file = World.objects.get(pk=instance.pk).image
+    except World.DoesNotExist:
+        return False
+
+    new_file = instance.image
+    if not old_file == new_file:
+        if old_file:
+            if os.path.isfile(old_file.path):
+                os.remove(old_file.path)
+
+@receiver(pre_save, sender=Location)
+def delete_old_location_image(sender, instance, **kwargs):
+    if not instance.pk:
+        return False
+
+    try:
+        old_file = Location.objects.get(pk=instance.pk).image
+    except Location.DoesNotExist:
+        return False
+
+    new_file = instance.image
+    if not old_file == new_file:
+        if old_file:
+            if os.path.isfile(old_file.path):
+                os.remove(old_file.path)
 
 @receiver(post_delete, sender=World)
 def auto_delete_world_file_on_delete(sender, instance, **kwargs):
