@@ -1,5 +1,9 @@
-{% for campaign in campaigns %} 
-    <a class="dropdown-item" href="{% url 'campaign:campaign_detail' campaign_pk=campaign.id %}">{{ campaign.title }}</a>
+{% load lib_extras %}
+
+
+{% for campaign in campaigns %}
+    {% has_players campaign_pk=campaign.id as player_check %}
+    <a class="dropdown-item" href="{% url 'campaign:campaign_detail' campaign_pk=campaign.id %}">{{ campaign.title }}{% if player_check == True %} <i class="fal fa-fw fa-users ml-1"></i>{% endif %}</a>
 {% endfor %}
 {% if campaigns %}
     <div class="dropdown-divider"></div>
