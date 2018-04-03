@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+
+{% load static from staticfiles %}
+{% load campaign_extras %}
+
+
+{% block title %}{{ campaign.title }} | {{ block.super }}{% endblock %}
+
+{% block breadcrumbs %}
+    {% include "campaign/breadcrumbs.html" with action="Join" %}
+{% endblock %}
+
+{% block body_content %}
+    <div class="row mt-3 pb-5 justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="px-1 mb-0">Join Campaign</h5>
+                </div>
+                <div class="card-body">
+                    <p>You've been invited to join the <span class="font-weight-bold">{{ campaign.title }}</span> Campaign. Choose a character to use, and click "join" to join the Campaign.</p>
+                    <p class="small">Note: joining this Campaign with your Character does not limit your Character to this Campaign. It can still be used in other Campaigns.</p>
+
+                    <form class="pt-3" method="post" action="">
+                        {% csrf_token %}
+                        {% for player in players %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="player" id="player-{{ player.pk }}" value="{{ player.pk }}">
+                                <label class="form-check-label" for="player-{{ player.pk }}">
+                                    {{ player.player_name }} ({{ player.character_name }})
+                                </label>
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-block btn-success mt-3">Join</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

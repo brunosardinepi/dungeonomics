@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views import View
@@ -521,3 +521,21 @@ class CampaignPartyInvite(View):
     def get(self, request, campaign_pk):
         campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
         return render(self.request, 'campaign/campaign_party_invite.html', {'campaign': campaign})
+
+
+class CampaignPartyInviteAccept(View):
+    def get(self, request, campaign_public_url):
+        campaign = get_object_or_404(models.Campaign, public_url=campaign_public_url)
+        players = character_models.Player.objects.filter(user=request.user)
+        return render(self.request, 'campaign/campaign_party_invite_accept.html', {
+            'campaign': campaign,
+            'players': players,
+        })
+
+    def post(self, request, campaign_public_url):
+        campaign = get_object_or_404(models.Campaign, public_url=campaign_public_url)
+        player_pk = self.request.POST.get('player')
+        player = get_object_or_404(character_models.Player, pk=player_pk)
+        if player.user == request.user:
+            player.campaigns.add(campaign)
+            return redirect('campaign:campaign_party', campaign_pk=campaign.pk)

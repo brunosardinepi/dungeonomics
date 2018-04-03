@@ -83,9 +83,6 @@ class Character(models.Model):
     class Meta:
         abstract = True
 
-    def __str__(self):
-        return self.name
-
 
 class Monster(Character):
     creature_type = models.CharField(max_length=255, default='', blank=True)
@@ -103,6 +100,9 @@ class Monster(Character):
         return reverse('characters:monster_detail', kwargs={
             'monster_pk': self.pk
             })
+
+    def __str__(self):
+        return self.name
 
 
 class NPC(Character):
@@ -130,6 +130,9 @@ class NPC(Character):
         return reverse('characters:npc_detail', kwargs={
             'npc_pk': self.pk
             })
+
+    def __str__(self):
+        return self.name
 
 
 class Player(Character):
@@ -162,3 +165,6 @@ class Player(Character):
         return reverse('characters:player_detail', kwargs={
             'player_pk': self.pk
             })
+
+    def __str__(self):
+        return self.character_name

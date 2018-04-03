@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.contrib.auth.decorators import login_required
 
 from . import views
 
@@ -23,8 +24,9 @@ urlpatterns = [
     url(r'^(?P<campaign_pk>\d+)/chapter/(?P<chapter_pk>\d+)/delete/$', views.chapter_delete, name='chapter_delete'),
     url(r'^(?P<campaign_pk>\d+)/chapter/(?P<chapter_pk>\d+)/section/(?P<section_pk>\d+)/delete/$', views.section_delete, name='section_delete'),
 
-    url(r'^(?P<campaign_pk>\d+)/party/$', views.CampaignParty.as_view(), name='campaign_party'),
-    url(r'^(?P<campaign_pk>\d+)/party/invite/$', views.CampaignPartyInvite.as_view(), name='campaign_party_invite'),
+    url(r'^(?P<campaign_pk>\d+)/party/$', login_required(views.CampaignParty.as_view()), name='campaign_party'),
+    url(r'^(?P<campaign_pk>\d+)/party/invite/$', login_required(views.CampaignPartyInvite.as_view()), name='campaign_party_invite'),
+    url(r'^(?P<campaign_public_url>[\w-]+)/$', login_required(views.CampaignPartyInviteAccept.as_view()), name='campaign_party_invite_accept'),
 
     url(r'^$', views.campaign_detail, name='campaign_detail'),
 ]

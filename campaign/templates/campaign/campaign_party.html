@@ -4,7 +4,7 @@
 {% load campaign_extras %}
 
 
-{% block title %}{{ campaign.title }} | {{ block.super }}{% endblock %}
+{% block title %}{{ campaign.title }} - Party | {{ block.super }}{% endblock %}
 
 {% block breadcrumbs %}
     {% include "campaign/breadcrumbs.html" with action="Party" %}
@@ -35,10 +35,10 @@
                 <div class="card-body">
                     <ul class="contents_list">
                         {% if campaign.players %}
-                            {% for player in players %}
+                            {% for player in campaign.players %}
                                 <li class="li-content">
                                     <a href="#">
-                                        {{ player.name }}
+                                        {{ player.character_name }} ({{ player.player_name }})
                                     </a>
                                 </li>
                             {% endfor %}

@@ -6,6 +6,7 @@ import unittest
 
 from . import forms
 from . import models
+from characters.models import Player
 
 
 class CampaignTest(TestCase):
@@ -62,6 +63,12 @@ class CampaignTest(TestCase):
             chapter=self.chapter2,
             campaign=self.campaign2,
             content="dddddddddd",
+        )
+
+        self.player = Player.objects.create(
+            user=self.user2,
+            player_name="user no 2",
+            character_name="Bullwinkle",
         )
 
     def test_campaign_creation_time(self):
@@ -333,3 +340,17 @@ class CampaignTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.campaign.title)
         self.assertContains(response, self.campaign.public_url)
+
+    def test_campaign_party_invite(self):
+        self.client.login(username='testuser2', password='testpassword')
+        response = self.client.post('/campaign/{}/'.format(self.campaign.public_url), {'player': self.player.pk})
+        self.assertRedirects(response, '/campaign/{}/party/'.format(self.campaign.pk), 302, 200)
+
+        players = self.campaign.player_set.all()
+        self.assertEqual(players.count(), 1)
+
+        response = self.client.get('/campaign/{}/party/'.format(self.campaign.pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.player.player_name)
+        self.assertContains(response, self.player.character_name)
+
