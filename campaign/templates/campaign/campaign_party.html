@@ -62,7 +62,7 @@
                                     <i class="fas fa-lg fa-cog"></i>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="feed-dropdown">
-                                    <a href="#" class="dropdown-item text-success"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> New post</span></a>
+                                    <a href="{% url 'campaign:post_create' campaign_pk=campaign.pk %}" class="dropdown-item text-success"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> New post</span></a>
                                 </div>
                             </div>
                         </div>

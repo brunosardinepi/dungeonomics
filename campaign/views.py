@@ -24,7 +24,7 @@ import json
 def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None):
     if campaign_pk:
         campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-        posts = Post.objects.filter(campaign=campaign).order_by('date')[:5]
+        posts = Post.objects.filter(campaign=campaign).order_by('-date')[:5]
         if campaign.user == request.user:
             chapters = sorted(models.Chapter.objects.filter(campaign=campaign),
             key=lambda chapter: chapter.order)
@@ -84,7 +84,7 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
             key=lambda campaign: campaign.title)
         if len(campaigns) > 0:
             campaign = campaigns[0]
-            posts = Post.objects.filter(campaign=campaign).order_by('date')[:5]
+            posts = Post.objects.filter(campaign=campaign).order_by('-date')[:5]
 
             chapters = sorted(models.Chapter.objects.filter(campaign=campaign), key=lambda chapter: chapter.order)
             if len(chapters) > 0:
@@ -543,7 +543,7 @@ class CampaignParty(View):
     def get(self, request, campaign_pk):
         campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
         if utils.has_campaign_access(request.user, campaign_pk):
-            posts = Post.objects.filter(campaign=campaign).order_by('date')[:10]
+            posts = Post.objects.filter(campaign=campaign).order_by('-date')[:10]
             return render(self.request, 'campaign/campaign_party.html', {
                 'campaign': campaign,
                 'posts': posts,

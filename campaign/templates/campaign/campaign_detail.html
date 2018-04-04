@@ -79,7 +79,7 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="table-of-contents-dropdown">
                                     <a href="{% url 'campaign:campaign_party' campaign_pk=campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-eye" aria-hidden="true"></i> View party</a>
-                                    <a href="{% url 'campaign:campaign_party' campaign_pk=campaign.pk %}" class="dropdown-item text-primary"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> New post</a>
+                                    <a href="{% url 'campaign:post_create' campaign_pk=campaign.pk %}" class="dropdown-item text-primary"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> New post</a>
                                     <a href="{% url 'campaign:campaign_party_invite' campaign_pk=campaign.pk %}" class="dropdown-item text-success"><i class="mr-1 fal fa-fw fa-user-plus" aria-hidden="true"></i> Invite players</a>
                                 </div>
                             </div>
