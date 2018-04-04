@@ -91,6 +91,13 @@ class CampaignTest(TestCase):
         )
         self.player3.campaigns.add(self.campaign)
 
+        self.post = models.Post.objects.create(
+            user=self.user,
+            title="testpost1",
+            body="ppppwppwpwpwpwpw",
+            campaign=self.campaign,
+        )
+
     def test_campaign_creation_time(self):
         campaign = models.Campaign.objects.create(
             user=self.user,
@@ -134,6 +141,8 @@ class CampaignTest(TestCase):
         self.assertContains(response, self.chapter.title)
         self.assertContains(response, self.section.title)
         self.assertContains(response, self.chapter.content)
+        self.assertContains(response, self.post.title)
+        self.assertContains(response, self.post.body)
 
     def test_campaign_page_bad_user(self):
         self.client.login(username='testuser', password='testpassword')

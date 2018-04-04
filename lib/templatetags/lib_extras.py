@@ -53,3 +53,8 @@ def campaign_has_players(campaign_pk):
     campaign = get_object_or_404(Campaign, pk=campaign_pk)
     # return True if the Campaign has any Players
     return campaign.player_set.all().count() > 0
+
+@register.filter
+def post_user(email):
+    return email.split('@')[0]
+

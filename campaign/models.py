@@ -5,6 +5,8 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from posts.models import Post
+
 
 class CampaignTemplate(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

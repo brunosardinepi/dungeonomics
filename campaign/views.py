@@ -15,6 +15,7 @@ from . import utils
 from characters import models as character_models
 from items import models as item_models
 from locations import models as location_models
+from posts.models import Post
 
 import json
 
@@ -23,6 +24,7 @@ import json
 def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None):
     if campaign_pk:
         campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+        posts = Post.objects.filter(campaign=campaign).order_by('date')[:5]
         if campaign.user == request.user:
             chapters = sorted(models.Chapter.objects.filter(campaign=campaign),
             key=lambda chapter: chapter.order)
@@ -50,11 +52,27 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
 
             if chapter:
                 if section:
-                    return render(request, 'campaign/campaign_detail.html', {'campaign': campaign, 'chapter': chapter, 'section': section, 'chapters': chapters, 'sections': sections})
+                    return render(request, 'campaign/campaign_detail.html', {
+                        'campaign': campaign,
+                        'chapter': chapter,
+                        'section': section,
+                        'chapters': chapters,
+                        'sections': sections,
+                        'posts': posts,
+                    })
                 else:
-                    return render(request, 'campaign/campaign_detail.html', {'campaign': campaign, 'chapter': chapter, 'chapters': chapters, 'sections': sections})
+                    return render(request, 'campaign/campaign_detail.html', {
+                        'campaign': campaign,
+                        'chapter': chapter,
+                        'chapters': chapters,
+                        'sections': sections,
+                        'posts': posts,
+                    })
             else:
-                return render(request, 'campaign/campaign_detail.html', {'campaign': campaign})
+                return render(request, 'campaign/campaign_detail.html', {
+                    'campaign': campaign,
+                    'posts': posts,
+                })
         else:
             raise Http404
     else:
@@ -66,6 +84,7 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
             key=lambda campaign: campaign.title)
         if len(campaigns) > 0:
             campaign = campaigns[0]
+            posts = Post.objects.filter(campaign=campaign).order_by('date')[:5]
 
             chapters = sorted(models.Chapter.objects.filter(campaign=campaign), key=lambda chapter: chapter.order)
             if len(chapters) > 0:
@@ -81,8 +100,16 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
                     ))
             sections = [item for sublist in sections for item in sublist]
 
-            return render(request, 'campaign/campaign_detail.html', {'campaign': campaign, 'chapter': chapter, 'chapters': chapters, 'sections': sections})
-        return render(request, 'campaign/campaign_detail.html', {'campaign': campaign})
+            return render(request, 'campaign/campaign_detail.html', {
+                'campaign': campaign,
+                'chapter': chapter,
+                'chapters': chapters,
+                'sections': sections,
+                'posts': posts,
+            })
+        return render(request, 'campaign/campaign_detail.html', {
+            'campaign': campaign,
+        })
 
 
 class CampaignCreate(LoginRequiredMixin, CreateView):

@@ -1,0 +1,32 @@
+{% load humanize %}
+{% load lib_extras %}
+
+
+{% if posts %}
+    {% for post in posts %}
+        <div class="row">
+            <div class="col">
+                <span class="font-weight-bold">
+                    {{ post.title }}
+                </span>
+            </div>
+        </div>
+        <div class="row small mb-2 text-secondary">
+            <div class="col-md">
+                <i class="fas fa-clock mr-1"></i>{{ post.date|naturaltime }}
+            </div>
+            <div class="col-md">
+                <i class="fas fa-user mr-1"></i>{{ post.user.email|post_user }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                {{ post.body }}
+            </div>
+        </div>
+
+        {% if not forloop.last %}<hr>{% endif %}
+    {% endfor %}
+{% else %}
+    <p>No posts yet!</p>
+{% endif %}

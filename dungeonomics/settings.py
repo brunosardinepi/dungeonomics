@@ -26,12 +26,13 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
-    'lib',
+    'widget_tweaks',
     'campaign',
     'characters',
     'items',
+    'lib',
     'locations',
-    'widget_tweaks',
+    'posts',
     'votes',
 ]
 
