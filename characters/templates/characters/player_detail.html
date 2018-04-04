@@ -16,7 +16,7 @@
         {% for player in players %}
             <li>
                 <a href="{% url 'characters:player_detail' player_pk=player.pk %}">
-                    {{ player.player_name }} ({{ player.character_name }})
+                    {{ player.character_name }} ({{ player.player_name }})
                 </a>
             </li>
         {% endfor %}

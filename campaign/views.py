@@ -520,7 +520,10 @@ class CampaignParty(View):
 class CampaignPartyInvite(View):
     def get(self, request, campaign_pk):
         campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-        return render(self.request, 'campaign/campaign_party_invite.html', {'campaign': campaign})
+        if request.user == campaign.user:
+            return render(self.request, 'campaign/campaign_party_invite.html', {'campaign': campaign})
+        else:
+            raise Http404
 
 
 class CampaignPartyInviteAccept(View):
@@ -539,3 +542,26 @@ class CampaignPartyInviteAccept(View):
         if player.user == request.user:
             player.campaigns.add(campaign)
             return redirect('campaign:campaign_party', campaign_pk=campaign.pk)
+        else:
+            raise Http404
+
+
+class CampaignPartyRemove(View):
+    def get(self, request, campaign_pk):
+        campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+        if request.user == campaign.user:
+            return render(self.request, 'campaign/campaign_party_remove.html', {'campaign': campaign})
+        else:
+            raise Http404
+
+    def post(self, request, campaign_pk):
+        campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+        if campaign.user == request.user:
+            players = self.request.POST.getlist('players')
+            # for each player, remove them from the campaign
+            for pk in players:
+                player = get_object_or_404(character_models.Player, pk=pk)
+                player.campaigns.remove(campaign)
+            return redirect('campaign:campaign_party', campaign_pk=campaign.pk)
+        else:
+            raise Http404

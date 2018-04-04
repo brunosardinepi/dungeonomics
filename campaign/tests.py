@@ -71,6 +71,20 @@ class CampaignTest(TestCase):
             character_name="Bullwinkle",
         )
 
+        self.player2 = Player.objects.create(
+            user=self.user2,
+            player_name="Charlie",
+            character_name="Vomit",
+        )
+        self.player2.campaigns.add(self.campaign)
+
+        self.player3 = Player.objects.create(
+            user=self.user2,
+            player_name="Ripley",
+            character_name="Indoor dog",
+        )
+        self.player3.campaigns.add(self.campaign)
+
     def test_campaign_creation_time(self):
         campaign = models.Campaign.objects.create(
             user=self.user,
@@ -364,9 +378,45 @@ class CampaignTest(TestCase):
         self.assertRedirects(response, '/campaign/{}/party/'.format(self.campaign.pk), 302, 200)
 
         players = self.campaign.player_set.all()
-        self.assertEqual(players.count(), 1)
+        self.assertEqual(players.count(), 3)
 
         response = self.client.get('/campaign/{}/party/'.format(self.campaign.pk))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.player.player_name)
         self.assertContains(response, self.player.character_name)
+
+    def test_campaign_party_remove_page_players(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/campaign/{}/party/remove/'.format(self.campaign.pk))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.player2.player_name)
+        self.assertContains(response, self.player2.character_name)
+        self.assertContains(response, self.player3.player_name)
+        self.assertContains(response, self.player3.character_name)
+
+    def test_campaign_party_remove_page_no_players(self):
+        self.client.login(username='testuser2', password='testpassword')
+        response = self.client.get('/campaign/{}/party/remove/'.format(self.campaign2.pk))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Your Campaign doesn't have any Players")
+
+    def test_campaign_party_remove(self):
+        players = self.campaign.player_set.all()
+        self.assertEqual(players.count(), 2)
+
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.post('/campaign/{}/party/remove/'.format(self.campaign.pk), {'players': [self.player2.pk, self.player3.pk]})
+        self.assertRedirects(response, '/campaign/{}/party/'.format(self.campaign.pk), 302, 200)
+
+        players = self.campaign.player_set.all()
+        self.assertEqual(players.count(), 0)
+
+        response = self.client.get('/campaign/{}/party/'.format(self.campaign.pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response, self.player2.player_name)
+        self.assertNotContains(response, self.player2.character_name)
+        self.assertNotContains(response, self.player3.player_name)
+        self.assertNotContains(response, self.player3.character_name)
+        self.assertContains(response, "You haven't invited anyone to your party")

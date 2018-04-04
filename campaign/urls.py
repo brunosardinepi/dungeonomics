@@ -26,6 +26,7 @@ urlpatterns = [
 
     url(r'^(?P<campaign_pk>\d+)/party/$', login_required(views.CampaignParty.as_view()), name='campaign_party'),
     url(r'^(?P<campaign_pk>\d+)/party/invite/$', login_required(views.CampaignPartyInvite.as_view()), name='campaign_party_invite'),
+    url(r'^(?P<campaign_pk>\d+)/party/remove/$', login_required(views.CampaignPartyRemove.as_view()), name='campaign_party_remove'),
     url(r'^(?P<campaign_public_url>[\w-]+)/$', login_required(views.CampaignPartyInviteAccept.as_view()), name='campaign_party_invite_accept'),
 
     url(r'^$', views.campaign_detail, name='campaign_detail'),

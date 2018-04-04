@@ -34,7 +34,7 @@ class Campaign(CampaignTemplate):
             })
 
     def players(self):
-        return self.player_set.all()
+        return self.player_set.all().order_by('character_name')
 
 class Chapter(CampaignTemplate):
     content = models.TextField(blank=True)
