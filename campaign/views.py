@@ -543,7 +543,11 @@ class CampaignParty(View):
     def get(self, request, campaign_pk):
         campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
         if utils.has_campaign_access(request.user, campaign_pk):
-            return render(self.request, 'campaign/campaign_party.html', {'campaign': campaign})
+            posts = Post.objects.filter(campaign=campaign).order_by('date')[:10]
+            return render(self.request, 'campaign/campaign_party.html', {
+                'campaign': campaign,
+                'posts': posts,
+            })
         else:
             raise Http404
 

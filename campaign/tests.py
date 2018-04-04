@@ -362,6 +362,18 @@ class CampaignTest(TestCase):
         self.assertNotIn(self.section, sections)
         self.assertEqual(sections.count(), 1)
 
+    def test_campaign_party_page(self):
+        self.client.login(username='testuser2', password='testpassword')
+        response = self.client.get('/campaign/{}/party/'.format(self.campaign.pk))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.player2.player_name)
+        self.assertContains(response, self.player2.character_name)
+        self.assertContains(response, self.player3.player_name)
+        self.assertContains(response, self.player3.character_name)
+        self.assertContains(response, self.post.title)
+        self.assertContains(response, self.post.body)
+
     def test_campaign_party_invite_page_players(self):
         self.client.login(username='testuser', password='testpassword')
         response = self.client.get('/campaign/{}/party/invite/'.format(self.campaign.pk))
