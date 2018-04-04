@@ -25,6 +25,12 @@ class CampaignTest(TestCase):
             password='testpassword',
         )
 
+        self.user3 = User.objects.create_user(
+            username='testuser3',
+            email='test3@test.test',
+            password='testpassword',
+        )
+
         self.campaign = models.Campaign.objects.create(
             user=self.user,
             title="test campaign",
@@ -372,6 +378,10 @@ class CampaignTest(TestCase):
         self.assertContains(response, self.campaign.title)
         self.assertContains(response, "You haven't created any Players")
 
+    def test_campaign_party_invite_accept_page_no_auth_no_invite(self):
+        response = self.client.get('/campaign/{}/'.format(self.campaign.public_url))
+        self.assertRedirects(response, '/accounts/login/?next=/campaign/{}/'.format(self.campaign.public_url), 302, 200)
+
     def test_campaign_party_invite(self):
         self.client.login(username='testuser2', password='testpassword')
         response = self.client.post('/campaign/{}/'.format(self.campaign.public_url), {'player': self.player.pk})
@@ -401,6 +411,16 @@ class CampaignTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Your Campaign doesn't have any Players")
+
+    def test_campaign_party_remove_page_auth_no_perms(self):
+        self.client.login(username='testuser3', password='testpassword')
+        response = self.client.get('/campaign/{}/party/remove/'.format(self.campaign2.pk))
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_campaign_party_remove_page_no_auth(self):
+        response = self.client.get('/campaign/{}/party/remove/'.format(self.campaign2.pk))
+        self.assertRedirects(response, '/accounts/login/?next=/campaign/{}/party/remove/'.format(self.campaign2.pk), 302, 200)
 
     def test_campaign_party_remove(self):
         players = self.campaign.player_set.all()

@@ -11,6 +11,7 @@ from django.views import View
 
 from . import forms
 from . import models
+from . import utils
 from characters import models as character_models
 from items import models as item_models
 from locations import models as location_models
@@ -514,7 +515,10 @@ def campaign_export(request, campaign_pk):
 class CampaignParty(View):
     def get(self, request, campaign_pk):
         campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-        return render(self.request, 'campaign/campaign_party.html', {'campaign': campaign})
+        if utils.has_campaign_access(request.user, campaign_pk):
+            return render(self.request, 'campaign/campaign_party.html', {'campaign': campaign})
+        else:
+            raise Http404
 
 
 class CampaignPartyInvite(View):

@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.contrib.auth.decorators import login_required
 
 from . import views
 
@@ -10,6 +11,8 @@ urlpatterns = [
     url(r'^monster/(?P<monster_pk>\d+)/$', views.monster_detail, name='monster_detail'),
     url(r'^npc/(?P<npc_pk>\d+)/$', views.npc_detail, name='npc_detail'),
     url(r'^player/(?P<player_pk>\d+)/$', views.player_detail, name='player_detail'),
+
+    url(r'^player/(?P<player_pk>\d+)/campaigns/$', login_required(views.PlayerCampaigns.as_view()), name='player_campaigns'),
 
     url(r'^monster/create/$', views.monster_create, name='monster_create'),
     url(r'^npc/create/$', views.npc_create, name='npc_create'),

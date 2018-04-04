@@ -4,15 +4,17 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views import View
 
 from itertools import chain
 
 from . import forms
 from . import models
 
+from campaign.models import Campaign
 from items import models as item_models
 from locations import models as location_models
 
@@ -611,3 +613,27 @@ def npcs_delete(request):
     return render(request, 'characters/npcs_delete.html', {'form': form, 'npcs': npcs})
 
 
+class PlayerCampaigns(View):
+    def get(self, request, player_pk):
+        player = get_object_or_404(models.Player, pk=player_pk)
+        if request.user == player.user:
+            campaigns = player.campaigns.all()
+            return render(self.request, 'characters/player_campaigns.html', {
+                'player': player,
+                'campaigns': campaigns,
+            })
+        else:
+            raise Http404
+
+    def post(self, request, player_pk):
+        player = get_object_or_404(models.Player, pk=player_pk)
+        if request.user == player.user:
+            campaigns = self.request.POST.getlist('campaigns')
+            # for each campaign, remove the player
+            for pk in campaigns:
+                campaign = get_object_or_404(Campaign, pk=pk)
+                player.campaigns.remove(campaign)
+            messages.add_message(request, messages.SUCCESS, "Player has been removed from Campaign(s)")
+            return redirect('characters:player_campaigns', player_pk=player.pk)
+        else:
+            raise Http404
