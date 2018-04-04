@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 
 from . import forms
+from . import models
 from campaign.models import Campaign
 from campaign.utils import has_campaign_access
 
@@ -29,7 +30,18 @@ class PostCreate(View):
                 post.user = request.user
                 post.campaign = campaign
                 post.save()
-                messages.add_message(request, messages.SUCCESS, "Post created!")
+                messages.success(request, 'Post created!', fail_silently=True)
                 return redirect('campaign:campaign_party', campaign_pk=campaign.pk)
+        else:
+            raise Http404
+
+class PostDelete(View):
+    def get(self, request, campaign_pk, post_pk):
+        campaign = get_object_or_404(Campaign, pk=campaign_pk)
+        if campaign.user == request.user:
+            post = get_object_or_404(models.Post, pk=post_pk)
+            post.delete()
+            messages.success(request, 'Post deleted!', fail_silently=True)
+            return redirect('campaign:campaign_party', campaign_pk=campaign.pk)
         else:
             raise Http404

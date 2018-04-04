@@ -1,14 +1,18 @@
 {% load humanize %}
 {% load lib_extras %}
+{% load static from staticfiles %}
 
 
 {% if posts %}
     {% for post in posts %}
         <div class="row">
-            <div class="col">
-                <span class="font-weight-bold">
-                    {{ post.title }}
-                </span>
+            <div class="col-md font-weight-bold">
+                {{ post.title }}
+            </div>
+            <div class="col-md text-right small">
+                {% if request.user == campaign.user %}
+                    <a class="post-delete text-danger" href="{% url 'campaign:post_delete' campaign_pk=campaign.pk post_pk=post.pk %}">Delete</a>
+                {% endif %}
             </div>
         </div>
         <div class="row small mb-2 text-secondary">
@@ -30,3 +34,7 @@
 {% else %}
     <p>No posts yet!</p>
 {% endif %}
+
+{% block body_extra %}
+    <script src="{% static 'js/post_delete.js' %}"></script>
+{% endblock %}
