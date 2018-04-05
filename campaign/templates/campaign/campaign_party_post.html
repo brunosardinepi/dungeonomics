@@ -1,0 +1,109 @@
+{% extends 'layout.html' %}
+
+{% load static from staticfiles %}
+{% load widget_tweaks %}
+{% load campaign_extras %}
+{% load humanize %}
+{% load lib_extras %}
+
+
+{% block title %}{{ campaign.title }} - Post | {{ block.super }}{% endblock %}
+
+{% block breadcrumbs %}
+    {% include "campaign/breadcrumbs.html" with action="Post" %}
+{% endblock %}
+
+{% block body_content %}
+    <div class="row mt-3 pb-5 justify-content-center">
+
+        <div class="col-12 mb-3">
+            <a href="{% url 'campaign:campaign_party' campaign_pk=campaign.pk %}" class="btn btn-block btn-secondary"><i class="fal fa-long-arrow-left mr-1"></i>Back to Party</a>
+        </div>
+
+        <div class="col-12 mb-3">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col">
+                            <span class="font-weight-bold">{{ post.title }}</span>
+                            {% if request.user == campaign.user %}
+                                <a class="post-delete text-danger" href="{% url 'campaign:post_delete' campaign_pk=campaign.pk post_pk=post.pk %}"><i class="fal fa-trash-alt ml-1"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row small mb-2 text-secondary">
+                        <div class="col">
+                            <i class="fas fa-clock mr-1"></i>{{ post.date|naturaltime }}
+                            <i class="fas fa-user mr-1 ml-3"></i>{{ post.user.email|post_user }}
+                            <i class="fal fa-comments mr-1 ml-3"></i>{{ post.comments.count }} comments
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            {{ post.body|linebreaks }}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if post.comments %}
+                        {% for comment in post.comments %}
+                            <div class="row small mb-2 text-secondary">
+                                <div class="col">
+                                    <i class="fas fa-clock mr-1"></i>{{ comment.date|naturaltime }}
+                                    <i class="fas fa-user mr-1 ml-3"></i>{{ comment.user.email|post_user }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    {{ comment.body|linebreaks }}
+                                </div>
+                            </div>
+
+                            {% if not forloop.last %}<hr>{% endif %}
+
+                        {% endfor %}
+                    {% else %}
+                        <p>No comments!</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header font-weight-bold">
+                    New comment
+                </div>
+                <div class="card-body">
+                    <form method="post" action="">
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        <div class="form-group">
+                            {% render_field form.body class+="form-control mb-3" %}
+                            {% if form.body.errors %}
+                                {% for error in form.body.errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ error|escape }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <button class="btn btn-block btn-primary">Comment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+{% block body_extra %}
+    <script src="{% static 'js/post_delete.js' %}"></script>
+{% endblock %}

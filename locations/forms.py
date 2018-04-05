@@ -23,6 +23,7 @@ class WorldForm(TinyMCEForm):
         model = models.World
         fields = [
             'name',
+            'image',
             'content',
         ]
 
@@ -33,6 +34,7 @@ class LocationForm(TinyMCEForm):
             'name',
             'world',
             'parent_location',
+            'image',
             'content',
         ]
 

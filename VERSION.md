@@ -3,9 +3,27 @@
 This is the version history for Dungeonomics development.
 
 
+## Version 2.2.0
+
+Release date: 04/06
+
+### Additions
+
+* #27 -- maps for Worlds/Locations
+* #3 -- Campaign parties
+
+### Changes
+
+* Consolidated back-end code for @ tagging
+
+### Fixes
+
+* #101 -- styling for @ dropdown
+
+
 ## Version 2.1.0
 
-Release date: TBD
+Release date: 03/15
 
 ### Additions
 

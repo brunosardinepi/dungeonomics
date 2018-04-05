@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% load static from staticfiles %}
+{% load campaign_extras %}
+
+
+{% block title %}{{ campaign.title }} - Remove players | {{ block.super }}{% endblock %}
+
+{% block breadcrumbs %}
+    {% include "campaign/breadcrumbs.html" with action="Remove players" %}
+{% endblock %}
+
+{% block body_content %}
+    <div class="row mt-3 justify-content-center">
+        <div class="col-lg-8">
+            <a href="{% url 'campaign:campaign_party' campaign_pk=campaign.pk %}" class="btn btn-block btn-secondary"><i class="fal fa-long-arrow-left mr-1"></i>Back to Party</a>
+        </div>
+    </div>
+
+    <div class="row mt-3 pb-5 justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="px-1 mb-0">Remove players</h5>
+                </div>
+                <div class="card-body">
+                    <p>Choose the Players you want to remove from your Campaign and click "remove".</p>
+
+                    {% if campaign.players %}
+                        <form class="pt-3" method="post" action="">
+                            {% csrf_token %}
+                            {% for player in campaign.players %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="players" id="player-{{ player.pk }}" value="{{ player.pk }}">
+                                    <label class="form-check-label" for="player-{{ player.pk }}">
+                                        {{ player.character_name }} ({{ player.player_name }})
+                                    </label>
+                                </div>
+                            {% endfor %}
+                            <button type="submit" class="btn btn-block btn-danger mt-3">Remove</button>
+                        </form>
+                    {% else %}
+                        <p>Your Campaign doesn't have any Players!</p>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

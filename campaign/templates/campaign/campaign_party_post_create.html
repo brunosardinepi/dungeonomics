@@ -1,0 +1,68 @@
+{% extends 'layout.html' %}
+
+{% load static from staticfiles %}
+{% load widget_tweaks %}
+{% load campaign_extras %}
+
+
+{% block title %}{{ campaign.title }} - New post | {{ block.super }}{% endblock %}
+
+{% block breadcrumbs %}
+    {% include "campaign/breadcrumbs.html" with action="New post" %}
+{% endblock %}
+
+{% block body_content %}
+    <div class="row mt-3 justify-content-center">
+        <div class="col-lg-8">
+            <a href="{% url 'campaign:campaign_party' campaign_pk=campaign.pk %}" class="btn btn-block btn-secondary"><i class="fal fa-long-arrow-left mr-1"></i>Back to Party</a>
+        </div>
+    </div>
+
+    <div class="row mt-3 pb-5 justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="px-1 mb-0">New post</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="">
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        <div class="form-group">
+                            <label for="{{ form.title.id_for_label }}">Title</label>
+                            {% render_field form.title class+="form-control mb-3" %}
+                            {% if form.title.errors %}
+                                {% for error in form.title.errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ error|escape }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.body.id_for_label }}">Body</label>
+                            {% render_field form.body class+="form-control mb-3" %}
+                            {% if form.body.errors %}
+                                {% for error in form.body.errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ error|escape }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <button class="btn btn-block btn-primary">Post</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -4,15 +4,19 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views import View
 
 from . import forms
 from . import models
+from . import utils
 from characters import models as character_models
+from dungeonomics.utils import at_tagging
 from items import models as item_models
 from locations import models as location_models
+from posts.models import Post
 
 import json
 
@@ -21,6 +25,7 @@ import json
 def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None):
     if campaign_pk:
         campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+        posts = Post.objects.filter(campaign=campaign).order_by('-date')[:5]
         if campaign.user == request.user:
             chapters = sorted(models.Chapter.objects.filter(campaign=campaign),
             key=lambda chapter: chapter.order)
@@ -48,11 +53,27 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
 
             if chapter:
                 if section:
-                    return render(request, 'campaign/campaign_detail.html', {'campaign': campaign, 'chapter': chapter, 'section': section, 'chapters': chapters, 'sections': sections})
+                    return render(request, 'campaign/campaign_detail.html', {
+                        'campaign': campaign,
+                        'chapter': chapter,
+                        'section': section,
+                        'chapters': chapters,
+                        'sections': sections,
+                        'posts': posts,
+                    })
                 else:
-                    return render(request, 'campaign/campaign_detail.html', {'campaign': campaign, 'chapter': chapter, 'chapters': chapters, 'sections': sections})
+                    return render(request, 'campaign/campaign_detail.html', {
+                        'campaign': campaign,
+                        'chapter': chapter,
+                        'chapters': chapters,
+                        'sections': sections,
+                        'posts': posts,
+                    })
             else:
-                return render(request, 'campaign/campaign_detail.html', {'campaign': campaign})
+                return render(request, 'campaign/campaign_detail.html', {
+                    'campaign': campaign,
+                    'posts': posts,
+                })
         else:
             raise Http404
     else:
@@ -64,6 +85,7 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
             key=lambda campaign: campaign.title)
         if len(campaigns) > 0:
             campaign = campaigns[0]
+            posts = Post.objects.filter(campaign=campaign).order_by('-date')[:5]
 
             chapters = sorted(models.Chapter.objects.filter(campaign=campaign), key=lambda chapter: chapter.order)
             if len(chapters) > 0:
@@ -79,8 +101,16 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
                     ))
             sections = [item for sublist in sections for item in sublist]
 
-            return render(request, 'campaign/campaign_detail.html', {'campaign': campaign, 'chapter': chapter, 'chapters': chapters, 'sections': sections})
-        return render(request, 'campaign/campaign_detail.html', {'campaign': campaign})
+            return render(request, 'campaign/campaign_detail.html', {
+                'campaign': campaign,
+                'chapter': chapter,
+                'chapters': chapters,
+                'sections': sections,
+                'posts': posts,
+            })
+        return render(request, 'campaign/campaign_detail.html', {
+            'campaign': campaign,
+        })
 
 
 class CampaignCreate(LoginRequiredMixin, CreateView):
@@ -101,31 +131,7 @@ class CampaignCreate(LoginRequiredMixin, CreateView):
 def chapter_create(request, campaign_pk):
     campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
     if campaign.user == request.user:
-        monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
-        monsters = {}
-        for monster in monsters_raw:
-            monsters[monster.pk] = monster.name
-        npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
-        npcs = {}
-        for npc in npcs_raw:
-            npcs[npc.pk] = npc.name
-        items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
-        items = {}
-        for item in items_raw:
-            items[item.pk] = item.name
-        players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
-        players = {}
-        for player in players_raw:
-            players[player.pk] = player.player_name
-        worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
-        worlds = {}
-        for world in worlds_raw:
-            worlds[world.pk] = world.name
-        locations_raw = location_models.Location.objects.filter(user=request.user).order_by('name')
-        locations = {}
-        for location in locations_raw:
-            locations[location.pk] = location.name
-
+        data = at_tagging(request)
         form = forms.ChapterForm()
         if request.method == 'POST':
             form = forms.ChapterForm(request.POST)
@@ -138,47 +144,16 @@ def chapter_create(request, campaign_pk):
                 return HttpResponseRedirect(chapter.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'campaign/chapter_form.html', {
-        'form': form,
-        'monsters': monsters,
-        'npcs': npcs,
-        'items': items,
-        'players': players,
-        'campaign': campaign,
-        'worlds': worlds,
-        'locations': locations,
-    })
+    data['campaign'] = campaign
+    data['form'] = form
+    return render(request, 'campaign/chapter_form.html', data)
 
 @login_required
 def section_create(request, campaign_pk, chapter_pk):
     campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
     if campaign.user == request.user:
+        data = at_tagging(request)
         chapter = get_object_or_404(models.Chapter, pk=chapter_pk)
-        monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
-        monsters = {}
-        for monster in monsters_raw:
-            monsters[monster.pk] = monster.name
-        npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
-        npcs = {}
-        for npc in npcs_raw:
-            npcs[npc.pk] = npc.name
-        items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
-        items = {}
-        for item in items_raw:
-            items[item.pk] = item.name
-        players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
-        players = {}
-        for player in players_raw:
-            players[player.pk] = player.player_name
-        worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
-        worlds = {}
-        for world in worlds_raw:
-            worlds[world.pk] = world.name
-        locations_raw = location_models.Location.objects.filter(user=request.user).order_by('name')
-        locations = {}
-        for location in locations_raw:
-            locations[location.pk] = location.name
-
         form = forms.SectionForm()
         if request.method == 'POST':
             form = forms.SectionForm(request.POST)
@@ -192,8 +167,10 @@ def section_create(request, campaign_pk, chapter_pk):
                 return HttpResponseRedirect(section.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'campaign': campaign, 'chapter': chapter, 'worlds': worlds, 'locations': locations})
-
+    data['campaign'] = campaign
+    data['chapter'] = chapter
+    data['form'] = form
+    return render(request, 'campaign/section_form.html', data)
 
 @login_required
 def campaign_update(request, campaign_pk):
@@ -226,32 +203,8 @@ def campaign_update(request, campaign_pk):
 def chapter_update(request, campaign_pk, chapter_pk):
     chapter = get_object_or_404(models.Chapter, pk=chapter_pk, campaign_id=campaign_pk)
     if chapter.user == request.user:
+        data = at_tagging(request)
         sections = models.Section.objects.filter(chapter=chapter)
-        monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
-        monsters = {}
-        for monster in monsters_raw:
-            monsters[monster.pk] = monster.name
-        npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
-        npcs = {}
-        for npc in npcs_raw:
-            npcs[npc.pk] = npc.name
-        items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
-        items = {}
-        for item in items_raw:
-            items[item.pk] = item.name
-        players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
-        players = {}
-        for player in players_raw:
-            players[player.pk] = player.player_name
-        worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
-        worlds = {}
-        for world in worlds_raw:
-            worlds[world.pk] = world.name
-        locations_raw = location_models.Location.objects.filter(user=request.user).order_by('name')
-        locations = {}
-        for location in locations_raw:
-            locations[location.pk] = location.name
-
         form = forms.ChapterForm(instance=chapter)
         section_forms = forms.SectionInlineFormSet(queryset=form.instance.section_set.all())
         if request.method == 'POST':
@@ -270,37 +223,18 @@ def chapter_update(request, campaign_pk, chapter_pk):
                 return HttpResponseRedirect(chapter.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'campaign/chapter_form.html', {'form': form, 'formset': section_forms, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'campaign': chapter.campaign, 'chapter': chapter, 'sections': sections, 'worlds': worlds, 'locations': locations})
+    data['campaign'] = chapter.campaign
+    data['chapter'] = chapter
+    data['sections'] = sections
+    data['form'] = form
+    data['formset'] = section_forms
+    return render(request, 'campaign/chapter_form.html', data)
 
 @login_required
 def section_update(request, campaign_pk, chapter_pk, section_pk):
     section = get_object_or_404(models.Section, pk=section_pk, chapter_id=chapter_pk, campaign_id=campaign_pk)
     if section.user == request.user:
-        monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
-        monsters = {}
-        for monster in monsters_raw:
-            monsters[monster.pk] = monster.name
-        npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
-        npcs = {}
-        for npc in npcs_raw:
-            npcs[npc.pk] = npc.name
-        items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
-        items = {}
-        for item in items_raw:
-            items[item.pk] = item.name
-        players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
-        players = {}
-        for player in players_raw:
-            players[player.pk] = player.player_name
-        worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
-        worlds = {}
-        for world in worlds_raw:
-            worlds[world.pk] = world.name
-        locations_raw = location_models.Location.objects.filter(user=request.user).order_by('name')
-        locations = {}
-        for location in locations_raw:
-            locations[location.pk] = location.name
-
+        data = at_tagging(request)
         form = forms.SectionForm(instance=section)
         if request.method == 'POST':
             form = forms.SectionForm(instance=section, data=request.POST)
@@ -310,7 +244,11 @@ def section_update(request, campaign_pk, chapter_pk, section_pk):
                 return HttpResponseRedirect(section.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'campaign': section.chapter.campaign, 'chapter': section.chapter, 'section': section, 'worlds': worlds, 'locations': locations})
+    data['form'] = form
+    data['campaign'] = section.chapter.campaign
+    data['chapter'] = section.chapter
+    data['section'] = section
+    return render(request, 'campaign/section_form.html', data)
 
 @login_required
 def campaign_print(request, campaign_pk):
@@ -323,7 +261,15 @@ def campaign_print(request, campaign_pk):
             npcs = sorted(character_models.NPC.objects.filter(user=request.user), key=lambda npc: npc.name.lower())
             items = sorted(item_models.Item.objects.filter(user=request.user), key=lambda item: item.name.lower())
             worlds = sorted(location_models.World.objects.filter(user=request.user), key=lambda world: world.name.lower())
-            return render(request, 'campaign/campaign_print.html', {'campaign': campaign, 'chapters': chapters, 'sections': sections, 'monsters': monsters, 'npcs': npcs, 'items': items, 'worlds': worlds})
+            return render(request, 'campaign/campaign_print.html', {
+                'campaign': campaign,
+                'chapters': chapters,
+                'sections': sections,
+                'monsters': monsters,
+                'npcs': npcs,
+                'items': items,
+                'worlds': worlds,
+            })
         else:
             raise Http404
     else:
@@ -508,3 +454,78 @@ def campaign_export(request, campaign_pk):
             raise Http404
     else:
         raise Http404
+
+
+class CampaignParty(View):
+    def get(self, request, campaign_pk):
+        campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+        if utils.has_campaign_access(request.user, campaign_pk):
+            posts = Post.objects.filter(campaign=campaign).order_by('-date')[:10]
+            return render(self.request, 'campaign/campaign_party.html', {
+                'campaign': campaign,
+                'posts': posts,
+            })
+        else:
+            raise Http404
+
+
+class CampaignPartyInvite(View):
+    def get(self, request, campaign_pk):
+        campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+        if request.user == campaign.user:
+            return render(self.request, 'campaign/campaign_party_invite.html', {'campaign': campaign})
+        else:
+            raise Http404
+
+
+class CampaignPartyInviteAccept(View):
+    def get(self, request, campaign_public_url):
+        campaign = get_object_or_404(models.Campaign, public_url=campaign_public_url)
+        players = character_models.Player.objects.filter(user=request.user)
+        return render(self.request, 'campaign/campaign_party_invite_accept.html', {
+            'campaign': campaign,
+            'players': players,
+        })
+
+    def post(self, request, campaign_public_url):
+        campaign = get_object_or_404(models.Campaign, public_url=campaign_public_url)
+        player_pk = self.request.POST.get('player')
+        player = get_object_or_404(character_models.Player, pk=player_pk)
+        if player.user == request.user:
+            player.campaigns.add(campaign)
+            return redirect('campaign:campaign_party', campaign_pk=campaign.pk)
+        else:
+            raise Http404
+
+
+class CampaignPartyRemove(View):
+    def get(self, request, campaign_pk):
+        campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+        if request.user == campaign.user:
+            return render(self.request, 'campaign/campaign_party_remove.html', {'campaign': campaign})
+        else:
+            raise Http404
+
+    def post(self, request, campaign_pk):
+        campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+        if campaign.user == request.user:
+            players = self.request.POST.getlist('players')
+            # for each player, remove them from the campaign
+            for pk in players:
+                player = get_object_or_404(character_models.Player, pk=pk)
+                player.campaigns.remove(campaign)
+            return redirect('campaign:campaign_party', campaign_pk=campaign.pk)
+        else:
+            raise Http404
+
+class CampaignPartyPlayersDetail(View):
+    def get(self, request, campaign_pk, player_pk):
+        campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+        if utils.has_campaign_access(request.user, campaign_pk):
+            player = get_object_or_404(character_models.Player, pk=player_pk)
+            return render(self.request, 'campaign/campaign_party_player_detail.html', {
+                'campaign': campaign,
+                'player': player,
+            })
+        else:
+            raise Http404
