@@ -20,7 +20,7 @@
             <a href="{% url 'campaign:campaign_party' campaign_pk=campaign.pk %}" class="btn btn-block btn-secondary"><i class="fal fa-long-arrow-left mr-1"></i>Back to Party</a>
         </div>
 
-        <div class="col-lg-12">
+        <div class="col-12 mb-3">
             <div class="card">
                 <div class="card-header">
                     <div class="row">
@@ -68,6 +68,39 @@
                 </div>
             </div>
         </div>
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header font-weight-bold">
+                    New comment
+                </div>
+                <div class="card-body">
+                    <form method="post" action="">
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        <div class="form-group">
+                            {% render_field form.body class+="form-control mb-3" %}
+                            {% if form.body.errors %}
+                                {% for error in form.body.errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ error|escape }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <button class="btn btn-block btn-primary">Comment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </div>
 {% endblock %}
 

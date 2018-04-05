@@ -10,3 +10,11 @@ class PostForm(forms.ModelForm):
             'title',
             'body',
         ]
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = models.Comment
+        fields = [
+            'body',
+        ]

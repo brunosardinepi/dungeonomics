@@ -52,9 +52,26 @@ class PostDetail(View):
         campaign = get_object_or_404(Campaign, pk=campaign_pk)
         if has_campaign_access(request.user, campaign_pk):
             post = get_object_or_404(models.Post, pk=post_pk)
+            form = forms.CommentForm()
             return render(self.request, 'campaign/campaign_party_post.html', {
                 'campaign': campaign,
                 'post': post,
+                'form': form,
             })
+        else:
+            raise Http404
+
+    def post(self, request, campaign_pk, post_pk):
+        campaign = get_object_or_404(Campaign, pk=campaign_pk)
+        if has_campaign_access(request.user, campaign_pk):
+            post = get_object_or_404(models.Post, pk=post_pk)
+            form = forms.CommentForm(request.POST)
+            if form.is_valid():
+                comment = form.save(commit=False)
+                comment.user = request.user
+                comment.post = post
+                comment.save()
+                messages.success(request, 'Comment added!', fail_silently=True)
+                return redirect('campaign:post_detail', campaign_pk=campaign.pk, post_pk=post.pk)
         else:
             raise Http404
