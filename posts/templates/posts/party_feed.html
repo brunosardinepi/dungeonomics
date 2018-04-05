@@ -9,18 +9,17 @@
             <div class="col-md font-weight-bold">
                 {{ post.title }}
             </div>
-            <div class="col-md text-right small">
+            <div class="col-md-2 text-right small">
                 {% if request.user == campaign.user %}
-                    <a class="post-delete text-danger" href="{% url 'campaign:post_delete' campaign_pk=campaign.pk post_pk=post.pk %}">Delete</a>
+                    <a class="post-delete text-danger" href="{% url 'campaign:post_delete' campaign_pk=campaign.pk post_pk=post.pk %}">D</a>
                 {% endif %}
             </div>
         </div>
         <div class="row small mb-2 text-secondary">
-            <div class="col-md">
+            <div class="col">
                 <i class="fas fa-clock mr-1"></i>{{ post.date|naturaltime }}
-            </div>
-            <div class="col-md text-right">
-                <i class="fas fa-user mr-1"></i>{{ post.user.email|post_user }}
+                <i class="fas fa-user mr-1 ml-3"></i>{{ post.user.email|post_user }}
+                <i class="fal fa-comments mr-1 ml-3"></i>20 comments
             </div>
         </div>
         <div class="row">
