@@ -14,7 +14,7 @@ Release date: 04/06
 
 ### Changes
 
-* None
+* Consolidated back-end code for @ tagging
 
 ### Fixes
 
