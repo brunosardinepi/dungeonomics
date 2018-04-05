@@ -461,18 +461,3 @@ class CampaignTest(TestCase):
         self.assertNotContains(response, self.player3.player_name)
         self.assertNotContains(response, self.player3.character_name)
         self.assertContains(response, "You haven't invited anyone to your party")
-
-    def test_campaign_party_post_delete_perms(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.get('/campaign/{}/party/'.format(self.campaign.pk))
-
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Delete")
-
-    def test_campaign_party_post_delete_no_perms(self):
-        self.client.login(username='testuser2', password='testpassword')
-        response = self.client.get('/campaign/{}/party/'.format(self.campaign.pk))
-
-        self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, "Delete")
-

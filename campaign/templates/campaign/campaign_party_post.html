@@ -1,0 +1,56 @@
+{% extends 'layout.html' %}
+
+{% load static from staticfiles %}
+{% load widget_tweaks %}
+{% load campaign_extras %}
+{% load humanize %}
+{% load lib_extras %}
+
+
+{% block title %}{{ campaign.title }} - Post | {{ block.super }}{% endblock %}
+
+{% block breadcrumbs %}
+    {% include "campaign/breadcrumbs.html" with action="Post" %}
+{% endblock %}
+
+{% block body_content %}
+    <div class="row mt-3 pb-5 justify-content-center">
+
+        <div class="col-12 mb-3">
+            <a href="{% url 'campaign:campaign_party' campaign_pk=campaign.pk %}" class="btn btn-block btn-secondary"><i class="fal fa-long-arrow-left mr-1"></i>Back to Party</a>
+        </div>
+
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col">
+                            <span class="font-weight-bold">{{ post.title }}</span>
+                            {% if request.user == campaign.user %}
+                                <a class="post-delete text-danger" href="{% url 'campaign:post_delete' campaign_pk=campaign.pk post_pk=post.pk %}"><i class="fal fa-trash-alt ml-1"></i></a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row small mb-2 text-secondary">
+                        <div class="col">
+                            <i class="fas fa-clock mr-1"></i>{{ post.date|naturaltime }}
+                            <i class="fas fa-user mr-1 ml-3"></i>{{ post.user.email|post_user }}
+                            <i class="fal fa-comments mr-1 ml-3"></i>20 comments
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            {{ post.body|linebreaks }}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body_extra %}
+    <script src="{% static 'js/post_delete.js' %}"></script>
+{% endblock %}

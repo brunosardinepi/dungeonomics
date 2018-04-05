@@ -3,5 +3,6 @@ html{position:relative;min-height:100%}body{padding-top:56px;background:url(../i
 .location-image{max-width:100%}
 
 @media (max-width:991.99px){body{margin-bottom:180px}.footer{height:180px;text-align:center!important}}
-@media (max-width:575.98px){body{margin-bottom:180px}.footer{height:180px}#footer-social li{padding:0 0.25rem}}
+@media (max-width:575.98px){body{margin-bottom:180px}.footer{height:180px}#footer-social li{padding:0 0.25rem}.back-to-party{text-align:left}}
+@media (min-width:576px){.back-to-party{text-align:right}}
 @media (min-width:992px){body{margin-bottom:60px}.footer{height:60px}#footer-social{text-align:right!important}}

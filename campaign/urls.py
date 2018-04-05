@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^(?P<campaign_pk>\d+)/party/remove/$', login_required(views.CampaignPartyRemove.as_view()), name='campaign_party_remove'),
     url(r'^(?P<campaign_public_url>[\w-]+)/$', login_required(views.CampaignPartyInviteAccept.as_view()), name='campaign_party_invite_accept'),
     url(r'^(?P<campaign_pk>\d+)/party/posts/create/$', login_required(post_views.PostCreate.as_view()), name='post_create'),
+    url(r'^(?P<campaign_pk>\d+)/party/posts/(?P<post_pk>\d+)/$', login_required(post_views.PostDetail.as_view()), name='post_detail'),
     url(r'^(?P<campaign_pk>\d+)/party/posts/(?P<post_pk>\d+)/delete/$', login_required(post_views.PostDelete.as_view()), name='post_delete'),
 
     url(r'^$', views.campaign_detail, name='campaign_detail'),

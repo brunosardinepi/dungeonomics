@@ -6,6 +6,7 @@ import unittest
 
 from . import models
 from campaign.models import Campaign
+from characters.models import Player
 
 
 class PostTest(TestCase):
@@ -40,6 +41,26 @@ class PostTest(TestCase):
             title="test campaign 2",
         )
 
+        self.player = Player.objects.create(
+            user=self.user2,
+            player_name="user no 2",
+            character_name="Bullwinkle",
+        )
+
+        self.player2 = Player.objects.create(
+            user=self.user2,
+            player_name="Charlie",
+            character_name="Vomit",
+        )
+        self.player2.campaigns.add(self.campaign)
+
+        self.player3 = Player.objects.create(
+            user=self.user2,
+            player_name="Ripley",
+            character_name="Indoor dog",
+        )
+        self.player3.campaigns.add(self.campaign)
+
         self.post = models.Post.objects.create(
             user=self.user,
             title="testpost1",
@@ -62,14 +83,20 @@ class PostTest(TestCase):
 
         self.assertIn(self.post, posts)
 
-    def test_post_create_page_auth_perms(self):
+    def test_post_create_page_auth_owner(self):
         self.client.login(username='testuser', password='testpassword')
         response = self.client.get('/campaign/{}/party/posts/create/'.format(self.campaign.pk))
 
         self.assertEqual(response.status_code, 200)
 
-    def test_post_create_page_auth_no_perms(self):
+    def test_post_create_page_auth_player(self):
         self.client.login(username='testuser2', password='testpassword')
+        response = self.client.get('/campaign/{}/party/posts/create/'.format(self.campaign.pk))
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_create_page_auth_no_perms(self):
+        self.client.login(username='testuser3', password='testpassword')
         response = self.client.get('/campaign/{}/party/posts/create/'.format(self.campaign.pk))
 
         self.assertEqual(response.status_code, 404)
@@ -91,3 +118,32 @@ class PostTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "this is my title")
         self.assertContains(response, "check out this body")
+
+    def test_post_page_auth_owner(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/campaign/{}/party/posts/{}/'.format(self.campaign.pk, self.post.pk))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.post.title)
+        self.assertContains(response, self.post.body)
+        self.assertContains(response, "post-delete")
+
+    def test_post_page_auth_player(self):
+        self.client.login(username='testuser2', password='testpassword')
+        response = self.client.get('/campaign/{}/party/posts/{}/'.format(self.campaign.pk, self.post.pk))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.post.title)
+        self.assertContains(response, self.post.body)
+        self.assertNotContains(response, "post-delete")
+
+    def test_post_page_auth_no_perms(self):
+        self.client.login(username='testuser3', password='testpassword')
+        response = self.client.get('/campaign/{}/party/posts/{}/'.format(self.campaign.pk, self.post.pk))
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_post_page_no_auth(self):
+        response = self.client.get('/campaign/{}/party/posts/{}/'.format(self.campaign.pk, self.post.pk))
+
+        self.assertRedirects(response, '/accounts/login/?next=/campaign/{}/party/posts/{}/'.format(self.campaign.pk, self.post.pk), 302, 200)
