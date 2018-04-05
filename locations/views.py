@@ -11,7 +11,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from . import forms
 from . import models
 from characters import models as character_models
-from dungeonomics.utils import image_is_valid
+from dungeonomics.utils import at_tagging, image_is_valid
 from items import models as item_models
 
 import json
@@ -40,31 +40,7 @@ def location_detail(request, world_pk=None, location_pk=None):
 
 @login_required
 def world_create(request):
-    monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
-    monsters = {}
-    for monster in monsters_raw:
-        monsters[monster.pk] = monster.name
-    npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
-    npcs = {}
-    for npc in npcs_raw:
-        npcs[npc.pk] = npc.name
-    items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
-    items = {}
-    for item in items_raw:
-        items[item.pk] = item.name
-    players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
-    players = {}
-    for player in players_raw:
-        players[player.pk] = player.player_name
-    worlds_raw = models.World.objects.filter(user=request.user).order_by('name')
-    worlds = {}
-    for world in worlds_raw:
-        worlds[world.pk] = world.name
-    locations_raw = models.Location.objects.filter(user=request.user).order_by('name')
-    locations = {}
-    for location in locations_raw:
-        locations[location.pk] = location.name
-
+    data = at_tagging(request)
     form = forms.WorldForm()
     if request.method == 'POST':
         form = forms.WorldForm(request.POST, request.FILES)
@@ -82,35 +58,12 @@ def world_create(request):
             world.save()
             messages.add_message(request, messages.SUCCESS, "World created!")
             return HttpResponseRedirect(world.get_absolute_url())
-    return render(request, 'locations/world_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'worlds': worlds, 'locations': locations})
+    data['form'] = form
+    return render(request, 'locations/world_form.html', data)
 
 @login_required
 def location_create(request, world_pk, location_pk=None):
-    monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
-    monsters = {}
-    for monster in monsters_raw:
-        monsters[monster.pk] = monster.name
-    npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
-    npcs = {}
-    for npc in npcs_raw:
-        npcs[npc.pk] = npc.name
-    items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
-    items = {}
-    for item in items_raw:
-        items[item.pk] = item.name
-    players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
-    players = {}
-    for player in players_raw:
-        players[player.pk] = player.player_name
-    worlds_raw = models.World.objects.filter(user=request.user).order_by('name')
-    worlds = {}
-    for world in worlds_raw:
-        worlds[world.pk] = world.name
-    locations_raw = models.Location.objects.filter(user=request.user).order_by('name')
-    locations = {}
-    for location in locations_raw:
-        locations[location.pk] = location.name
-
+    data = at_tagging(request)
     world = get_object_or_404(models.World, pk=world_pk)
     if world.user == request.user:
         form = forms.LocationForm(request.user.pk, world_pk, location_pk, initial={'world': world})
@@ -139,35 +92,13 @@ def location_create(request, world_pk, location_pk=None):
                 return HttpResponseRedirect(location.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'locations/location_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'world': world, 'worlds': worlds,'locations': locations})
+    data['world'] = world
+    data['form'] = form
+    return render(request, 'locations/location_form.html', data)
 
 @login_required
 def world_update(request, world_pk):
-    monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
-    monsters = {}
-    for monster in monsters_raw:
-        monsters[monster.pk] = monster.name
-    npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
-    npcs = {}
-    for npc in npcs_raw:
-        npcs[npc.pk] = npc.name
-    items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
-    items = {}
-    for item in items_raw:
-        items[item.pk] = item.name
-    players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
-    players = {}
-    for player in players_raw:
-        players[player.pk] = player.player_name
-    worlds_raw = models.World.objects.filter(user=request.user).order_by('name')
-    worlds = {}
-    for world in worlds_raw:
-        worlds[world.pk] = world.name
-    locations_raw = models.Location.objects.filter(user=request.user).order_by('name')
-    locations = {}
-    for location in locations_raw:
-        locations[location.pk] = location.name
-
+    data = at_tagging(request)
     world = get_object_or_404(models.World, pk=world_pk)
     if world.user == request.user:
         form = forms.WorldForm(instance=world)
@@ -198,35 +129,14 @@ def world_update(request, world_pk):
                 return HttpResponseRedirect(world.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'locations/world_form.html', {'form': form, 'formset': location_forms, 'world': world, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'worlds': worlds, 'locations': locations})
+    data['world'] = world
+    data['form'] = form
+    data['formset'] = location_forms
+    return render(request, 'locations/world_form.html', data)
 
 @login_required
 def location_update(request, location_pk):
-    monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
-    monsters = {}
-    for monster in monsters_raw:
-        monsters[monster.pk] = monster.name
-    npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
-    npcs = {}
-    for npc in npcs_raw:
-        npcs[npc.pk] = npc.name
-    items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
-    items = {}
-    for item in items_raw:
-        items[item.pk] = item.name
-    players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
-    players = {}
-    for player in players_raw:
-        players[player.pk] = player.player_name
-    worlds_raw = models.World.objects.filter(user=request.user).order_by('name')
-    worlds = {}
-    for world in worlds_raw:
-        worlds[world.pk] = world.name
-    locations_raw = models.Location.objects.filter(user=request.user).order_by('name')
-    locations = {}
-    for location in locations_raw:
-        locations[location.pk] = location.name
-
+    data = at_tagging(request)
     location = get_object_or_404(models.Location, pk=location_pk)
     if location.user == request.user:
         form = forms.LocationForm(request.user.pk, location.world.pk, location_pk, instance=location)
@@ -248,7 +158,10 @@ def location_update(request, location_pk):
                 return HttpResponseRedirect(location.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'locations/location_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'world': location.world, 'location': location, 'worlds': worlds,'locations': locations})
+    data['location'] = location
+    data['world'] = location.world
+    data['form'] = form
+    return render(request, 'locations/location_form.html', data)
 
 @login_required
 def world_delete(request, world_pk):

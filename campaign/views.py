@@ -13,6 +13,7 @@ from . import forms
 from . import models
 from . import utils
 from characters import models as character_models
+from dungeonomics.utils import at_tagging
 from items import models as item_models
 from locations import models as location_models
 from posts.models import Post
@@ -130,31 +131,7 @@ class CampaignCreate(LoginRequiredMixin, CreateView):
 def chapter_create(request, campaign_pk):
     campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
     if campaign.user == request.user:
-        monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
-        monsters = {}
-        for monster in monsters_raw:
-            monsters[monster.pk] = monster.name
-        npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
-        npcs = {}
-        for npc in npcs_raw:
-            npcs[npc.pk] = npc.name
-        items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
-        items = {}
-        for item in items_raw:
-            items[item.pk] = item.name
-        players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
-        players = {}
-        for player in players_raw:
-            players[player.pk] = player.player_name
-        worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
-        worlds = {}
-        for world in worlds_raw:
-            worlds[world.pk] = world.name
-        locations_raw = location_models.Location.objects.filter(user=request.user).order_by('name')
-        locations = {}
-        for location in locations_raw:
-            locations[location.pk] = location.name
-
+        data = at_tagging(request)
         form = forms.ChapterForm()
         if request.method == 'POST':
             form = forms.ChapterForm(request.POST)
@@ -167,47 +144,16 @@ def chapter_create(request, campaign_pk):
                 return HttpResponseRedirect(chapter.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'campaign/chapter_form.html', {
-        'form': form,
-        'monsters': monsters,
-        'npcs': npcs,
-        'items': items,
-        'players': players,
-        'campaign': campaign,
-        'worlds': worlds,
-        'locations': locations,
-    })
+    data['campaign'] = campaign
+    data['form'] = form
+    return render(request, 'campaign/chapter_form.html', data)
 
 @login_required
 def section_create(request, campaign_pk, chapter_pk):
     campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
     if campaign.user == request.user:
+        data = at_tagging(request)
         chapter = get_object_or_404(models.Chapter, pk=chapter_pk)
-        monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
-        monsters = {}
-        for monster in monsters_raw:
-            monsters[monster.pk] = monster.name
-        npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
-        npcs = {}
-        for npc in npcs_raw:
-            npcs[npc.pk] = npc.name
-        items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
-        items = {}
-        for item in items_raw:
-            items[item.pk] = item.name
-        players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
-        players = {}
-        for player in players_raw:
-            players[player.pk] = player.player_name
-        worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
-        worlds = {}
-        for world in worlds_raw:
-            worlds[world.pk] = world.name
-        locations_raw = location_models.Location.objects.filter(user=request.user).order_by('name')
-        locations = {}
-        for location in locations_raw:
-            locations[location.pk] = location.name
-
         form = forms.SectionForm()
         if request.method == 'POST':
             form = forms.SectionForm(request.POST)
@@ -221,8 +167,10 @@ def section_create(request, campaign_pk, chapter_pk):
                 return HttpResponseRedirect(section.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'campaign': campaign, 'chapter': chapter, 'worlds': worlds, 'locations': locations})
-
+    data['campaign'] = campaign
+    data['chapter'] = chapter
+    data['form'] = form
+    return render(request, 'campaign/section_form.html', data)
 
 @login_required
 def campaign_update(request, campaign_pk):
@@ -255,32 +203,8 @@ def campaign_update(request, campaign_pk):
 def chapter_update(request, campaign_pk, chapter_pk):
     chapter = get_object_or_404(models.Chapter, pk=chapter_pk, campaign_id=campaign_pk)
     if chapter.user == request.user:
+        data = at_tagging(request)
         sections = models.Section.objects.filter(chapter=chapter)
-        monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
-        monsters = {}
-        for monster in monsters_raw:
-            monsters[monster.pk] = monster.name
-        npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
-        npcs = {}
-        for npc in npcs_raw:
-            npcs[npc.pk] = npc.name
-        items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
-        items = {}
-        for item in items_raw:
-            items[item.pk] = item.name
-        players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
-        players = {}
-        for player in players_raw:
-            players[player.pk] = player.player_name
-        worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
-        worlds = {}
-        for world in worlds_raw:
-            worlds[world.pk] = world.name
-        locations_raw = location_models.Location.objects.filter(user=request.user).order_by('name')
-        locations = {}
-        for location in locations_raw:
-            locations[location.pk] = location.name
-
         form = forms.ChapterForm(instance=chapter)
         section_forms = forms.SectionInlineFormSet(queryset=form.instance.section_set.all())
         if request.method == 'POST':
@@ -299,37 +223,18 @@ def chapter_update(request, campaign_pk, chapter_pk):
                 return HttpResponseRedirect(chapter.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'campaign/chapter_form.html', {'form': form, 'formset': section_forms, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'campaign': chapter.campaign, 'chapter': chapter, 'sections': sections, 'worlds': worlds, 'locations': locations})
+    data['campaign'] = chapter.campaign
+    data['chapter'] = chapter
+    data['sections'] = sections
+    data['form'] = form
+    data['formset'] = section_forms
+    return render(request, 'campaign/chapter_form.html', data)
 
 @login_required
 def section_update(request, campaign_pk, chapter_pk, section_pk):
     section = get_object_or_404(models.Section, pk=section_pk, chapter_id=chapter_pk, campaign_id=campaign_pk)
     if section.user == request.user:
-        monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
-        monsters = {}
-        for monster in monsters_raw:
-            monsters[monster.pk] = monster.name
-        npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
-        npcs = {}
-        for npc in npcs_raw:
-            npcs[npc.pk] = npc.name
-        items_raw = item_models.Item.objects.filter(user=request.user).order_by('name')
-        items = {}
-        for item in items_raw:
-            items[item.pk] = item.name
-        players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
-        players = {}
-        for player in players_raw:
-            players[player.pk] = player.player_name
-        worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
-        worlds = {}
-        for world in worlds_raw:
-            worlds[world.pk] = world.name
-        locations_raw = location_models.Location.objects.filter(user=request.user).order_by('name')
-        locations = {}
-        for location in locations_raw:
-            locations[location.pk] = location.name
-
+        data = at_tagging(request)
         form = forms.SectionForm(instance=section)
         if request.method == 'POST':
             form = forms.SectionForm(instance=section, data=request.POST)
@@ -339,7 +244,11 @@ def section_update(request, campaign_pk, chapter_pk, section_pk):
                 return HttpResponseRedirect(section.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'campaign/section_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'campaign': section.chapter.campaign, 'chapter': section.chapter, 'section': section, 'worlds': worlds, 'locations': locations})
+    data['form'] = form
+    data['campaign'] = section.chapter.campaign
+    data['chapter'] = section.chapter
+    data['section'] = section
+    return render(request, 'campaign/section_form.html', data)
 
 @login_required
 def campaign_print(request, campaign_pk):
@@ -352,7 +261,15 @@ def campaign_print(request, campaign_pk):
             npcs = sorted(character_models.NPC.objects.filter(user=request.user), key=lambda npc: npc.name.lower())
             items = sorted(item_models.Item.objects.filter(user=request.user), key=lambda item: item.name.lower())
             worlds = sorted(location_models.World.objects.filter(user=request.user), key=lambda world: world.name.lower())
-            return render(request, 'campaign/campaign_print.html', {'campaign': campaign, 'chapters': chapters, 'sections': sections, 'monsters': monsters, 'npcs': npcs, 'items': items, 'worlds': worlds})
+            return render(request, 'campaign/campaign_print.html', {
+                'campaign': campaign,
+                'chapters': chapters,
+                'sections': sections,
+                'monsters': monsters,
+                'npcs': npcs,
+                'items': items,
+                'worlds': worlds,
+            })
         else:
             raise Http404
     else:
