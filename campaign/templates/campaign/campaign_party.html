@@ -37,7 +37,7 @@
                         {% if campaign.players %}
                             {% for player in campaign.players %}
                                 <li class="li-content">
-                                    <a href="#">
+                                    <a href="{% url 'campaign:campaign_party_player_detail' campaign_pk=campaign.pk player_pk=player.pk %}">
                                         {{ player.character_name }} ({{ player.player_name }})
                                     </a>
                                 </li>

@@ -600,3 +600,15 @@ class CampaignPartyRemove(View):
             return redirect('campaign:campaign_party', campaign_pk=campaign.pk)
         else:
             raise Http404
+
+class CampaignPartyPlayersDetail(View):
+    def get(self, request, campaign_pk, player_pk):
+        campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+        if utils.has_campaign_access(request.user, campaign_pk):
+            player = get_object_or_404(character_models.Player, pk=player_pk)
+            return render(self.request, 'campaign/campaign_party_player_detail.html', {
+                'campaign': campaign,
+                'player': player,
+            })
+        else:
+            raise Http404

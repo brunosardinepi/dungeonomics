@@ -10,6 +10,7 @@ Release date: 04/06
 ### Additions
 
 * #27 -- maps for Worlds/Locations
+* #3 -- Campaign parties
 
 ### Changes
 

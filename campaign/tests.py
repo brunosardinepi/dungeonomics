@@ -461,3 +461,38 @@ class CampaignTest(TestCase):
         self.assertNotContains(response, self.player3.player_name)
         self.assertNotContains(response, self.player3.character_name)
         self.assertContains(response, "You haven't invited anyone to your party")
+
+    def test_campaign_party_player_detail_owner(self):
+        self.client.login(username='testuser', password='testpassword')
+        response = self.client.get('/campaign/{}/party/players/{}/'.format(self.campaign.pk, self.player.pk))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.player.player_name)
+        self.assertContains(response, self.player.character_name)
+        self.assertNotContains(response, self.player2.player_name)
+        self.assertNotContains(response, self.player2.character_name)
+        self.assertNotContains(response, self.player2.player_name)
+        self.assertNotContains(response, self.player2.character_name)
+
+    def test_campaign_party_player_detail_player(self):
+        self.client.login(username='testuser2', password='testpassword')
+        response = self.client.get('/campaign/{}/party/players/{}/'.format(self.campaign.pk, self.player.pk))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.player.player_name)
+        self.assertContains(response, self.player.character_name)
+        self.assertNotContains(response, self.player2.player_name)
+        self.assertNotContains(response, self.player2.character_name)
+        self.assertNotContains(response, self.player2.player_name)
+        self.assertNotContains(response, self.player2.character_name)
+
+    def test_campaign_party_player_detail_auth_no_perms(self):
+        self.client.login(username='testuser3', password='testpassword')
+        response = self.client.get('/campaign/{}/party/players/{}/'.format(self.campaign.pk, self.player.pk))
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_campaign_party_player_detail_no_auth(self):
+        response = self.client.get('/campaign/{}/party/players/{}/'.format(self.campaign.pk, self.player.pk))
+        self.assertRedirects(response, '/accounts/login/?next=/campaign/{}/party/players/{}/'.format(self.campaign.pk, self.player.pk), 302, 200)
+
