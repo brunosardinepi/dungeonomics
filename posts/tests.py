@@ -68,6 +68,18 @@ class PostTest(TestCase):
             campaign=self.campaign,
         )
 
+        self.comment = models.Comment.objects.create(
+            user=self.user,
+            body="commentno1",
+            post=self.post,
+        )
+
+        self.comment2 = models.Comment.objects.create(
+            user=self.user,
+            body="thisisanothercomment",
+            post=self.post,
+        )
+
     def test_post_creation_time(self):
         post = models.Post.objects.create(
             user=self.user,
@@ -78,10 +90,25 @@ class PostTest(TestCase):
         now = timezone.now()
         self.assertLess(post.date, now)
 
+    def test_comment_creation_time(self):
+        comment = models.Comment.objects.create(
+            user=self.user,
+            body="testingtime",
+            post=self.post,
+        )
+        now = timezone.now()
+        self.assertLess(comment.date, now)
+
     def test_post_exists(self):
         posts = models.Post.objects.all()
 
         self.assertIn(self.post, posts)
+
+    def test_comment_exists(self):
+        comments = models.Comment.objects.all()
+
+        self.assertIn(self.comment, comments)
+        self.assertIn(self.comment2, comments)
 
     def test_post_create_page_auth_owner(self):
         self.client.login(username='testuser', password='testpassword')
@@ -127,6 +154,8 @@ class PostTest(TestCase):
         self.assertContains(response, self.post.title)
         self.assertContains(response, self.post.body)
         self.assertContains(response, "post-delete")
+        self.assertContains(response, self.comment.body)
+        self.assertContains(response, self.comment2.body)
 
     def test_post_page_auth_player(self):
         self.client.login(username='testuser2', password='testpassword')
@@ -136,6 +165,8 @@ class PostTest(TestCase):
         self.assertContains(response, self.post.title)
         self.assertContains(response, self.post.body)
         self.assertNotContains(response, "post-delete")
+        self.assertContains(response, self.comment.body)
+        self.assertContains(response, self.comment2.body)
 
     def test_post_page_auth_no_perms(self):
         self.client.login(username='testuser3', password='testpassword')

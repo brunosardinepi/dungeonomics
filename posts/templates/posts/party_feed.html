@@ -14,7 +14,7 @@
             <div class="col">
                 <i class="fas fa-clock mr-1"></i>{{ post.date|naturaltime }}
                 <i class="fas fa-user mr-1 ml-3"></i>{{ post.user.email|post_user }}
-                <i class="fal fa-comments mr-1 ml-3"></i>20 comments
+                <i class="fal fa-comments mr-1 ml-3"></i>{{ post.comments.count }} comments
             </div>
         </div>
         <div class="row">

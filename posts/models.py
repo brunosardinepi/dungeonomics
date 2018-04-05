@@ -24,6 +24,8 @@ class Post(PostTemplate):
             'post_pk': self.pk
             })
 
+    def comments(self):
+        return Comment.objects.filter(post=self).order_by('date')
 
 class Comment(PostTemplate):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
