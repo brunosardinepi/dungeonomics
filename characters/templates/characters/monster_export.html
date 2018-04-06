@@ -14,6 +14,10 @@
         Copy the following code and then share it with friends! They will need to <a href="{% url 'characters:monster_import' %}" class="alert-link">import</a> it in order to view it.
     </div>
 
+    <div class="alert alert-info mt-3" role="alert">
+        If you feel comfortable with it, you can change properties or select which creatures to include. Anything in the "fields" section can be edited, except for the "user" property. The data outside the "fields" section is used to reference your creature and should not be changed.
+    </div>
+
     <div class="row mt-3 pb-3">
         <div class="col-md-12">
             <div class="card">
@@ -22,39 +26,7 @@
                 </div>
                 <div class="card-body">
                     <div class="pre-scrollable" style="max-height: 400px;">
-                    {% autoescape on %}
-<pre id="code">
-{
-    {% if monsters %}"monsters": { {% for monster in monsters %}
-        "{{ monster.name }}": {
-            "alignment": "{{ monster.alignment }}",
-            "size": "{{ monster.size }}",
-            "languages": "{{ monster.languages }}",
-            "strength": "{{ monster.strength }}",
-            "dexterity": "{{ monster.dexterity }}",
-            "constitution": "{{ monster.constitution }}",
-            "intelligence": "{{ monster.intelligence }}",
-            "wisdom": "{{ monster.wisdom }}",
-            "charisma": "{{ monster.charisma }}",
-            "armor_class": "{{ monster.armor_class }}",
-            "hit_points": "{{ monster.hit_points }}",
-            "speed": "{{ monster.speed }}",
-            "saving_throws": "{{ monster.saving_throws }}",
-            "skills": "{{ monster.skills }}",
-            "creature_type": "{{ monster.creature_type }}",
-            "damage_vulnerabilities": "{{ monster.damage_vulnerabilities }}",
-            "damage_immunities": "{{ monster.damage_immunities }}",
-            "damage_resistances": "{{ monster.damage_resistances }}",
-            "condition_immunities": "{{ monster.condition_immunities }}",
-            "senses": "{{ monster.senses }}",
-            "challenge_rating": "{{ monster.challenge_rating }}",
-            "traits": {{ monster.traits }},
-            "actions": {{ monster.actions }},
-            "notes": {{ monster.notes }}
-        {% if forloop.last %}}}{% else %}},{% endif %}{% endfor %}{% endif %}
-}
-</pre>
-                    {% endautoescape %}
+                        <pre id="code">{% autoescape on %}{{ monsters }}{% endautoescape %}</pre>
                     </div>
                 </div>
                 <div class="card-footer">

@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, redirect, render
@@ -282,43 +283,15 @@ def monster_import(request):
     if request.method == 'POST':
         if request.POST.get('user_import'):
             user_import = request.POST.get('user_import')
-            user_import = json.loads(user_import, strict=False)
+
+            for obj in serializers.deserialize("json", user_import):
+                obj.object.pk = None
+                obj.object.user = request.user
+                obj.object.save()
+            return HttpResponseRedirect(reverse('characters:monster_detail'))
         else:
             return Http404
-        form = forms.ImportMonsterForm(request.POST)
-        if "monsters" in user_import: 
-            for monster, monster_attributes in user_import["monsters"].items():
-                new_monster = models.Monster(
-                    user=request.user,
-                    name=monster,
-                    alignment=monster_attributes["alignment"],
-                    size=monster_attributes["size"],
-                    languages=monster_attributes["languages"],
-                    strength=monster_attributes["strength"],
-                    dexterity=monster_attributes["dexterity"],
-                    constitution=monster_attributes["constitution"],
-                    intelligence=monster_attributes["intelligence"],
-                    wisdom=monster_attributes["wisdom"],
-                    charisma=monster_attributes["charisma"],
-                    armor_class=monster_attributes["armor_class"],
-                    hit_points=monster_attributes["hit_points"],
-                    speed=monster_attributes["speed"],
-                    saving_throws=monster_attributes["saving_throws"],
-                    skills=monster_attributes["skills"],
-                    creature_type=monster_attributes["creature_type"],
-                    damage_vulnerabilities=monster_attributes["damage_vulnerabilities"],
-                    damage_immunities=monster_attributes["damage_immunities"],
-                    damage_resistances=monster_attributes["damage_resistances"],
-                    condition_immunities=monster_attributes["condition_immunities"],
-                    senses=monster_attributes["senses"],
-                    challenge_rating=monster_attributes["challenge_rating"],
-                    traits=monster_attributes["traits"],
-                    actions=monster_attributes["actions"],
-                    notes=monster_attributes["notes"]
-                )
-                new_monster.save()
-            return HttpResponseRedirect(reverse('characters:monster_detail'))
-    return render(request, 'characters/monster_import.html', {'form': form, 'user_import': user_import})
+    return render(request, 'characters/monster_import.html', {'form': form})
 
 @login_required
 def npc_import(request):
@@ -327,61 +300,26 @@ def npc_import(request):
     if request.method == 'POST':
         if request.POST.get('user_import'):
             user_import = request.POST.get('user_import')
-            user_import = json.loads(user_import, strict=False)
+
+            for obj in serializers.deserialize("json", user_import):
+                obj.object.pk = None
+                obj.object.user = request.user
+                obj.object.save()
+            return HttpResponseRedirect(reverse('characters:npc_detail'))
         else:
             return Http404
-        form = forms.ImportNPCForm(request.POST)
-        if "npcs" in user_import:
-            for npc, npc_attributes in user_import["npcs"].items():
-                new_npc = models.NPC(
-                    user=request.user,
-                    name=npc,
-                    alignment=npc_attributes["alignment"],
-                    size=npc_attributes["size"],
-                    languages=npc_attributes["languages"],
-                    strength=npc_attributes["strength"],
-                    dexterity=npc_attributes["dexterity"],
-                    constitution=npc_attributes["constitution"],
-                    intelligence=npc_attributes["intelligence"],
-                    wisdom=npc_attributes["wisdom"],
-                    charisma=npc_attributes["charisma"],
-                    armor_class=npc_attributes["armor_class"],
-                    hit_points=npc_attributes["hit_points"],
-                    speed=npc_attributes["speed"],
-                    saving_throws=npc_attributes["saving_throws"],
-                    skills=npc_attributes["skills"],
-                    npc_class=npc_attributes["npc_class"],
-                    age=npc_attributes["age"],
-                    height=npc_attributes["height"],
-                    weight=npc_attributes["weight"],
-                    creature_type=npc_attributes["creature_type"],
-                    damage_vulnerabilities=npc_attributes["damage_vulnerabilities"],
-                    damage_immunities=npc_attributes["damage_immunities"],
-                    damage_resistances=npc_attributes["damage_resistances"],
-                    condition_immunities=npc_attributes["condition_immunities"],
-                    senses=npc_attributes["senses"],
-                    challenge_rating=npc_attributes["challenge_rating"],
-                    traits=npc_attributes["traits"],
-                    actions=npc_attributes["actions"],
-                    notes=npc_attributes["notes"]
-                )
-                new_npc.save()
-        return HttpResponseRedirect(reverse('characters:npc_detail'))
-    return render(request, 'characters/npc_import.html', {'form': form, 'user_import': user_import})
+    return render(request, 'characters/npc_import.html', {'form': form})
 
 @login_required
 def monster_export(request):
     user = None
     if request.user.is_authenticated():
         user = request.user.pk
-    monsters = sorted(models.Monster.objects.filter(user=user),
-        key=lambda monster: monster.name.lower()
-        )
+
+    queryset = models.Monster.objects.filter(user=user).order_by('name')
+    monsters = serializers.serialize("json", queryset, indent=2)
+
     if monsters:
-        for monster in monsters:
-            monster.traits = json.dumps(monster.traits)
-            monster.actions = json.dumps(monster.actions)
-            monster.notes = json.dumps(monster.notes)
         return render(request, 'characters/monster_export.html', {'monsters': monsters})
     else:
         raise Http404
@@ -391,14 +329,11 @@ def npc_export(request):
     user = None
     if request.user.is_authenticated():
         user = request.user.pk
-    npcs = sorted(models.NPC.objects.filter(user=user),
-        key=lambda npc: npc.name.lower()
-        )
+
+    queryset = models.NPC.objects.filter(user=user).order_by('name')
+    npcs = serializers.serialize("json", queryset, indent=2)
+
     if npcs:
-        for npc in npcs:
-            npc.traits = json.dumps(npc.traits)
-            npc.actions = json.dumps(npc.actions)
-            npc.notes = json.dumps(npc.notes)
         return render(request, 'characters/npc_export.html', {'npcs': npcs})
     else:
         raise Http404
