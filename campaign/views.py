@@ -1,3 +1,4 @@
+from bs4 import BeautifulSoup
 from itertools import chain
 import json
 
@@ -324,7 +325,7 @@ def campaign_export(request, campaign_pk):
             chapters_queryset = models.Chapter.objects.filter(campaign=campaign).order_by('order')
             sections_queryset = models.Section.objects.filter(campaign=campaign).order_by('order')
             combined_list = list(chain(chapters_queryset, sections_queryset))
-            campaign_items = serializers.serialize("json", combined_list, indent=2)
+#            campaign_items = serializers.serialize("json", combined_list, indent=2)
 
             # i'm removing this stuff until i can think of a better way to include it
             # i only want to include the things that are in the campaign, not just dump everything the user has
@@ -337,6 +338,91 @@ def campaign_export(request, campaign_pk):
 
 #            queryset = item_models.Item.objects.filter(user=request.user).order_by('name')
 #            items = serializers.serialize("json", queryset, indent=2)
+
+
+            # go through each chapter and section
+            # find all of the hyperlinks
+            # look through the dungeonomics links
+            # get the type (item, monster, npc, player)
+            # pull a copy of that resource and add it to a list
+            # at the end, combine the list with the campaign items list
+            # then serialize it
+
+            additional_assets = []
+
+            for item in combined_list:
+
+                soup = BeautifulSoup(item.content, 'html.parser')
+
+                for link in soup.find_all('a'):
+                    str_link = str(link)
+                    print("str_link = {} (type = {})".format(str_link, type(str_link)))
+
+                    url = link.get('href')
+
+                    if "dungeonomics.com/" in str_link:
+                        url = url.split(".com/")[1]
+                    elif "dungeonomics.com:8000" in str_link:
+                        url = url.split(".com:8000/")[1]
+                    elif "../" in str_link:
+                        done = False
+                        while done == False:
+                            try:
+                                url = url.split("../", 1)[1]
+                            except IndexError:
+                                done = True
+
+                    print("url = {}".format(url))
+
+                    resource = url.split("/")[0]
+                    print("resource = {}".format(resource))
+
+                    if resource == "characters":
+                        character_type = url.split("characters/")[1]
+                        character_pk = character_type.split("/", 1)[1]
+                        character_pk = character_pk.replace("/", "")
+                        character_type = character_type.split("/", 1)[0]
+                        print("character_type = {}".format(character_type))
+                        print("character_pk = {}".format(character_pk))
+
+                        if character_type == "monster":
+                            try:
+                                obj = character_models.Monster.objects.get(pk=character_pk)
+                            # could be a character that doesn't exist anymore but
+                            # the link never got updated
+                            except character_models.Monster.DoesNotExist:
+                                print("obj doesn't exist")
+                                continue
+                        elif character_type == "npc":
+                            try:
+                                obj = character_models.NPC.objects.get(pk=character_pk)
+                            except character_models.NPC.DoesNotExist:
+                                print("obj doesn't exist")
+                                continue
+                        # don't think i want to bring these in
+                        elif character_type == "player":
+                            obj = None
+
+                    elif resource == "items":
+                        item_pk = url.split("items/")[1]
+                        item_pk = item_pk.replace("/", "")
+                        print("item_pk = {}".format(item_pk))
+
+                        try:
+                            obj = item_models.Item.objects.get(pk=character_pk)
+                        except item_models.Item.DoesNotExist:
+                            print("obj doesn't exist")
+                            continue
+
+                    if obj:
+                        additional_assets.append(obj)
+
+            print("additional_assets = {}".format(additional_assets))
+
+            combined_list = list(chain(combined_list, additional_assets))
+            print("combined_list = {}".format(combined_list))
+
+            campaign_items = serializers.serialize("json", combined_list, indent=2)
 
             return render(request, 'campaign/campaign_export.html', {
                 'campaign': campaign,
