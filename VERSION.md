@@ -17,7 +17,7 @@ Release date: 04/13/18
 
 ### Fixes
 
-* None
+* #104 -- "Select all" button on NPC/Monster delete page
 
 
 ## Version 2.2.0
