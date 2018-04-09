@@ -325,20 +325,6 @@ def campaign_export(request, campaign_pk):
             chapters_queryset = models.Chapter.objects.filter(campaign=campaign).order_by('order')
             sections_queryset = models.Section.objects.filter(campaign=campaign).order_by('order')
             combined_list = list(chain(chapters_queryset, sections_queryset))
-#            campaign_items = serializers.serialize("json", combined_list, indent=2)
-
-            # i'm removing this stuff until i can think of a better way to include it
-            # i only want to include the things that are in the campaign, not just dump everything the user has
-
-#            queryset = character_models.Monster.objects.filter(user=request.user).order_by('name')
-#            monsters = serializers.serialize("json", queryset, indent=2)
-
-#            queryset = character_models.NPC.objects.filter(user=request.user).order_by('name')
-#            npcs = serializers.serialize("json", queryset, indent=2)
-
-#            queryset = item_models.Item.objects.filter(user=request.user).order_by('name')
-#            items = serializers.serialize("json", queryset, indent=2)
-
 
             # go through each chapter and section
             # find all of the hyperlinks
@@ -356,7 +342,6 @@ def campaign_export(request, campaign_pk):
 
                 for link in soup.find_all('a'):
                     str_link = str(link)
-                    print("str_link = {} (type = {})".format(str_link, type(str_link)))
 
                     url = link.get('href')
 
@@ -372,18 +357,13 @@ def campaign_export(request, campaign_pk):
                             except IndexError:
                                 done = True
 
-                    print("url = {}".format(url))
-
                     resource = url.split("/")[0]
-                    print("resource = {}".format(resource))
 
                     if resource == "characters":
                         character_type = url.split("characters/")[1]
                         character_pk = character_type.split("/", 1)[1]
                         character_pk = character_pk.replace("/", "")
                         character_type = character_type.split("/", 1)[0]
-                        print("character_type = {}".format(character_type))
-                        print("character_pk = {}".format(character_pk))
 
                         if character_type == "monster":
                             try:
@@ -391,13 +371,11 @@ def campaign_export(request, campaign_pk):
                             # could be a character that doesn't exist anymore but
                             # the link never got updated
                             except character_models.Monster.DoesNotExist:
-                                print("obj doesn't exist")
                                 continue
                         elif character_type == "npc":
                             try:
                                 obj = character_models.NPC.objects.get(pk=character_pk)
                             except character_models.NPC.DoesNotExist:
-                                print("obj doesn't exist")
                                 continue
                         # don't think i want to bring these in
                         elif character_type == "player":
@@ -406,30 +384,21 @@ def campaign_export(request, campaign_pk):
                     elif resource == "items":
                         item_pk = url.split("items/")[1]
                         item_pk = item_pk.replace("/", "")
-                        print("item_pk = {}".format(item_pk))
 
                         try:
-                            obj = item_models.Item.objects.get(pk=character_pk)
+                            obj = item_models.Item.objects.get(pk=item_pk)
                         except item_models.Item.DoesNotExist:
-                            print("obj doesn't exist")
                             continue
 
                     if obj:
                         additional_assets.append(obj)
 
-            print("additional_assets = {}".format(additional_assets))
-
             combined_list = list(chain(combined_list, additional_assets))
-            print("combined_list = {}".format(combined_list))
-
             campaign_items = serializers.serialize("json", combined_list, indent=2)
 
             return render(request, 'campaign/campaign_export.html', {
                 'campaign': campaign,
                 'campaign_items': campaign_items,
-#                'monsters': monsters,
-#                'npcs': npcs,
-#                'items': items,
             })
     raise Http404
 
@@ -447,14 +416,19 @@ def campaign_import(request):
             if request.POST.get('user_import'):
                 user_import = request.POST.get('user_import')
 
-                chapters = []
-                sections = []
+                print("user_import = {}".format(user_import))
+                print("type(user_import) = {}".format(type(user_import)))
+
+                chapters, sections, others = ([] for i in range(3))
 
                 for obj in serializers.deserialize("json", user_import):
+                    print("obj = {}".format(obj))
                     if isinstance(obj.object, models.Chapter):
                         chapters.append(obj.object)
                     elif isinstance(obj.object, models.Section):
                         sections.append(obj.object)
+                    elif isinstance(obj.object, character_models.Monster) or isinstance(obj.object, character_models.NPC) or isinstance(obj.object, item_models.Item):
+                        others.append(obj.object)
 
                 # go through each chapter and create a reference to its pk,
                 # then create the copy of the chapter.
@@ -483,6 +457,11 @@ def campaign_import(request):
                             section.chapter = chapter
                             section.campaign = campaign
                             section.save()
+
+                for other in others:
+                    other.pk = None
+                    other.user = request.user
+                    other.save()
 
                 return HttpResponseRedirect(campaign.get_absolute_url())
 
