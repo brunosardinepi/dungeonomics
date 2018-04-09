@@ -4,11 +4,7 @@
 <div class="card-header">
     <div class="row justify-content-between align-items-center">
         <div class="col-auto">
-            {% if obj|model_name == 'world' %}
-                <h5 class="px-1 mb-0">{{ obj.name }}</h5>
-            {% elif obj|model_name == 'location' %}
-                <h5 class="px-1 mb-0">{{ location.name }}</h5>
-            {% endif %}
+            <h5 class="px-1 mb-0">{{ obj.name }}</h5>
         </div>
         <div class="col-auto">
             <div class="dropdown">
@@ -21,6 +17,7 @@
                         <a href="{% url 'locations:world_update' world_pk=world.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit world</a>
                         <a id="world-delete" href="{% url 'locations:world_delete' world_pk=world.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete world</a>
                     {% elif obj|model_name == 'location' %}
+                        <a href="{% url 'locations:location_create' world_pk=location.world.pk location_pk=location.pk %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create location</a>
                         <a href="{% url 'locations:location_update' location_pk=location.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit location</a>
                         <a id="location-delete" href="{% url 'locations:location_delete' location_pk=location.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete location</a>
                     {% else %}

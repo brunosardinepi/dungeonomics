@@ -13,7 +13,7 @@ Release date: 04/13/18
 
 ### Changes
 
-* None
+* #100 -- create Locations from a Location's detail page instead of going back to the base World
 
 ### Fixes
 
