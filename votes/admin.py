@@ -8,7 +8,7 @@ class VoteAdmin(admin.ModelAdmin):
   list_filter = ('user', 'feature',)
 
 class FeatureAdmin(admin.ModelAdmin):
-  list_display = ('pk', 'description',)
+  list_display = ('pk', 'new', 'description',)
 
 admin.site.register(models.Vote, VoteAdmin)
 admin.site.register(models.Feature, FeatureAdmin)
