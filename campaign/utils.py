@@ -25,7 +25,6 @@ def get_content_url(link):
     str_link = str(link)
 
     url = link.get('href')
-    print("url = {}".format(url))
 
     if "dungeonomics.com/" in str_link:
         url = url.split(".com/")[1]
@@ -39,12 +38,10 @@ def get_content_url(link):
             except IndexError:
                 done = True
 
-    print("url = {}".format(url))
     return url
 
 def get_url_object(url):
     resource = url.split("/")[0]
-    print("resource = {}".format(resource))
 
     if resource == "characters":
         character_type = url.split("characters/")[1]
@@ -120,6 +117,10 @@ def replace_content_urls(item, asset_references):
             new_pk = asset_references['npcs'][obj_old_pk]
         elif isinstance(obj, Item):
             new_pk = asset_references['items'][obj_old_pk]
+        elif isinstance(obj, World):
+            new_pk = asset_references['worlds'][obj_old_pk]
+        elif isinstance(obj, Location):
+            new_pk = asset_references['locations'][obj_old_pk]
 
         new_url = url.replace(str(obj_old_pk), str(new_pk))
 

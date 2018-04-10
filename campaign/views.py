@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 from itertools import chain
 import json
+from shutil import copyfile
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -19,6 +20,7 @@ from . import models
 from . import utils
 from characters import models as character_models
 from dungeonomics.utils import at_tagging
+from dungeonomics import settings
 from items import models as item_models
 from locations import models as location_models
 from posts.models import Post
@@ -372,24 +374,36 @@ def campaign_import(request):
                 user_import = request.POST.get('user_import')
 
                 chapters, sections, others = ([] for i in range(3))
+                model_types = [
+                    "Monster",
+                    "NPC",
+                    "Item",
+                    "World",
+                    "Location",
+                ]
 
                 for obj in serializers.deserialize("json", user_import):
                     if isinstance(obj.object, models.Chapter):
                         chapters.append(obj.object)
                     elif isinstance(obj.object, models.Section):
                         sections.append(obj.object)
-                    elif isinstance(obj.object, character_models.Monster) or isinstance(obj.object, character_models.NPC) or isinstance(obj.object, item_models.Item):
+                    elif obj.object.__class__.__name__ in model_types:
+#                    elif isinstance(obj.object, character_models.Monster) or isinstance(obj.object, character_models.NPC) or isinstance(obj.object, item_models.Item):
                         others.append(obj.object)
-
-                # for each "other" asset,
-                # create a copy of the asset
-                # and update a dictionary that holds a reference of the old pk and the new pk
+#                    elif isinstance(onj.object, location_models.World) or isinstance(obj.object, location_models.Location):
+#                        locations.append(obj.object)
 
                 asset_references = {
                     "monsters": {},
                     "npcs": {},
                     "items": {},
+                    "worlds": {},
+                    "locations": {},
                 }
+
+                # for each "other" asset,
+                # create a copy of the asset
+                # and update a dictionary that holds a reference of the old pk and the new pk
 
                 for other in others:
                     # grab the old pk for reference
@@ -398,16 +412,35 @@ def campaign_import(request):
                     # create a copy of the asset
                     other.pk = None
                     other.user = request.user
+
+                    if isinstance(other, location_models.World) or isinstance(other, location_models.Location):
+                        if other.image:
+                            # create a new filename
+                            random_string = location_models.create_random_string()
+                            ext = other.image.url.split('.')[-1]
+                            new_filename = "media/user/images/%s.%s" % (random_string, ext)
+
+                            # copy the old file to a new file
+                            # and save it to the new object
+                            old_image_url = settings.MEDIA_ROOT + other.image.name
+                            new_image_url = settings.MEDIA_ROOT + new_filename
+                            copyfile(old_image_url, new_image_url)
+                            other.image = new_filename
+
                     other.save()
 
                     new_pk = other.pk
 
                     if isinstance(other, character_models.Monster):
                         asset_references['monsters'][old_pk] = new_pk
-                    if isinstance(other, character_models.NPC):
+                    elif isinstance(other, character_models.NPC):
                         asset_references['npcs'][old_pk] = new_pk
-                    if isinstance(other, item_models.Item):
+                    elif isinstance(other, item_models.Item):
                         asset_references['items'][old_pk] = new_pk
+                    elif isinstance(other, location_models.World):
+                        asset_references['worlds'][old_pk] = new_pk
+                    elif isinstance(other, location_models.Location):
+                        asset_references['locations'][old_pk] = new_pk
 
                 # go through each chapter and create a reference to its pk,
                 # then create the copy of the chapter.
