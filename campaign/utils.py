@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from campaign.models import Campaign
 from characters.models import Monster, NPC, Player
 from items.models import Item
+from locations.models import Location, World
 
 
 def has_campaign_access(user, campaign_pk):
@@ -24,6 +25,7 @@ def get_content_url(link):
     str_link = str(link)
 
     url = link.get('href')
+    print("url = {}".format(url))
 
     if "dungeonomics.com/" in str_link:
         url = url.split(".com/")[1]
@@ -37,10 +39,12 @@ def get_content_url(link):
             except IndexError:
                 done = True
 
+    print("url = {}".format(url))
     return url
 
 def get_url_object(url):
     resource = url.split("/")[0]
+    print("resource = {}".format(resource))
 
     if resource == "characters":
         character_type = url.split("characters/")[1]
@@ -72,6 +76,23 @@ def get_url_object(url):
             obj = Item.objects.get(pk=item_pk)
         except Item.DoesNotExist:
             obj = None
+
+    elif resource == "locations":
+        location_type = url.split("locations/")[1]
+        location_pk = location_type.split("/", 1)[1]
+        location_pk = location_pk.replace("/", "")
+        location_type = location_type.split("/", 1)[0]
+
+        if location_type == "world":
+            try:
+                obj = World.objects.get(pk=location_pk)
+            except World.DoesNotExist:
+                obj = None
+        elif location_type == "location":
+            try:
+                obj = Location.objects.get(pk=location_pk)
+            except Location.DoesNotExist:
+                obj = None
 
     return obj
 
