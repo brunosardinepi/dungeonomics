@@ -341,54 +341,9 @@ def campaign_export(request, campaign_pk):
                 soup = BeautifulSoup(item.content, 'html.parser')
 
                 for link in soup.find_all('a'):
-                    str_link = str(link)
+                    url = utils.get_content_url(link)
 
-                    url = link.get('href')
-
-                    if "dungeonomics.com/" in str_link:
-                        url = url.split(".com/")[1]
-                    elif "dungeonomics.com:8000" in str_link:
-                        url = url.split(".com:8000/")[1]
-                    elif "../" in str_link:
-                        done = False
-                        while done == False:
-                            try:
-                                url = url.split("../", 1)[1]
-                            except IndexError:
-                                done = True
-
-                    resource = url.split("/")[0]
-
-                    if resource == "characters":
-                        character_type = url.split("characters/")[1]
-                        character_pk = character_type.split("/", 1)[1]
-                        character_pk = character_pk.replace("/", "")
-                        character_type = character_type.split("/", 1)[0]
-
-                        if character_type == "monster":
-                            try:
-                                obj = character_models.Monster.objects.get(pk=character_pk)
-                            # could be a character that doesn't exist anymore but
-                            # the link never got updated
-                            except character_models.Monster.DoesNotExist:
-                                continue
-                        elif character_type == "npc":
-                            try:
-                                obj = character_models.NPC.objects.get(pk=character_pk)
-                            except character_models.NPC.DoesNotExist:
-                                continue
-                        # don't think i want to bring these in
-                        elif character_type == "player":
-                            obj = None
-
-                    elif resource == "items":
-                        item_pk = url.split("items/")[1]
-                        item_pk = item_pk.replace("/", "")
-
-                        try:
-                            obj = item_models.Item.objects.get(pk=item_pk)
-                        except item_models.Item.DoesNotExist:
-                            continue
+                    obj = utils.get_url_object(url)
 
                     if obj:
                         additional_assets.append(obj)
@@ -416,19 +371,43 @@ def campaign_import(request):
             if request.POST.get('user_import'):
                 user_import = request.POST.get('user_import')
 
-                print("user_import = {}".format(user_import))
-                print("type(user_import) = {}".format(type(user_import)))
-
                 chapters, sections, others = ([] for i in range(3))
 
                 for obj in serializers.deserialize("json", user_import):
-                    print("obj = {}".format(obj))
                     if isinstance(obj.object, models.Chapter):
                         chapters.append(obj.object)
                     elif isinstance(obj.object, models.Section):
                         sections.append(obj.object)
                     elif isinstance(obj.object, character_models.Monster) or isinstance(obj.object, character_models.NPC) or isinstance(obj.object, item_models.Item):
                         others.append(obj.object)
+
+                # for each "other" asset,
+                # create a copy of the asset
+                # and update a dictionary that holds a reference of the old pk and the new pk
+
+                asset_references = {
+                    "monsters": {},
+                    "npcs": {},
+                    "items": {},
+                }
+
+                for other in others:
+                    # grab the old pk for reference
+                    old_pk = other.pk
+
+                    # create a copy of the asset
+                    other.pk = None
+                    other.user = request.user
+                    other.save()
+
+                    new_pk = other.pk
+
+                    if isinstance(other, character_models.Monster):
+                        asset_references['monsters'][old_pk] = new_pk
+                    if isinstance(other, character_models.NPC):
+                        asset_references['npcs'][old_pk] = new_pk
+                    if isinstance(other, item_models.Item):
+                        asset_references['items'][old_pk] = new_pk
 
                 # go through each chapter and create a reference to its pk,
                 # then create the copy of the chapter.
@@ -438,6 +417,7 @@ def campaign_import(request):
                 # update the campaign pk along the way.
 
                 for chapter in chapters:
+
                     # create a reference to the chapter's original pk
                     old_pk = chapter.pk
 
@@ -446,6 +426,8 @@ def campaign_import(request):
                     chapter.user = request.user
                     chapter.campaign = campaign
                     chapter.save()
+
+                    utils.replace_content_urls(chapter, asset_references)
 
                     for section in sections:
                         # find sections that belong to the chapter
@@ -458,10 +440,7 @@ def campaign_import(request):
                             section.campaign = campaign
                             section.save()
 
-                for other in others:
-                    other.pk = None
-                    other.user = request.user
-                    other.save()
+                            utils.replace_content_urls(section, asset_references)
 
                 return HttpResponseRedirect(campaign.get_absolute_url())
 
