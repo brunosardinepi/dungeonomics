@@ -388,10 +388,7 @@ def campaign_import(request):
                     elif isinstance(obj.object, models.Section):
                         sections.append(obj.object)
                     elif obj.object.__class__.__name__ in model_types:
-#                    elif isinstance(obj.object, character_models.Monster) or isinstance(obj.object, character_models.NPC) or isinstance(obj.object, item_models.Item):
                         others.append(obj.object)
-#                    elif isinstance(onj.object, location_models.World) or isinstance(obj.object, location_models.Location):
-#                        locations.append(obj.object)
 
                 asset_references = {
                     "monsters": {},
@@ -441,6 +438,34 @@ def campaign_import(request):
                         asset_references['worlds'][old_pk] = new_pk
                     elif isinstance(other, location_models.Location):
                         asset_references['locations'][old_pk] = new_pk
+
+                print("asset_references = {}".format(asset_references))
+#                for location in asset_references['locations']:
+                for old_pk, new_pk in asset_references['locations'].items():
+#                    print("location = {}".format(location))
+                    print("old_pk = {}, new_pk = {}".format(old_pk, new_pk))
+                    # for each location,
+                    # set the parent location to the new parent location.
+                    # if there isn't a parent location,
+                    # set the world to the new world
+                    old_location = location_models.Location.objects.get(pk=old_pk)
+                    print("old_location = {} (pk = {})".format(old_location, old_location.pk))
+                    if old_location.parent_location:
+                        print("there is a parent location")
+                        old_location_parent = old_location.parent_location
+                        print("old_location_parent = {} (pk = {})".format(old_location_parent, old_location_parent.pk))
+
+                    new_location = location_models.Location.objects.get(pk=new_pk)
+                    print("new_location = {} (pk = {})".format(new_location, new_location.pk))
+                    if new_location.parent_location:
+                        print("new_location parent = {} (pk = {})".format(new_location.parent_location, new_location.parent_location.pk))
+                        new_location_parent = location_models.Location.objects.get(pk=asset_references['locations'][old_location_parent.pk])
+                        new_location.parent_location = new_location_parent
+                        print("new_location_parent = {} (pk = {})".format(new_location_parent, new_location_parent.pk))
+                    else:
+                        print("there is no parent location")
+                    ########### NEED TO GET ALL WORLD LOCATIONS FOR EACH LOCATION, AND ALL LOCATIONS FOR EACH WORLD
+                    print("*" * 20)
 
                 # go through each chapter and create a reference to its pk,
                 # then create the copy of the chapter.
