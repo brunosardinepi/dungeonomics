@@ -337,6 +337,8 @@ def campaign_export(request, campaign_pk):
             # then serialize it
 
             additional_assets = []
+            added_worlds = []
+            added_locations = []
 
             for item in combined_list:
 
@@ -348,7 +350,46 @@ def campaign_export(request, campaign_pk):
                     obj = utils.get_url_object(url)
 
                     if obj:
-                        additional_assets.append(obj)
+
+                        # if World, get all the child locations
+                        # if Location, get the World and all child locations
+                        if isinstance(obj, location_models.World):
+                            if obj.pk not in added_worlds:
+                                # get all of the Locations that belong to this World
+                                locations = location_models.Location.objects.filter(world=obj)
+
+                                # add all of the new locations to lists for tracking
+                                for location in locations:
+                                    additional_assets.append(location)
+                                    added_locations.append(location.pk)
+
+                                # add the World to a list for tracking
+                                additional_assets.append(obj)
+                                added_worlds.append(obj.pk)
+
+                        elif isinstance(obj, location_models.Location):
+                            if obj.pk not in added_locations:
+                                # add the location to our list
+                                additional_assets.append(obj)
+                                added_locations.append(obj)
+
+                                # get this Location's World
+                                world = location_models.World.objects.get(pk=obj.world.pk)
+
+                                if world.pk not in added_worlds:
+                                    # append it to our list
+                                    additional_assets.append(world)
+
+                                    # get the World's Locations, excluding the Location we already have
+                                    locations = location_models.Location.objects.filter(world=world).exclude(pk=obj.pk)
+
+                                    # add all of the new locations to the list
+                                    for location in locations:
+                                        additional_assets.append(location)
+                                        added_locations.append(location)
+
+                        else:
+                            additional_assets.append(obj)
 
             combined_list = list(chain(combined_list, additional_assets))
             campaign_items = serializers.serialize("json", combined_list, indent=2)
@@ -412,6 +453,7 @@ def campaign_import(request):
 
                     if isinstance(other, location_models.World) or isinstance(other, location_models.Location):
                         if other.image:
+
                             # create a new filename
                             random_string = location_models.create_random_string()
                             ext = other.image.url.split('.')[-1]
@@ -439,33 +481,23 @@ def campaign_import(request):
                     elif isinstance(other, location_models.Location):
                         asset_references['locations'][old_pk] = new_pk
 
-                print("asset_references = {}".format(asset_references))
-#                for location in asset_references['locations']:
+
                 for old_pk, new_pk in asset_references['locations'].items():
-#                    print("location = {}".format(location))
-                    print("old_pk = {}, new_pk = {}".format(old_pk, new_pk))
-                    # for each location,
-                    # set the parent location to the new parent location.
-                    # if there isn't a parent location,
-                    # set the world to the new world
+                    # for each location, set the parent location to the new parent location.
+                    # also, set the world to the new world
                     old_location = location_models.Location.objects.get(pk=old_pk)
-                    print("old_location = {} (pk = {})".format(old_location, old_location.pk))
                     if old_location.parent_location:
-                        print("there is a parent location")
                         old_location_parent = old_location.parent_location
-                        print("old_location_parent = {} (pk = {})".format(old_location_parent, old_location_parent.pk))
 
                     new_location = location_models.Location.objects.get(pk=new_pk)
-                    print("new_location = {} (pk = {})".format(new_location, new_location.pk))
                     if new_location.parent_location:
-                        print("new_location parent = {} (pk = {})".format(new_location.parent_location, new_location.parent_location.pk))
                         new_location_parent = location_models.Location.objects.get(pk=asset_references['locations'][old_location_parent.pk])
                         new_location.parent_location = new_location_parent
-                        print("new_location_parent = {} (pk = {})".format(new_location_parent, new_location_parent.pk))
-                    else:
-                        print("there is no parent location")
-                    ########### NEED TO GET ALL WORLD LOCATIONS FOR EACH LOCATION, AND ALL LOCATIONS FOR EACH WORLD
-                    print("*" * 20)
+
+                    old_world = old_location.world
+                    new_world = location_models.World.objects.get(pk=asset_references['worlds'][old_world.pk])
+                    new_location.world = new_world
+                    new_location.save()
 
                 # go through each chapter and create a reference to its pk,
                 # then create the copy of the chapter.
