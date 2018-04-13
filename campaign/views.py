@@ -337,6 +337,7 @@ def campaign_export(request, campaign_pk):
             # then serialize it
 
             additional_assets = []
+            added_other = []
             added_worlds = []
             added_locations = []
 
@@ -371,7 +372,7 @@ def campaign_export(request, campaign_pk):
                             if obj.pk not in added_locations:
                                 # add the location to our list
                                 additional_assets.append(obj)
-                                added_locations.append(obj)
+                                added_locations.append(obj.pk)
 
                                 # get this Location's World
                                 world = location_models.World.objects.get(pk=obj.world.pk)
@@ -386,10 +387,12 @@ def campaign_export(request, campaign_pk):
                                     # add all of the new locations to the list
                                     for location in locations:
                                         additional_assets.append(location)
-                                        added_locations.append(location)
+                                        added_locations.append(location.pk)
 
                         else:
-                            additional_assets.append(obj)
+                            if obj.pk not in added_other:
+                                additional_assets.append(obj)
+                                added_other.append(obj.pk)
 
             combined_list = list(chain(combined_list, additional_assets))
             campaign_items = serializers.serialize("json", combined_list, indent=2)

@@ -4,19 +4,16 @@ from . import models
 
 
 class CampaignAdmin(admin.ModelAdmin):
-  list_display = ('title', 'user', 'created_at',)
-  # ordering = ('-created_at',)
-  list_filter = ('user',)
+    list_display = ('title', 'user', 'created_at',)
+    ordering = ('title', 'user', '-created_at',)
 
 class ChapterAdmin(admin.ModelAdmin):
-  list_display = ('title', 'user', 'created_at', 'campaign',)
-  # ordering = ('-created_at',)
-  list_filter = ('user', 'campaign',)
+    list_display = ('title', 'user', 'created_at', 'campaign',)
+    ordering = ('title', 'user', '-created_at', 'campaign',)
 
 class SectionAdmin(admin.ModelAdmin):
-  list_display = ('title', 'user', 'created_at', 'campaign', 'chapter',)
-  # ordering = ('-created_at',)
-  list_filter = ('user', 'campaign', 'chapter',)
+    list_display = ('title', 'user', 'created_at', 'campaign', 'chapter',)
+    ordering = ('title', 'user', '-created_at', 'campaign', 'chapter',)
 
 admin.site.register(models.Campaign, CampaignAdmin)
 admin.site.register(models.Chapter, ChapterAdmin)

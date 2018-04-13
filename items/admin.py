@@ -5,6 +5,6 @@ from . import models
 
 class ItemAdmin(admin.ModelAdmin):
   list_display = ('name', 'user',)
-  list_filter = ('user',)
+  ordering = ('user',)
 
 admin.site.register(models.Item, ItemAdmin)
