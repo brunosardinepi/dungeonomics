@@ -7,6 +7,7 @@ from django.utils import timezone
 
 class Feature(models.Model):
     description = models.TextField()
+    new = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.pk)

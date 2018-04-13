@@ -36,7 +36,10 @@
                     </li>
                     {% for feature in features %}
                         <a href="{% url 'votes:vote_view' feature_pk=feature.pk %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center{% user_voted user=request.user feature_pk=feature.pk as voted %}{% if voted == True %} list-group-item-success{% endif %}">
+                            <span>
+                            {% if feature.new == True %}<span class="badge badge-success mr-1">New</span>{% endif %}
                             {{ feature.description|safe }}
+                            </span>
                             <span class="badge badge-primary badge-pill ml-3">{{ feature.votes }}</span>
                         </a>
                     {% endfor %}

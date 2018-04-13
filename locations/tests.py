@@ -158,12 +158,12 @@ class LocationTest(TestCase):
 
     def test_location_create_page(self):
         self.client.login(username='testuser', password='testpassword')
-        response = self.client.get('/locations/location/{}/create/'.format(self.world.pk))
+        response = self.client.get('/locations/world/{}/location/create/'.format(self.world.pk))
         self.assertEqual(response.status_code, 200)
 
     def test_location_create(self):
         self.client.login(username='testuser2', password='testpassword')
-        response = self.client.post('/locations/location/{}/create/'.format(self.world2.pk), self.location_form_data)
+        response = self.client.post('/locations/world/{}/location/create/'.format(self.world2.pk), self.location_form_data)
         location = models.Location.objects.get(name='test location name')
         self.assertRedirects(response, '/locations/location/{}/'.format(location.pk), 302, 200)
 

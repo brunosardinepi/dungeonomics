@@ -3,9 +3,26 @@
 This is the version history for Dungeonomics development.
 
 
+## Version 2.3.0
+
+Release date: 04/13/18
+
+### Additions
+
+* #105 -- "New" tag to new features
+
+### Changes
+
+* #100 -- create Locations from a Location's detail page instead of going back to the base World
+
+### Fixes
+
+* #104 -- "Select all" button on NPC/Monster delete page
+
+
 ## Version 2.2.0
 
-Release date: 04/06
+Release date: 04/06/18
 
 ### Additions
 
@@ -23,7 +40,7 @@ Release date: 04/06
 
 ## Version 2.1.0
 
-Release date: 03/15
+Release date: 03/15/18
 
 ### Additions
 
@@ -40,7 +57,7 @@ Release date: 03/15
 
 ## Version 2.0.0
 
-Release date: 03/09/2018
+Release date: 03/09/18
 
 ### Additions
 
