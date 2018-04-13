@@ -90,6 +90,9 @@ def get_url_object(url):
                 obj = Location.objects.get(pk=location_pk)
             except Location.DoesNotExist:
                 obj = None
+    else:
+        # must be a link that isn't done via the '@' tag
+        obj = None
 
     return obj
 
