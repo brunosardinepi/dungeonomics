@@ -91,6 +91,10 @@ def get_url_object(url):
             except Location.DoesNotExist:
                 obj = None
 
+    else:
+        # may not be a dungeonomics url
+        obj = None
+
     return obj
 
 def replace_content_urls(item, asset_references):
