@@ -35,13 +35,13 @@
                 <div class="card-body">
                     <ul class="contents_list">
                         {% if worlds %}
-                            {% for world in worlds %}
+                            {% for w in worlds %}
                                 <li class="li-content">
-                                    <a href="{% url 'locations:location_detail' world_pk=world.pk %}">
-                                        {{ world.name }}
+                                    <a {% if w == world and not location %}class="font-weight-bold" {% endif %}href="{% url 'locations:location_detail' world_pk=w.pk %}">
+                                        {{ w.name }}
                                     </a>
                                 </li>
-                                {% get_world_locations world.pk as world_locations %}
+                                {% get_world_locations w.pk as world_locations %}
                                 {% if world_locations %}
                                     <ul style="padding-left: 20px;">
                                         {% for world_location in world_locations %}
