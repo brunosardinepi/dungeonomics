@@ -13,10 +13,10 @@
 
 {% block character_list %}
     {% if monsters %}
-        {% for monster in monsters %}
+        {% for m in monsters %}
             <li>
-                <a href="{% url 'characters:monster_detail' monster_pk=monster.pk %}">
-                    {{ monster.name }}
+                <a {% if m == monster %}class="font-weight-bold" {% endif %}href="{% url 'characters:monster_detail' monster_pk=m.pk %}">
+                    {{ m.name }}
                 </a>
             </li>
         {% endfor %}
