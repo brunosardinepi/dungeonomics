@@ -5,7 +5,7 @@ This is the version history for Dungeonomics development.
 
 ## Version 2.3.0
 
-Release date: 04/13/18
+Release date: 04/27/18
 
 ### Additions
 
@@ -13,7 +13,7 @@ Release date: 04/13/18
 
 ### Changes
 
-* None
+* #106 -- bold for active Table of Contents item
 
 ### Fixes
 
