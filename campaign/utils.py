@@ -94,6 +94,10 @@ def get_url_object(url):
         # must be a link that isn't done via the '@' tag
         obj = None
 
+    else:
+        # may not be a dungeonomics url
+        obj = None
+
     return obj
 
 def replace_content_urls(item, asset_references):
