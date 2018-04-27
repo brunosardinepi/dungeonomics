@@ -41,10 +41,7 @@ class LocationForm(TinyMCEForm):
     def __init__(self, user_pk, world_pk, location_pk, *args, **kwargs):
         super (LocationForm, self).__init__(*args, **kwargs)
         self.fields['world'].queryset = models.World.objects.filter(user=user_pk)
-        parent_locations = models.Location.objects.filter(world=world_pk).exclude(pk=location_pk)
-        if location_pk:
-            parent_locations = parent_locations.exclude(parent_location=location_pk)
-        self.fields['parent_location'].queryset = parent_locations
+        self.fields['parent_location'].queryset = models.Location.objects.filter(world=world_pk)
 
 LocationFormSet = forms.modelformset_factory(
     models.Location,

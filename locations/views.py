@@ -66,13 +66,16 @@ def location_create(request, world_pk, location_pk=None):
     data = at_tagging(request)
     world = get_object_or_404(models.World, pk=world_pk)
     if world.user == request.user:
-        form = forms.LocationForm(request.user.pk, world_pk, location_pk, initial={'world': world})
+        initial = {'world': world}
+        if location_pk:
+            parent_location = get_object_or_404(models.Location, pk=location_pk)
+            initial['parent_location'] = parent_location
+        form = forms.LocationForm(request.user.pk, world_pk, location_pk, initial=initial)
         if request.method == 'POST':
-            form = forms.LocationForm(request.user.pk, world_pk, location_pk, request.POST, request.FILES, initial={'world': world})
+            form = forms.LocationForm(request.user.pk, world_pk, location_pk, request.POST, request.FILES, initial=initial)
             if form.is_valid():
                 location = form.save(commit=False)
                 if location_pk:
-                    parent_location = get_object_or_404(models.Location, pk=location_pk)
                     if parent_location.user == request.user:
                         location.parent = parent_location
                 location.user = request.user

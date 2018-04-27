@@ -1,8 +1,14 @@
+from bs4 import BeautifulSoup
+from itertools import chain
+import json
+from shutil import copyfile
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.core import serializers
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -14,11 +20,10 @@ from . import models
 from . import utils
 from characters import models as character_models
 from dungeonomics.utils import at_tagging
+from dungeonomics import settings
 from items import models as item_models
 from locations import models as location_models
 from posts.models import Post
-
-import json
 
 
 @login_required
@@ -275,7 +280,6 @@ def campaign_print(request, campaign_pk):
     else:
         raise Http404
 
-
 @login_required
 def campaign_delete(request, campaign_pk):
     campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
@@ -315,146 +319,228 @@ def section_delete(request, campaign_pk, chapter_pk, section_pk):
         raise Http404
 
 @login_required
+def campaign_export(request, campaign_pk):
+    if campaign_pk:
+        campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+        if campaign.user == request.user:
+
+            chapters_queryset = models.Chapter.objects.filter(campaign=campaign).order_by('order')
+            sections_queryset = models.Section.objects.filter(campaign=campaign).order_by('order')
+            combined_list = list(chain(chapters_queryset, sections_queryset))
+
+            # go through each chapter and section
+            # find all of the hyperlinks
+            # look through the dungeonomics links
+            # get the type (item, monster, npc, player)
+            # pull a copy of that resource and add it to a list
+            # at the end, combine the list with the campaign items list
+            # then serialize it
+
+            additional_assets = []
+            added_other = []
+            added_worlds = []
+            added_locations = []
+
+            for item in combined_list:
+
+                soup = BeautifulSoup(item.content, 'html.parser')
+
+                for link in soup.find_all('a'):
+                    url = utils.get_content_url(link)
+
+                    obj = utils.get_url_object(url)
+
+                    if obj:
+
+                        # if World, get all the child locations
+                        # if Location, get the World and all child locations
+                        if isinstance(obj, location_models.World):
+                            if obj.pk not in added_worlds:
+                                # get all of the Locations that belong to this World
+                                locations = location_models.Location.objects.filter(world=obj)
+
+                                # add all of the new locations to lists for tracking
+                                for location in locations:
+                                    additional_assets.append(location)
+                                    added_locations.append(location.pk)
+
+                                # add the World to a list for tracking
+                                additional_assets.append(obj)
+                                added_worlds.append(obj.pk)
+
+                        elif isinstance(obj, location_models.Location):
+                            if obj.pk not in added_locations:
+                                # add the location to our list
+                                additional_assets.append(obj)
+                                added_locations.append(obj.pk)
+
+                                # get this Location's World
+                                world = location_models.World.objects.get(pk=obj.world.pk)
+
+                                if world.pk not in added_worlds:
+                                    # append it to our list
+                                    additional_assets.append(world)
+
+                                    # get the World's Locations, excluding the Location we already have
+                                    locations = location_models.Location.objects.filter(world=world).exclude(pk=obj.pk)
+
+                                    # add all of the new locations to the list
+                                    for location in locations:
+                                        additional_assets.append(location)
+                                        added_locations.append(location.pk)
+
+                        else:
+                            if obj.pk not in added_other:
+                                additional_assets.append(obj)
+                                added_other.append(obj.pk)
+
+            combined_list = list(chain(combined_list, additional_assets))
+            campaign_items = serializers.serialize("json", combined_list, indent=2)
+
+            return render(request, 'campaign/campaign_export.html', {
+                'campaign': campaign,
+                'campaign_items': campaign_items,
+            })
+    raise Http404
+
+@login_required
 def campaign_import(request):
     user_import = None
     form = forms.ImportCampaignForm()
     if request.method == 'POST':
-        if request.POST.get('user_import'):
-            user_import = request.POST.get('user_import')
-            user_import = json.loads(user_import, strict=False)
-        else:
-            return Http404
         form = forms.ImportCampaignForm(request.POST)
         if form.is_valid():
             campaign = form.save(commit=False)
             campaign.user = request.user
             campaign.save()
-            for chapter_order, chapter_attributes in user_import["chapters"].items():
-                new_chapter = models.Chapter(
-                    title=chapter_attributes["title"],
-                    user=request.user,
-                    campaign=campaign,
-                    order=chapter_order,
-                    content=chapter_attributes["content"]
-                    )
-                new_chapter.save()
-                if "sections" in chapter_attributes:
-                    for section_order, section_attributes in chapter_attributes["sections"].items():
-                        new_section = models.Section(
-                            title=section_attributes["title"],
-                            user=request.user,
-                            campaign=campaign,
-                            chapter=new_chapter,
-                            order=section_order,
-                            content=section_attributes["content"]
-                            )
-                        new_section.save()
-            if "monsters" in user_import:
-                for monster, monster_attributes in user_import["monsters"].items():
-                    new_monster = character_models.Monster(
-                        user=request.user,
-                        name=monster,
-                        alignment=monster_attributes["alignment"],
-                        size=monster_attributes["size"],
-                        languages=monster_attributes["languages"],
-                        strength=monster_attributes["strength"],
-                        dexterity=monster_attributes["dexterity"],
-                        constitution=monster_attributes["constitution"],
-                        intelligence=monster_attributes["intelligence"],
-                        wisdom=monster_attributes["wisdom"],
-                        charisma=monster_attributes["charisma"],
-                        armor_class=monster_attributes["armor_class"],
-                        hit_points=monster_attributes["hit_points"],
-                        speed=monster_attributes["speed"],
-                        saving_throws=monster_attributes["saving_throws"],
-                        skills=monster_attributes["skills"],
-                        creature_type=monster_attributes["creature_type"],
-                        damage_vulnerabilities=monster_attributes["damage_vulnerabilities"],
-                        damage_immunities=monster_attributes["damage_immunities"],
-                        damage_resistances=monster_attributes["damage_resistances"],
-                        condition_immunities=monster_attributes["condition_immunities"],
-                        senses=monster_attributes["senses"],
-                        challenge_rating=monster_attributes["challenge_rating"],
-                        traits=monster_attributes["traits"],
-                        actions=monster_attributes["actions"],
-                        notes=monster_attributes["notes"]
-                    )
-                    new_monster.save()
-            if "npcs" in user_import:
-                for npc, npc_attributes in user_import["npcs"].items():
-                    new_npc = character_models.NPC(
-                        user=request.user,
-                        name=npc,
-                        alignment=npc_attributes["alignment"],
-                        size=npc_attributes["size"],
-                        languages=npc_attributes["languages"],
-                        strength=npc_attributes["strength"],
-                        dexterity=npc_attributes["dexterity"],
-                        constitution=npc_attributes["constitution"],
-                        intelligence=npc_attributes["intelligence"],
-                        wisdom=npc_attributes["wisdom"],
-                        charisma=npc_attributes["charisma"],
-                        armor_class=npc_attributes["armor_class"],
-                        hit_points=npc_attributes["hit_points"],
-                        speed=npc_attributes["speed"],
-                        saving_throws=npc_attributes["saving_throws"],
-                        skills=npc_attributes["skills"],
-                        npc_class=npc_attributes["npc_class"],
-                        age=npc_attributes["age"],
-                        height=npc_attributes["height"],
-                        weight=npc_attributes["weight"],
-                        creature_type=npc_attributes["creature_type"],
-                        damage_vulnerabilities=npc_attributes["damage_vulnerabilities"],
-                        damage_immunities=npc_attributes["damage_immunities"],
-                        damage_resistances=npc_attributes["damage_resistances"],
-                        condition_immunities=npc_attributes["condition_immunities"],
-                        senses=npc_attributes["senses"],
-                        challenge_rating=npc_attributes["challenge_rating"],
-                        traits=npc_attributes["traits"],
-                        actions=npc_attributes["actions"],
-                        notes=npc_attributes["notes"]
-                    )
-                    new_npc.save()
-            if "items" in user_import:
-                for item, item_attributes in user_import["items"].items():
-                    new_item = item_models.Item(
-                        user=request.user,
-                        name=item,
-                        item_type=item_attributes["item_type"],
-                        rarity=item_attributes["rarity"],
-                        description=item_attributes["description"]
-                    )
-                    new_item.save()
-            return HttpResponseRedirect(campaign.get_absolute_url())
-    return render(request, 'campaign/campaign_import.html', {'form': form, 'user_import': user_import})
 
-@login_required
-def campaign_export(request, campaign_pk):
-    if campaign_pk:
-        campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-        if campaign.user == request.user:
-            chapters = sorted(models.Chapter.objects.filter(campaign=campaign), key=lambda chapter: chapter.order)
-            monsters = sorted(character_models.Monster.objects.filter(user=request.user), key=lambda monster: monster.name.lower())
-            npcs = sorted(character_models.NPC.objects.filter(user=request.user), key=lambda npc: npc.name.lower())
-            items = sorted(item_models.Item.objects.filter(user=request.user), key=lambda item: item.name.lower())
-            for chapter in chapters:
-                chapter.content = json.dumps(chapter.content)
-            for monster in monsters:
-                monster.traits = json.dumps(monster.traits)
-                monster.actions = json.dumps(monster.actions)
-                monster.notes = json.dumps(monster.notes)
-            for npc in npcs:
-                npc.traits = json.dumps(npc.traits)
-                npc.actions = json.dumps(npc.actions)
-                npc.notes = json.dumps(npc.notes)
-            for item in items:
-                item.description = json.dumps(item.description)
-            return render(request, 'campaign/campaign_export.html', {'campaign': campaign, 'chapters': chapters, 'monsters': monsters, 'npcs': npcs, 'items': items})
+            if request.POST.get('user_import'):
+                user_import = request.POST.get('user_import')
+
+                chapters, sections, others = ([] for i in range(3))
+                model_types = [
+                    "Monster",
+                    "NPC",
+                    "Item",
+                    "World",
+                    "Location",
+                ]
+
+                for obj in serializers.deserialize("json", user_import):
+                    if isinstance(obj.object, models.Chapter):
+                        chapters.append(obj.object)
+                    elif isinstance(obj.object, models.Section):
+                        sections.append(obj.object)
+                    elif obj.object.__class__.__name__ in model_types:
+                        others.append(obj.object)
+
+                asset_references = {
+                    "monsters": {},
+                    "npcs": {},
+                    "items": {},
+                    "worlds": {},
+                    "locations": {},
+                }
+
+                # for each "other" asset,
+                # create a copy of the asset
+                # and update a dictionary that holds a reference of the old pk and the new pk
+
+                for other in others:
+                    # grab the old pk for reference
+                    old_pk = other.pk
+
+                    # create a copy of the asset
+                    other.pk = None
+                    other.user = request.user
+
+                    if isinstance(other, location_models.World) or isinstance(other, location_models.Location):
+                        if other.image:
+
+                            # create a new filename
+                            random_string = location_models.create_random_string()
+                            ext = other.image.url.split('.')[-1]
+                            new_filename = "media/user/images/%s.%s" % (random_string, ext)
+
+                            # copy the old file to a new file
+                            # and save it to the new object
+                            old_image_url = settings.MEDIA_ROOT + other.image.name
+                            new_image_url = settings.MEDIA_ROOT + new_filename
+                            copyfile(old_image_url, new_image_url)
+                            other.image = new_filename
+
+                    other.save()
+
+                    new_pk = other.pk
+
+                    if isinstance(other, character_models.Monster):
+                        asset_references['monsters'][old_pk] = new_pk
+                    elif isinstance(other, character_models.NPC):
+                        asset_references['npcs'][old_pk] = new_pk
+                    elif isinstance(other, item_models.Item):
+                        asset_references['items'][old_pk] = new_pk
+                    elif isinstance(other, location_models.World):
+                        asset_references['worlds'][old_pk] = new_pk
+                    elif isinstance(other, location_models.Location):
+                        asset_references['locations'][old_pk] = new_pk
+
+
+                for old_pk, new_pk in asset_references['locations'].items():
+                    # for each location, set the parent location to the new parent location.
+                    # also, set the world to the new world
+                    old_location = location_models.Location.objects.get(pk=old_pk)
+                    if old_location.parent_location:
+                        old_location_parent = old_location.parent_location
+
+                    new_location = location_models.Location.objects.get(pk=new_pk)
+                    if new_location.parent_location:
+                        new_location_parent = location_models.Location.objects.get(pk=asset_references['locations'][old_location_parent.pk])
+                        new_location.parent_location = new_location_parent
+
+                    old_world = old_location.world
+                    new_world = location_models.World.objects.get(pk=asset_references['worlds'][old_world.pk])
+                    new_location.world = new_world
+                    new_location.save()
+
+                # go through each chapter and create a reference to its pk,
+                # then create the copy of the chapter.
+                # go through each section and find those that belong to the
+                # old chapter, and create a copy of them going to the new
+                # chapter.
+                # update the campaign pk along the way.
+
+                for chapter in chapters:
+
+                    # create a reference to the chapter's original pk
+                    old_pk = chapter.pk
+
+                    # create a new copy of the chapter
+                    chapter.pk = None
+                    chapter.user = request.user
+                    chapter.campaign = campaign
+                    chapter.save()
+
+                    utils.replace_content_urls(chapter, asset_references)
+
+                    for section in sections:
+                        # find sections that belong to the chapter
+                        if section.chapter.pk == old_pk:
+
+                            # create a new copy of the section
+                            section.pk = None
+                            section.user = request.user
+                            section.chapter = chapter
+                            section.campaign = campaign
+                            section.save()
+
+                            utils.replace_content_urls(section, asset_references)
+
+                return HttpResponseRedirect(campaign.get_absolute_url())
+
         else:
-            raise Http404
-    else:
-        raise Http404
+            return Http404
 
+    return render(request, 'campaign/campaign_import.html', {'form': form})
 
 class CampaignParty(View):
     def get(self, request, campaign_pk):

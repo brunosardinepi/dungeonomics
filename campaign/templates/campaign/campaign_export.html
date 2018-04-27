@@ -14,146 +14,23 @@
         Copy the following code and then share it with friends! They will need to <a href="{% url 'campaign:campaign_import' %}" class="alert-link">import</a> it in order to view it.
     </div>
 
-    <div class="row mt-3">
+    <div class="row mt-3 pb-5">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
                     <h5 class="px-1 mb-0">
-                        Export full campaign (<span class="font-weight-bold">includes</span> monsters, NPCs, and items)
+                        Export campaign (<span class="font-weight-bold">does not include</span> monsters, NPCs, and items)
                     </h5>
                 </div>
                 <div class="card-body">
                     <div class="pre-scrollable" style="max-height: 400px;">
-                    {% autoescape on %}
-<pre id="code-long">
-{
-    "chapters": { {% for chapter in chapters %}
-        "{{ chapter.order }}": {
-            "title": "{{ chapter.title }}",
-            "content": {{ chapter.content }}{% sections_in_chapter chapter.pk as sections %}{% if sections %},
-            "sections": { {% for section in sections %}
-                "{{ section.order }}": {
-                    "title": "{{ section.title }}",
-                    "content": {{ section.content }}
-                }{% if not forloop.last %},{% endif %}{% endfor %}
-            }{% endif %}
-        {% if forloop.last %}}}{% else %}},{% endif %}{% endfor %}
-    {% if monsters %},{% endif %}
-    {% if monsters %}"monsters": { {% for monster in monsters %}
-        "{{ monster.name }}": {
-            "alignment": "{{ monster.alignment }}",
-            "size": "{{ monster.size }}",
-            "languages": "{{ monster.languages }}",
-            "strength": "{{ monster.strength }}",
-            "dexterity": "{{ monster.dexterity }}",
-            "constitution": "{{ monster.constitution }}",
-            "intelligence": "{{ monster.intelligence }}",
-            "wisdom": "{{ monster.wisdom }}",
-            "charisma": "{{ monster.charisma }}",
-            "armor_class": "{{ monster.armor_class }}",
-            "hit_points": "{{ monster.hit_points }}",
-            "speed": "{{ monster.speed }}",
-            "saving_throws": "{{ monster.saving_throws }}",
-            "skills": "{{ monster.skills }}",
-            "creature_type": "{{ monster.creature_type }}",
-            "damage_vulnerabilities": "{{ monster.damage_vulnerabilities }}",
-            "damage_immunities": "{{ monster.damage_immunities }}",
-            "damage_resistances": "{{ monster.damage_resistances }}",
-            "condition_immunities": "{{ monster.condition_immunities }}",
-            "senses": "{{ monster.senses }}",
-            "challenge_rating": "{{ monster.challenge_rating }}",
-            "traits": {{ monster.traits }},
-            "actions": {{ monster.actions }},
-            "notes": {{ monster.notes }}
-        {% if forloop.last %}}}{% else %}},{% endif %}{% endfor %}{% endif %}
-    {% if npcs %},{% endif %}
-    {% if npcs %}"npcs": { {% for npc in npcs %}
-        "{{ npc.name }}": {
-            "npc_class": "{{ npc.npc_class }}",
-            "age": "{{ npc.age }}",
-            "height": "{{ npc.height }}",
-            "weight": "{{ npc.weight }}",
-            "alignment": "{{ npc.alignment }}",
-            "size": "{{ npc.size }}",
-            "languages": "{{ npc.languages }}",
-            "strength": "{{ npc.strength }}",
-            "dexterity": "{{ npc.dexterity }}",
-            "constitution": "{{ npc.constitution }}",
-            "intelligence": "{{ npc.intelligence }}",
-            "wisdom": "{{ npc.wisdom }}",
-            "charisma": "{{ npc.charisma }}",
-            "armor_class": "{{ npc.armor_class }}",
-            "hit_points": "{{ npc.hit_points }}",
-            "speed": "{{ npc.speed }}",
-            "saving_throws": "{{ npc.saving_throws }}",
-            "skills": "{{ npc.skills }}",
-            "creature_type": "{{ npc.creature_type }}",
-            "damage_vulnerabilities": "{{ npc.damage_vulnerabilities }}",
-            "damage_immunities": "{{ npc.damage_immunities }}",
-            "damage_resistances": "{{ npc.damage_resistances }}",
-            "condition_immunities": "{{ npc.condition_immunities }}",
-            "senses": "{{ npc.senses }}",
-            "challenge_rating": "{{ npc.challenge_rating }}",
-            "traits": {{ npc.traits }},
-            "actions": {{ npc.actions }},
-            "notes": {{ npc.notes }}
-        {% if forloop.last %}}}{% else %}},{% endif %}{% endfor %}{% endif %}
-    {% if items %},{% endif %}
-    {% if items %}"items": { {% for item in items %}
-        "{{ item.name }}": {
-            "item_type": "{{ item.item_type }}",
-            "rarity": "{{ item.rarity }}",
-            "description": {{ item.description }}
-        {% if forloop.last %}}}{% else %}},{% endif %}{% endfor %}{% endif %}
-}
-</pre>
-                    {% endautoescape %}
+                        <pre id="code-long">{% autoescape on %}{{ campaign_items }}{% endautoescape %}</pre>
                     </div>
                 </div>
                 <div class="card-footer">
                     <div class="row justify-content-end">
                         <div class="col-auto">
                             <button class="btn btn-long btn-primary" data-clipboard-target="#code-long">Copy to clipboard</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row mt-3 pb-5">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="px-1 mb-0">
-                        Export campaign content only (<span class="font-weight-bold">without</span> monsters, NPCs, and items)
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <div class="pre-scrollable" style="max-height: 400px;">
-                    {% autoescape on %}
-<pre id="code-short">
-{
-    "chapters": { {% for chapter in chapters %}
-        "{{ chapter.order }}": {
-            "title": "{{ chapter.title }}",
-            "content": {{ chapter.content }}{% sections_in_chapter chapter.pk as sections %}{% if sections %},
-            "sections": { {% for section in sections %}
-                "{{ section.order }}": {
-                    "title": "{{ section.title }}",
-                    "content": {{ section.content }}
-                }{% if not forloop.last %},{% endif %}{% endfor %}
-            }{% endif %}
-        {% if forloop.last %}}{% else %}},{% endif %}{% endfor %}
-    }
-}
-</pre>
-                    {% endautoescape %}
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <div class="row justify-content-end">
-                        <div class="col-auto">
-                            <button class="btn btn-short btn-primary" data-clipboard-target="#code-short">Copy to clipboard</button>
                         </div>
                     </div>
                 </div>
