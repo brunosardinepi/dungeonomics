@@ -91,10 +91,6 @@ def get_url_object(url):
             except Location.DoesNotExist:
                 obj = None
     else:
-        # must be a link that isn't done via the '@' tag
-        obj = None
-
-    else:
         # may not be a dungeonomics url
         obj = None
 
