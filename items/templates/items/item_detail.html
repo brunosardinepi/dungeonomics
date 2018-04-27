@@ -37,10 +37,10 @@
                 <div class="card-body">
                     <ul class="contents_list">
                         {% if items %}
-                            {% for item in items %}
+                            {% for i in items %}
                                 <li class="li-content">
-                                    <a href="{% url 'items:item_detail' item_pk=item.pk %}">
-                                        {{ item.name }}
+                                    <a {% if i == item %}class="font-weight-bold" {% endif %}href="{% url 'items:item_detail' item_pk=i.pk %}">
+                                        {{ i.name }}
                                     </a>
                                 </li>
                             {% endfor %}

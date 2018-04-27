@@ -5,7 +5,7 @@ This is the version history for Dungeonomics development.
 
 ## Version 2.3.0
 
-Release date: 04/13/18
+Release date: 04/27/18
 
 ### Additions
 
@@ -15,6 +15,7 @@ Release date: 04/13/18
 
 * #100 -- create Locations from a Location's detail page instead of going back to the base World
 * #103 -- Campaign import/export selectively chooses assets for only this Campaign
+* #106 -- bold for active Table of Contents item
 
 ### Fixes
 

@@ -39,20 +39,20 @@
                 <div class="card-body">
                     <ul class="contents_list">
                         {% if chapters %}
-                            {% for chapter in chapters %}
+                            {% for c in chapters %}
                                 <li class="li-content">
-                                    {{ chapter.order }}. 
-                                    <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}">
-                                        {{ chapter.title }}
+                                    {{ c.order }}. 
+                                    <a {% if c == chapter and not section %}class="font-weight-bold" {% endif %}href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=c.pk %}">
+                                        {{ c.title }}
                                     </a>
                                 </li>
                                 <ul style="padding-left: 30px;">
-                                    {% for section in sections %}
-                                        {% if section.chapter.pk == chapter.pk %}
+                                    {% for s in sections %}
+                                        {% if s.chapter.pk == c.pk %}
                                             <li class="li-content">
-                                                {{ section.order }}. 
-                                                <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk section_pk=section.pk %}">
-                                                    {{ section.title }}
+                                                {{ s.order }}. 
+                                                <a {% if s == section %}class="font-weight-bold" {% endif %}href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=c.pk section_pk=s.pk %}">
+                                                    {{ s.title }}
                                                 </a>
                                             </li>
                                         {% endif %}

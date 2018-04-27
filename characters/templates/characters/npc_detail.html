@@ -13,10 +13,10 @@
 
 {% block character_list %}
     {% if npcs %}
-        {% for npc in npcs %}
+        {% for n in npcs %}
             <li>
-                <a href="{% url 'characters:npc_detail' npc_pk=npc.id %}">
-                    {{ npc.name }}
+                <a {% if n == npc %}class="font-weight-bold" {% endif %}href="{% url 'characters:npc_detail' npc_pk=n.id %}">
+                    {{ n.name }}
                 </a>
             </li>
         {% endfor %}
