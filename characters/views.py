@@ -350,12 +350,7 @@ def monster_srd(request):
         for monster_pk in request.POST.getlist('monster'):
             monster = models.Monster.objects.get(pk=monster_pk)
             selected_monsters.append(monster)
-        empty_queryset = models.Monster.objects.none()
-        monster_queryset = list(chain(empty_queryset, selected_monsters))
-        for monster in monster_queryset:
-            monster.traits = json.dumps(monster.traits)
-            monster.actions = json.dumps(monster.actions)
-            monster.notes = json.dumps(monster.notes)
+        monster_queryset = serializers.serialize("json", selected_monsters, indent=2)
         return render(request, 'characters/monster_export.html', {'monsters': monster_queryset})
     return render(request, 'characters/monster_srd_form.html', {'form': form, 'monsters': monsters})
 
@@ -371,12 +366,7 @@ def npc_srd(request):
         for npc_pk in request.POST.getlist('npc'):
             npc = models.NPC.objects.get(pk=npc_pk)
             selected_npcs.append(npc)
-        empty_queryset = models.NPC.objects.none()
-        npc_queryset = list(chain(empty_queryset, selected_npcs))
-        for npc in npc_queryset:
-            npc.traits = json.dumps(npc.traits)
-            npc.actions = json.dumps(npc.actions)
-            npc.notes = json.dumps(npc.notes)
+        npc_queryset = serializers.serialize("json", selected_npcs, indent=2)
         return render(request, 'characters/npc_export.html', {'npcs': npc_queryset})
     return render(request, 'characters/npc_srd_form.html', {'form': form, 'npcs': npcs})
 
