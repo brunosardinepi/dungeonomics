@@ -3,6 +3,23 @@
 This is the version history for Dungeonomics development.
 
 
+## Version 2.3.1
+
+Release date: 05/17/2018
+
+### Additions
+
+* None
+
+### Changes
+
+* None
+
+### Fixes
+
+* #108 -- Monster/NPC export
+
+
 ## Version 2.3.0
 
 Release date: 04/27/18

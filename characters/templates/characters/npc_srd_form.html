@@ -43,8 +43,8 @@
     </div>
 {% endblock %}
 
-{% block end_static %}
-<script language='JavaScript'>
+{% block body_extra %}
+<script>
 function toggle(source) {
   checkboxes = document.getElementsByName('npc');
   for(var i=0, n=checkboxes.length;i<n;i++) {
