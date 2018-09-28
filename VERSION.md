@@ -3,6 +3,23 @@
 This is the version history for Dungeonomics development.
 
 
+## Version 2.4.0
+
+Release date: 09/28/2018
+
+### Additions
+
+* #102 -- Locations retractable sections
+
+### Changes
+
+* None
+
+### Fixes
+
+* None
+
+
 ## Version 2.3.1
 
 Release date: 05/17/2018
