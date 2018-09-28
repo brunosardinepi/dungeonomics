@@ -29,7 +29,10 @@ def location_detail(request, world_pk=None, location_pk=None):
     elif location_pk:
         location = get_object_or_404(models.Location, pk=location_pk)
         if location.user == request.user:
-            return render(request, 'locations/location_detail.html', {'location': location, 'worlds': worlds})
+            return render(request, 'locations/location_detail.html', {
+                'location': location,
+                'worlds': worlds,
+            })
         else:
             raise Http404
     else:
