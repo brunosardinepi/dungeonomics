@@ -37,17 +37,19 @@
                         {% if worlds %}
                             {% for w in worlds %}
                                 <li class="li-content">
-                                    <a {% if w == world and not location %}class="font-weight-bold" {% endif %}href="{% url 'locations:location_detail' world_pk=w.pk %}">
+                                    <a href="" class="world-dropdown-{{ w.pk }}"><i class="fas fa-caret-right"></i></a> <a {% if w == world and not location %}class="font-weight-bold" {% endif %}href="{% url 'locations:location_detail' world_pk=w.pk %}">
                                         {{ w.name }}
                                     </a>
                                 </li>
                                 {% get_world_locations w.pk as world_locations %}
                                 {% if world_locations %}
-                                    <ul style="padding-left: 20px;">
-                                        {% for world_location in world_locations %}
-                                            {% include "locations/tree_view_template.html" %}
-                                        {% endfor %}
-                                    </ul>
+                                    <div {% if w == world or w == location.world %}style="display:block !important;" {% endif %}class="world-locations-{{ w.pk }}">
+                                        <ul style="padding-left: 20px;">
+                                            {% for world_location in world_locations %}
+                                                {% include "locations/tree_view_template.html" %}
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
                                 {% endif %}
                             {% endfor %}
                         {% else %}
@@ -92,5 +94,6 @@
 {% endblock %}
 
 {% block body_extra %}
+    <script src="{% static 'js/location_accordion.js' %}"></script>
     <script src="{% static 'js/location_delete.js' %}"></script>
 {% endblock %}
