@@ -1,0 +1,26 @@
+{% load lib_extras %}
+
+<div class="card-header">
+    <div class="row justify-content-between align-items-center">
+        <div class="col-auto">
+            {% if obj %}
+                <h5 class="px-1 mb-0">{{ obj.name }}</h5>
+            {% endif %}
+        </div>
+        <div class="col-auto">
+            <div class="dropdown">
+                <a class="btn btn-sm text-dark dropdown-toggle" href="#" role="button" id="contents-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-lg fa-cog"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="contents-dropdown">
+                    {% if obj %}
+                        <a href="{% url 'tables:table_update' table_pk=table.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit table</a>
+                        <a id="table-delete" href="{% url 'tables:table_delete' table_pk=table.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete table</a>
+                    {% else %}
+                        <a href="{% url 'tables:table_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create table</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

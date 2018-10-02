@@ -4,12 +4,8 @@ from . import config
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config.settings['secret_key']
-
 DEBUG = config.settings['debug']
-
 ALLOWED_HOSTS = config.settings['allowed_hosts']
 
 INSTALLED_APPS = [
@@ -34,6 +30,7 @@ INSTALLED_APPS = [
     'locations',
     'posts',
     'votes',
+    'tables',
 ]
 
 MIDDLEWARE = [

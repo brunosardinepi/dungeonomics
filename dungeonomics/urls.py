@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^locations/', include('locations.urls', namespace='locations')),
     url(r'^privacy/', views.PrivacyView.as_view(), name='privacy'),
     url(r'^votes/', include('votes.urls', namespace='votes')),
+    url(r'^tables/', include('tables.urls', namespace='tables')),
 
     url(r'^error/image-size/$', TemplateView.as_view(template_name="error_image_size.html")),
     url(r'^error/image-type/$', TemplateView.as_view(template_name="error_image_type.html")),
