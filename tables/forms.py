@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import inlineformset_factory
 
 from . import models
 
@@ -25,3 +26,9 @@ class TableForm(TinyMCEForm):
             'name',
             'description',
         ]
+
+TableOptionFormSet = inlineformset_factory(
+    models.Table,
+    models.TableOption,
+    fields=('description',),
+)

@@ -16,10 +16,13 @@ class Table(models.Model):
             kwargs={'table_pk': self.pk}
         )
 
+    def options(self):
+        return self.tableoption_set.all().order_by('pk')
+
 
 class TableOption(models.Model):
     table = models.ForeignKey(Table, on_delete=models.CASCADE)
-    option = models.CharField(max_length=255, default='')
+    description = models.CharField(max_length=255, default='')
 
     def __str__(self):
-        return "{}: {}".format(table, option[:10])
+        return "{}: {}".format(self.table, self.description[:10])

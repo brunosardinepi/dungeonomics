@@ -59,6 +59,11 @@
                     {% include "tables/card_header.html" with obj=table %}
                     <div class="card-body">
                         <p>{{ table.description|safe }}</p>
+                        <ul>
+                            {% for option in table.options %}
+                                <li>{{ option.description }}</li>
+                            {% endfor %}
+                        </ul>
                     </div>
                 {% else %}
                     {% include "tables/card_header.html" with obj=table %}

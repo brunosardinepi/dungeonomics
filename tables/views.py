@@ -75,16 +75,53 @@ def table_create(request):
     for location in locations_raw:
         locations[location.pk] = location.name
     form = forms.TableForm()
+    formset = forms.TableOptionFormSet()
     if request.method == 'POST':
         form = forms.TableForm(request.POST)
-        if form.is_valid():
+        formset = forms.TableOptionFormSet(request.POST)
+        if form.is_valid() and formset.is_valid():
             table = form.save(commit=False)
             table.user = request.user
             table.save()
+
+            options = formset.save(commit=False)
+            for option in options:
+                option.table = table
+                option.save()
+
             messages.add_message(request, messages.SUCCESS, "Table created!")
             return HttpResponseRedirect(table.get_absolute_url())
+
+
+###
+#        if request.method == 'POST':
+#            form = forms.CampaignForm(request.POST, instance=campaign)
+#            chapter_forms = forms.ChapterInlineFormSet(request.POST, queryset=form.instance.chapter_set.all())
+#            if form.is_valid() and chapter_forms.is_valid():
+#                form.save()
+#                chapters = chapter_forms.save(commit=False)
+#                for chapter in chapters:
+#                    chapter.campaign = campaign
+#                    chapter.user = request.user
+#                    chapter.save()
+#                for chapter in chapter_forms.deleted_objects:
+#                    chapter.delete()
+#                messages.add_message(request, messages.SUCCESS, "Updated campaign: {}".format(form.cleaned_data['title']))
+#                return HttpResponseRedirect(campaign.get_absolute_url())
+#            else:
+#                print(form.errors)
+#                print(chapter_forms.errors)
+###
+
+
+
+
+
+
+
     return render(request, 'tables/table_form.html', {
         'form': form,
+        'formset': formset,
         'monsters': monsters,
         'npcs': npcs,
         'items': items,

@@ -11,7 +11,16 @@ from . import views
 class TableTest(TestCase):
     table_form_data = {
         'name': 'test table name',
+        'description': 'yyyyyyuyuyuyyuyu',
+#        'order': '2',
+        'tableoption_set-TOTAL_FORMS': '1',
+        'tableoption_set-INITIAL_FORMS': '0',
+        'tableoption_set-MIN_NUM_FORMS': '0',
+        'tableoption_set-MAX_NUM_FORMS': '1000',
+        'tableoption_set-0-id': '',
+        'tableoption_set-0-description': 'o1',
     }
+
 
     def setUp(self):
         self.client = Client()
@@ -71,6 +80,11 @@ class TableTest(TestCase):
 
         tables = models.Table.objects.all()
         self.assertIn(table, tables)
+
+        response = self.client.get('/tables/{}/'.format(table.pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, table.name)
+        self.assertContains(response, 'o1')
 
     def test_table_edit_page(self):
         self.client.login(username='testuser', password='testpassword')
