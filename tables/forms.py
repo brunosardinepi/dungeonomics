@@ -32,4 +32,5 @@ TableOptionFormSet = inlineformset_factory(
     models.TableOption,
     fields=('description',),
     extra=0,
+    min_num=2,
 )
