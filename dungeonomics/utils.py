@@ -3,6 +3,7 @@ from django.conf import settings
 from characters.models import Monster, NPC, Player
 from items.models import Item
 from locations.models import Location, World
+from tables.models import Table
 
 
 def image_is_valid(request, form):
@@ -46,6 +47,10 @@ def at_tagging(request):
     locations = {}
     for location in locations_raw:
         locations[location.pk] = location.name
+    tables_raw = Table.objects.filter(user=request.user).order_by('name')
+    tables = {}
+    for table in tables_raw:
+        tables[table.pk] = table.name
 
     return {
         'monsters': monsters,
@@ -54,4 +59,5 @@ def at_tagging(request):
         'players': players,
         'worlds': worlds,
         'locations': locations,
+        'tables': tables,
     }

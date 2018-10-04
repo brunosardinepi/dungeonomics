@@ -12,6 +12,7 @@ from . import forms
 from . import models
 
 from characters.models import Monster, NPC, Player
+from dungeonomics.utils import at_tagging
 from items.models import Item
 from locations.models import Location, World
 
@@ -52,30 +53,7 @@ def table_detail(request, table_pk=None):
 
 @login_required
 def table_create(request):
-    monsters_raw = Monster.objects.filter(user=request.user).order_by('name')
-    monsters = {}
-    for monster in monsters_raw:
-        monsters[monster.pk] = monster.name
-    npcs_raw = NPC.objects.filter(user=request.user).order_by('name')
-    npcs = {}
-    for npc in npcs_raw:
-        npcs[npc.pk] = npc.name
-    items_raw = Item.objects.filter(user=request.user).order_by('name')
-    items = {}
-    for item in items_raw:
-        items[item.pk] = item.name
-    players_raw = Player.objects.filter(user=request.user).order_by('player_name')
-    players = {}
-    for player in players_raw:
-        players[player.pk] = player.player_name
-    worlds_raw = World.objects.filter(user=request.user).order_by('name')
-    worlds = {}
-    for world in worlds_raw:
-        worlds[world.pk] = world.name
-    locations_raw = Location.objects.filter(user=request.user).order_by('name')
-    locations = {}
-    for location in locations_raw:
-        locations[location.pk] = location.name
+    data = at_tagging(request)
     form = forms.TableForm()
     formset = forms.TableOptionFormSet()
     if request.method == 'POST':
@@ -93,43 +71,13 @@ def table_create(request):
 
             messages.add_message(request, messages.SUCCESS, "Table created!")
             return HttpResponseRedirect(table.get_absolute_url())
-    return render(request, 'tables/table_form.html', {
-        'form': form,
-        'formset': formset,
-        'monsters': monsters,
-        'npcs': npcs,
-        'items': items,
-        'players': players,
-        'worlds': worlds,
-        'locations': locations,
-    })
+    data['form'] = form
+    data['formset'] = formset
+    return render(request, 'tables/table_form.html', data)
 
 @login_required
 def table_update(request, table_pk):
-    monsters_raw = Monster.objects.filter(user=request.user).order_by('name')
-    monsters = {}
-    for monster in monsters_raw:
-        monsters[monster.pk] = monster.name
-    npcs_raw = NPC.objects.filter(user=request.user).order_by('name')
-    npcs = {}
-    for npc in npcs_raw:
-        npcs[npc.pk] = npc.name
-    items_raw = Item.objects.filter(user=request.user).order_by('name')
-    items = {}
-    for item in items_raw:
-        items[item.pk] = item.name
-    players_raw = Player.objects.filter(user=request.user).order_by('player_name')
-    players = {}
-    for player in players_raw:
-        players[player.pk] = player.player_name
-    worlds_raw = World.objects.filter(user=request.user).order_by('name')
-    worlds = {}
-    for world in worlds_raw:
-        worlds[world.pk] = world.name
-    locations_raw = Location.objects.filter(user=request.user).order_by('name')
-    locations = {}
-    for location in locations_raw:
-        locations[location.pk] = location.name
+    data = at_tagging(request)
     table = get_object_or_404(models.Table, pk=table_pk)
     if table.user == request.user:
         form = forms.TableForm(instance=table)
@@ -152,17 +100,10 @@ def table_update(request, table_pk):
                 return HttpResponseRedirect(table.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'tables/table_form.html', {
-        'form': form,
-        'formset': formset,
-        'table': table,
-        'monsters': monsters,
-        'npcs': npcs,
-        'items': items,
-        'players': players,
-        'worlds': worlds,
-        'locations': locations,
-    })
+    data['form'] = form
+    data['formset'] = formset
+    data['table'] = table
+    return render(request, 'tables/table_form.html', data)
 
 @login_required
 def table_delete(request, table_pk):

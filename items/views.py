@@ -10,6 +10,7 @@ from . import forms
 from . import models
 
 from characters import models as character_models
+from dungeonomics.utils import at_tagging
 from locations import models as location_models
 
 
@@ -37,30 +38,7 @@ def item_detail(request, item_pk=None):
 
 @login_required
 def item_create(request):
-    monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
-    monsters = {}
-    for monster in monsters_raw:
-        monsters[monster.pk] = monster.name
-    npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
-    npcs = {}
-    for npc in npcs_raw:
-        npcs[npc.pk] = npc.name
-    items_raw = models.Item.objects.filter(user=request.user).order_by('name')
-    items = {}
-    for item in items_raw:
-        items[item.pk] = item.name
-    players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
-    players = {}
-    for player in players_raw:
-        players[player.pk] = player.player_name
-    worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
-    worlds = {}
-    for world in worlds_raw:
-        worlds[world.pk] = world.name
-    locations_raw = location_models.Location.objects.filter(user=request.user).order_by('name')
-    locations = {}
-    for location in locations_raw:
-        locations[location.pk] = location.name
+    data = at_tagging(request)
     form = forms.ItemForm()
     if request.method == 'POST':
         form = forms.ItemForm(request.POST)
@@ -70,34 +48,12 @@ def item_create(request):
             item.save()
             messages.add_message(request, messages.SUCCESS, "Item/Spell created!")
             return HttpResponseRedirect(item.get_absolute_url())
-    return render(request, 'items/item_form.html', {'form': form, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'worlds': worlds, 'locations': locations})
+    data['form'] = form
+    return render(request, 'items/item_form.html', data)
 
 @login_required
 def item_update(request, item_pk):
-    monsters_raw = character_models.Monster.objects.filter(user=request.user).order_by('name')
-    monsters = {}
-    for monster in monsters_raw:
-        monsters[monster.pk] = monster.name
-    npcs_raw = character_models.NPC.objects.filter(user=request.user).order_by('name')
-    npcs = {}
-    for npc in npcs_raw:
-        npcs[npc.pk] = npc.name
-    items_raw = models.Item.objects.filter(user=request.user).order_by('name')
-    items = {}
-    for item in items_raw:
-        items[item.pk] = item.name
-    players_raw = character_models.Player.objects.filter(user=request.user).order_by('player_name')
-    players = {}
-    for player in players_raw:
-        players[player.pk] = player.player_name
-    worlds_raw = location_models.World.objects.filter(user=request.user).order_by('name')
-    worlds = {}
-    for world in worlds_raw:
-        worlds[world.pk] = world.name
-    locations_raw = location_models.Location.objects.filter(user=request.user).order_by('name')
-    locations = {}
-    for location in locations_raw:
-        locations[location.pk] = location.name
+    data = at_tagging(request)
     item = get_object_or_404(models.Item, pk=item_pk)
     if item.user == request.user:
         form = forms.ItemForm(instance=item)
@@ -109,7 +65,9 @@ def item_update(request, item_pk):
                 return HttpResponseRedirect(item.get_absolute_url())
     else:
         raise Http404
-    return render(request, 'items/item_form.html', {'form': form, 'item': item, 'monsters': monsters, 'npcs': npcs, 'items': items, 'players': players, 'worlds': worlds, 'locations': locations})
+    data['form'] = form
+    data['item'] = item
+    return render(request, 'items/item_form.html', data)
 
 @login_required
 def item_delete(request, item_pk):
