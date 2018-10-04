@@ -1,0 +1,106 @@
+{% extends 'layout.html' %}
+
+{% load static from staticfiles %}
+
+
+{% block title %}
+    {% if table.pk %}
+        {{ table.name }} 
+    {% else %}
+        Tables
+    {% endif %}
+    | {{ block.super }}
+{% endblock %}
+
+{% block body_content %}
+    <div class="row mt-3 pb-5">
+        <div class="col-lg-4 mb-3">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-auto">
+                            <h5 class="px-1 mb-0">Tables</h5>
+                        </div>
+                        <div class="col-auto">
+                            <div class="dropdown">
+                                <a class="btn btn-sm text-dark dropdown-toggle" href="#" role="button" id="table-of-contents-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-lg fa-cog"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="table-of-contents-dropdown">
+                                    <a href="{% url 'tables:table_create' %}" class="dropdown-item text-success"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> Create table</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body">
+                    <ul class="contents_list">
+                        {% if tables %}
+                            {% for t in tables %}
+                                <li class="li-content">
+                                    <a {% if t == table %}class="font-weight-bold" {% endif %}href="{% url 'tables:table_detail' table_pk=t.pk %}">
+                                        {{ t.name }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                            <li>You haven't created any tables yet!</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-8">
+            <div class="card">
+                {% if table %}
+                    {% include "tables/card_header.html" with obj=table %}
+                    <div class="card-body">
+                        <p>{{ table.description|safe }}</p>
+                        <ul class="list-group mb-3">
+                            {% for option in table.options %}
+                                <li class="option-{{ option.pk }} list-group-item">{{ option.description }}</li>
+                            {% endfor %}
+                        </ul>
+                        <a id="roll-button" class="btn btn-primary btn-block" href="">Roll</a>
+                    </div>
+                {% else %}
+                    {% include "tables/card_header.html" with obj=table %}
+                    <div class="card-body">
+                        <p>You haven't created any tables yet!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body_extra %}
+    <script src="{% static 'js/table_delete.js' %}"></script>
+    <script>
+        // look for user to click the roll button
+        $(document).on('click', '#roll-button', function(event) {
+            event.preventDefault();
+
+            // send table pk to django view
+            $.ajax({
+                url: '/tables/roll/',
+                data: {
+                    'pk': {{ table.pk }},
+                },
+                dataType: 'json',
+                success: function(data){
+                    var highlightClass = "list-group-item-success";
+                    // clear any previous rolls and wait 500 ms
+                    $("li[class^='option-']").removeClass(highlightClass).delay(500).queue(function(next){
+                        // set new roll class
+                        $(".option-" + data.pk).addClass(highlightClass);
+                        next();
+                    });
+                }
+            });
+        });
+    </script>
+{% endblock %}
