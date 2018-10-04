@@ -1,8 +1,10 @@
+from random import choice
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 
@@ -171,3 +173,20 @@ def table_delete(request, table_pk):
         return HttpResponseRedirect(reverse('tables:table_detail'))
     else:
         raise Http404
+
+@login_required
+def table_roll(request):
+    # get the table based on the pk ajax sends here
+    table_pk = request.GET.get('pk', None)
+    table = get_object_or_404(models.Table, pk=table_pk)
+
+    # get the table options and put them into a list
+    table_options = list(table.options())
+
+    # pick a random one and return the pk
+    random_option = choice(table_options).pk
+    data = {
+        'pk': random_option
+    }
+
+    return JsonResponse(data)

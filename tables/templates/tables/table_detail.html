@@ -61,9 +61,10 @@
                         <p>{{ table.description|safe }}</p>
                         <ul>
                             {% for option in table.options %}
-                                <li>{{ option.description }}</li>
+                                <li><span class="option-{{ option.pk }}">{{ option.description }}</span></li>
                             {% endfor %}
                         </ul>
+                        <a id="roll-button" class="btn btn-primary" href="">Roll</a>
                     </div>
                 {% else %}
                     {% include "tables/card_header.html" with obj=table %}
@@ -78,4 +79,27 @@
 
 {% block body_extra %}
     <script src="{% static 'js/table_delete.js' %}"></script>
+    <script>
+        // look for user to click the roll button
+        $(document).on('click', '#roll-button', function(event) {
+            event.preventDefault();
+
+            // send table pk to django view
+            $.ajax({
+                url: '/tables/roll/',
+                data: {
+                    'pk': {{ table.pk }},
+                },
+                dataType: 'json',
+                success: function(data){
+                    // clear any previous rolls and wait 500 ms
+                    $("span[class^='option-']").removeClass("text-success").delay(500).queue(function(next){
+                        // set new roll class
+                        $(".option-" + data.pk).addClass("text-success");
+                        next();
+                    });
+                }
+            });
+        });
+    </script>
 {% endblock %}
