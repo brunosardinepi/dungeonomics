@@ -91,34 +91,6 @@ def table_create(request):
 
             messages.add_message(request, messages.SUCCESS, "Table created!")
             return HttpResponseRedirect(table.get_absolute_url())
-
-
-###
-#        if request.method == 'POST':
-#            form = forms.CampaignForm(request.POST, instance=campaign)
-#            chapter_forms = forms.ChapterInlineFormSet(request.POST, queryset=form.instance.chapter_set.all())
-#            if form.is_valid() and chapter_forms.is_valid():
-#                form.save()
-#                chapters = chapter_forms.save(commit=False)
-#                for chapter in chapters:
-#                    chapter.campaign = campaign
-#                    chapter.user = request.user
-#                    chapter.save()
-#                for chapter in chapter_forms.deleted_objects:
-#                    chapter.delete()
-#                messages.add_message(request, messages.SUCCESS, "Updated campaign: {}".format(form.cleaned_data['title']))
-#                return HttpResponseRedirect(campaign.get_absolute_url())
-#            else:
-#                print(form.errors)
-#                print(chapter_forms.errors)
-###
-
-
-
-
-
-
-
     return render(request, 'tables/table_form.html', {
         'form': form,
         'formset': formset,
@@ -159,10 +131,18 @@ def table_update(request, table_pk):
     table = get_object_or_404(models.Table, pk=table_pk)
     if table.user == request.user:
         form = forms.TableForm(instance=table)
+        formset = forms.TableOptionFormSet(instance=table)
         if request.method == 'POST':
-            form = forms.TableForm(instance=table, data=request.POST)
-            if form.is_valid():
+            form = forms.TableForm(request.POST, instance=table)
+            formset = forms.TableOptionFormSet(request.POST, instance=table)
+            if form.is_valid() and formset.is_valid():
                 form.save()
+                options = formset.save(commit=False)
+                for option in options:
+                    option.table = table
+                    option.save()
+                for option in formset.deleted_objects:
+                    option.delete()
                 messages.add_message(request,
                     messages.SUCCESS,
                     "Updated table: {}".format(form.cleaned_data['name'])
@@ -172,6 +152,7 @@ def table_update(request, table_pk):
         raise Http404
     return render(request, 'tables/table_form.html', {
         'form': form,
+        'formset': formset,
         'table': table,
         'monsters': monsters,
         'npcs': npcs,

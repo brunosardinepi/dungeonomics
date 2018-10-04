@@ -159,13 +159,17 @@
                             <caption>Enter each table option that can be rolled for, with each option going on a separate line.</caption>
                             <thead>
                                 <tr>
-                                    <th scope="col">Options</th>
+                                    <th scope="col"{% if table.pk %} class="width-ninety"{% endif %}>Options</th>
+                                    {% if table.pk %}<th scope="col" class="text-center width-ten">Delete</th>{% endif %}
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for form in formset %}
                                     <tr>
-                                        <td class="width-all">{{ form.id }}{{ form.order }}{{ form.description }}</td>
+                                        <td {% if form.instance.pk %}class="width-ninety tableoption"{% else %}class="width-all tableoption"{% endif %}>{{ form.id }}{{ form.description }}</td>
+                                        {% if form.instance.pk %}
+                                            <td class="text-center width-ten">{{ form.DELETE }}</td>
+                                        {% endif %}
                                     </tr>
                                 {% endfor %}
                             </tbody>

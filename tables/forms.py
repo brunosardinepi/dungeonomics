@@ -31,4 +31,5 @@ TableOptionFormSet = inlineformset_factory(
     models.Table,
     models.TableOption,
     fields=('description',),
+    extra=0,
 )
