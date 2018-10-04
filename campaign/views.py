@@ -24,6 +24,7 @@ from dungeonomics import settings
 from items import models as item_models
 from locations import models as location_models
 from posts.models import Post
+from tables.models import Table, TableOption
 
 
 @login_required
@@ -340,6 +341,7 @@ def campaign_export(request, campaign_pk):
             added_other = []
             added_worlds = []
             added_locations = []
+            added_tables = []
 
             for item in combined_list:
 
@@ -389,6 +391,19 @@ def campaign_export(request, campaign_pk):
                                         additional_assets.append(location)
                                         added_locations.append(location.pk)
 
+                        elif isinstance(obj, Table):
+                            if obj.pk not in added_tables:
+                                # get all of the Table Options that belong to this Table
+                                table_options = TableOption.objects.filter(table=obj)
+
+                                # add all of the new Table Options to a list for tracking
+                                for table_option in table_options:
+                                    additional_assets.append(table_option)
+
+                                # add the Table to a list for tracking
+                                additional_assets.append(obj)
+                                added_tables.append(obj.pk)
+
                         else:
                             if obj.pk not in added_other:
                                 additional_assets.append(obj)
@@ -424,6 +439,8 @@ def campaign_import(request):
                     "Item",
                     "World",
                     "Location",
+                    "Table",
+                    "TableOption",
                 ]
 
                 for obj in serializers.deserialize("json", user_import):
@@ -440,6 +457,8 @@ def campaign_import(request):
                     "items": {},
                     "worlds": {},
                     "locations": {},
+                    "tables": {},
+                    "tableoptions": {},
                 }
 
                 # for each "other" asset,
@@ -483,7 +502,24 @@ def campaign_import(request):
                         asset_references['worlds'][old_pk] = new_pk
                     elif isinstance(other, location_models.Location):
                         asset_references['locations'][old_pk] = new_pk
+                    elif isinstance(other, Table):
+                        asset_references['tables'][old_pk] = new_pk
+                    elif isinstance(other, TableOption):
+                        asset_references['tableoptions'][old_pk] = new_pk
 
+### i need to consolidate all textarea into a single "content" section before this happens
+#                # update any content with new pks. must be done after asset_references is populated
+#                for other in others:
+#                    utils.replace_content_urls(other, asset_references)
+
+                for old_pk, new_pk in asset_references['tableoptions'].items():
+                    # for each tableoption, set the table to the newly created table
+                    old_tableoption = TableOption.objects.get(pk=old_pk)
+                    new_tableoption = TableOption.objects.get(pk=new_pk)
+                    old_table = old_tableoption.table
+                    new_table = Table.objects.get(pk=asset_references['tables'][old_table.pk])
+                    new_tableoption.table = new_table
+                    new_tableoption.save()
 
                 for old_pk, new_pk in asset_references['locations'].items():
                     # for each location, set the parent location to the new parent location.

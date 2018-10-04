@@ -6,6 +6,7 @@ from campaign.models import Campaign
 from characters.models import Monster, NPC, Player
 from items.models import Item
 from locations.models import Location, World
+from tables.models import Table
 
 
 def has_campaign_access(user, campaign_pk):
@@ -74,6 +75,15 @@ def get_url_object(url):
         except Item.DoesNotExist:
             obj = None
 
+    elif resource == "tables":
+        table_pk = url.split("tables/")[1]
+        table_pk = table_pk.replace("/", "")
+
+        try:
+            obj = Table.objects.get(pk=table_pk)
+        except Table.DoesNotExist:
+            obj = None
+
     elif resource == "locations":
         location_type = url.split("locations/")[1]
         location_pk = location_type.split("/", 1)[1]
@@ -124,6 +134,8 @@ def replace_content_urls(item, asset_references):
             new_pk = asset_references['worlds'][obj_old_pk]
         elif isinstance(obj, Location):
             new_pk = asset_references['locations'][obj_old_pk]
+        elif isinstance(obj, Table):
+            new_pk = asset_references['tables'][obj_old_pk]
 
         new_url = url.replace(str(obj_old_pk), str(new_pk))
 
