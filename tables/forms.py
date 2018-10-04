@@ -24,13 +24,13 @@ class TableForm(TinyMCEForm):
         model = models.Table
         fields = [
             'name',
-            'description',
+            'content',
         ]
 
 TableOptionFormSet = inlineformset_factory(
     models.Table,
     models.TableOption,
-    fields=('description',),
+    fields=('content',),
     extra=0,
     min_num=2,
 )

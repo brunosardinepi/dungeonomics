@@ -8,7 +8,7 @@ class TableAdmin(admin.ModelAdmin):
   ordering = ('user', 'name',)
 
 class TableOptionAdmin(admin.ModelAdmin):
-  list_display = ('table', 'description',)
+  list_display = ('table', 'content',)
   ordering = ('table',)
 
 admin.site.register(models.Table, TableAdmin)
