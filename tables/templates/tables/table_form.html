@@ -1,5 +1,5 @@
 {% extends 'layout.html' %}
-
+{% load static from staticfiles %}
 {% load widget_tweaks %}
 
 
@@ -155,21 +155,18 @@
 
                         {{ formset.management_form }}
 
-                        <table class="table table-striped table-hover mt-5">
-                            <caption>Enter each table option that can be rolled for, with each option going on a separate line.</caption>
+                        <table id="table-options-table" class="table mt-5">
                             <thead>
                                 <tr>
-                                    <th scope="col"{% if table.pk %} class="width-ninety"{% endif %}>Options</th>
-                                    {% if table.pk %}<th scope="col" class="text-center width-ten">Delete</th>{% endif %}
+                                    <th scope="col"{% if table.pk %} class="width-ninety"{% endif %}>Options <small style="margin-left:5px;">Enter each table option that can be rolled for, with each option going on a separate line.</small></th>
+                                    {% if table.pk %}<th scope="col" class="text-center width-ten"></th>{% endif %}
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for form in formset %}
                                     <tr>
                                         <td {% if form.instance.pk %}class="width-ninety tableoption"{% else %}class="width-all tableoption"{% endif %}>{{ form.id }}{{ form.description }}</td>
-                                        {% if form.instance.pk %}
-                                            <td class="text-center width-ten">{{ form.DELETE }}</td>
-                                        {% endif %}
+                                        <td class="text-center width-ten">{% if form.instance.pk %}{{ form.DELETE }}{% endif %}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
@@ -200,3 +197,13 @@
         </div>
     </div>
 {% endblock %}
+
+{% block body_extra %}
+    <script src="{% static 'js/formset.js' %}"></script>    
+    <script type="text/javascript">
+        $(function() {
+            $("#table-options-table tbody tr").formset({
+                prefix: "{{ formset.prefix }}",
+            });
+        })
+    </script>{% endblock %}
