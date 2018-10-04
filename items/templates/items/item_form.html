@@ -166,10 +166,10 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="{{ form.description.id_for_label }}">Description</label>
-                            {% render_field form.description class+="form-control" %}
-                            {% if form.description.errors %}
-                                {% for error in form.description.errors %}
+                            <label for="{{ form.content.id_for_label }}">Description</label>
+                            {% render_field form.content class+="form-control" %}
+                            {% if form.content.errors %}
+                                {% for error in form.content.errors %}
                                     <div class="alert alert-danger" role="alert">
                                         {{ error|escape }}
                                     </div>
