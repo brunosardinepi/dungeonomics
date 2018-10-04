@@ -59,12 +59,12 @@
                     {% include "tables/card_header.html" with obj=table %}
                     <div class="card-body">
                         <p>{{ table.description|safe }}</p>
-                        <ul>
+                        <ul class="list-group mb-3">
                             {% for option in table.options %}
-                                <li><span class="option-{{ option.pk }}">{{ option.description }}</span></li>
+                                <li class="option-{{ option.pk }} list-group-item">{{ option.description }}</li>
                             {% endfor %}
                         </ul>
-                        <a id="roll-button" class="btn btn-primary" href="">Roll</a>
+                        <a id="roll-button" class="btn btn-primary btn-block" href="">Roll</a>
                     </div>
                 {% else %}
                     {% include "tables/card_header.html" with obj=table %}
@@ -92,10 +92,11 @@
                 },
                 dataType: 'json',
                 success: function(data){
+                    var highlightClass = "list-group-item-success";
                     // clear any previous rolls and wait 500 ms
-                    $("span[class^='option-']").removeClass("text-success").delay(500).queue(function(next){
+                    $("li[class^='option-']").removeClass(highlightClass).delay(500).queue(function(next){
                         // set new roll class
-                        $(".option-" + data.pk).addClass("text-success");
+                        $(".option-" + data.pk).addClass(highlightClass);
                         next();
                     });
                 }
