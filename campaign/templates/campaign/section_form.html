@@ -66,6 +66,14 @@
                     'type': 'location'
                 });
         }
+        var tables_dict = {{tables|safe}};
+        for (var key in tables_dict) {
+            taggable.push({
+                    'name': tables_dict[key],
+                    'id': key,
+                    'type': 'table'
+                });
+        }
         tinymce.init({
             selector: "#id_content",
             height : "250",
@@ -92,6 +100,8 @@
                 insert: function(item) {
                     if (item.type == 'item') {
                         var url = "{% url 'items:item_detail' item_pk=999999999999 %}".replace(999999999999, item.id);
+                    } else if (item.type == 'table') {
+                        var url = "{% url 'tables:table_detail' table_pk=999999999999 %}".replace(999999999999, item.id);
                     } else if (item.type == 'world') {
                         var url = "{% url 'locations:location_detail' world_pk=999999999999 %}".replace(999999999999, item.id);
                     } else if (item.type == 'location') {
