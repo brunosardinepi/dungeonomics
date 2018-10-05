@@ -507,10 +507,12 @@ def campaign_import(request):
                     elif isinstance(other, TableOption):
                         asset_references['tableoptions'][old_pk] = new_pk
 
-### i need to consolidate all textarea into a single "content" section before this happens
-#                # update any content with new pks. must be done after asset_references is populated
-#                for other in others:
-#                    utils.replace_content_urls(other, asset_references)
+                # update any content with new pks
+                # must be done after asset_references is populated
+                for other in others:
+                    # everything has 'content' except TableOption
+                    if not isinstance(other, TableOption):
+                        utils.replace_content_urls(other, asset_references)
 
                 for old_pk, new_pk in asset_references['tableoptions'].items():
                     # for each tableoption, set the table to the newly created table

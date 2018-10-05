@@ -59,7 +59,7 @@
                     {% include "items/card_header.html" with obj=item %}
                     <div class="card-body">
                         <p>{% if item.item_type %}{{ item.item_type }}{% endif %}{% if item.rarity and item.item_type %}, {{ item.rarity }}{% elif item.rarity %}{{ item.rarity }}{% else %}{% endif %}</em></p>
-                        <hr>
+                        {% if item.item_type or item.rarity %}<hr>{% endif %}
                         {{ item.content|safe }}
                     </div>
                 {% else %}

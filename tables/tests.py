@@ -11,14 +11,13 @@ from . import views
 class TableTest(TestCase):
     table_form_data = {
         'name': 'test table name',
-        'description': 'yyyyyyuyuyuyyuyu',
-#        'order': '2',
+        'content': 'yyyyyyuyuyuyyuyu',
         'tableoption_set-TOTAL_FORMS': '1',
         'tableoption_set-INITIAL_FORMS': '0',
         'tableoption_set-MIN_NUM_FORMS': '0',
         'tableoption_set-MAX_NUM_FORMS': '1000',
         'tableoption_set-0-id': '',
-        'tableoption_set-0-description': 'o1',
+        'tableoption_set-0-content': 'o1',
     }
 
 
@@ -40,13 +39,13 @@ class TableTest(TestCase):
         self.table = models.Table.objects.create(
             user=self.user,
             name="test table",
-            description="this is test table",
+            content="this is test table",
         )
 
         self.table2 = models.Table.objects.create(
             user=self.user2,
             name="test 2 table",
-            description="this is test 2 table",
+            content="this is test 2 table",
         )
 
     def test_table_exists(self):
@@ -60,7 +59,7 @@ class TableTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.table.name)
-        self.assertContains(response, self.table.description)
+        self.assertContains(response, self.table.content)
 
     def test_table_page_bad_user(self):
         self.client.login(username='testuser', password='testpassword')
