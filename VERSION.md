@@ -11,6 +11,7 @@ Release date: 10/05/2018
 
 * #74 -- Rollable tables
 * #110 -- Tag tables in content
+* #109 -- Tables included in Campaign export
 
 ### Changes
 
