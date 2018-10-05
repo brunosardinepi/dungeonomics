@@ -13,6 +13,7 @@ Release date: 10/05/2018
 * #110 -- Tag tables in content
 * #109 -- Tables included in Campaign export
 * #111 -- Merge traits/actions/notes into single Content field
+* #112 -- Bug fix: not all URLs in content were updated correctly on Campaign import
 
 ### Changes
 
