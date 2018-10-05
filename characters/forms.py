@@ -43,9 +43,7 @@ class MonsterForm(TinyMCEForm):
             'condition_immunities',
             'senses',
             'challenge_rating',
-            'traits',
-            'actions',
-            'notes',
+            'content',
         ]
 
 
@@ -80,9 +78,7 @@ class NPCForm(TinyMCEForm):
             'condition_immunities',
             'senses',
             'challenge_rating',
-            'traits',
-            'actions',
-            'notes',
+            'content',
         ]
 
 class PlayerForm(TinyMCEForm):

@@ -70,7 +70,7 @@
             </div>
         </div>
 
-        <hr>
+        {% if npc.challenge_rating or npc.armor_class or npc.hit_points or npc.speed %}<hr>{% endif %}
 
         <div class="row">
             <div class="col-md-2">
@@ -123,7 +123,7 @@
             </div>
         </div>
 
-        <hr>
+        {% if npc.race or npc.npc_class or npc.age or npc.height or npc.weight %}<hr>{% endif %}
 
         <div class="row">
             <div class="col-md-12">
@@ -135,7 +135,7 @@
             </div>
         </div>
 
-        {% if npc.npc_class or npc.age or npc.height or npc.weight %}<hr>{% endif %}
+        {% if npc.race or npc.npc_class or npc.age or npc.height or npc.weight %}<hr>{% endif %}
 
         <div class="row">
             <div class="col-md-12">
@@ -150,32 +150,15 @@
             </div>
         </div>
 
-        {% if npc.traits %}
+        {% if npc.content %}
             <hr>
             <div class="row">
                 <div class="col-md-12">
-                    <h3>Traits</h3><p>{{ npc.traits|safe }}</p>
+                    {{ npc.content|safe }}
                 </div>
             </div>
         {% endif %}
 
-        {% if npc.actions %}
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <h3>Actions</h3><p>{{ npc.actions|safe }}</p>
-                </div>
-            </div>
-        {% endif %}
-
-        {% if npc.notes %}
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <h3>Notes</h3><p>{{ npc.notes|safe }}</p>
-                </div>
-            </div>
-        {% endif %}
     {% else %}
         <p>You haven't created any NPCs yet!</p>
     {% endif %}

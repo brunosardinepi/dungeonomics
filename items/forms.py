@@ -25,7 +25,7 @@ class ItemForm(TinyMCEForm):
             'name',
             'item_type',
             'rarity',
-            'description',
+            'content',
         ]
 
 class CopyItemForm(forms.ModelForm):

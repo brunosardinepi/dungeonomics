@@ -9,7 +9,7 @@ class Item(models.Model):
     name = models.CharField(max_length=255, default='')
     item_type = models.CharField(verbose_name= _('Type'), max_length=255, default='', blank=True)
     rarity = models.CharField(max_length=255, default='', blank=True)
-    description = models.TextField(blank=True)
+    content = models.TextField(blank=True)
 
     def __str__(self):
         return self.name

@@ -31,13 +31,13 @@ class ItemTest(TestCase):
         self.item = models.Item.objects.create(
             user=self.user,
             name="test item",
-            description="this is test item",
+            content="this is test item",
         )
 
         self.item2 = models.Item.objects.create(
             user=self.user2,
             name="test 2 item",
-            description="this is test 2 item",
+            content="this is test 2 item",
         )
 
     def test_item_exists(self):
@@ -51,7 +51,7 @@ class ItemTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.item.name)
-        self.assertContains(response, self.item.description)
+        self.assertContains(response, self.item.content)
 
     def test_item_page_bad_user(self):
         self.client.login(username='testuser', password='testpassword')

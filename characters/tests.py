@@ -21,7 +21,8 @@ class CharacterTest(TestCase):
         'name': 'test monster name',
         'level': 1,
         'alignment': 'N',
-        'size': 'Medium'
+        'size': 'Medium',
+        'content': 'some test content',
     }
 
     npc_form_data = {
@@ -29,6 +30,7 @@ class CharacterTest(TestCase):
         'level': 1,
         'alignment': 'N',
         'size': 'Medium',
+        'content': 'cat goes meow'
     }
 
     def setUp(self):
@@ -148,6 +150,7 @@ class CharacterTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.monster.name)
+        self.assertContains(response, self.monster.content)
 
     def test_monster_page_bad_user(self):
         self.client.login(username='testuser', password='testpassword')
@@ -204,6 +207,7 @@ class CharacterTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.npc.name)
+        self.assertContains(response, self.npc.content)
 
     def test_npc_page_bad_user(self):
         self.client.login(username='testuser', password='testpassword')
