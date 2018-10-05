@@ -3,6 +3,23 @@
 This is the version history for Dungeonomics development.
 
 
+## Version 2.5.0
+
+Release date: 10/05/2018
+
+### Additions
+
+* #74 -- Rollable tables
+
+### Changes
+
+* None
+
+### Fixes
+
+* None
+
+
 ## Version 2.4.0
 
 Release date: 09/28/2018
