@@ -66,7 +66,7 @@ WSGI_APPLICATION = 'dungeonomics.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': config.settings['db_name'],
         'USER': config.settings['db_user'],
         'PASSWORD': config.settings['db_password'],
