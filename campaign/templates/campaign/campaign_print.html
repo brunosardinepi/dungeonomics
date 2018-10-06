@@ -77,8 +77,7 @@
                 {% if monster.damage_resistances %}<p>Damage resistances: {{ monster.damage_resistances }}</p>{% endif %}
                 {% if monster.condition_immunities %}<p>Condition immunities: {{ monster.condition_immunities }}</p>{% endif %}
                 <br />
-                {% if monster.traits %}<p>Traits {{ monster.traits|safe }}</p>{% endif %}
-                {% if monster.actions %}<p>Actions {{ monster.actions|safe }}</p>{% endif %}
+                {% if monster.content %}<p>Notes {{ monster.content|safe }}</p>{% endif %}
             {% endfor %}
         {% endif %}
 
@@ -116,9 +115,7 @@
                 {% if npc.damage_resistances %}<p>Damage resistances: {{ npc.damage_resistances }}</p>{% endif %}
                 {% if npc.condition_immunities %}<p>Condition immunities: {{ npc.condition_immunities }}</p>{% endif %}
                 <br />
-                {% if npc.traits %}<p>Traits {{ npc.traits|safe }}</p>{% endif %}
-                {% if npc.actions %}<p>Actions {{ npc.actions|safe }}</p>{% endif %}
-                {% if npc.notes %}<p>Notes {{ npc.notes|safe }}</p>{% endif %}
+                {% if npc.content %}<p>Notes {{ npc.content|safe }}</p>{% endif %}
             {% endfor %}
         {% endif %}
 
