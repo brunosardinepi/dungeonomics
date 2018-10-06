@@ -3,6 +3,7 @@ import uuid
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.db import models
+from django.db.models import Avg
 from django.utils.translation import ugettext_lazy as _
 
 from posts.models import Post
@@ -18,6 +19,10 @@ class CampaignTemplate(models.Model):
 
     def __str__(self):
         return self.title
+
+    def rating(self):
+        # return the average of this campaign's review scores, or 0 if there are no reviews
+        return Review.objects.filter(campaign=self).aggregate(Avg('score'))['score__avg'] or 0
 
 
 def create_random_string(length=30):

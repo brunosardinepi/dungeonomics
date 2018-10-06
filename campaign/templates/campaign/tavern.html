@@ -23,11 +23,16 @@
                     <div class="card-header">
                         <span class="font-weight-bold">Most Popular Campaigns</span>
                     </div>
-                    <ul class="list-group list-group-flush">
-                        {% for campaign in popular_campaigns %}
-                            <li class="list-group-item">{{ campaign.title }}</li>
-                        {% endfor %}
-                    </ul>
+                    <table class="table table-hover mb-0">
+                        <tbody>
+                            {% for campaign in popular_campaigns %}
+                                <tr>
+                                    <td>{{ campaign.title }}</td>
+                                    <td>{{ campaign.rating }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div class="col-lg-6 mb-3">
@@ -35,11 +40,16 @@
                     <div class="card-header">
                         <span class="font-weight-bold">Most Recent Campaigns</span>
                     </div>
-                    <ul class="list-group list-group-flush">
-                        {% for campaign in recent_campaigns %}
-                            <li class="list-group-item">{{ campaign.title }}</li>
-                        {% endfor %}
-                    </ul>
+                    <table class="table table-hover mb-0">
+                        <tbody>
+                            {% for campaign in recent_campaigns %}
+                                <tr>
+                                    <td>{{ campaign.title }}</td>
+                                    <td>{{ campaign.rating }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
