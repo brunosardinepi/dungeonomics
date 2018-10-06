@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.core import serializers
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, redirect, render
@@ -85,7 +85,7 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
     else:
         campaign = None
         user = None
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             user = request.user.pk
         campaigns = sorted(models.Campaign.objects.filter(user=user),
             key=lambda campaign: campaign.title)

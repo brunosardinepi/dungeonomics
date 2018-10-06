@@ -2,6 +2,8 @@ from django.conf.urls import url
 
 from . import views
 
+
+app_name = 'tables'
 urlpatterns = [
     url(r'^(?P<table_pk>\d+)/$', views.table_detail, name='table_detail'),
     url(r'^create/$', views.table_create, name='table_create'),

@@ -2,6 +2,8 @@ from django.conf.urls import url
 
 from . import views
 
+
+app_name = 'locations'
 urlpatterns = [
     url(r'^world/(?P<world_pk>\d+)/$', views.location_detail, name='location_detail'),
     url(r'^location/(?P<location_pk>\d+)/$', views.location_detail, name='location_detail'),

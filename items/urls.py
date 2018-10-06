@@ -2,8 +2,10 @@ from django.conf.urls import url
 
 from . import views
 
+
+app_name = 'items'
 urlpatterns = [
-    url(r'^(?P<item_pk>\d+)/$', views.item_detail, name='item_detail'),    
+    url(r'^(?P<item_pk>\d+)/$', views.item_detail, name='item_detail'),
     url(r'^create/$', views.item_create, name='item_create'),
     url(r'^(?P<item_pk>\d+)/edit/$', views.item_update, name='item_update'),
     url(r'^(?P<item_pk>\d+)/delete/$', views.item_delete, name='item_delete'),

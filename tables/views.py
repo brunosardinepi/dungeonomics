@@ -3,7 +3,7 @@ from random import choice
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpResponseRedirect, Http404, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
@@ -20,7 +20,7 @@ from locations.models import Location, World
 @login_required
 def table_detail(request, table_pk=None):
     user = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         user = request.user.pk
     tables = sorted(
         models.Table.objects.filter(user=user),

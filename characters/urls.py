@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 
 from . import views
 
+
+app_name = 'characters'
 urlpatterns = [
     url(r'^monster/$', views.monster_detail, name='monster_detail'),
     url(r'^npc/$', views.npc_detail, name='npc_detail'),

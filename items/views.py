@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
@@ -17,7 +17,7 @@ from locations import models as location_models
 @login_required
 def item_detail(request, item_pk=None):
     user = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         user = request.user.pk
     items = sorted(models.Item.objects.filter(user=user), key=lambda item: item.name.lower())
     if item_pk:

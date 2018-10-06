@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.core import serializers
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -25,7 +25,7 @@ import json
 @login_required
 def monster_detail(request, monster_pk=None):
     user = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         user = request.user.pk
     monsters = sorted(models.Monster.objects.filter(user=user),
         key=lambda monster: monster.name.lower()
@@ -49,7 +49,7 @@ def monster_detail(request, monster_pk=None):
 @login_required
 def npc_detail(request, npc_pk=''):
     user = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         user = request.user.pk
     npcs = sorted(models.NPC.objects.filter(user=user),
         key=lambda npc: npc.name.lower()
@@ -73,7 +73,7 @@ def npc_detail(request, npc_pk=''):
 @login_required
 def player_detail(request, player_pk=None):
     user = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         user = request.user.pk
     players = sorted(models.Player.objects.filter(user=user),
         key=lambda player: player.player_name.lower()
@@ -313,7 +313,7 @@ def npc_import(request):
 @login_required
 def monster_export(request):
     user = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         user = request.user.pk
 
     queryset = models.Monster.objects.filter(user=user).order_by('name')
@@ -327,7 +327,7 @@ def monster_export(request):
 @login_required
 def npc_export(request):
     user = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         user = request.user.pk
 
     queryset = models.NPC.objects.filter(user=user).order_by('name')

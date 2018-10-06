@@ -20,7 +20,7 @@ class HomeView(TemplateView):
 
 
 def home_view(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         features = Feature.objects.all().annotate(votes=Count('vote')).order_by('-votes')
         return render(request, 'home.html', {'features': features})
     else:

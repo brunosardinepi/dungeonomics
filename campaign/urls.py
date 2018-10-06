@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from . import views
 from posts import views as post_views
 
+
+app_name = 'campaign'
 urlpatterns = [
     url(r'^(?P<campaign_pk>\d+)/$', views.campaign_detail, name='campaign_detail'),
     url(r'^(?P<campaign_pk>\d+)/chapter/(?P<chapter_pk>\d+)/$', views.campaign_detail, name='campaign_detail'),
