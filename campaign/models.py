@@ -29,6 +29,8 @@ def create_random_string(length=30):
 
 class Campaign(CampaignTemplate):
     public_url = models.CharField(max_length=255, unique=True, default=uuid.uuid4)
+    is_published = models.BooleanField(default=False)
+    tavern_description = models.TextField(blank=True)
 
     def get_absolute_url(self):
         return reverse('campaign:campaign_detail', kwargs={
@@ -69,3 +71,11 @@ class Section(CampaignTemplate):
             'chapter_pk': self.chapter_id,
             'section_pk': self.pk
             })
+
+
+class Review(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
+    score = models.IntegerField(default=5)
+    comment = models.TextField(blank=True)

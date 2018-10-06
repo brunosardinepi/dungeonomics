@@ -653,3 +653,13 @@ class CampaignPartyPlayersDetail(View):
             })
         else:
             raise Http404
+
+
+class TavernView(View):
+    def get(self, request, *args, **kwargs):
+        popular_campaigns = models.Campaign.objects.all()
+        recent_campaigns = models.Campaign.objects.all()
+        return render(self.request, 'campaign/tavern.html', {
+            'popular_campaigns': popular_campaigns,
+            'recent_campaigns': recent_campaigns,
+        })

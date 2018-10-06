@@ -7,6 +7,7 @@ from django.views.generic import TemplateView
 
 from . import config
 from . import views
+from campaign.views import TavernView
 
 
 urlpatterns = [
@@ -23,6 +24,7 @@ urlpatterns = [
     path('accounts/password/reset/', views.PasswordResetView.as_view(), name='password_reset'),
     path('accounts/delete/', views.account_delete, name='account_delete'),
     path('accounts/', include('allauth.urls')),
+    path('tavern/', TavernView.as_view(), name='tavern'),
     path('campaign/', include('campaign.urls', namespace='campaign')),
     path('characters/', include('characters.urls', namespace='characters')),
     path('donate/', views.DonateView.as_view(), name='donate'),

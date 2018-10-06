@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+
+{% load static %}
+{% load humanize %}
+
+{% block title %} Tavern | {{ block.super }}{% endblock %}
+
+{% block body_content %}
+        <div class="row mt-4 pb-3">
+            <div class="col-lg-12 mb-3">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h2>The Tavern</h2>
+                        <p>Welcome to our collection of community campaigns. Publish your campaigns in the Tavern, and then other users can import the campaign and all of its assets into their account. Let others know which content is good by giving reviews and leaving comments on campaigns.</p>
+                        <p>Everything in the Tavern is free and always will be free. Build a campaign and share it with others to create quality content that everyone can use.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row pb-3">
+            <div class="col-lg-6 mb-3">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="font-weight-bold">Most Popular Campaigns</span>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        {% for campaign in popular_campaigns %}
+                            <li class="list-group-item">{{ campaign.title }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-3">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="font-weight-bold">Most Recent Campaigns</span>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        {% for campaign in recent_campaigns %}
+                            <li class="list-group-item">{{ campaign.title }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+{% endblock %}
