@@ -8,26 +8,23 @@
 {% block body_content %}
     <div class="row mt-3 pb-5">
         <div class="col-lg-8">
-            <div class="card">
-                <div class="card-header">
-                    <div class="row justify-content-between align-items-center">
-                        <div class="col-auto">
-                            <h5 class="px-1 mb-0">{{ campaign.title }}</h5>
-                        </div>
-                        <div class="col-auto">
-                            ***** x reviews, y comments, imported z times
-                        </div>
-                    </div>
-                </div>
+            <div class="card mb-3">
                 <div class="card-body">
-                    <h3>Description</h3>
+                    <h3>{{ campaign.title }}</h3>
+                    <p>***** x reviews, y comments, imported z times</p>
+
+                    <h5>Description</h5>
                     {% if campaign.tavern_description %}
                         {{ campaign.tavern_description|safe }}
                     {% else %}
                         <p>None</p>
                     {% endif %}
-                    <hr>
-                    <h3>Table of Contents</h3>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5>Table of Contents</h5>
                     <ul class="contents_list">
                         {% if chapters %}
                             {% for c in chapters %}
@@ -42,9 +39,11 @@
                             {% endfor %}
                         {% endif %}
                     </ul>
-                    <hr>
-                    <h3>Assets</h3>
+                </div>
+            </div>
 
+            <div class="card mb-3">
+                <div class="card-body">
                     <h5>Monsters</h5>
                     <ul>
                         {% for monster in monsters %}
@@ -89,26 +88,29 @@
                             <li>{{ table.name }}</li>
                         {% endfor %}
                     </ul>
-
                 </div>
             </div>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5>Comments</h5>
+                    <p>None</p>
+                </div>
+            </div>
+
         </div>
         <div class="col-lg-4 mb-3">
             <div class="card mb-3">
-                <div class="card-header">
-                    <div class="row">
-                        <div class="col-auto">
-                            <h5 class="px-1 mb-0">Summary</h5>
-                        </div>
-                    </div>
-                </div>
                 <div class="card-body">
-                        <p>{{ chapters.count }} Chapter{{ chapters|pluralize }}, {{ sections.count }} Section{{ sections|pluralize }}</p><hr>
-                        <p>{{ monsters|length }} Monster{{ monsters|pluralize }}, {{ npcs|length }} NPC{{ npcs|pluralize }}</p><hr>
-                        <p>{{ items|length }} Item{{ items|pluralize }}</p><hr>
-                        <p>{{ worlds|length }} World{{ worlds|pluralize }}, {{ locations|length }} Location{{ locations|pluralize }}</p><hr>
-                        <p>{{ tables|length }} Table{{ tables|pluralize }}</p>
-                        <a href="" class="btn btn-success btn-block mt-4">Import Campaign</a>
+                    <h5>Summary</h5>
+                    <ul class="contents_list">
+                        <li>{{ chapters.count }} Chapter{{ chapters|pluralize }}, {{ sections.count }} Section{{ sections|pluralize }}</li>
+                        <li>{{ monsters|length }} Monster{{ monsters|pluralize }}, {{ npcs|length }} NPC{{ npcs|pluralize }}</li>
+                        <li>{{ items|length }} Item{{ items|pluralize }}</li>
+                        <li>{{ worlds|length }} World{{ worlds|pluralize }}, {{ locations|length }} Location{{ locations|pluralize }}</li>
+                        <li>{{ tables|length }} Table{{ tables|pluralize }}</li>
+                    </ul>
+                    <a href="" class="btn btn-success btn-block mt-4">Import Campaign</a>
                 </div>
             </div>
         </div>
