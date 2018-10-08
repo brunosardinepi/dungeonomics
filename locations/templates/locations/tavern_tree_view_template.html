@@ -1,0 +1,13 @@
+{% load locations_extras %}
+
+<li>{{ world_location.name }}</li>
+{% get_child_locations world_location.pk as child_locations %}
+{% if child_locations %}
+    <ul style="padding-left:30px;">
+        {% for child_location in child_locations %}
+            {% with world_location=child_location template_name="locations/tavern_tree_view_template.html" %}
+                {% include template_name %}
+            {% endwith %}
+        {% endfor %}
+    </ul>
+{% endif %}

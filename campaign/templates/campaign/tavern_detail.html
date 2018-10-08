@@ -1,23 +1,12 @@
 {% extends 'layout.html' %}
 
 {% load static %}
+{% load locations_extras %}
 
 {% block title %}Tavern - {{ campaign.title }} | {{ block.super }}{% endblock %}
 
 {% block body_content %}
     <div class="row mt-3 pb-5">
-        <div class="col-lg-4 mb-3">
-            <div class="card mb-3">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">{{ chapters }} Chapter{{ chapters|pluralize }}, {{ sections }} Section{{ sections|pluralize }}</li>
-                        <li class="list-group-item">{{ monsters }} Monster{{ monsters|pluralize }}, {{ npcs }} NPC{{ npcs|pluralize }}</li>
-                        <li class="list-group-item">{{ items }} Item{{ items|pluralize }}</li>
-                        <li class="list-group-item">{{ worlds }} World{{ worlds|pluralize }}, {{ locations }} Location{{ locations|pluralize }}</li>
-                        <li class="list-group-item">{{ tables }} Table{{ tables|pluralize }}</li>
-                        <li class="list-group-item"><a href="" class="btn btn-success btn-block">Import Campaign</a></li>
-                    </ul>
-            </div>
-        </div>
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-header">
@@ -26,19 +15,100 @@
                             <h5 class="px-1 mb-0">{{ campaign.title }}</h5>
                         </div>
                         <div class="col-auto">
-                            <div class="dropdown">
-                                <a class="btn btn-sm text-dark dropdown-toggle" href="#" role="button" id="contents-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-lg fa-cog"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="contents-dropdown">
-                                    <a href="{% url 'campaign:chapter_create' campaign_pk=campaign.pk %}" class="dropdown-item text-success"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> Create chapter</span></a>
-                                </div>
-                            </div>
+                            ***** x reviews, y comments, imported z times
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <p>You haven't created any content yet!</p>
+                    <h3>Description</h3>
+                    {% if campaign.tavern_description %}
+                        {{ campaign.tavern_description|safe }}
+                    {% else %}
+                        <p>None</p>
+                    {% endif %}
+                    <hr>
+                    <h3>Table of Contents</h3>
+                    <ul class="contents_list">
+                        {% if chapters %}
+                            {% for c in chapters %}
+                                <li class="li-content">{{ c.order }}. {{ c.title }}</li>
+                                <ul style="padding-left:30px;">
+                                    {% for s in sections %}
+                                        {% if s.chapter.pk == c.pk %}
+                                            <li class="li-content">{{ s.order }}. {{ s.title }}</li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                    <hr>
+                    <h3>Assets</h3>
+
+                    <h5>Monsters</h5>
+                    <ul>
+                        {% for monster in monsters %}
+                            <li>{{ monster.name }}</li>
+                        {% endfor %}
+                    </ul>
+
+                    <h5>NPCs</h5>
+                    <ul>
+                        {% for npc in npcs %}
+                            <li>{{ npc.name }}</li>
+                        {% endfor %}
+                    </ul>
+
+                    <h5>Items</h5>
+                    <ul>
+                        {% for item in items %}
+                            <li>{{ item.name }}</li>
+                        {% endfor %}
+                    </ul>
+
+                    <h5>Worlds/Locations</h5>
+                    <ul>
+                        {% if worlds %}
+                            {% for w in worlds %}
+                                <li>{{ w.name }}</li>
+                                {% get_world_locations w.pk as world_locations %}
+                                {% if world_locations %}
+                                    <ul style="padding-left:30px;">
+                                        {% for world_location in world_locations %}
+                                            {% include "locations/tavern_tree_view_template.html" %}
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+
+                    <h5>Tables</h5>
+                    <ul>
+                        {% for table in tables %}
+                            <li>{{ table.name }}</li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 mb-3">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-auto">
+                            <h5 class="px-1 mb-0">Summary</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                        <p>{{ chapters.count }} Chapter{{ chapters|pluralize }}, {{ sections.count }} Section{{ sections|pluralize }}</p><hr>
+                        <p>{{ monsters|length }} Monster{{ monsters|pluralize }}, {{ npcs|length }} NPC{{ npcs|pluralize }}</p><hr>
+                        <p>{{ items|length }} Item{{ items|pluralize }}</p><hr>
+                        <p>{{ worlds|length }} World{{ worlds|pluralize }}, {{ locations|length }} Location{{ locations|pluralize }}</p><hr>
+                        <p>{{ tables|length }} Table{{ tables|pluralize }}</p>
+                        <a href="" class="btn btn-success btn-block mt-4">Import Campaign</a>
                 </div>
             </div>
         </div>

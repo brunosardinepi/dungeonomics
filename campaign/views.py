@@ -668,8 +668,8 @@ class TavernView(View):
 class TavernDetailView(View):
     def get(self, request, *args, **kwargs):
         campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
-        chapters = models.Chapter.objects.filter(campaign=campaign).count()
-        sections = models.Section.objects.filter(campaign=campaign).count()
+        chapters = models.Chapter.objects.filter(campaign=campaign)
+        sections = models.Section.objects.filter(campaign=campaign)
 
         chapters_queryset = models.Chapter.objects.filter(campaign=campaign).order_by('order')
         sections_queryset = models.Section.objects.filter(campaign=campaign).order_by('order')
@@ -697,33 +697,33 @@ class TavernDetailView(View):
                 obj = utils.get_url_object(url)
                 if obj:
                     if isinstance(obj, Monster):
-                        if obj.pk not in monsters:
+                        if obj not in monsters:
                             # add to a list for tracking
-                            monsters.append(obj.pk)
+                            monsters.append(obj)
                     elif isinstance(obj, NPC):
-                        if obj.pk not in npcs:
-                            npcs.append(obj.pk)
+                        if obj not in npcs:
+                            npcs.append(obj)
                     elif isinstance(obj, Item):
-                        if obj.pk not in items:
-                            items.append(obj.pk)
+                        if obj not in items:
+                            items.append(obj)
                     elif isinstance(obj, World):
-                        if obj.pk not in worlds:
-                            worlds.append(obj.pk)
+                        if obj not in worlds:
+                            worlds.append(obj)
                     elif isinstance(obj, Location):
-                        if obj.pk not in locations:
-                            locations.append(obj.pk)
+                        if obj not in locations:
+                            locations.append(obj)
                     elif isinstance(obj, Table):
-                        if obj.pk not in tables:
-                            tables.append(obj.pk)
+                        if obj not in tables:
+                            tables.append(obj)
 
         return render(self.request, 'campaign/tavern_detail.html', {
             'campaign': campaign,
             'chapters': chapters,
             'sections': sections,
-            'monsters': len(monsters),
-            'npcs': len(npcs),
-            'items': len(items),
-            'worlds': len(worlds),
-            'locations': len(locations),
-            'tables': len(tables),
+            'monsters': monsters,
+            'npcs': npcs,
+            'items': items,
+            'worlds': worlds,
+            'locations': locations,
+            'tables': tables,
         })
