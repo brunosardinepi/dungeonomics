@@ -27,7 +27,7 @@
                         <tbody>
                             {% for campaign in popular_campaigns %}
                                 <tr>
-                                    <td>{{ campaign.title }}</td>
+                                    <td><a href="{% url 'tavern_detail' campaign_pk=campaign.pk %}">{{ campaign.title }}</a></td>
                                     <td>{{ campaign.rating }}</td>
                                 </tr>
                             {% endfor %}

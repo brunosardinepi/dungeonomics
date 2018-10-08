@@ -6,8 +6,6 @@ from django.db import models
 from django.db.models import Avg
 from django.utils.translation import ugettext_lazy as _
 
-from posts.models import Post
-
 
 class CampaignTemplate(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -44,6 +42,7 @@ class Campaign(CampaignTemplate):
 
     def players(self):
         return self.player_set.all().order_by('character_name')
+
 
 class Chapter(CampaignTemplate):
     content = models.TextField(blank=True)

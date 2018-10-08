@@ -18,11 +18,11 @@ from django.views import View
 from . import forms
 from . import models
 from . import utils
-from characters import models as character_models
+from characters.models import Monster, NPC, Player
 from dungeonomics.utils import at_tagging
 from dungeonomics import settings
-from items import models as item_models
-from locations import models as location_models
+from items.models import Item
+from locations.models import Location, World
 from posts.models import Post
 from tables.models import Table, TableOption
 
@@ -263,10 +263,10 @@ def campaign_print(request, campaign_pk):
         if campaign.user == request.user:
             chapters = sorted(models.Chapter.objects.filter(campaign=campaign), key=lambda chapter: chapter.order)
             sections = sorted(models.Section.objects.filter(campaign=campaign), key=lambda section: section.order)
-            monsters = sorted(character_models.Monster.objects.filter(user=request.user), key=lambda monster: monster.name.lower())
-            npcs = sorted(character_models.NPC.objects.filter(user=request.user), key=lambda npc: npc.name.lower())
-            items = sorted(item_models.Item.objects.filter(user=request.user), key=lambda item: item.name.lower())
-            worlds = sorted(location_models.World.objects.filter(user=request.user), key=lambda world: world.name.lower())
+            monsters = sorted(Monster.objects.filter(user=request.user), key=lambda monster: monster.name.lower())
+            npcs = sorted(NPC.objects.filter(user=request.user), key=lambda npc: npc.name.lower())
+            items = sorted(Item.objects.filter(user=request.user), key=lambda item: item.name.lower())
+            worlds = sorted(World.objects.filter(user=request.user), key=lambda world: world.name.lower())
             return render(request, 'campaign/campaign_print.html', {
                 'campaign': campaign,
                 'chapters': chapters,
@@ -356,10 +356,10 @@ def campaign_export(request, campaign_pk):
 
                         # if World, get all the child locations
                         # if Location, get the World and all child locations
-                        if isinstance(obj, location_models.World):
+                        if isinstance(obj, World):
                             if obj.pk not in added_worlds:
                                 # get all of the Locations that belong to this World
-                                locations = location_models.Location.objects.filter(world=obj)
+                                locations = Location.objects.filter(world=obj)
 
                                 # add all of the new locations to lists for tracking
                                 for location in locations:
@@ -370,21 +370,21 @@ def campaign_export(request, campaign_pk):
                                 additional_assets.append(obj)
                                 added_worlds.append(obj.pk)
 
-                        elif isinstance(obj, location_models.Location):
+                        elif isinstance(obj, Location):
                             if obj.pk not in added_locations:
                                 # add the location to our list
                                 additional_assets.append(obj)
                                 added_locations.append(obj.pk)
 
                                 # get this Location's World
-                                world = location_models.World.objects.get(pk=obj.world.pk)
+                                world = World.objects.get(pk=obj.world.pk)
 
                                 if world.pk not in added_worlds:
                                     # append it to our list
                                     additional_assets.append(world)
 
                                     # get the World's Locations, excluding the Location we already have
-                                    locations = location_models.Location.objects.filter(world=world).exclude(pk=obj.pk)
+                                    locations = Location.objects.filter(world=world).exclude(pk=obj.pk)
 
                                     # add all of the new locations to the list
                                     for location in locations:
@@ -473,11 +473,11 @@ def campaign_import(request):
                     other.pk = None
                     other.user = request.user
 
-                    if isinstance(other, location_models.World) or isinstance(other, location_models.Location):
+                    if isinstance(other, World) or isinstance(other, Location):
                         if other.image:
 
                             # create a new filename
-                            random_string = location_models.create_random_string()
+                            random_string = create_random_string()
                             ext = other.image.url.split('.')[-1]
                             new_filename = "media/user/images/%s.%s" % (random_string, ext)
 
@@ -492,15 +492,15 @@ def campaign_import(request):
 
                     new_pk = other.pk
 
-                    if isinstance(other, character_models.Monster):
+                    if isinstance(other, Monster):
                         asset_references['monsters'][old_pk] = new_pk
-                    elif isinstance(other, character_models.NPC):
+                    elif isinstance(other, NPC):
                         asset_references['npcs'][old_pk] = new_pk
-                    elif isinstance(other, item_models.Item):
+                    elif isinstance(other, Item):
                         asset_references['items'][old_pk] = new_pk
-                    elif isinstance(other, location_models.World):
+                    elif isinstance(other, World):
                         asset_references['worlds'][old_pk] = new_pk
-                    elif isinstance(other, location_models.Location):
+                    elif isinstance(other, Location):
                         asset_references['locations'][old_pk] = new_pk
                     elif isinstance(other, Table):
                         asset_references['tables'][old_pk] = new_pk
@@ -526,17 +526,17 @@ def campaign_import(request):
                 for old_pk, new_pk in asset_references['locations'].items():
                     # for each location, set the parent location to the new parent location.
                     # also, set the world to the new world
-                    old_location = location_models.Location.objects.get(pk=old_pk)
+                    old_location = Location.objects.get(pk=old_pk)
                     if old_location.parent_location:
                         old_location_parent = old_location.parent_location
 
-                    new_location = location_models.Location.objects.get(pk=new_pk)
+                    new_location = Location.objects.get(pk=new_pk)
                     if new_location.parent_location:
-                        new_location_parent = location_models.Location.objects.get(pk=asset_references['locations'][old_location_parent.pk])
+                        new_location_parent = Location.objects.get(pk=asset_references['locations'][old_location_parent.pk])
                         new_location.parent_location = new_location_parent
 
                     old_world = old_location.world
-                    new_world = location_models.World.objects.get(pk=asset_references['worlds'][old_world.pk])
+                    new_world = World.objects.get(pk=asset_references['worlds'][old_world.pk])
                     new_location.world = new_world
                     new_location.save()
 
@@ -605,7 +605,7 @@ class CampaignPartyInvite(View):
 class CampaignPartyInviteAccept(View):
     def get(self, request, campaign_public_url):
         campaign = get_object_or_404(models.Campaign, public_url=campaign_public_url)
-        players = character_models.Player.objects.filter(user=request.user)
+        players = Player.objects.filter(user=request.user)
         return render(self.request, 'campaign/campaign_party_invite_accept.html', {
             'campaign': campaign,
             'players': players,
@@ -614,7 +614,7 @@ class CampaignPartyInviteAccept(View):
     def post(self, request, campaign_public_url):
         campaign = get_object_or_404(models.Campaign, public_url=campaign_public_url)
         player_pk = self.request.POST.get('player')
-        player = get_object_or_404(character_models.Player, pk=player_pk)
+        player = get_object_or_404(Player, pk=player_pk)
         if player.user == request.user:
             player.campaigns.add(campaign)
             return redirect('campaign:campaign_party', campaign_pk=campaign.pk)
@@ -636,7 +636,7 @@ class CampaignPartyRemove(View):
             players = self.request.POST.getlist('players')
             # for each player, remove them from the campaign
             for pk in players:
-                player = get_object_or_404(character_models.Player, pk=pk)
+                player = get_object_or_404(Player, pk=pk)
                 player.campaigns.remove(campaign)
             return redirect('campaign:campaign_party', campaign_pk=campaign.pk)
         else:
@@ -646,7 +646,7 @@ class CampaignPartyPlayersDetail(View):
     def get(self, request, campaign_pk, player_pk):
         campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
         if utils.has_campaign_access(request.user, campaign_pk):
-            player = get_object_or_404(character_models.Player, pk=player_pk)
+            player = get_object_or_404(Player, pk=player_pk)
             return render(self.request, 'campaign/campaign_party_player_detail.html', {
                 'campaign': campaign,
                 'player': player,
@@ -662,4 +662,68 @@ class TavernView(View):
         return render(self.request, 'campaign/tavern.html', {
             'popular_campaigns': popular_campaigns,
             'recent_campaigns': recent_campaigns,
+        })
+
+
+class TavernDetailView(View):
+    def get(self, request, *args, **kwargs):
+        campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
+        chapters = models.Chapter.objects.filter(campaign=campaign).count()
+        sections = models.Section.objects.filter(campaign=campaign).count()
+
+        chapters_queryset = models.Chapter.objects.filter(campaign=campaign).order_by('order')
+        sections_queryset = models.Section.objects.filter(campaign=campaign).order_by('order')
+        combined_list = list(chain(chapters_queryset, sections_queryset))
+
+        # go through each chapter and section
+        # find all of the hyperlinks
+        # look through the dungeonomics links
+        # get the type (item, monster, npc, player)
+        # pull a copy of that resource and add it to a list
+        # at the end, combine the list with the campaign items list
+        # then serialize it
+
+        monsters = []
+        npcs = []
+        items = []
+        worlds = []
+        locations = []
+        tables = []
+
+        for item in combined_list:
+            soup = BeautifulSoup(item.content, 'html.parser')
+            for link in soup.find_all('a'):
+                url = utils.get_content_url(link)
+                obj = utils.get_url_object(url)
+                if obj:
+                    if isinstance(obj, Monster):
+                        if obj.pk not in monsters:
+                            # add to a list for tracking
+                            monsters.append(obj.pk)
+                    elif isinstance(obj, NPC):
+                        if obj.pk not in npcs:
+                            npcs.append(obj.pk)
+                    elif isinstance(obj, Item):
+                        if obj.pk not in items:
+                            items.append(obj.pk)
+                    elif isinstance(obj, World):
+                        if obj.pk not in worlds:
+                            worlds.append(obj.pk)
+                    elif isinstance(obj, Location):
+                        if obj.pk not in locations:
+                            locations.append(obj.pk)
+                    elif isinstance(obj, Table):
+                        if obj.pk not in tables:
+                            tables.append(obj.pk)
+
+        return render(self.request, 'campaign/tavern_detail.html', {
+            'campaign': campaign,
+            'chapters': chapters,
+            'sections': sections,
+            'monsters': len(monsters),
+            'npcs': len(npcs),
+            'items': len(items),
+            'worlds': len(worlds),
+            'locations': len(locations),
+            'tables': len(tables),
         })
