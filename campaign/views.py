@@ -657,8 +657,9 @@ class CampaignPartyPlayersDetail(View):
 
 class TavernView(View):
     def get(self, request, *args, **kwargs):
-        popular_campaigns = models.Campaign.objects.all()
-        recent_campaigns = models.Campaign.objects.all()
+        popular_campaigns = models.Campaign.objects.filter(is_published=True)
+        recent_campaigns = models.Campaign.objects.filter(
+            is_published=True).order_by('-published_date')
         return render(self.request, 'campaign/tavern.html', {
             'popular_campaigns': popular_campaigns,
             'recent_campaigns': recent_campaigns,
@@ -668,62 +669,65 @@ class TavernView(View):
 class TavernDetailView(View):
     def get(self, request, *args, **kwargs):
         campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
-        chapters = models.Chapter.objects.filter(campaign=campaign)
-        sections = models.Section.objects.filter(campaign=campaign)
+        if campaign.is_published == True:
+            chapters = models.Chapter.objects.filter(campaign=campaign)
+            sections = models.Section.objects.filter(campaign=campaign)
 
-        chapters_queryset = models.Chapter.objects.filter(campaign=campaign).order_by('order')
-        sections_queryset = models.Section.objects.filter(campaign=campaign).order_by('order')
-        combined_list = list(chain(chapters_queryset, sections_queryset))
+            chapters_queryset = models.Chapter.objects.filter(campaign=campaign).order_by('order')
+            sections_queryset = models.Section.objects.filter(campaign=campaign).order_by('order')
+            combined_list = list(chain(chapters_queryset, sections_queryset))
 
-        # go through each chapter and section
-        # find all of the hyperlinks
-        # look through the dungeonomics links
-        # get the type (item, monster, npc, player)
-        # pull a copy of that resource and add it to a list
-        # at the end, combine the list with the campaign items list
-        # then serialize it
+            # go through each chapter and section
+            # find all of the hyperlinks
+            # look through the dungeonomics links
+            # get the type (item, monster, npc, player)
+            # pull a copy of that resource and add it to a list
+            # at the end, combine the list with the campaign items list
+            # then serialize it
 
-        monsters = []
-        npcs = []
-        items = []
-        worlds = []
-        locations = []
-        tables = []
+            monsters = []
+            npcs = []
+            items = []
+            worlds = []
+            locations = []
+            tables = []
 
-        for item in combined_list:
-            soup = BeautifulSoup(item.content, 'html.parser')
-            for link in soup.find_all('a'):
-                url = utils.get_content_url(link)
-                obj = utils.get_url_object(url)
-                if obj:
-                    if isinstance(obj, Monster):
-                        if obj not in monsters:
-                            # add to a list for tracking
-                            monsters.append(obj)
-                    elif isinstance(obj, NPC):
-                        if obj not in npcs:
-                            npcs.append(obj)
-                    elif isinstance(obj, Item):
-                        if obj not in items:
-                            items.append(obj)
-                    elif isinstance(obj, World):
-                        if obj not in worlds:
-                            worlds.append(obj)
-                    elif isinstance(obj, Location):
-                        if obj not in locations:
-                            locations.append(obj)
-                    elif isinstance(obj, Table):
-                        if obj not in tables:
-                            tables.append(obj)
+            for item in combined_list:
+                soup = BeautifulSoup(item.content, 'html.parser')
+                for link in soup.find_all('a'):
+                    url = utils.get_content_url(link)
+                    obj = utils.get_url_object(url)
+                    if obj:
+                        if isinstance(obj, Monster):
+                            if obj not in monsters:
+                                # add to a list for tracking
+                                monsters.append(obj)
+                        elif isinstance(obj, NPC):
+                            if obj not in npcs:
+                                npcs.append(obj)
+                        elif isinstance(obj, Item):
+                            if obj not in items:
+                                items.append(obj)
+                        elif isinstance(obj, World):
+                            if obj not in worlds:
+                                worlds.append(obj)
+                        elif isinstance(obj, Location):
+                            if obj not in locations:
+                                locations.append(obj)
+                        elif isinstance(obj, Table):
+                            if obj not in tables:
+                                tables.append(obj)
 
-        return render(self.request, 'campaign/tavern_detail.html', {
-            'campaign': campaign,
-            'chapters': chapters,
-            'sections': sections,
-            'monsters': monsters,
-            'npcs': npcs,
-            'items': items,
-            'worlds': worlds,
-            'locations': locations,
-            'tables': tables,
-        })
+            return render(self.request, 'campaign/tavern_detail.html', {
+                'campaign': campaign,
+                'chapters': chapters,
+                'sections': sections,
+                'monsters': monsters,
+                'npcs': npcs,
+                'items': items,
+                'worlds': worlds,
+                'locations': locations,
+                'tables': tables,
+            })
+        else:
+            raise Http404

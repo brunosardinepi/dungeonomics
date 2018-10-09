@@ -33,6 +33,7 @@ def create_random_string(length=30):
 class Campaign(CampaignTemplate):
     public_url = models.CharField(max_length=255, unique=True, default=uuid.uuid4)
     is_published = models.BooleanField(default=False)
+    published_date = models.DateTimeField(auto_now_add=True, blank=True)
     tavern_description = models.TextField(blank=True)
 
     def get_absolute_url(self):

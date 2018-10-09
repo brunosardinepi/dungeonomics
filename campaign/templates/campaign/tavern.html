@@ -23,16 +23,22 @@
                     <div class="card-header">
                         <span class="font-weight-bold">Most Popular Campaigns</span>
                     </div>
-                    <table class="table table-hover mb-0">
-                        <tbody>
-                            {% for campaign in popular_campaigns %}
-                                <tr>
-                                    <td><a href="{% url 'tavern_detail' campaign_pk=campaign.pk %}">{{ campaign.title }}</a></td>
-                                    <td>{{ campaign.rating }}</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    {% if popular_campaigns %}
+                        <table class="table table-hover mb-0">
+                            <tbody>
+                                {% for campaign in popular_campaigns %}
+                                    <tr>
+                                        <td><a href="{% url 'tavern_detail' campaign_pk=campaign.pk %}">{{ campaign.title }}</a></td>
+                                        <td>{{ campaign.rating }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <div class="card-body">
+                            <p>There aren't any published Campaigns yet!</p>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-lg-6 mb-3">
@@ -40,16 +46,22 @@
                     <div class="card-header">
                         <span class="font-weight-bold">Most Recent Campaigns</span>
                     </div>
-                    <table class="table table-hover mb-0">
-                        <tbody>
-                            {% for campaign in recent_campaigns %}
-                                <tr>
-                                    <td>{{ campaign.title }}</td>
-                                    <td>{{ campaign.rating }}</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    {% if recent_campaigns %}
+                        <table class="table table-hover mb-0">
+                            <tbody>
+                                {% for campaign in recent_campaigns %}
+                                    <tr>
+                                        <td>{{ campaign.title }}</td>
+                                        <td>{{ campaign.rating }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <div class="card-body">
+                            <p>There aren't any published Campaigns yet!</p>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
