@@ -4,35 +4,6 @@
 
 {% block title %}Review - {{ campaign.title }} | {{ block.super }}{% endblock %}
 
-{% block head_extra %}
-    {{ form.media.css }}
-    {{ form.media.js }}
-
-    <script type="text/javascript">
-        tinymce.init({
-            selector: "#id_comment",
-            height : "250",
-            plugins: [
-            'paste autosave autolink print searchreplace table textcolor wordcount link image'
-            ],
-            menu: {
-            edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace'},
-            insert: {title: 'Insert', items: 'image'},
-            view: {title: 'View', items: 'visualaid'},
-            format: {title: 'Format', items: 'bold italic underline strikethrough superscript subscript | formats | removeformat'},
-            table: {title: 'Table', items: 'inserttable tableprops deletetable | cell row column'}
-            },
-            toolbar: 'print | restoredraft | fontsizeselect bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link | forecolor backcolor',
-            browser_spellcheck: true,
-            paste_as_text: true,
-            fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
-            relative_urls : false,
-            remove_script_host : false,
-            convert_urls : true,
-        });
-    </script>
-{% endblock %}
-
 {% block body_content %}
     <div class="row justify-content-center mt-3">
         <div class="col-md-8">
@@ -43,9 +14,9 @@
                 <div class="card-body">
                     <form method="POST" action="">
                         {% csrf_token %}
-                        <p>Give this Campaign a rating from 1 to 5 stars. An example of a 1-star Campaign would be something you ran with your group and nobody had fun, the content was poorly organized to the point of confusion, it was a complete waste of your time to even attempt to run this Campaign, and the rest of your day was completely ruined because of it. An example of a 5-star Campaign would be something you ran with your group and thoroughly enjoyed, everything was planned well and was a cohesive story, and everyone you were with had a great time participating in it.</p>
+                        <p>Give this Campaign a rating <span class="font-weight-bold">from 1 to 5 stars</span>. An example of a 1-star Campaign would be something you ran with your group and nobody had fun, the content was poorly organized to the point of confusion, it was a complete waste of your time to even attempt to run this Campaign, and the rest of your day was completely ruined because of it. An example of a 5-star Campaign would be something you ran with your group and thoroughly enjoyed, everything was planned well and was a cohesive story, and everyone you were with had a great time participating in it.</p>
                         <p>Additionally, you can leave a comment to help explain your rating, provide criticism for the Campaign writer, or let other users know if you'd recommend this Campaign.</p>
-
+                        <p><span class="font-weight-bold">Note:</span> Remember, people spend a lot of their time working on these Campaigns. Just because you don't like someone's ideas doesn't mean they're bad ideas. Be mindful of the differences. You can be constructively critical without being a jerk.</p>
                         {% if form.non_field_errors %}
                             <div class="alert alert-danger" role="alert">
                                 {{ form.non_field_errors }}
@@ -53,7 +24,19 @@
                         {% endif %}
 
                         <div class="form-group">
-                            <label for="{{ form.comment.id_for_label }}">Comment</label>
+                            <label for="{{ form.score.id_for_label }}" class="font-weight-bold">Rating (1 to 5)</label>
+                            {% if form.score.errors %}
+                                {% for error in form.score.errors %}
+                                    <span class="text-danger ml-3">
+                                        {{ error|escape }}
+                                    </span>
+                                {% endfor %}
+                            {% endif %}
+                            {% render_field form.score class+="form-control mb-3" %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.comment.id_for_label }}" class="font-weight-bold">Comment</label>
                             {% render_field form.comment class+="form-control mb-3" %}
                             {% if form.comment.errors %}
                                 {% for error in form.comment.errors %}

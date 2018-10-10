@@ -1,6 +1,7 @@
 import uuid
 
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.urls import reverse
 from django.db import models
 from django.db.models import Avg
@@ -82,5 +83,6 @@ class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
-    score = models.IntegerField(default=5)
+    score = models.IntegerField(default=5,
+        validators=[MaxValueValidator(5), MinValueValidator(1)])
     comment = models.TextField(blank=True)

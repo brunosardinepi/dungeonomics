@@ -11,7 +11,7 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <h3>{{ campaign.title }}</h3>
-                    <p>***** x reviews, y comments, imported z times</p>
+                    <p>{{ rating }}, {{ review_count }} review{{ review_count|pluralize }}, {{ comments|length }} comment{{ comments|pluralize }}, imported z times</p>
 
                     <h5>Description</h5>
                     {% if campaign.tavern_description %}
@@ -83,18 +83,30 @@
                     </ul>
 
                     <h5>Tables</h5>
-                    <ul>
-                        {% for table in tables %}
-                            <li>{{ table.name }}</li>
-                        {% endfor %}
-                    </ul>
+                    {% if tables %}
+                        <ul>
+                            {% for table in tables %}
+                                <li>{{ table.name }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>None</p>
+                    {% endif %}
                 </div>
             </div>
 
             <div class="card mb-3">
                 <div class="card-body">
                     <h5>Comments</h5>
-                    <p>None</p>
+                    {% if comments %}
+                        <ul>
+                            {% for comment in comments %}
+                                <li>{{ comment|linebreaks }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>None</p>
+                    {% endif %}
                 </div>
             </div>
 

@@ -85,7 +85,7 @@ class CampaignPublishForm(TinyMCEForm):
             'tavern_description',
         ]
 
-class TavernReviewForm(TinyMCEForm):
+class TavernReviewForm(forms.ModelForm):
     class Meta:
         model = models.Review
         fields = [

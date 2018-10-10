@@ -718,6 +718,18 @@ class TavernDetailView(View):
                             if obj not in tables:
                                 tables.append(obj)
 
+            reviews = models.Review.objects.filter(campaign=campaign)
+            comments = []
+            rating = 0
+            review_count = reviews.count()
+            for review in reviews:
+                if review.comment:
+                    comments.append(review.comment)
+                rating += review.score
+            if rating != 0:
+                rating /= review_count
+            else:
+                rating = 0
             return render(self.request, 'campaign/tavern_detail.html', {
                 'campaign': campaign,
                 'chapters': chapters,
@@ -728,6 +740,9 @@ class TavernDetailView(View):
                 'worlds': worlds,
                 'locations': locations,
                 'tables': tables,
+                'comments': comments,
+                'rating': rating,
+                'review_count': review_count,
             })
         else:
             raise Http404
@@ -776,11 +791,32 @@ class CampaignUnpublish(View):
 class TavernReview(View):
     def get(self, request, *args, **kwargs):
         campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
-        form = forms.TavernReviewForm()
-        return render(self.request, 'campaign/tavern_review.html', {
-            'campaign': campaign,
-            'form': form,
-        })
+        try:
+            review = models.Review.objects.get(user=request.user, campaign=campaign)
+        except models.Review.DoesNotExist:
+            review = None
+        if review:
+            messages.info(request, "You've already submitted a review for this Campaign", fail_silently=True)
+            return redirect('tavern_detail', campaign_pk=campaign.pk)
+        else:
+            form = forms.TavernReviewForm()
+            return render(self.request, 'campaign/tavern_review.html', {
+                'campaign': campaign,
+                'form': form,
+            })
+
     def post(self, request, *args, **kwargs):
         campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
         form = forms.TavernReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            review.campaign = campaign
+            review.save()
+            messages.success(request, 'Review submitted', fail_silently=True)
+            return redirect('tavern_detail', campaign_pk=campaign.pk)
+        else:
+            return render(self.request, 'campaign/tavern_review.html', {
+                'campaign': campaign,
+                'form': form,
+            })
