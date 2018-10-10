@@ -730,6 +730,7 @@ class TavernDetailView(View):
                 rating /= review_count
             else:
                 rating = 0
+            rating = utils.rating_stars_html(rating)
             return render(self.request, 'campaign/tavern_detail.html', {
                 'campaign': campaign,
                 'chapters': chapters,
