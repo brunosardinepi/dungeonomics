@@ -755,6 +755,19 @@ class CampaignPublish(View):
             campaign.published_date = timezone.now()
             campaign.save()
             # redirect to the tavern page
+            messages.success(request, 'Campaign published', fail_silently=True)
             return redirect('tavern_detail', campaign_pk=campaign.pk)
+        else:
+            raise Http404
+
+
+class CampaignUnpublish(View):
+    def get(self, request, *args, **kwargs):
+        campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
+        if campaign.user == request.user:
+            campaign.is_published = False
+            campaign.save()
+            messages.success(request, 'Campaign unpublished', fail_silently=True)
+            return redirect('campaign:campaign_detail', campaign_pk=campaign.pk)
         else:
             raise Http404

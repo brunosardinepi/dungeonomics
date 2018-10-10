@@ -63,6 +63,9 @@ urlpatterns = [
     path('<int:campaign_pk>/publish/',
         login_required(views.CampaignPublish.as_view()),
         name='campaign_publish'),
+    path('<int:campaign_pk>/unpublish/',
+        login_required(views.CampaignUnpublish.as_view()),
+        name='campaign_unpublish'),
 
     path('', views.campaign_detail, name='campaign_detail'),
 ]

@@ -78,7 +78,7 @@ SectionInlineFormSet = forms.inlineformset_factory(
     formset=SectionFormSet,
 )
 
-class CampaignPublishForm(forms.ModelForm):
+class CampaignPublishForm(TinyMCEForm):
     class Meta:
         model = models.Campaign
         fields = [

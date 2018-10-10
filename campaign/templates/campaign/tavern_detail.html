@@ -110,9 +110,17 @@
                         <li>{{ worlds|length }} World{{ worlds|pluralize }}, {{ locations|length }} Location{{ locations|pluralize }}</li>
                         <li>{{ tables|length }} Table{{ tables|pluralize }}</li>
                     </ul>
-                    <a href="" class="btn btn-success btn-block mt-4">Import Campaign</a>
+                    {% if request.user == campaign.user %}
+                        <a href="{% url 'campaign:campaign_unpublish' campaign_pk=campaign.pk %}" id="campaign-unpublish" class="btn btn-danger btn-block mt-4">Unpublish Campaign</a>
+                    {% else %}
+                        <a href="" class="btn btn-success btn-block mt-4">Import Campaign</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block body_extra %}
+    <script src="{% static 'js/campaign_unpublish.js' %}"></script>
 {% endblock %}
