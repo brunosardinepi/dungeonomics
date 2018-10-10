@@ -114,6 +114,7 @@
                         <a href="{% url 'campaign:campaign_unpublish' campaign_pk=campaign.pk %}" id="campaign-unpublish" class="btn btn-danger btn-block mt-4">Unpublish Campaign</a>
                     {% else %}
                         <a href="" class="btn btn-success btn-block mt-4">Import Campaign</a>
+                        <a href="{% url 'tavern_review' campaign_pk=campaign.pk %}" class="btn btn-primary btn-block mt-3">Rate Campaign</a>
                     {% endif %}
                 </div>
             </div>

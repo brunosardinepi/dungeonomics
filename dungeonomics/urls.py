@@ -7,7 +7,7 @@ from django.views.generic import TemplateView
 
 from . import config
 from . import views
-from campaign.views import TavernView, TavernDetailView
+from campaign.views import TavernView, TavernDetailView, TavernReview
 
 
 urlpatterns = [
@@ -26,6 +26,7 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('tavern/', TavernView.as_view(), name='tavern'),
     path('tavern/<int:campaign_pk>/', TavernDetailView.as_view(), name='tavern_detail'),
+    path('tavern/<int:campaign_pk>/review/', TavernReview.as_view(), name='tavern_review'),
     path('campaign/', include('campaign.urls', namespace='campaign')),
     path('characters/', include('characters.urls', namespace='characters')),
     path('donate/', views.DonateView.as_view(), name='donate'),

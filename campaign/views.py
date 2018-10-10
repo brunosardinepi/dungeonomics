@@ -771,3 +771,16 @@ class CampaignUnpublish(View):
             return redirect('campaign:campaign_detail', campaign_pk=campaign.pk)
         else:
             raise Http404
+
+
+class TavernReview(View):
+    def get(self, request, *args, **kwargs):
+        campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
+        form = forms.TavernReviewForm()
+        return render(self.request, 'campaign/tavern_review.html', {
+            'campaign': campaign,
+            'form': form,
+        })
+    def post(self, request, *args, **kwargs):
+        campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
+        form = forms.TavernReviewForm(request.POST)
