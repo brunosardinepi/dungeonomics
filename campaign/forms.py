@@ -77,3 +77,10 @@ SectionInlineFormSet = forms.inlineformset_factory(
     fields=('order', 'title'),
     formset=SectionFormSet,
 )
+
+class CampaignPublishForm(forms.ModelForm):
+    class Meta:
+        model = models.Campaign
+        fields = [
+            'tavern_description',
+        ]

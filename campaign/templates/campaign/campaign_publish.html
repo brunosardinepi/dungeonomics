@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+
+{% load widget_tweaks %}
+
+{% block title %}Publish - {{ campaign.title }} | {{ block.super }}{% endblock %}
+
+{% block body_content %}
+    <div class="row justify-content-center mt-3">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="px-1 mb-0">Publish Campaign</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <p>Please confirm that you would like to publish the <span class="font-weight-bold">{{ campaign.title }}</span> Campaign. If published, users will be able to import your Campaign and all of its assets into their account. This won't affect your Campaign at all, but they will be able to see everything you've put in the Campaign. Please make sure to remove any personal information like real-life player names or specifics.</p>
+                        <p>After your Campaign is published to The Tavern, other users will also be able to rate and comment on the quality of the Campaign.</p>
+                        <p>If you'd like, provide an optional description of your Campaign so others know what to expect:</p>
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        <div class="form-group">
+                            {% render_field form.tavern_description class+="form-control mb-3" %}
+                            {% if form.tavern_description.errors %}
+                                {% for error in form.tavern_description.errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ error|escape }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row justify-content-between">
+                        <div class="col-auto">
+                            <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk %}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                        <div class="col-auto">
+                            <input type="submit" class="btn btn-primary" value="Publish">
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

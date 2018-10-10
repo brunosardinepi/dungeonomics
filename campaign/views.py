@@ -7,11 +7,11 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.urls import reverse
 from django.core import serializers
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
+from django.utils import timezone
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views import View
 
@@ -729,5 +729,32 @@ class TavernDetailView(View):
                 'locations': locations,
                 'tables': tables,
             })
+        else:
+            raise Http404
+
+
+class CampaignPublish(View):
+    def get(self, request, *args, **kwargs):
+        campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
+        if campaign.user == request.user:
+            form = forms.CampaignPublishForm()
+            return render(self.request, 'campaign/campaign_publish.html', {
+                'campaign': campaign,
+                'form': form,
+            })
+        else:
+            raise Http404
+
+    def post(self, request, *args, **kwargs):
+        campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
+        if campaign.user == request.user:
+            form = forms.CampaignPublishForm(request.POST, instance=campaign)
+            # publish to the tavern
+            campaign = form.save(commit=False)
+            campaign.is_published = True
+            campaign.published_date = timezone.now()
+            campaign.save()
+            # redirect to the tavern page
+            return redirect('tavern_detail', campaign_pk=campaign.pk)
         else:
             raise Http404
