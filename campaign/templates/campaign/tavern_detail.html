@@ -14,7 +14,7 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <h3>{{ campaign.title }}</h3>
-                    <p>{{ rating|safe }} <span class="ml-1">{{ reviews.count }} review{{ reviews.count|pluralize }}, imported z times</span></p>
+                    <p>{{ rating|safe }} <span class="ml-1">{{ reviews.count }} <a href="#reviews">review{{ reviews.count|pluralize }}</a>, imported z times</span></p>
 
                     <h5>Description</h5>
                     {% if campaign.tavern_description %}
@@ -98,7 +98,7 @@
                 </div>
             </div>
 
-            <div class="card mb-3">
+            <div id="reviews" class="card mb-3">
                 <div class="card-body">
                     <h5>Reviews</h5>
                     {% if reviews %}
