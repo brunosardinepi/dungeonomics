@@ -3,6 +3,8 @@
 {% load static %}
 {% load humanize %}
 
+{% load campaign_extras %}
+
 {% block title %} Tavern | {{ block.super }}{% endblock %}
 
 {% block body_content %}
@@ -29,7 +31,7 @@
                                 {% for campaign in popular_campaigns %}
                                     <tr>
                                         <td><a href="{% url 'tavern_detail' campaign_pk=campaign.pk %}">{{ campaign.title }}</a></td>
-                                        <td>{{ campaign.rating }}</td>
+                                        <td class="text-right">{% rating_stars_html_tag campaign.rating as rating %}{{ rating|safe }}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
@@ -51,8 +53,8 @@
                             <tbody>
                                 {% for campaign in recent_campaigns %}
                                     <tr>
-                                        <td>{{ campaign.title }}</td>
-                                        <td>{{ campaign.rating }}</td>
+                                        <td><a href="{% url 'tavern_detail' campaign_pk=campaign.pk %}">{{ campaign.title }}</a></td>
+                                        <td class="text-right">{% rating_stars_html_tag campaign.rating as rating %}{{ rating|safe }}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>

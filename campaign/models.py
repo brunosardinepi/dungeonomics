@@ -21,7 +21,8 @@ class CampaignTemplate(models.Model):
 
     def rating(self):
         # return the average of this campaign's review scores, or 0 if there are no reviews
-        return Review.objects.filter(campaign=self).aggregate(Avg('score'))['score__avg'] or 0
+        return Review.objects.filter(
+            campaign=self).aggregate(Avg('score'))['score__avg'] or 0
 
 
 def create_random_string(length=30):
