@@ -718,16 +718,12 @@ class TavernDetailView(View):
                             if obj not in tables:
                                 tables.append(obj)
 
-            reviews = models.Review.objects.filter(campaign=campaign)
-            comments = []
+            reviews = models.Review.objects.filter(campaign=campaign).order_by('-date')
             rating = 0
-            review_count = reviews.count()
             for review in reviews:
-                if review.comment:
-                    comments.append(review.comment)
                 rating += review.score
             if rating != 0:
-                rating /= review_count
+                rating /= reviews.count()
             else:
                 rating = 0
             rating = utils.rating_stars_html(rating)
@@ -741,9 +737,8 @@ class TavernDetailView(View):
                 'worlds': worlds,
                 'locations': locations,
                 'tables': tables,
-                'comments': comments,
+                'reviews': reviews,
                 'rating': rating,
-                'review_count': review_count,
             })
         else:
             raise Http404

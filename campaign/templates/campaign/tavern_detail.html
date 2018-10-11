@@ -1,6 +1,9 @@
 {% extends 'layout.html' %}
 
+{% load humanize %}
 {% load static %}
+
+{% load campaign_extras %}
 {% load locations_extras %}
 
 {% block title %}Tavern - {{ campaign.title }} | {{ block.super }}{% endblock %}
@@ -11,7 +14,7 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <h3>{{ campaign.title }}</h3>
-                    <p>{{ rating|safe }} <span class="ml-1">{{ review_count }} review{{ review_count|pluralize }}, {{ comments|length }} comment{{ comments|pluralize }}, imported z times</span></p>
+                    <p>{{ rating|safe }} <span class="ml-1">{{ reviews.count }} review{{ reviews.count|pluralize }}, imported z times</span></p>
 
                     <h5>Description</h5>
                     {% if campaign.tavern_description %}
@@ -97,15 +100,26 @@
 
             <div class="card mb-3">
                 <div class="card-body">
-                    <h5>Comments</h5>
-                    {% if comments %}
-                        <ul>
-                            {% for comment in comments %}
-                                <li>{{ comment|linebreaks }}</li>
-                            {% endfor %}
-                        </ul>
+                    <h5>Reviews</h5>
+                    {% if reviews %}
+                        {% for review in reviews %}
+                            <div class="row small mb-2 text-secondary">
+                                <div class="col">
+                                    <span class="mr-1">{% rating_stars_html_tag review.score as score %}{{ score|safe }}</span>
+                                    <i class="fas fa-clock mr-1"></i>{{ review.date|naturaltime }}
+                                </div>
+                            </div>
+                            {% if review.comment %}
+                                <div class="row">
+                                    <div class="col">
+                                        {{ review.comment|linebreaks }}
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if not forloop.last %}<hr>{% endif %}
+                        {% endfor %}
                     {% else %}
-                        <p>None</p>
+                        <p>No comments!</p>
                     {% endif %}
                 </div>
             </div>
