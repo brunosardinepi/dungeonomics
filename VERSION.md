@@ -3,6 +3,23 @@
 This is the version history for Dungeonomics development.
 
 
+## Version 3.0.0
+
+Release date: 10/12/2018
+
+### Additions
+
+* None
+
+### Changes
+
+* #113 -- Removed old traits/actions/notes fields
+
+### Fixes
+
+* None
+
+
 ## Version 2.5.0
 
 Release date: 10/05/2018
