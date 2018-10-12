@@ -13,7 +13,7 @@ register = template.Library()
 def nav_campaign_list(request):
     # get the user is logged in, None if not
     user = None
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         user = request.user.pk
 
     # get the Campaigns that the user owns

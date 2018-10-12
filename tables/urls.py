@@ -1,12 +1,14 @@
-from django.conf.urls import url
+from django.urls import path
 
 from . import views
 
+
+app_name = 'tables'
 urlpatterns = [
-    url(r'^(?P<table_pk>\d+)/$', views.table_detail, name='table_detail'),
-    url(r'^create/$', views.table_create, name='table_create'),
-    url(r'^(?P<table_pk>\d+)/edit/$', views.table_update, name='table_update'),
-    url(r'^(?P<table_pk>\d+)/delete/$', views.table_delete, name='table_delete'),
-    url(r'^roll/$', views.table_roll, name='table_roll'),
-    url(r'^$', views.table_detail, name='table_detail'),
+    path('<int:table_pk>/', views.table_detail, name='table_detail'),
+    path('create/', views.table_create, name='table_create'),
+    path('<int:table_pk>/edit/', views.table_update, name='table_update'),
+    path('<int:table_pk>/delete/', views.table_delete, name='table_delete'),
+    path('roll/', views.table_roll, name='table_roll'),
+    path('', views.table_detail, name='table_detail'),
 ]
