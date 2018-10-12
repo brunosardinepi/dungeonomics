@@ -14,6 +14,7 @@ Release date: 10/12/2018
 ### Changes
 
 * #113 -- Removed old traits/actions/notes fields
+* #91 -- Upgraded to Django 2.0.9
 
 ### Fixes
 
