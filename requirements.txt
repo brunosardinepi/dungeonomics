@@ -10,6 +10,7 @@ django-widget-tweaks==1.4.3
 freeze==1.0.10
 gunicorn==19.6.0
 idna==2.6
+model-mommy==1.6.0
 oauthlib==2.0.6
 Pillow==5.0.0
 psycopg2==2.6.2

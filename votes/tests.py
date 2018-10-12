@@ -3,6 +3,8 @@ from django.test import Client, TestCase
 
 import unittest
 
+from model_mommy import mommy
+
 from . import models
 from . import views
 
@@ -11,68 +13,56 @@ class VoteTest(TestCase):
     def setUp(self):
         self.client = Client()
 
-        self.user = User.objects.create_user(
-            username='testuser',
-            email='test@test.test',
-            password='testpassword',
-        )
+        self.users = mommy.make(User, _quantity=2)
 
-        self.user2 = User.objects.create_user(
-            username='testuser2',
-            email='test2@test.test',
-            password='testpassword',
-        )
-
-        self.feature = models.Feature.objects.create(
-            description="this is test feature",
-        )
-
-        self.feature2 = models.Feature.objects.create(
-            description="super feature number two",
+        self.features = mommy.make(
+            models.Feature,
+            _quantity=2,
+            _fill_optional=True,
         )
 
     def test_feature_exists(self):
         features = models.Feature.objects.all()
-        self.assertIn(self.feature, features)
-        self.assertIn(self.feature2, features)
+        self.assertIn(self.features[0], features)
+        self.assertIn(self.features[1], features)
 
     def test_feature_page(self):
-        self.client.login(username='testuser', password='testpassword')
+        self.client.force_login(self.users[0])
         response = self.client.get('/')
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.feature.description)
-        self.assertContains(response, self.feature2.description)
+        self.assertContains(response, self.features[0].description)
+        self.assertContains(response, self.features[1].description)
 
     def test_feature_page_bad_user(self):
         response = self.client.get('/')
 
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, self.feature.description)
-        self.assertNotContains(response, self.feature2.description)
+        self.assertNotContains(response, self.features[0].description)
+        self.assertNotContains(response, self.features[1].description)
 
     def test_feature_vote_add(self):
-        self.assertEqual(self.feature.votes(), 0)
-        self.assertEqual(self.feature2.votes(), 0)
+        self.assertEqual(self.features[0].votes(), 0)
+        self.assertEqual(self.features[1].votes(), 0)
 
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.get('/votes/{}/'.format(self.feature.pk))
+        self.client.force_login(self.users[0])
+        response = self.client.get('/votes/{}/'.format(self.features[0].pk))
 
         self.assertRedirects(response, '/', 302, 200)
-        self.assertEqual(self.feature.votes(), 1)
-        self.assertEqual(self.feature2.votes(), 0)
+        self.assertEqual(self.features[0].votes(), 1)
+        self.assertEqual(self.features[1].votes(), 0)
 
         response = self.client.get('/')
         self.assertContains(response, '<span class="badge badge-primary badge-pill ml-3">1</span>')
 
         self.client.logout()
 
-        self.client.login(username='testuser2', password='testpassword')
-        response = self.client.get('/votes/{}/'.format(self.feature.pk))
+        self.client.force_login(self.users[1])
+        response = self.client.get('/votes/{}/'.format(self.features[0].pk))
 
         self.assertRedirects(response, '/', 302, 200)
-        self.assertEqual(self.feature.votes(), 2)
-        self.assertEqual(self.feature2.votes(), 0)
+        self.assertEqual(self.features[0].votes(), 2)
+        self.assertEqual(self.features[1].votes(), 0)
 
         response = self.client.get('/')
         self.assertContains(response, '<span class="badge badge-primary badge-pill ml-3">2</span>')

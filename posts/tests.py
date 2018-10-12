@@ -3,6 +3,7 @@ from django.test import Client, TestCase
 from django.utils import timezone
 
 import unittest
+from model_mommy import mommy
 
 from . import models
 from campaign.models import Campaign
@@ -13,86 +14,54 @@ class PostTest(TestCase):
     def setUp(self):
         self.client = Client()
 
-        self.user = User.objects.create_user(
-            username='testuser',
-            email='test@test.test',
-            password='testpassword',
+        self.users = mommy.make(User, _quantity=3)
+
+        self.campaigns = mommy.make(
+            Campaign,
+            user=self.users[0],
+            _quantity=2,
+            _fill_optional=True,
+        )
+        self.campaigns[1].user = self.users[1]
+        self.campaigns[1].save()
+
+        self.players = mommy.make(
+            Player,
+            user=self.users[1],
+            _quantity=3,
+            _fill_optional=True,
+        )
+        self.players[1].campaigns.add(self.campaigns[0])
+        self.players[2].campaigns.add(self.campaigns[0])
+
+        self.post = mommy.make(
+            models.Post,
+            user=self.users[0],
+            campaign=self.campaigns[0],
+            _fill_optional=True,
         )
 
-        self.user2 = User.objects.create_user(
-            username='testuser2',
-            email='test2@test.test',
-            password='testpassword',
-        )
-
-        self.user3 = User.objects.create_user(
-            username='testuser3',
-            email='test3@test.test',
-            password='testpassword',
-        )
-
-        self.campaign = Campaign.objects.create(
-            user=self.user,
-            title="test campaign",
-        )
-
-        self.campaign2 = Campaign.objects.create(
-            user=self.user2,
-            title="test campaign 2",
-        )
-
-        self.player = Player.objects.create(
-            user=self.user2,
-            player_name="user no 2",
-            character_name="Bullwinkle",
-        )
-
-        self.player2 = Player.objects.create(
-            user=self.user2,
-            player_name="Charlie",
-            character_name="Vomit",
-        )
-        self.player2.campaigns.add(self.campaign)
-
-        self.player3 = Player.objects.create(
-            user=self.user2,
-            player_name="Ripley",
-            character_name="Indoor dog",
-        )
-        self.player3.campaigns.add(self.campaign)
-
-        self.post = models.Post.objects.create(
-            user=self.user,
-            title="testpost1",
-            body="ppppwppwpwpwpwpw",
-            campaign=self.campaign,
-        )
-
-        self.comment = models.Comment.objects.create(
-            user=self.user,
-            body="commentno1",
+        self.comments = mommy.make(
+            models.Comment,
+            user=self.users[0],
             post=self.post,
-        )
-
-        self.comment2 = models.Comment.objects.create(
-            user=self.user,
-            body="thisisanothercomment",
-            post=self.post,
+            _quantity=2,
+            _fill_optional=True,
         )
 
     def test_post_creation_time(self):
         post = models.Post.objects.create(
-            user=self.user,
+            user=self.users[0],
             title="test post time",
             body="ajksdhflasdjkfhalsdkjfhalsdkjfhasdf",
-            campaign=self.campaign,
+            campaign=self.campaigns[0],
         )
         now = timezone.now()
         self.assertLess(post.date, now)
 
     def test_comment_creation_time(self):
         comment = models.Comment.objects.create(
-            user=self.user,
+            user=self.users[0],
             body="testingtime",
             post=self.post,
         )
@@ -107,137 +76,137 @@ class PostTest(TestCase):
     def test_comment_exists(self):
         comments = models.Comment.objects.all()
 
-        self.assertIn(self.comment, comments)
-        self.assertIn(self.comment2, comments)
+        self.assertIn(self.comments[0], comments)
+        self.assertIn(self.comments[1], comments)
 
     def test_post_create_page_auth_owner(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.get('/campaign/{}/party/posts/create/'.format(self.campaign.pk))
+        self.client.force_login(self.users[0])
+        response = self.client.get('/campaign/{}/party/posts/create/'.format(self.campaigns[0].pk))
 
         self.assertEqual(response.status_code, 200)
 
     def test_post_create_page_auth_player(self):
-        self.client.login(username='testuser2', password='testpassword')
-        response = self.client.get('/campaign/{}/party/posts/create/'.format(self.campaign.pk))
+        self.client.force_login(self.users[1])
+        response = self.client.get('/campaign/{}/party/posts/create/'.format(self.campaigns[0].pk))
 
         self.assertEqual(response.status_code, 200)
 
     def test_post_create_page_auth_no_perms(self):
-        self.client.login(username='testuser3', password='testpassword')
-        response = self.client.get('/campaign/{}/party/posts/create/'.format(self.campaign.pk))
+        self.client.force_login(self.users[2])
+        response = self.client.get('/campaign/{}/party/posts/create/'.format(self.campaigns[0].pk))
 
         self.assertEqual(response.status_code, 404)
 
     def test_post_create_page_no_auth(self):
-        response = self.client.get('/campaign/{}/party/posts/create/'.format(self.campaign.pk))
+        response = self.client.get('/campaign/{}/party/posts/create/'.format(self.campaigns[0].pk))
 
-        self.assertRedirects(response, '/accounts/login/?next=/campaign/{}/party/posts/create/'.format(self.campaign.pk), 302, 200)
+        self.assertRedirects(response, '/accounts/login/?next=/campaign/{}/party/posts/create/'.format(self.campaigns[0].pk), 302, 200)
 
     def test_post_create_owner(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.post('/campaign/{}/party/posts/create/'.format(self.campaign.pk), {
+        self.client.force_login(self.users[0])
+        response = self.client.post('/campaign/{}/party/posts/create/'.format(self.campaigns[0].pk), {
             'title': "this is my title",
             'body': "check out this body",
         })
-        self.assertRedirects(response, '/campaign/{}/party/'.format(self.campaign.pk), 302, 200)
+        self.assertRedirects(response, '/campaign/{}/party/'.format(self.campaigns[0].pk), 302, 200)
 
-        response = self.client.get('/campaign/{}/party/'.format(self.campaign.pk))
+        response = self.client.get('/campaign/{}/party/'.format(self.campaigns[0].pk))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "this is my title")
         self.assertContains(response, "check out this body")
 
     def test_post_create_auth_perms(self):
-        self.client.login(username='testuser2', password='testpassword')
-        response = self.client.post('/campaign/{}/party/posts/create/'.format(self.campaign.pk), {
+        self.client.force_login(self.users[1])
+        response = self.client.post('/campaign/{}/party/posts/create/'.format(self.campaigns[0].pk), {
             'title': "this is my title",
             'body': "check out this body",
         })
-        self.assertRedirects(response, '/campaign/{}/party/'.format(self.campaign.pk), 302, 200)
+        self.assertRedirects(response, '/campaign/{}/party/'.format(self.campaigns[0].pk), 302, 200)
 
-        response = self.client.get('/campaign/{}/party/'.format(self.campaign.pk))
+        response = self.client.get('/campaign/{}/party/'.format(self.campaigns[0].pk))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "this is my title")
         self.assertContains(response, "check out this body")
 
     def test_post_create_auth_no_perms(self):
-        self.client.login(username='testuser3', password='testpassword')
-        response = self.client.post('/campaign/{}/party/posts/create/'.format(self.campaign.pk), {
+        self.client.force_login(self.users[2])
+        response = self.client.post('/campaign/{}/party/posts/create/'.format(self.campaigns[0].pk), {
             'title': "this is my title",
             'body': "check out this body",
         })
         self.assertEqual(response.status_code, 404)
 
     def test_post_create_no_auth(self):
-        response = self.client.post('/campaign/{}/party/posts/create/'.format(self.campaign.pk), {
+        response = self.client.post('/campaign/{}/party/posts/create/'.format(self.campaigns[0].pk), {
             'title': "this is my title",
             'body': "check out this body",
         })
-        self.assertRedirects(response, '/accounts/login/?next=/campaign/{}/party/posts/create/'.format(self.campaign.pk, self.post.pk), 302, 200)
+        self.assertRedirects(response, '/accounts/login/?next=/campaign/{}/party/posts/create/'.format(self.campaigns[0].pk, self.post.pk), 302, 200)
 
     def test_post_page_auth_owner(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.get('/campaign/{}/party/posts/{}/'.format(self.campaign.pk, self.post.pk))
+        self.client.force_login(self.users[0])
+        response = self.client.get('/campaign/{}/party/posts/{}/'.format(self.campaigns[0].pk, self.post.pk))
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.post.title)
         self.assertContains(response, self.post.body)
         self.assertContains(response, "post-delete")
-        self.assertContains(response, self.comment.body)
-        self.assertContains(response, self.comment2.body)
+        self.assertContains(response, self.comments[0].body)
+        self.assertContains(response, self.comments[1].body)
 
     def test_post_page_auth_player(self):
-        self.client.login(username='testuser2', password='testpassword')
-        response = self.client.get('/campaign/{}/party/posts/{}/'.format(self.campaign.pk, self.post.pk))
+        self.client.force_login(self.users[1])
+        response = self.client.get('/campaign/{}/party/posts/{}/'.format(self.campaigns[0].pk, self.post.pk))
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.post.title)
         self.assertContains(response, self.post.body)
         self.assertNotContains(response, "post-delete")
-        self.assertContains(response, self.comment.body)
-        self.assertContains(response, self.comment2.body)
+        self.assertContains(response, self.comments[0].body)
+        self.assertContains(response, self.comments[1].body)
 
     def test_post_page_auth_no_perms(self):
-        self.client.login(username='testuser3', password='testpassword')
-        response = self.client.get('/campaign/{}/party/posts/{}/'.format(self.campaign.pk, self.post.pk))
+        self.client.force_login(self.users[2])
+        response = self.client.get('/campaign/{}/party/posts/{}/'.format(self.campaigns[0].pk, self.post.pk))
 
         self.assertEqual(response.status_code, 404)
 
     def test_post_page_no_auth(self):
-        response = self.client.get('/campaign/{}/party/posts/{}/'.format(self.campaign.pk, self.post.pk))
+        response = self.client.get('/campaign/{}/party/posts/{}/'.format(self.campaigns[0].pk, self.post.pk))
 
-        self.assertRedirects(response, '/accounts/login/?next=/campaign/{}/party/posts/{}/'.format(self.campaign.pk, self.post.pk), 302, 200)
+        self.assertRedirects(response, '/accounts/login/?next=/campaign/{}/party/posts/{}/'.format(self.campaigns[0].pk, self.post.pk), 302, 200)
 
     def test_comment_create_owner(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.post('/campaign/{}/party/posts/{}/'.format(self.campaign.pk, self.post.pk), {
+        self.client.force_login(self.users[0])
+        response = self.client.post('/campaign/{}/party/posts/{}/'.format(self.campaigns[0].pk, self.post.pk), {
             'body': "check out this body",
         })
-        self.assertRedirects(response, '/campaign/{}/party/posts/{}/'.format(self.campaign.pk, self.post.pk), 302, 200)
+        self.assertRedirects(response, '/campaign/{}/party/posts/{}/'.format(self.campaigns[0].pk, self.post.pk), 302, 200)
 
-        response = self.client.get('/campaign/{}/party/posts/{}/'.format(self.campaign.pk, self.post.pk))
+        response = self.client.get('/campaign/{}/party/posts/{}/'.format(self.campaigns[0].pk, self.post.pk))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "check out this body")
 
     def test_comment_create_auth_perms(self):
-        self.client.login(username='testuser2', password='testpassword')
-        response = self.client.post('/campaign/{}/party/posts/{}/'.format(self.campaign.pk, self.post.pk), {
+        self.client.force_login(self.users[1])
+        response = self.client.post('/campaign/{}/party/posts/{}/'.format(self.campaigns[0].pk, self.post.pk), {
             'body': "check out this body",
         })
-        self.assertRedirects(response, '/campaign/{}/party/posts/{}/'.format(self.campaign.pk, self.post.pk), 302, 200)
+        self.assertRedirects(response, '/campaign/{}/party/posts/{}/'.format(self.campaigns[0].pk, self.post.pk), 302, 200)
 
-        response = self.client.get('/campaign/{}/party/posts/{}/'.format(self.campaign.pk, self.post.pk))
+        response = self.client.get('/campaign/{}/party/posts/{}/'.format(self.campaigns[0].pk, self.post.pk))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "check out this body")
 
     def test_comment_create_auth_no_perms(self):
-        self.client.login(username='testuser3', password='testpassword')
-        response = self.client.post('/campaign/{}/party/posts/{}/'.format(self.campaign.pk, self.post.pk), {
+        self.client.force_login(self.users[2])
+        response = self.client.post('/campaign/{}/party/posts/{}/'.format(self.campaigns[0].pk, self.post.pk), {
             'body': "check out this body",
         })
         self.assertEqual(response.status_code, 404)
 
     def test_comment_create_no_auth(self):
-        response = self.client.post('/campaign/{}/party/posts/{}/'.format(self.campaign.pk, self.post.pk), {
+        response = self.client.post('/campaign/{}/party/posts/{}/'.format(self.campaigns[0].pk, self.post.pk), {
             'body': "check out this body",
         })
-        self.assertRedirects(response, '/accounts/login/?next=/campaign/{}/party/posts/{}/'.format(self.campaign.pk, self.post.pk), 302, 200)
+        self.assertRedirects(response, '/accounts/login/?next=/campaign/{}/party/posts/{}/'.format(self.campaigns[0].pk, self.post.pk), 302, 200)

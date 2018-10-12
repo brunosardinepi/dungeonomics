@@ -3,6 +3,8 @@ from django.test import Client, TestCase
 
 import unittest
 
+from model_mommy import mommy
+
 from . import forms
 from . import models
 from . import views
@@ -16,55 +18,42 @@ class ItemTest(TestCase):
     def setUp(self):
         self.client = Client()
 
-        self.user = User.objects.create_user(
-            username='testuser',
-            email='test@test.test',
-            password='testpassword',
-        )
+        self.users = mommy.make(User, _quantity=2)
 
-        self.user2 = User.objects.create_user(
-            username='testuser2',
-            email='test2@test.test',
-            password='testpassword',
+        self.items = mommy.make(
+            models.Item,
+            user=self.users[0],
+            _quantity=2,
+            _fill_optional=True,
         )
-
-        self.item = models.Item.objects.create(
-            user=self.user,
-            name="test item",
-            content="this is test item",
-        )
-
-        self.item2 = models.Item.objects.create(
-            user=self.user2,
-            name="test 2 item",
-            content="this is test 2 item",
-        )
+        self.items[1].user = self.users[1]
+        self.items[1].save()
 
     def test_item_exists(self):
         items = models.Item.objects.all()
-        self.assertIn(self.item, items)
-        self.assertIn(self.item2, items)
+        self.assertIn(self.items[0], items)
+        self.assertIn(self.items[1], items)
 
     def test_item_page(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.get('/items/{}/'.format(self.item.pk))
+        self.client.force_login(self.users[0])
+        response = self.client.get('/items/{}/'.format(self.items[0].pk))
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.item.name)
-        self.assertContains(response, self.item.content)
+        self.assertContains(response, self.items[0].name)
+        self.assertContains(response, self.items[0].content)
 
     def test_item_page_bad_user(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.get('/items/{}/'.format(self.item2.pk))
+        self.client.force_login(self.users[0])
+        response = self.client.get('/items/{}/'.format(self.items[1].pk))
         self.assertEqual(response.status_code, 404)
 
     def test_item_create_page(self):
-        self.client.login(username='testuser', password='testpassword')
+        self.client.force_login(self.users[0])
         response = self.client.get('/items/create/')
         self.assertEqual(response.status_code, 200)
 
     def test_item_create(self):
-        self.client.login(username='testuser', password='testpassword')
+        self.client.force_login(self.users[0])
         response = self.client.post('/items/create/', self.item_form_data)
         item = models.Item.objects.get(name='test item name')
         self.assertRedirects(response, '/items/{}/'.format(item.pk), 302, 200)
@@ -73,25 +62,25 @@ class ItemTest(TestCase):
         self.assertIn(item, items)
 
     def test_item_edit_page(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.get('/items/{}/edit/'.format(self.item.pk))
+        self.client.force_login(self.users[0])
+        response = self.client.get('/items/{}/edit/'.format(self.items[0].pk))
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.item.name)
+        self.assertContains(response, self.items[0].name)
 
     def test_item_edit(self):
-        self.client.login(username='testuser', password='testpassword')
+        self.client.force_login(self.users[0])
         self.item_form_data['name'] = "test item name EDIT"
-        response = self.client.post('/items/{}/edit/'.format(self.item.pk), self.item_form_data)
-        self.assertRedirects(response, '/items/{}/'.format(self.item.pk), 302, 200)
+        response = self.client.post('/items/{}/edit/'.format(self.items[0].pk), self.item_form_data)
+        self.assertRedirects(response, '/items/{}/'.format(self.items[0].pk), 302, 200)
 
-        response = self.client.get('/items/{}/'.format(self.item.pk))
+        response = self.client.get('/items/{}/'.format(self.items[0].pk))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'test item name EDIT')
 
     def test_item_delete(self):
-        self.client.login(username='testuser', password='testpassword')
-        response = self.client.post('/items/{}/delete/'.format(self.item.pk), {})
+        self.client.force_login(self.users[0])
+        response = self.client.post('/items/{}/delete/'.format(self.items[0].pk), {})
         self.assertRedirects(response, '/items/', 302, 200)
 
         items = models.Item.objects.all()
