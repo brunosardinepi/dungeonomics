@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.core import serializers
+from django.db.models import Avg
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
@@ -430,8 +431,13 @@ class CampaignPartyPlayersDetail(View):
 class TavernView(View):
     def get(self, request, *args, **kwargs):
         popular_campaigns = models.Campaign.objects.filter(is_published=True)
+        popular_campaigns = sorted(
+            popular_campaigns,
+            key=lambda c: c.rating(),
+            reverse=True)[:5]
+
         recent_campaigns = models.Campaign.objects.filter(
-            is_published=True).order_by('-published_date')
+            is_published=True).order_by('-published_date')[:5]
         return render(self.request, 'campaign/tavern.html', {
             'popular_campaigns': popular_campaigns,
             'recent_campaigns': recent_campaigns,

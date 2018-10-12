@@ -47,6 +47,12 @@ class Campaign(CampaignTemplate):
     def players(self):
         return self.player_set.all().order_by('character_name')
 
+    def rating(self):
+        # find the average rating for this campaign
+        return Review.objects.filter(
+            campaign=self).aggregate(
+            Avg('score'))['score__avg'] or 0.00
+
 
 class Chapter(CampaignTemplate):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
