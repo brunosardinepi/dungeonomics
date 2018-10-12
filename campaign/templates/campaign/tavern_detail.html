@@ -14,7 +14,7 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <h3>{{ campaign.title }}</h3>
-                    <p>{{ rating|safe }} <span class="ml-1">{{ reviews.count }} <a href="#reviews">review{{ reviews.count|pluralize }}</a>, imported z times</span></p>
+                    <p>{{ rating|safe }} <span class="ml-1">{{ reviews.count }} <a href="#reviews">review{{ reviews.count|pluralize }}</a>, imported {{ importers }} time{{ importers|pluralize }}</span></p>
 
                     <h5>Description</h5>
                     {% if campaign.tavern_description %}
@@ -139,7 +139,7 @@
                     {% if request.user == campaign.user %}
                         <a href="{% url 'campaign:campaign_unpublish' campaign_pk=campaign.pk %}" id="campaign-unpublish" class="btn btn-danger btn-block mt-4">Unpublish Campaign</a>
                     {% else %}
-                        <a href="" class="btn btn-success btn-block mt-4">Import Campaign</a>
+                        <a id="tavern-import" href="{% url 'tavern_import' campaign_pk=campaign.pk %}" class="btn btn-success btn-block mt-4">Import Campaign</a>
                         <a href="{% url 'tavern_review' campaign_pk=campaign.pk %}" class="btn btn-primary btn-block mt-3">Review Campaign</a>
                     {% endif %}
                 </div>
@@ -150,4 +150,5 @@
 
 {% block body_extra %}
     <script src="{% static 'js/campaign_unpublish.js' %}"></script>
+    <script src="{% static 'js/tavern_import.js' %}"></script>
 {% endblock %}

@@ -9,7 +9,6 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class CampaignTemplate(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=255)
 
@@ -33,10 +32,12 @@ def create_random_string(length=30):
     return ''.join([random.choice(symbols) for x in range(length)])
 
 class Campaign(CampaignTemplate):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='owner')
     public_url = models.CharField(max_length=255, unique=True, default=uuid.uuid4)
     is_published = models.BooleanField(default=False)
-    published_date = models.DateTimeField(blank=True)
+    published_date = models.DateTimeField(blank=True, null=True)
     tavern_description = models.TextField(blank=True)
+    importers = models.ManyToManyField(User, related_name='importers')
 
     def get_absolute_url(self):
         return reverse('campaign:campaign_detail', kwargs={
@@ -48,6 +49,7 @@ class Campaign(CampaignTemplate):
 
 
 class Chapter(CampaignTemplate):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField(blank=True)
     order = models.IntegerField(verbose_name= _('Chapter number'),default=1)
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
@@ -63,7 +65,7 @@ class Chapter(CampaignTemplate):
 
 
 class Section(CampaignTemplate):
-    # content = models.TextField(default='')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.TextField(blank=True)
     order = models.IntegerField(verbose_name= _('Section number'),default=1)
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)

@@ -6,6 +6,7 @@ from . import models
 class CampaignAdmin(admin.ModelAdmin):
     list_display = ('title', 'user', 'created_at',)
     ordering = ('title', 'user', '-created_at',)
+    filter_horizontal = ('importers',)
 
 class ChapterAdmin(admin.ModelAdmin):
     list_display = ('title', 'user', 'created_at', 'campaign',)

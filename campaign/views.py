@@ -1,7 +1,8 @@
 from bs4 import BeautifulSoup
 from itertools import chain
-import json
 from shutil import copyfile
+import json
+import uuid
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -319,266 +320,37 @@ def section_delete(request, campaign_pk, chapter_pk, section_pk):
     else:
         raise Http404
 
-@login_required
-def campaign_export(request, campaign_pk):
-    if campaign_pk:
-        campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-        if campaign.user == request.user:
 
-            chapters_queryset = models.Chapter.objects.filter(campaign=campaign).order_by('order')
-            sections_queryset = models.Section.objects.filter(campaign=campaign).order_by('order')
-            combined_list = list(chain(chapters_queryset, sections_queryset))
+class CampaignExport(View):
+    def get(self, request, *args, **kwargs):
+        if kwargs['campaign_pk']:
+            campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
+            if campaign.user == request.user:
+                json_export = utils.campaign_export(campaign)
+                return render(request, 'campaign/campaign_export.html', {
+                    'campaign': campaign,
+                    'campaign_items': json_export,
+                })
+        raise Http404
 
-            # go through each chapter and section
-            # find all of the hyperlinks
-            # look through the dungeonomics links
-            # get the type (item, monster, npc, player)
-            # pull a copy of that resource and add it to a list
-            # at the end, combine the list with the campaign items list
-            # then serialize it
 
-            additional_assets = []
-            added_other = []
-            added_worlds = []
-            added_locations = []
-            added_tables = []
+class CampaignImport(View):
+    def get(self, request, *args, **kwargs):
+        form = forms.ImportCampaignForm()
+        return render(request, 'campaign/campaign_import.html', {'form': form})
 
-            for item in combined_list:
-
-                soup = BeautifulSoup(item.content, 'html.parser')
-
-                for link in soup.find_all('a'):
-                    url = utils.get_content_url(link)
-
-                    obj = utils.get_url_object(url)
-
-                    if obj:
-
-                        # if World, get all the child locations
-                        # if Location, get the World and all child locations
-                        if isinstance(obj, World):
-                            if obj.pk not in added_worlds:
-                                # get all of the Locations that belong to this World
-                                locations = Location.objects.filter(world=obj)
-
-                                # add all of the new locations to lists for tracking
-                                for location in locations:
-                                    additional_assets.append(location)
-                                    added_locations.append(location.pk)
-
-                                # add the World to a list for tracking
-                                additional_assets.append(obj)
-                                added_worlds.append(obj.pk)
-
-                        elif isinstance(obj, Location):
-                            if obj.pk not in added_locations:
-                                # add the location to our list
-                                additional_assets.append(obj)
-                                added_locations.append(obj.pk)
-
-                                # get this Location's World
-                                world = World.objects.get(pk=obj.world.pk)
-
-                                if world.pk not in added_worlds:
-                                    # append it to our list
-                                    additional_assets.append(world)
-
-                                    # get the World's Locations, excluding the Location we already have
-                                    locations = Location.objects.filter(world=world).exclude(pk=obj.pk)
-
-                                    # add all of the new locations to the list
-                                    for location in locations:
-                                        additional_assets.append(location)
-                                        added_locations.append(location.pk)
-
-                        elif isinstance(obj, Table):
-                            if obj.pk not in added_tables:
-                                # get all of the Table Options that belong to this Table
-                                table_options = TableOption.objects.filter(table=obj)
-
-                                # add all of the new Table Options to a list for tracking
-                                for table_option in table_options:
-                                    additional_assets.append(table_option)
-
-                                # add the Table to a list for tracking
-                                additional_assets.append(obj)
-                                added_tables.append(obj.pk)
-
-                        else:
-                            if obj.pk not in added_other:
-                                additional_assets.append(obj)
-                                added_other.append(obj.pk)
-
-            combined_list = list(chain(combined_list, additional_assets))
-            campaign_items = serializers.serialize("json", combined_list, indent=2)
-
-            return render(request, 'campaign/campaign_export.html', {
-                'campaign': campaign,
-                'campaign_items': campaign_items,
-            })
-    raise Http404
-
-@login_required
-def campaign_import(request):
-    user_import = None
-    form = forms.ImportCampaignForm()
-    if request.method == 'POST':
+    def post(self, request, *args, **kwargs):
         form = forms.ImportCampaignForm(request.POST)
         if form.is_valid():
             campaign = form.save(commit=False)
             campaign.user = request.user
             campaign.save()
-
             if request.POST.get('user_import'):
-                user_import = request.POST.get('user_import')
-
-                chapters, sections, others = ([] for i in range(3))
-                model_types = [
-                    "Monster",
-                    "NPC",
-                    "Item",
-                    "World",
-                    "Location",
-                    "Table",
-                    "TableOption",
-                ]
-
-                for obj in serializers.deserialize("json", user_import):
-                    if isinstance(obj.object, models.Chapter):
-                        chapters.append(obj.object)
-                    elif isinstance(obj.object, models.Section):
-                        sections.append(obj.object)
-                    elif obj.object.__class__.__name__ in model_types:
-                        others.append(obj.object)
-
-                asset_references = {
-                    "monsters": {},
-                    "npcs": {},
-                    "items": {},
-                    "worlds": {},
-                    "locations": {},
-                    "tables": {},
-                    "tableoptions": {},
-                }
-
-                # for each "other" asset,
-                # create a copy of the asset
-                # and update a dictionary that holds a reference of the old pk and the new pk
-
-                for other in others:
-                    # grab the old pk for reference
-                    old_pk = other.pk
-
-                    # create a copy of the asset
-                    other.pk = None
-                    other.user = request.user
-
-                    if isinstance(other, World) or isinstance(other, Location):
-                        if other.image:
-
-                            # create a new filename
-                            random_string = create_random_string()
-                            ext = other.image.url.split('.')[-1]
-                            new_filename = "media/user/images/%s.%s" % (random_string, ext)
-
-                            # copy the old file to a new file
-                            # and save it to the new object
-                            old_image_url = settings.MEDIA_ROOT + other.image.name
-                            new_image_url = settings.MEDIA_ROOT + new_filename
-                            copyfile(old_image_url, new_image_url)
-                            other.image = new_filename
-
-                    other.save()
-
-                    new_pk = other.pk
-
-                    if isinstance(other, Monster):
-                        asset_references['monsters'][old_pk] = new_pk
-                    elif isinstance(other, NPC):
-                        asset_references['npcs'][old_pk] = new_pk
-                    elif isinstance(other, Item):
-                        asset_references['items'][old_pk] = new_pk
-                    elif isinstance(other, World):
-                        asset_references['worlds'][old_pk] = new_pk
-                    elif isinstance(other, Location):
-                        asset_references['locations'][old_pk] = new_pk
-                    elif isinstance(other, Table):
-                        asset_references['tables'][old_pk] = new_pk
-                    elif isinstance(other, TableOption):
-                        asset_references['tableoptions'][old_pk] = new_pk
-
-                # update any content with new pks
-                # must be done after asset_references is populated
-                for other in others:
-                    # everything has 'content' except TableOption
-                    if not isinstance(other, TableOption):
-                        utils.replace_content_urls(other, asset_references)
-
-                for old_pk, new_pk in asset_references['tableoptions'].items():
-                    # for each tableoption, set the table to the newly created table
-                    old_tableoption = TableOption.objects.get(pk=old_pk)
-                    new_tableoption = TableOption.objects.get(pk=new_pk)
-                    old_table = old_tableoption.table
-                    new_table = Table.objects.get(pk=asset_references['tables'][old_table.pk])
-                    new_tableoption.table = new_table
-                    new_tableoption.save()
-
-                for old_pk, new_pk in asset_references['locations'].items():
-                    # for each location, set the parent location to the new parent location.
-                    # also, set the world to the new world
-                    old_location = Location.objects.get(pk=old_pk)
-                    if old_location.parent_location:
-                        old_location_parent = old_location.parent_location
-
-                    new_location = Location.objects.get(pk=new_pk)
-                    if new_location.parent_location:
-                        new_location_parent = Location.objects.get(pk=asset_references['locations'][old_location_parent.pk])
-                        new_location.parent_location = new_location_parent
-
-                    old_world = old_location.world
-                    new_world = World.objects.get(pk=asset_references['worlds'][old_world.pk])
-                    new_location.world = new_world
-                    new_location.save()
-
-                # go through each chapter and create a reference to its pk,
-                # then create the copy of the chapter.
-                # go through each section and find those that belong to the
-                # old chapter, and create a copy of them going to the new
-                # chapter.
-                # update the campaign pk along the way.
-
-                for chapter in chapters:
-
-                    # create a reference to the chapter's original pk
-                    old_pk = chapter.pk
-
-                    # create a new copy of the chapter
-                    chapter.pk = None
-                    chapter.user = request.user
-                    chapter.campaign = campaign
-                    chapter.save()
-
-                    utils.replace_content_urls(chapter, asset_references)
-
-                    for section in sections:
-                        # find sections that belong to the chapter
-                        if section.chapter.pk == old_pk:
-
-                            # create a new copy of the section
-                            section.pk = None
-                            section.user = request.user
-                            section.chapter = chapter
-                            section.campaign = campaign
-                            section.save()
-
-                            utils.replace_content_urls(section, asset_references)
-
+                json_export = request.POST.get('user_import')
+                utils.campaign_import(request.user, campaign, json_export)
                 return HttpResponseRedirect(campaign.get_absolute_url())
+        return Http404
 
-        else:
-            return Http404
-
-    return render(request, 'campaign/campaign_import.html', {'form': form})
 
 class CampaignParty(View):
     def get(self, request, campaign_pk):
@@ -727,6 +499,9 @@ class TavernDetailView(View):
             else:
                 rating = 0
             rating = utils.rating_stars_html(rating)
+
+            importers = campaign.importers.all().count()
+
             return render(self.request, 'campaign/tavern_detail.html', {
                 'campaign': campaign,
                 'chapters': chapters,
@@ -739,6 +514,7 @@ class TavernDetailView(View):
                 'tables': tables,
                 'reviews': reviews,
                 'rating': rating,
+                'importers': importers,
             })
         else:
             raise Http404
@@ -816,3 +592,30 @@ class TavernReview(View):
                 'campaign': campaign,
                 'form': form,
             })
+
+
+class TavernImport(View):
+    def get(self, request, *args, **kwargs):
+        campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
+
+        # get the campaign export
+        json_export = utils.campaign_export(campaign)
+
+        # create a copy of the campaign
+        campaign.pk = None
+        campaign.id = None
+        campaign.public_url = uuid.uuid4()
+        campaign.user = request.user
+        campaign.is_published = False
+        campaign.save()
+
+        # import to this user's account
+        utils.campaign_import(request.user, campaign, json_export)
+
+        # set this user as having imported the campaign
+        old_campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
+        old_campaign.importers.add(request.user)
+
+        # redirect to the imported campaign
+        messages.success(request, "Campaign imported", fail_silently=True)
+        return redirect('campaign:campaign_detail', campaign_pk=campaign.pk)

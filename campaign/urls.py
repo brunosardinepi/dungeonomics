@@ -26,8 +26,12 @@ urlpatterns = [
         views.section_update, name='section_update'),
 
     path('<int:campaign_pk>/print/', views.campaign_print, name='campaign_print'),
-    path('import/', views.campaign_import, name='campaign_import'),
-    path('<int:campaign_pk>/export/', views.campaign_export, name='campaign_export'),
+    path('import/',
+        login_required(views.CampaignImport.as_view()),
+        name='campaign_import'),
+    path('<int:campaign_pk>/export/',
+        login_required(views.CampaignExport.as_view()),
+        name='campaign_export'),
 
     path('<int:campaign_pk>/delete/', views.campaign_delete, name='campaign_delete'),
     path('<int:campaign_pk>/chapter/<int:chapter_pk>/delete/',
