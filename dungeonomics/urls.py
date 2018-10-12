@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
 from django.urls import include, path
 from django.views.generic import TemplateView
 
@@ -24,10 +25,10 @@ urlpatterns = [
     path('accounts/password/reset/', views.PasswordResetView.as_view(), name='password_reset'),
     path('accounts/delete/', views.account_delete, name='account_delete'),
     path('accounts/', include('allauth.urls')),
-    path('tavern/', TavernView.as_view(), name='tavern'),
-    path('tavern/<int:campaign_pk>/', TavernDetailView.as_view(), name='tavern_detail'),
-    path('tavern/<int:campaign_pk>/review/', TavernReview.as_view(), name='tavern_review'),
-    path('tavern/<int:campaign_pk>/import/', TavernImport.as_view(), name='tavern_import'),
+    path('tavern/', login_required(TavernView.as_view()), name='tavern'),
+    path('tavern/<int:campaign_pk>/', login_required(TavernDetailView.as_view()), name='tavern_detail'),
+    path('tavern/<int:campaign_pk>/review/', login_required(TavernReview.as_view()), name='tavern_review'),
+    path('tavern/<int:campaign_pk>/import/', login_required(TavernImport.as_view()), name='tavern_import'),
     path('campaign/', include('campaign.urls', namespace='campaign')),
     path('characters/', include('characters.urls', namespace='characters')),
     path('donate/', views.DonateView.as_view(), name='donate'),

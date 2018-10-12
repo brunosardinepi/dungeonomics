@@ -16,15 +16,17 @@ class CampaignTest(TestCase):
     def setUp(self):
         self.client = Client()
 
-        self.users = mommy.make(User, _quantity=3)
+        self.users = mommy.make(User, _quantity=5)
 
         self.campaigns = mommy.make(
             models.Campaign,
             user=self.users[0],
+            is_published=True,
             _quantity=2,
             _fill_optional=True,
         )
         self.campaigns[1].user = self.users[1]
+        self.campaigns[1].is_published = False
         self.campaigns[1].save()
 
         self.chapters = mommy.make(
@@ -66,6 +68,18 @@ class CampaignTest(TestCase):
             campaign=self.campaigns[0],
             _fill_optional=True,
         )
+
+        self.reviews = mommy.make(
+            models.Review,
+            user=self.users[1],
+            campaign=self.campaigns[0],
+            _quantity=3,
+            _fill_optional=True,
+        )
+        self.reviews[1].user = self.users[2]
+        self.reviews[1].save()
+        self.reviews[2].user = self.users[3]
+        self.reviews[2].save()
 
     def test_campaign_creation_time(self):
         campaign = models.Campaign.objects.create(
@@ -465,3 +479,114 @@ class CampaignTest(TestCase):
         response = self.client.get('/campaign/{}/party/players/{}/'.format(self.campaigns[0].pk, self.players[0].pk))
         self.assertRedirects(response, '/accounts/login/?next=/campaign/{}/party/players/{}/'.format(self.campaigns[0].pk, self.players[0].pk), 302, 200)
 
+    def test_tavern_page(self):
+        response = self.client.get('/tavern/')
+        self.assertRedirects(response, '/accounts/login/?next=/tavern/', 302, 200)
+
+        self.client.force_login(self.users[0])
+        response = self.client.get('/tavern/')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "The Tavern")
+        self.assertContains(response, self.campaigns[0].title)
+
+    def test_tavern_campaign_page(self):
+        response = self.client.get('/tavern/{}/'.format(self.campaigns[0].pk))
+        self.assertRedirects(response, '/accounts/login/?next=/tavern/{}/'.format(self.campaigns[0].pk), 302, 200)
+
+        self.client.force_login(self.users[1])
+        response = self.client.get('/tavern/{}/'.format(self.campaigns[0].pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.campaigns[0].title)
+        self.assertContains(response, self.campaigns[0].tavern_description)
+        self.assertContains(response, self.chapters[0].title)
+        self.assertContains(response, self.sections[0].title)
+        self.assertContains(response, self.reviews[0].comment)
+        self.assertContains(response, self.reviews[1].comment)
+        self.assertContains(response, self.reviews[2].comment)
+        self.assertContains(response, "Import Campaign")
+        self.assertNotContains(response, "Unpublish Campaign")
+        self.assertContains(response, "Review Campaign")
+
+        self.client.force_login(self.users[0])
+        response = self.client.get('/tavern/{}/'.format(self.campaigns[0].pk))
+        self.assertContains(response, "Unpublish Campaign")
+        self.assertNotContains(response, "Import Campaign")
+
+    def test_tavern_import(self):
+        response = self.client.get('/tavern/{}/import/'.format(self.campaigns[0].pk))
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/tavern/{}/import/'.format(self.campaigns[0].pk),
+            302, 200)
+
+        self.client.force_login(self.users[1])
+        response = self.client.get('/tavern/{}/import/'.format(self.campaigns[0].pk))
+        campaigns = models.Campaign.objects.all().order_by('-pk')
+        self.assertRedirects(response, '/campaign/{}/'.format(campaigns[0].pk), 302, 200)
+        response = self.client.get('/campaign/{}/'.format(campaigns[0].pk))
+        self.assertEqual(response.status_code, 200)
+
+    def test_tavern_review(self):
+        response = self.client.get('/tavern/{}/review/'.format(self.campaigns[0].pk))
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/tavern/{}/review/'.format(self.campaigns[0].pk),
+            302, 200)
+
+        self.client.force_login(self.users[1])
+        response = self.client.get('/tavern/{}/review/'.format(self.campaigns[0].pk))
+        self.assertRedirects(
+            response,
+            '/tavern/{}/'.format(self.campaigns[0].pk),
+            302, 200)
+
+        self.client.force_login(self.users[4])
+        response = self.client.get('/tavern/{}/review/'.format(self.campaigns[0].pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertNotContains(response,
+            "You've already submitted a review for this Campaign")
+        self.assertContains(response, "Review Campaign")
+        comment = "This Campaign is great"
+        data = {
+            'score': 5,
+            'comment': comment,
+        }
+        response = self.client.post(
+            '/tavern/{}/review/'.format(self.campaigns[0].pk),
+            data,
+        )
+        self.assertRedirects(
+            response,
+            '/tavern/{}/'.format(self.campaigns[0].pk),
+            302, 200)
+        response = self.client.get('/tavern/{}/'.format(self.campaigns[0].pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, comment)
+
+    def test_tavern_publish(self):
+        response = self.client.get('/campaign/{}/publish/'.format(self.campaigns[1].pk))
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/campaign/{}/publish/'.format(self.campaigns[1].pk),
+            302, 200)
+
+        self.client.force_login(self.users[1])
+        response = self.client.get('/campaign/{}/publish/'.format(self.campaigns[1].pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Publish Campaign")
+        tavern_description = "Please don't hate my Campaign"
+        data = {
+            'tavern_description': tavern_description,
+        }
+        response = self.client.post(
+            '/campaign/{}/publish/'.format(self.campaigns[1].pk),
+            data,
+        )
+        self.assertRedirects(
+            response,
+            '/tavern/{}/'.format(self.campaigns[1].pk),
+            302, 200)
+        response = self.client.get('/tavern/{}/'.format(self.campaigns[1].pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.campaigns[1].title)
+        self.assertContains(response, tavern_description)
