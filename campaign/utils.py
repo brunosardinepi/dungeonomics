@@ -152,7 +152,7 @@ def rating_stars_html(rating):
     rating = round(rating * 2) / 2
 
     # html template for an empty star
-    empty_star = '<i class="fal fa-star"></i>'
+    empty_star = '<i class="far fa-star"></i>'
 
     # html template for a half star
     half_star = '<i class="fas fa-star-half-alt"></i>'
