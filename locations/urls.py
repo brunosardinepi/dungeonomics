@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.urls import path
 
 from . import views
@@ -19,7 +20,7 @@ urlpatterns = [
     path('world/<int:world_pk>/delete/', views.world_delete, name='world_delete'),
     path('location/<int:location_pk>/delete/', views.location_delete, name='location_delete'),
 
-    path('delete/', views.worlds_delete, name='worlds_delete'),
+    path('delete/', login_required(views.WorldsDelete.as_view()), name='worlds_delete'),
 
     path('', views.location_detail, name='location_detail'),
 ]

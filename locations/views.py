@@ -9,6 +9,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views import View
 
 from . import forms
 from . import models
@@ -191,21 +192,12 @@ def location_delete(request, location_pk):
     else:
         raise Http404
 
-@login_required
-def worlds_delete(request):
-    form = forms.DeleteWorldForm()
-    worlds = sorted(models.World.objects.filter(user=request.user),
-        key=lambda world: world.name.lower()
-        )
-    if request.method == 'POST':
-        form = forms.DeleteWorldForm(request.POST)
-        selected_worlds = []
+class WorldsDelete(View):
+    def get(self, request, *args, **kwargs):
+        worlds = models.World.objects.filter(user=request.user).order_by('name')
+        return render(request, 'locations/worlds_delete.html', {'worlds': worlds})
+
+    def post(self, request, *args, **kwargs):
         for world_pk in request.POST.getlist('world'):
-            world = models.World.objects.get(pk=world_pk)
-            selected_worlds.append(world)
-        empty_queryset = models.World.objects.none()
-        world_queryset = list(chain(empty_queryset, selected_worlds))
-        for world in world_queryset:
-            world.delete()
+            models.World.objects.get(pk=world_pk).delete()
         return HttpResponseRedirect(reverse('locations:location_detail'))
-    return render(request, 'locations/worlds_delete.html', {'form': form, 'worlds': worlds})

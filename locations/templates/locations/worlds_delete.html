@@ -16,11 +16,11 @@
                         <input type="checkbox" onClick="toggle(this)" style="margin-right: 8px;" />Select all
                         <hr>
                         {% for world in worlds %}
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="world" value="{{ world.pk }}"> {{ world.name }}
-                            </label>
-                        </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="world" value="{{ world.pk }}"> {{ world.name }}
+                                </label>
+                            </div>
                         {% endfor %}
                 </div>
                 <div class="card-footer">
