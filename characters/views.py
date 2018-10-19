@@ -234,7 +234,7 @@ def monster_copy(request, monster_pk):
                 monster.pk = None
                 monster.name = monster.name + "_Copy"
                 monster.save()
-                messages.add_message(request, messages.SUCCESS, "Monster Copied!")
+                messages.add_message(request, messages.SUCCESS, "Monster copied!")
                 return HttpResponseRedirect(monster.get_absolute_url())
     else:
         raise Http404
