@@ -73,12 +73,15 @@ class CampaignTest(TestCase):
             models.Review,
             user=self.users[1],
             campaign=self.campaigns[0],
+            score=5,
             _quantity=3,
             _fill_optional=True,
         )
         self.reviews[1].user = self.users[2]
+        self.reviews[1].score = 2
         self.reviews[1].save()
         self.reviews[2].user = self.users[3]
+        self.reviews[2].score = 1
         self.reviews[2].save()
 
     def test_campaign_creation_time(self):
@@ -380,7 +383,7 @@ class CampaignTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.campaigns[0].title)
-        self.assertContains(response, "You haven't created any Players")
+        self.assertContains(response, "You haven't created any players")
 
     def test_campaign_party_invite_accept_page_no_auth_no_invite(self):
         response = self.client.get('/campaign/{}/'.format(self.campaigns[0].public_url))
@@ -414,7 +417,7 @@ class CampaignTest(TestCase):
         response = self.client.get('/campaign/{}/party/remove/'.format(self.campaigns[1].pk))
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Your Campaign doesn't have any Players")
+        self.assertContains(response, "Your campaign doesn't have any players")
 
     def test_campaign_party_remove_page_auth_no_perms(self):
         self.client.force_login(self.users[2])
@@ -503,14 +506,14 @@ class CampaignTest(TestCase):
         self.assertContains(response, self.reviews[0].comment)
         self.assertContains(response, self.reviews[1].comment)
         self.assertContains(response, self.reviews[2].comment)
-        self.assertContains(response, "Import Campaign")
-        self.assertNotContains(response, "Unpublish Campaign")
-        self.assertContains(response, "Review Campaign")
+        self.assertContains(response, "Import campaign")
+        self.assertNotContains(response, "Unpublish campaign")
+        self.assertContains(response, "Review campaign")
 
         self.client.force_login(self.users[0])
         response = self.client.get('/tavern/{}/'.format(self.campaigns[0].pk))
-        self.assertContains(response, "Unpublish Campaign")
-        self.assertNotContains(response, "Import Campaign")
+        self.assertContains(response, "Unpublish campaign")
+        self.assertContains(response, "Import campaign", count=1)
 
     def test_tavern_import(self):
         response = self.client.get('/tavern/{}/import/'.format(self.campaigns[0].pk))
@@ -544,9 +547,9 @@ class CampaignTest(TestCase):
         response = self.client.get('/tavern/{}/review/'.format(self.campaigns[0].pk))
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response,
-            "You've already submitted a review for this Campaign")
-        self.assertContains(response, "Review Campaign")
-        comment = "This Campaign is great"
+            "You've already submitted a review for this campaign")
+        self.assertContains(response, "Review campaign")
+        comment = "This campaign is great"
         data = {
             'score': 5,
             'comment': comment,
@@ -573,8 +576,8 @@ class CampaignTest(TestCase):
         self.client.force_login(self.users[1])
         response = self.client.get('/campaign/{}/publish/'.format(self.campaigns[1].pk))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Publish Campaign")
-        tavern_description = "Please don't hate my Campaign"
+        self.assertContains(response, "Publish campaign")
+        tavern_description = "Please don't hate my campaign"
         data = {
             'tavern_description': tavern_description,
         }

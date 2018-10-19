@@ -21,12 +21,12 @@
             </li>
         {% endfor %}
     {% else %}
-        <li>You haven't created any Players yet!</li>
+        <li>You haven't created any players yet!</li>
     {% endif %}
 {% endblock %}
 
 {% block character_contents_extra %}
-    <a href="{% url 'characters:player_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create Player</a>
+    <a href="{% url 'characters:player_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create player</a>
 {% endblock %}
 
 {% block character_detail_title %}
@@ -39,12 +39,12 @@
 
 {% block character_detail_extra %}
     {% if player %}
-        <a href="{% url 'characters:player_update' player_pk=player.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit Player</a>
-        <a href="{% url 'characters:player_campaigns' player_pk=player.pk %}" class="dropdown-item"><i class="fal fa-fw fa-eye" aria-hidden="true"></i> View Campaigns</a>
-        <a href="{% url 'characters:player_copy' player_pk=player.pk %}" class="dropdown-item"><i class="fal fa-fw fa-copy" aria-hidden="true"></i> Copy Player</a>       
-        <a id="player-delete" href="{% url 'characters:player_delete' player_pk=player.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete Player</a>
+        <a href="{% url 'characters:player_update' player_pk=player.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit player</a>
+        <a href="{% url 'characters:player_campaigns' player_pk=player.pk %}" class="dropdown-item"><i class="fal fa-fw fa-eye" aria-hidden="true"></i> View campaigns</a>
+        <a href="{% url 'characters:player_copy' player_pk=player.pk %}" class="dropdown-item"><i class="fal fa-fw fa-copy" aria-hidden="true"></i> Copy player</a>       
+        <a id="player-delete" href="{% url 'characters:player_delete' player_pk=player.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete player</a>
     {% else %}
-        <a href="{% url 'characters:player_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create Player</a>
+        <a href="{% url 'characters:player_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create player</a>
     {% endif %}
 {% endblock %}
 

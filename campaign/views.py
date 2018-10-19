@@ -574,7 +574,7 @@ class TavernReview(View):
         except models.Review.DoesNotExist:
             review = None
         if review:
-            messages.info(request, "You've already submitted a review for this Campaign", fail_silently=True)
+            messages.info(request, "You've already submitted a review for this campaign", fail_silently=True)
             return redirect('tavern_detail', campaign_pk=campaign.pk)
         else:
             form = forms.TavernReviewForm()

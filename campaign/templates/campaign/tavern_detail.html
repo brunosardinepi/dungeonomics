@@ -137,10 +137,10 @@
                         <li>{{ tables|length }} Table{{ tables|pluralize }}</li>
                     </ul>
                     {% if request.user == campaign.user %}
-                        <a href="{% url 'campaign:campaign_unpublish' campaign_pk=campaign.pk %}" id="campaign-unpublish" class="btn btn-danger btn-block mt-4">Unpublish Campaign</a>
+                        <a href="{% url 'campaign:campaign_unpublish' campaign_pk=campaign.pk %}" id="campaign-unpublish" class="btn btn-danger btn-block mt-4">Unpublish campaign</a>
                     {% else %}
-                        <a id="tavern-import" href="{% url 'tavern_import' campaign_pk=campaign.pk %}" class="btn btn-success btn-block mt-4">Import Campaign</a>
-                        <a href="{% url 'tavern_review' campaign_pk=campaign.pk %}" class="btn btn-primary btn-block mt-3">Review Campaign</a>
+                        <a id="tavern-import" href="{% url 'tavern_import' campaign_pk=campaign.pk %}" class="btn btn-success btn-block mt-4">Import campaign</a>
+                        <a href="{% url 'tavern_review' campaign_pk=campaign.pk %}" class="btn btn-primary btn-block mt-3">Review campaign</a>
                     {% endif %}
                 </div>
             </div>
