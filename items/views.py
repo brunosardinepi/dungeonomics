@@ -1,3 +1,5 @@
+from itertools import chain
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -95,3 +97,22 @@ def item_copy(request, item_pk):
     else:
         raise Http404
     return render(request, 'items/item_copy.html', {'form': form, 'item': item})
+
+@login_required
+def items_delete(request):
+    form = forms.DeleteItemForm()
+    items = sorted(models.Item.objects.filter(user=request.user),
+        key=lambda item: item.name.lower()
+        )
+    if request.method == 'POST':
+        form = forms.DeleteItemForm(request.POST)
+        selected_items = []
+        for item_pk in request.POST.getlist('item'):
+            item = models.Item.objects.get(pk=item_pk)
+            selected_items.append(item)
+        empty_queryset = models.Item.objects.none()
+        item_queryset = list(chain(empty_queryset, selected_items))
+        for item in item_queryset:
+            item.delete()
+        return HttpResponseRedirect(reverse('items:item_detail'))
+    return render(request, 'items/items_delete.html', {'form': form, 'items': items})
