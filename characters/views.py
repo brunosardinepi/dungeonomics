@@ -408,6 +408,25 @@ def npcs_delete(request):
         return HttpResponseRedirect(reverse('characters:npc_detail'))
     return render(request, 'characters/npcs_delete.html', {'form': form, 'npcs': npcs})
 
+@login_required
+def players_delete(request):
+    form = forms.DeletePlayerForm()
+    players = sorted(models.Player.objects.filter(user=request.user),
+        key=lambda player: player.character_name.lower()
+        )
+    if request.method == 'POST':
+        form = forms.DeletePlayerForm(request.POST)
+        selected_players = []
+        for player_pk in request.POST.getlist('player'):
+            player = models.Player.objects.get(pk=player_pk)
+            selected_players.append(player)
+        empty_queryset = models.Player.objects.none()
+        player_queryset = list(chain(empty_queryset, selected_players))
+        for player in player_queryset:
+            player.delete()
+        return HttpResponseRedirect(reverse('characters:player_detail'))
+    return render(request, 'characters/players_delete.html', {'form': form, 'players': players})
+
 
 class PlayerCampaigns(View):
     def get(self, request, player_pk):

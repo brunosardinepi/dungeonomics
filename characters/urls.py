@@ -42,4 +42,5 @@ urlpatterns = [
 
     path('monsters/delete/', views.monsters_delete, name='monsters_delete'),
     path('npcs/delete/', views.npcs_delete, name='npcs_delete'),
+    path('players/delete/', views.players_delete, name='players_delete'),
 ]

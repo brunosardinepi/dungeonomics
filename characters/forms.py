@@ -132,6 +132,11 @@ class DeleteNPCForm(forms.ModelForm):
         model = models.NPC
         fields = ['name']
 
+class DeletePlayerForm(forms.ModelForm):
+    class Meta:
+        model = models.Player
+        fields = ['name']
+
 class CopyMonsterForm(forms.ModelForm):
     class Meta:
         model = models.Monster
