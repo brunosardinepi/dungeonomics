@@ -19,5 +19,7 @@ urlpatterns = [
     path('world/<int:world_pk>/delete/', views.world_delete, name='world_delete'),
     path('location/<int:location_pk>/delete/', views.location_delete, name='location_delete'),
 
+    path('delete/', views.worlds_delete, name='worlds_delete'),
+
     path('', views.location_detail, name='location_detail'),
 ]

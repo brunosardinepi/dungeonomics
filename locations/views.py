@@ -1,3 +1,5 @@
+from itertools import chain
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -188,3 +190,22 @@ def location_delete(request, location_pk):
         return HttpResponseRedirect(reverse('locations:location_detail'))
     else:
         raise Http404
+
+@login_required
+def worlds_delete(request):
+    form = forms.DeleteWorldForm()
+    worlds = sorted(models.World.objects.filter(user=request.user),
+        key=lambda world: world.name.lower()
+        )
+    if request.method == 'POST':
+        form = forms.DeleteWorldForm(request.POST)
+        selected_worlds = []
+        for world_pk in request.POST.getlist('world'):
+            world = models.World.objects.get(pk=world_pk)
+            selected_worlds.append(world)
+        empty_queryset = models.World.objects.none()
+        world_queryset = list(chain(empty_queryset, selected_worlds))
+        for world in world_queryset:
+            world.delete()
+        return HttpResponseRedirect(reverse('locations:location_detail'))
+    return render(request, 'locations/worlds_delete.html', {'form': form, 'worlds': worlds})

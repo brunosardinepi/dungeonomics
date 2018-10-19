@@ -56,3 +56,8 @@ LocationInlineFormSet = forms.inlineformset_factory(
     fields=('name',),
     formset=LocationFormSet,
 )
+
+class DeleteWorldForm(forms.ModelForm):
+    class Meta:
+        model = models.World
+        fields = ['name']
