@@ -32,8 +32,3 @@ class CopyItemForm(forms.ModelForm):
     class Meta:
         model = models.Item
         fields = ['name']
-
-class DeleteItemForm(forms.ModelForm):
-    class Meta:
-        model = models.Item
-        fields = ['name']
