@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
+from django.views import View
 
 from . import forms
 from . import models
@@ -116,3 +117,13 @@ def items_delete(request):
             item.delete()
         return HttpResponseRedirect(reverse('items:item_detail'))
     return render(request, 'items/items_delete.html', {'form': form, 'items': items})
+
+class ItemsDelete(View):
+    def get(self, request, *args, **kwargs):
+        items = models.Item.objects.filter(user=request.user).order_by('name')
+        return render(request, 'items/items_delete.html', {'items': items})
+
+    def post(self, request, *args, **kwargs):
+        for item_pk in request.POST.getlist('item'):
+            models.Item.objects.get(pk=item_pk).delete()
+        return HttpResponseRedirect(reverse('items:item_detail'))
