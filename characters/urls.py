@@ -14,7 +14,9 @@ urlpatterns = [
     path('npc/<int:npc_pk>/', views.npc_detail, name='npc_detail'),
     path('player/<int:player_pk>/', views.player_detail, name='player_detail'),
 
-    path('player/<int:player_pk>/campaigns/', login_required(views.PlayerCampaigns.as_view()), name='player_campaigns'),
+    path('player/<int:player_pk>/campaigns/',
+        login_required(views.PlayerCampaigns.as_view()),
+        name='player_campaigns'),
 
     path('monster/create/', views.monster_create, name='monster_create'),
     path('npc/create/', views.npc_create, name='npc_create'),
@@ -40,7 +42,11 @@ urlpatterns = [
     path('monster/srd/', views.monster_srd, name='monster_srd'),
     path('npc/srd/', views.npc_srd, name='npc_srd'),
 
-    path('monsters/delete/', views.monsters_delete, name='monsters_delete'),
-    path('npcs/delete/', views.npcs_delete, name='npcs_delete'),
-    path('players/delete/', views.players_delete, name='players_delete'),
+    path('monsters/delete/',
+        login_required(views.MonstersDelete.as_view()),
+        name='monsters_delete'),
+    path('npcs/delete/', login_required(views.NPCsDelete.as_view()), name='npcs_delete'),
+    path('players/delete/',
+        login_required(views.PlayersDelete.as_view()),
+        name='players_delete'),
 ]
