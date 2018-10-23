@@ -1,10 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core import serializers
 from django.urls import reverse
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
+from django.views import View
 
 from . import forms
 from . import models
@@ -95,3 +97,25 @@ def item_copy(request, item_pk):
     else:
         raise Http404
     return render(request, 'items/item_copy.html', {'form': form, 'item': item})
+
+
+class ItemExport(View):
+    def get(self, request, *args, **kwargs):
+        queryset = models.Item.objects.filter(user=request.user).order_by('name')
+        items = serializers.serialize("json", queryset, indent=2)
+        return render(request, 'items/item_export.html', {'items': items})
+
+
+class ItemImport(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'items/item_import.html')
+
+    def post(self, request, *args, **kwargs):
+        if request.POST.get('user_import'):
+            user_import = request.POST.get('user_import')
+
+            for obj in serializers.deserialize("json", user_import):
+                obj.object.pk = None
+                obj.object.user = request.user
+                obj.object.save()
+        return HttpResponseRedirect(reverse('items:item_detail'))

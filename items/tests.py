@@ -85,3 +85,24 @@ class ItemTest(TestCase):
 
         items = models.Item.objects.all()
         self.assertEqual(items.count(), 1)
+
+    def test_item_export(self):
+        response = self.client.get('/items/export/')
+        self.assertRedirects(response,
+            '/accounts/login/?next=/items/export/', 302, 200)
+
+        self.client.force_login(self.users[0])
+        response = self.client.get('/items/export/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_item_import(self):
+        response = self.client.get('/items/import/')
+        self.assertRedirects(response,
+            '/accounts/login/?next=/items/import/', 302, 200)
+
+        self.client.force_login(self.users[0])
+        response = self.client.get('/items/import/')
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/items/import/')
+        self.assertRedirects(response, '/items/', 302, 200)
