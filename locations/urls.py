@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.urls import path
 
 from . import views
@@ -18,6 +19,9 @@ urlpatterns = [
 
     path('world/<int:world_pk>/delete/', views.world_delete, name='world_delete'),
     path('location/<int:location_pk>/delete/', views.location_delete, name='location_delete'),
+
+    path('export/', login_required(views.WorldExport.as_view()), name='world_export'),
+    path('import/', login_required(views.WorldImport.as_view()), name='world_import'),
 
     path('', views.location_detail, name='location_detail'),
 ]

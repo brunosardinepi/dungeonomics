@@ -10,7 +10,7 @@ from campaign.models import Campaign, Chapter, Section
 from characters.models import Monster, NPC, Player
 from dungeonomics import settings
 from items.models import Item
-from locations.models import Location, World
+from locations.models import Location, World, create_random_string
 from tables.models import Table, TableOption
 
 

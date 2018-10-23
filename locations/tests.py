@@ -178,3 +178,24 @@ class LocationTest(TestCase):
 
         locations = models.Location.objects.all()
         self.assertEqual(locations.count(), 2)
+
+    def test_world_export(self):
+        response = self.client.get('/locations/export/')
+        self.assertRedirects(response,
+            '/accounts/login/?next=/locations/export/', 302, 200)
+
+        self.client.force_login(self.users[0])
+        response = self.client.get('/locations/export/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_world_import(self):
+        response = self.client.get('/locations/import/')
+        self.assertRedirects(response,
+            '/accounts/login/?next=/locations/import/', 302, 200)
+
+        self.client.force_login(self.users[0])
+        response = self.client.get('/locations/import/')
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/locations/import/')
+        self.assertRedirects(response, '/locations/', 302, 200)
