@@ -55,6 +55,9 @@ class Character(models.Model):
     speed = models.CharField(max_length=255, default='', blank=True)
     saving_throws = models.CharField(max_length=255, default='', blank=True)
     skills = models.CharField(max_length=255, default='', blank=True)
+    is_published = models.BooleanField(default=False)
+    published_date = models.DateTimeField(blank=True, null=True)
+    tavern_description = models.TextField(blank=True)
 
     @property
     def strength_mod(self):
@@ -93,6 +96,7 @@ class Monster(Character):
     senses = models.CharField(max_length=255, default='', blank=True)
     challenge_rating = models.CharField(max_length=255, default='', blank=True)
     content = models.TextField(blank=True)
+    importers = models.ManyToManyField(User, related_name='monster_importers')
 
     def get_absolute_url(self):
         return reverse('characters:monster_detail', kwargs={
@@ -117,6 +121,7 @@ class NPC(Character):
     senses = models.CharField(max_length=255, default='', blank=True)
     challenge_rating = models.CharField(max_length=255, default='', blank=True)
     content = models.TextField(blank=True)
+    importers = models.ManyToManyField(User, related_name='npc_importers')
 
     class Meta:
         verbose_name = 'NPC'
@@ -156,6 +161,7 @@ class Player(Character):
     proficiencies = models.TextField(blank=True)
     senses = models.CharField(max_length=255, default='', blank=True)
     equipment = models.TextField(blank=True)
+    importers = models.ManyToManyField(User, related_name='player_importers')
 
     def get_absolute_url(self):
         return reverse('characters:player_detail', kwargs={

@@ -182,3 +182,24 @@ NPCFormSet = forms.modelformset_factory(
     form=NPCForm,
     extra=0,
 )
+
+class MonsterPublishForm(TinyMCEForm):
+    class Meta:
+        model = models.Monster
+        fields = [
+            'tavern_description',
+        ]
+
+class NPCPublishForm(TinyMCEForm):
+    class Meta:
+        model = models.NPC
+        fields = [
+            'tavern_description',
+        ]
+
+class PlayerPublishForm(TinyMCEForm):
+    class Meta:
+        model = models.Player
+        fields = [
+            'tavern_description',
+        ]

@@ -9,13 +9,18 @@ from django.views.generic import TemplateView
 from . import config
 from . import views
 from campaign.views import TavernView, TavernDetailView, TavernImport, TavernReview
+from characters.views import TavernCharacterDetailView
 
 
 urlpatterns = [
     path('{}/'.format(config.settings['admin']), admin.site.urls),
     path('accounts/password/reset/done/', views.PasswordResetDoneView.as_view(), name='account_reset_password_done'),
-    path('accounts/password/reset/key/<uuid:uidb36>-<str:key>/', views.CustomPasswordResetFromKeyView.as_view(), name="account_reset_password_from_key"),
-    path('accounts/password/reset/key/done/', views.PasswordResetFromKeyDoneView.as_view(), name="account_reset_password_from_key_done"),
+    path('accounts/password/reset/key/<uuid:uidb36>-<str:key>/',
+        views.CustomPasswordResetFromKeyView.as_view(),
+        name="account_reset_password_from_key"),
+    path('accounts/password/reset/key/done/',
+        views.PasswordResetFromKeyDoneView.as_view(),
+        name="account_reset_password_from_key_done"),
     path('accounts/profile/', views.profile_detail, name='profile'),
     path('accounts/email/', views.EmailView.as_view(), name='account_email'),
     path('accounts/login/', views.LoginView.as_view(), name='login'),
@@ -25,10 +30,27 @@ urlpatterns = [
     path('accounts/password/reset/', views.PasswordResetView.as_view(), name='password_reset'),
     path('accounts/delete/', views.account_delete, name='account_delete'),
     path('accounts/', include('allauth.urls')),
+
     path('tavern/', login_required(TavernView.as_view()), name='tavern'),
-    path('tavern/<int:campaign_pk>/', login_required(TavernDetailView.as_view()), name='tavern_detail'),
-    path('tavern/<int:campaign_pk>/review/', login_required(TavernReview.as_view()), name='tavern_review'),
-    path('tavern/<int:campaign_pk>/import/', login_required(TavernImport.as_view()), name='tavern_import'),
+    path('tavern/campaign/<int:campaign_pk>/',
+        login_required(TavernDetailView.as_view()),
+        name='tavern_detail'),
+    path('tavern/campaign/<int:campaign_pk>/review/',
+        login_required(TavernReview.as_view()),
+        name='tavern_review'),
+    path('tavern/campaign/<int:campaign_pk>/import/',
+        login_required(TavernImport.as_view()),
+        name='tavern_import'),
+    path('tavern/<str:type>/<int:pk>/',
+        login_required(TavernCharacterDetailView.as_view()),
+        name='tavern_character_detail'),
+#    path('tavern/<str:type>/<int:pk>/review/',
+#        login_required(TavernCharacterReview.as_view()),
+#        name='tavern_character_review'),
+#    path('tavern/<str:type>/<int:pk>/import/',
+#        login_required(TavernImport.as_view()),
+#        name='tavern_character_import'),
+
     path('campaign/', include('campaign.urls', namespace='campaign')),
     path('characters/', include('characters.urls', namespace='characters')),
     path('donate/', views.DonateView.as_view(), name='donate'),

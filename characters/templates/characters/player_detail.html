@@ -41,6 +41,11 @@
     {% if player %}
         <a href="{% url 'characters:player_update' player_pk=player.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit Player</a>
         <a href="{% url 'characters:player_campaigns' player_pk=player.pk %}" class="dropdown-item"><i class="fal fa-fw fa-eye" aria-hidden="true"></i> View Campaigns</a>
+        {% if player.is_published == True %}
+            <a href="{% url 'tavern_character_detail' type='player' pk=player.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-cloud-upload" aria-hidden="true"></i> View on The Tavern</a>
+        {% else %}
+            <a href="{% url 'characters:character_publish' type='player' pk=player.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-cloud-upload" aria-hidden="true"></i> Publish player</a>
+        {% endif %}
         <a href="{% url 'characters:player_copy' player_pk=player.pk %}" class="dropdown-item"><i class="fal fa-fw fa-copy" aria-hidden="true"></i> Copy Player</a>       
         <a id="player-delete" href="{% url 'characters:player_delete' player_pk=player.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete Player</a>
     {% else %}

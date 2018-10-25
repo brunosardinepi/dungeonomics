@@ -37,6 +37,13 @@ urlpatterns = [
     path('monster/import/', views.monster_import, name='monster_import'),
     path('npc/import/', views.npc_import, name='npc_import'),
 
+    path('<str:type>/<int:pk>/publish/',
+        login_required(views.CharacterPublish.as_view()),
+        name='character_publish'),
+    path('<str:type>/<int:pk>/unpublish/',
+        login_required(views.CharacterUnpublish.as_view()),
+        name='character_unpublish'),
+
     path('monster/srd/', views.monster_srd, name='monster_srd'),
     path('npc/srd/', views.npc_srd, name='npc_srd'),
 
