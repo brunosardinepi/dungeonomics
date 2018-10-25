@@ -45,7 +45,7 @@
     {% if npc %}
         <a href="{% url 'characters:npc_update' npc_pk=npc.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit NPC</a>
         {% if npc.is_published == True %}
-            <a href="{% url 'tavern_character_detail' type='npc' pk=npc.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-cloud-upload" aria-hidden="true"></i> View on The Tavern</a>
+            <a href="{% url 'tavern:tavern_character_detail' type='npc' pk=npc.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-cloud-upload" aria-hidden="true"></i> View on The Tavern</a>
         {% else %}
             <a href="{% url 'characters:character_publish' type='npc' pk=npc.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-cloud-upload" aria-hidden="true"></i> Publish NPC</a>
         {% endif %}

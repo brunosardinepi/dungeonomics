@@ -72,22 +72,22 @@
                             {% if request.user == obj.user %}
                                 <a href="{% url 'characters:character_unpublish' type='monster' pk=obj.pk %}" id="obj-unpublish" class="btn btn-danger btn-block mt-4">Unpublish monster</a>
                             {% else %}
-                                <a id="tavern-import" href="{% url 'tavern_character_import' type='monster' pk=obj.pk %}" class="btn btn-success btn-block mt-4">Import monster</a>
-                                <a href="{% url 'tavern_character_review' type='monster' pk=obj.pk %}" class="btn btn-primary btn-block mt-3">Review monster</a>
+                                <a id="tavern-import" href="{% url 'tavern:tavern_character_import' type='monster' pk=obj.pk %}" class="btn btn-success btn-block mt-4">Import monster</a>
+                                <a href="{% url 'tavern:tavern_character_review' type='monster' pk=obj.pk %}" class="btn btn-primary btn-block mt-3">Review monster</a>
                             {% endif %}
                         {% elif type == "npc" %}
                             {% if request.user == obj.user %}
                                 <a href="{% url 'characters:character_unpublish' type='npc' pk=obj.pk %}" id="obj-unpublish" class="btn btn-danger btn-block mt-4">Unpublish NPC</a>
                             {% else %}
-                                <a id="tavern-import" href="{% url 'tavern_character_import' type='npc' pk=obj.pk %}" class="btn btn-success btn-block mt-4">Import NPC</a>
-                                <a href="{% url 'tavern_character_review' type='npc' pk=obj.pk %}" class="btn btn-primary btn-block mt-3">Review NPC</a>
+                                <a id="tavern-import" href="{% url 'tavern:tavern_character_import' type='npc' pk=obj.pk %}" class="btn btn-success btn-block mt-4">Import NPC</a>
+                                <a href="{% url 'tavern:tavern_character_review' type='npc' pk=obj.pk %}" class="btn btn-primary btn-block mt-3">Review NPC</a>
                             {% endif %}
                         {% elif type == "player" %}
                             {% if request.user == obj.user %}
                                 <a href="{% url 'characters:character_unpublish' type='player' pk=obj.pk %}" id="obj-unpublish" class="btn btn-danger btn-block mt-4">Unpublish player</a>
                             {% else %}
-                                <a id="tavern-import" href="{% url 'tavern_character_import' type='player' pk=obj.pk %}" class="btn btn-success btn-block mt-4">Import player</a>
-                                <a href="{% url 'tavern_character_review' type='player' pk=obj.pk %}" class="btn btn-primary btn-block mt-3">Review player</a>
+                                <a id="tavern-import" href="{% url 'tavern:tavern_character_import' type='player' pk=obj.pk %}" class="btn btn-success btn-block mt-4">Import player</a>
+                                <a href="{% url 'tavern:tavern_character_review' type='player' pk=obj.pk %}" class="btn btn-primary btn-block mt-3">Review player</a>
                             {% endif %}
                         {% endif %}
                 </div>

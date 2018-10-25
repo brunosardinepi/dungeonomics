@@ -8,8 +8,6 @@ from django.views.generic import TemplateView
 
 from . import config
 from . import views
-from campaign.views import TavernView, TavernDetailView, TavernImport, TavernReview
-from characters.views import TavernCharacterDetailView
 
 
 urlpatterns = [
@@ -30,27 +28,7 @@ urlpatterns = [
     path('accounts/password/reset/', views.PasswordResetView.as_view(), name='password_reset'),
     path('accounts/delete/', views.account_delete, name='account_delete'),
     path('accounts/', include('allauth.urls')),
-
-    path('tavern/', login_required(TavernView.as_view()), name='tavern'),
-    path('tavern/campaign/<int:campaign_pk>/',
-        login_required(TavernDetailView.as_view()),
-        name='tavern_detail'),
-    path('tavern/campaign/<int:campaign_pk>/review/',
-        login_required(TavernReview.as_view()),
-        name='tavern_review'),
-    path('tavern/campaign/<int:campaign_pk>/import/',
-        login_required(TavernImport.as_view()),
-        name='tavern_import'),
-    path('tavern/<str:type>/<int:pk>/',
-        login_required(TavernCharacterDetailView.as_view()),
-        name='tavern_character_detail'),
-#    path('tavern/<str:type>/<int:pk>/review/',
-#        login_required(TavernCharacterReview.as_view()),
-#        name='tavern_character_review'),
-#    path('tavern/<str:type>/<int:pk>/import/',
-#        login_required(TavernImport.as_view()),
-#        name='tavern_character_import'),
-
+    path('tavern/', include('tavern.urls', namespace='tavern')),
     path('campaign/', include('campaign.urls', namespace='campaign')),
     path('characters/', include('characters.urls', namespace='characters')),
     path('donate/', views.DonateView.as_view(), name='donate'),

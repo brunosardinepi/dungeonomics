@@ -50,7 +50,7 @@
                 <div class="card-footer">
                     <div class="row justify-content-between">
                         <div class="col-auto">
-                            <a href="{% url 'tavern_detail' campaign_pk=campaign.pk %}" class="btn btn-secondary">Cancel</a>
+                            <a href="{% url 'tavern:tavern_campaign_detail' campaign_pk=campaign.pk %}" class="btn btn-secondary">Cancel</a>
                         </div>
                         <div class="col-auto">
                             <input type="submit" class="btn btn-primary" value="Submit">

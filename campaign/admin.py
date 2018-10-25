@@ -16,11 +16,6 @@ class SectionAdmin(admin.ModelAdmin):
     list_display = ('title', 'user', 'created_at', 'campaign', 'chapter',)
     ordering = ('title', 'user', '-created_at', 'campaign', 'chapter',)
 
-class ReviewAdmin(admin.ModelAdmin):
-    list_display = ('user', 'date', 'campaign', 'score',)
-    ordering = list_display
-
 admin.site.register(models.Campaign, CampaignAdmin)
 admin.site.register(models.Chapter, ChapterAdmin)
 admin.site.register(models.Section, SectionAdmin)
-admin.site.register(models.Review, ReviewAdmin)

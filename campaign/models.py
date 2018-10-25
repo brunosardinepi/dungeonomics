@@ -8,6 +8,7 @@ from django.db.models import Avg
 from django.utils.translation import ugettext_lazy as _
 
 from characters.models import Monster, NPC, Player
+from tavern.models import Review
 
 
 class CampaignTemplate(models.Model):
@@ -88,27 +89,3 @@ class Section(CampaignTemplate):
             'chapter_pk': self.chapter_id,
             'section_pk': self.pk
             })
-
-
-class Review(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    campaign = models.ForeignKey(Campaign, blank=True, on_delete=models.CASCADE)
-    monster = models.ForeignKey(Monster,
-        blank=True,
-        null=True,
-        on_delete=models.CASCADE,
-    )
-    npc = models.ForeignKey(NPC,
-        blank=True,
-        null=True,
-        on_delete=models.CASCADE,
-    )
-    player = models.ForeignKey(Player,
-        blank=True,
-        null=True,
-        on_delete=models.CASCADE,
-    )
-    date = models.DateTimeField(auto_now_add=True)
-    score = models.IntegerField(default=5,
-        validators=[MaxValueValidator(5), MinValueValidator(1)])
-    comment = models.TextField(blank=True)
