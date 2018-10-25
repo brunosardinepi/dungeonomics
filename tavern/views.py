@@ -33,11 +33,18 @@ class TavernView(View):
             key=lambda c: c.rating(),
             reverse=True)[:5]
 
+        popular_monsters = Monster.objects.filter(is_published=True)
+        popular_monsters = sorted(
+            popular_monsters,
+            key=lambda c: c.rating(),
+            reverse=True)[:5]
+
         recent_campaigns = Campaign.objects.filter(
             is_published=True).order_by('-published_date')[:5]
 
         return render(self.request, 'tavern/tavern.html', {
             'popular_campaigns': popular_campaigns,
+            'popular_monsters': popular_monsters,
             'recent_campaigns': recent_campaigns,
         })
 
@@ -196,11 +203,11 @@ class TavernCharacterDetailView(View):
 
         if obj.is_published == True:
             if kwargs['type'] == 'monster':
-                reviews = Review.objects.filter(monster=obj).order_by('-date')
+                reviews = models.Review.objects.filter(monster=obj).order_by('-date')
             elif kwargs['type'] == 'npc':
-                reviews = Review.objects.filter(npc=obj).order_by('-date')
+                reviews = models.Review.objects.filter(npc=obj).order_by('-date')
             elif kwargs['type'] == 'player':
-                reviews = Review.objects.filter(player=obj).order_by('-date')
+                reviews = models.Review.objects.filter(player=obj).order_by('-date')
 
             rating = 0
             for review in reviews:
@@ -222,3 +229,13 @@ class TavernCharacterDetailView(View):
             })
         else:
             raise Http404
+
+
+class TavernCharacterImport(View):
+    def get(self, request, *args, **kwargs):
+        pass
+
+
+class TavernCharacterReview(View):
+    def get(self, request, *args, **kwargs):
+        pass

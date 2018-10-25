@@ -1,8 +1,12 @@
+from math import floor
+
 from django.contrib.auth.models import User
+from django.db.models import Avg
 from django.urls import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from math import floor
+
+from tavern.models import Review
 
 
 def score_to_mod_string(score):
@@ -106,6 +110,12 @@ class Monster(Character):
     def __str__(self):
         return self.name
 
+    def rating(self):
+        # find the average rating
+        return Review.objects.filter(
+            monster=self).aggregate(
+            Avg('score'))['score__avg'] or 0.00
+
 
 class NPC(Character):
     npc_class = models.CharField(verbose_name= _('Class'),max_length=255, default='', blank=True)
@@ -134,6 +144,12 @@ class NPC(Character):
 
     def __str__(self):
         return self.name
+
+    def rating(self):
+        # find the average rating
+        return Review.objects.filter(
+            npc=self).aggregate(
+            Avg('score'))['score__avg'] or 0.00
 
 
 class Player(Character):
@@ -170,3 +186,9 @@ class Player(Character):
 
     def __str__(self):
         return self.character_name
+
+    def rating(self):
+        # find the average rating
+        return Review.objects.filter(
+            player=self).aggregate(
+            Avg('score'))['score__avg'] or 0.00
