@@ -507,3 +507,22 @@ class CampaignTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.campaigns[1].title)
         self.assertContains(response, tavern_description)
+
+    def test_tavern_unpublish(self):
+        response = self.client.get('/campaign/{}/unpublish/'.format(self.campaigns[1].pk))
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/campaign/{}/unpublish/'.format(self.campaigns[1].pk),
+            302, 200)
+
+        self.client.force_login(self.users[1])
+        response = self.client.get('/campaign/{}/unpublish/'.format(self.campaigns[1].pk))
+        self.assertRedirects(response,
+            '/campaign/{}/'.format(format(self.campaigns[1].pk)),
+            302, 200)
+
+        reviews = Review.objects.filter(campaign=self.campaigns[1]).count()
+        self.assertEqual(reviews, 0)
+
+        importers = self.campaigns[1].importers.all().count()
+        self.assertEqual(reviews, 0)

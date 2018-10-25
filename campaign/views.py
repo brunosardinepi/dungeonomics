@@ -27,6 +27,7 @@ from items.models import Item
 from locations.models import Location, World
 from posts.models import Post
 from tables.models import Table, TableOption
+from tavern.models import Review
 
 
 @login_required
@@ -460,8 +461,16 @@ class CampaignUnpublish(View):
     def get(self, request, *args, **kwargs):
         campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
         if campaign.user == request.user:
+            # remove from the tavern
             campaign.is_published = False
             campaign.save()
+
+            # delete the reviews
+            Review.objects.filter(campaign=campaign).delete()
+
+            # delete the importers
+            campaign.importers.clear()
+
             messages.success(request, 'Campaign unpublished', fail_silently=True)
             return redirect('campaign:campaign_detail', campaign_pk=campaign.pk)
         else:
