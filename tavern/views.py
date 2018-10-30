@@ -33,35 +33,40 @@ class TavernView(View):
             popular_campaigns,
             key=lambda c: c.rating(),
             reverse=True)[:5]
-
         popular_monsters = Monster.objects.filter(is_published=True)
         popular_monsters = sorted(
             popular_monsters,
             key=lambda c: c.rating(),
             reverse=True)[:5]
-
         popular_npcs = NPC.objects.filter(is_published=True)
         popular_npcs = sorted(
             popular_npcs,
             key=lambda c: c.rating(),
             reverse=True)[:5]
+        popular_players = Player.objects.filter(is_published=True)
+        popular_players = sorted(
+            popular_players,
+            key=lambda c: c.rating(),
+            reverse=True)[:5]
 
         recent_campaigns = Campaign.objects.filter(
             is_published=True).order_by('-published_date')[:5]
-
         recent_monsters = Monster.objects.filter(
             is_published=True).order_by('-published_date')[:5]
-
         recent_npcs = NPC.objects.filter(
+            is_published=True).order_by('-published_date')[:5]
+        recent_players = Player.objects.filter(
             is_published=True).order_by('-published_date')[:5]
 
         return render(self.request, 'tavern/tavern.html', {
             'popular_campaigns': popular_campaigns,
             'popular_monsters': popular_monsters,
             'popular_npcs': popular_npcs,
+            'popular_players': popular_players,
             'recent_campaigns': recent_campaigns,
             'recent_monsters': recent_monsters,
             'recent_npcs': recent_npcs,
+            'recent_players': recent_players,
         })
 
 
@@ -267,6 +272,9 @@ class TavernCharacterImport(View):
         elif kwargs['type'] == 'player':
             old_obj = get_object_or_404(Player, pk=kwargs['pk'])
             old_obj.importers.add(request.user)
+            # blank out the player name
+            obj.player_name = ''
+            obj.save()
             return redirect('characters:player_detail', player_pk=obj.pk)
 
 

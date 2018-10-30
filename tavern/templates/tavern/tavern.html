@@ -165,4 +165,53 @@
                 </div>
             </div>
         </div>
+
+        <div class="row pb-3">
+            <div class="col-lg-6 mb-3">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="font-weight-bold">Most popular players</span>
+                    </div>
+                    {% if popular_players %}
+                        <table class="table table-hover mb-0">
+                            <tbody>
+                                {% for player in popular_players %}
+                                    <tr>
+                                        <td><a href="{% url 'tavern:tavern_character_detail' type='player' pk=player.pk %}">{{ player }}</a></td>
+                                        <td class="text-right">{% rating_stars_html_tag player.rating as rating %}{{ rating|safe }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <div class="card-body">
+                            <p>There aren't any published players yet!</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6 mb-3">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="font-weight-bold">Most recent players</span>
+                    </div>
+                    {% if recent_players %}
+                        <table class="table table-hover mb-0">
+                            <tbody>
+                                {% for player in recent_players %}
+                                    <tr>
+                                        <td><a href="{% url 'tavern:tavern_character_detail' type='player' pk=player.pk %}">{{ player }}</a></td>
+                                        <td class="text-right">{% rating_stars_html_tag player.rating as rating %}{{ rating|safe }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <div class="card-body">
+                            <p>There aren't any published players yet!</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
 {% endblock %}
