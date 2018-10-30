@@ -54,5 +54,9 @@
 {% endblock %}
 
 {% block character_detail %}
-    {% include "characters/player_template.html" with player=player %}
+    {% if player %}
+        {% include "characters/player_stats.html" with player=player %}
+    {% else %}
+        <p>You haven't created any players yet!</p>
+    {% endif %}
 {% endblock %}
