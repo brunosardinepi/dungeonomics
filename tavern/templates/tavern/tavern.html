@@ -116,4 +116,53 @@
                 </div>
             </div>
         </div>
+
+        <div class="row pb-3">
+            <div class="col-lg-6 mb-3">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="font-weight-bold">Most popular NPCs</span>
+                    </div>
+                    {% if popular_npcs %}
+                        <table class="table table-hover mb-0">
+                            <tbody>
+                                {% for npc in popular_npcs %}
+                                    <tr>
+                                        <td><a href="{% url 'tavern:tavern_character_detail' type='npc' pk=npc.pk %}">{{ npc }}</a></td>
+                                        <td class="text-right">{% rating_stars_html_tag npc.rating as rating %}{{ rating|safe }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <div class="card-body">
+                            <p>There aren't any published NPCs yet!</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6 mb-3">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="font-weight-bold">Most recent NPCs</span>
+                    </div>
+                    {% if recent_npcs %}
+                        <table class="table table-hover mb-0">
+                            <tbody>
+                                {% for npc in recent_npcs %}
+                                    <tr>
+                                        <td><a href="{% url 'tavern:tavern_character_detail' type='npc' pk=npc.pk %}">{{ npc }}</a></td>
+                                        <td class="text-right">{% rating_stars_html_tag npc.rating as rating %}{{ rating|safe }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <div class="card-body">
+                            <p>There aren't any published NPCs yet!</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
 {% endblock %}

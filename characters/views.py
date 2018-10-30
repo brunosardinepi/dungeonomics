@@ -16,6 +16,7 @@ from itertools import chain
 from . import forms
 from . import models
 from campaign.models import Campaign
+from characters.utils import get_character_object
 from dungeonomics.utils import at_tagging
 from items import models as item_models
 from locations import models as location_models
@@ -487,22 +488,27 @@ class CharacterPublish(View):
 
 class CharacterUnpublish(View):
     def get(self, request, *args, **kwargs):
-        if kwargs['type'] == 'monster':
-            obj = get_object_or_404(models.Monster, pk=kwargs['pk'])
-        elif kwargs['type'] == 'npc':
-            obj = get_object_or_404(models.NPC, pk=kwargs['pk'])
-        elif kwargs['type'] == 'player':
-            obj = get_object_or_404(models.Player, pk=kwargs['pk'])
-
+        obj = get_character_object(kwargs['type'], kwargs['pk'])
         if obj.user == request.user:
+            # remove from the tavern
             obj.is_published = False
             obj.save()
+
+            # delete the importers
+            obj.importers.clear()
+
             messages.success(request, 'Character unpublished', fail_silently=True)
 
             if kwargs['type'] == 'monster':
+                # delete the reviews
+                Review.objects.filter(monster=obj).delete()
                 return redirect('characters:monster_detail', monster_pk=obj.pk)
             elif kwargs['type'] == 'npc':
+                # delete the reviews
+                Review.objects.filter(npc=obj).delete()
                 return redirect('characters:npc_detail', npc_pk=obj.pk)
             elif kwargs['type'] == 'player':
+                # delete the reviews
+                Review.objects.filter(player=obj).delete()
                 return redirect('characters:player_detail', player_pk=obj.pk)
         raise Http404

@@ -17,6 +17,7 @@ from campaign.utils import (campaign_export,
                             get_content_url,
                             get_url_object)
 from characters.models import Monster, NPC, Player
+from characters.utils import get_character_object
 from dungeonomics.utils import at_tagging, rating_monster
 from dungeonomics import settings
 from items.models import Item
@@ -24,15 +25,6 @@ from locations.models import Location, World
 from posts.models import Post
 from tables.models import Table, TableOption
 
-
-def get_character_object(type, pk):
-    if type == 'monster':
-        obj = get_object_or_404(Monster, pk=pk)
-    elif type == 'npc':
-        obj = get_object_or_404(NPC, pk=pk)
-    elif type == 'player':
-        obj = get_object_or_404(Player, pk=pk)
-    return obj
 
 class TavernView(View):
     def get(self, request, *args, **kwargs):
@@ -48,17 +40,28 @@ class TavernView(View):
             key=lambda c: c.rating(),
             reverse=True)[:5]
 
+        popular_npcs = NPC.objects.filter(is_published=True)
+        popular_npcs = sorted(
+            popular_npcs,
+            key=lambda c: c.rating(),
+            reverse=True)[:5]
+
         recent_campaigns = Campaign.objects.filter(
             is_published=True).order_by('-published_date')[:5]
 
         recent_monsters = Monster.objects.filter(
             is_published=True).order_by('-published_date')[:5]
 
+        recent_npcs = NPC.objects.filter(
+            is_published=True).order_by('-published_date')[:5]
+
         return render(self.request, 'tavern/tavern.html', {
             'popular_campaigns': popular_campaigns,
             'popular_monsters': popular_monsters,
+            'popular_npcs': popular_npcs,
             'recent_campaigns': recent_campaigns,
             'recent_monsters': recent_monsters,
+            'recent_npcs': recent_npcs,
         })
 
 
@@ -275,9 +278,9 @@ class TavernCharacterReview(View):
             if kwargs['type'] == 'monster':
                 review = models.Review.objects.get(user=request.user, monster=obj)
             elif kwargs['type'] == 'npc':
-                review = models.Review.objects.get(request.user, npc=obj)
+                review = models.Review.objects.get(user=request.user, npc=obj)
             elif kwargs['type'] == 'player':
-                review = models.Review.objects.get(request.user, player=obj)
+                review = models.Review.objects.get(user=request.user, player=obj)
         except models.Review.DoesNotExist:
             review = None
 
