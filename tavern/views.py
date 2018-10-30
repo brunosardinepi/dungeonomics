@@ -25,6 +25,15 @@ from posts.models import Post
 from tables.models import Table, TableOption
 
 
+def get_character_object(type, pk):
+    if type == 'monster':
+        obj = get_object_or_404(Monster, pk=pk)
+    elif type == 'npc':
+        obj = get_object_or_404(NPC, pk=pk)
+    elif type == 'player':
+        obj = get_object_or_404(Player, pk=pk)
+    return obj
+
 class TavernView(View):
     def get(self, request, *args, **kwargs):
         popular_campaigns = Campaign.objects.filter(is_published=True)
@@ -42,10 +51,14 @@ class TavernView(View):
         recent_campaigns = Campaign.objects.filter(
             is_published=True).order_by('-published_date')[:5]
 
+        recent_monsters = Monster.objects.filter(
+            is_published=True).order_by('-published_date')[:5]
+
         return render(self.request, 'tavern/tavern.html', {
             'popular_campaigns': popular_campaigns,
             'popular_monsters': popular_monsters,
             'recent_campaigns': recent_campaigns,
+            'recent_monsters': recent_monsters,
         })
 
 
@@ -194,12 +207,7 @@ class TavernCampaignImport(View):
 
 class TavernCharacterDetailView(View):
     def get(self, request, *args, **kwargs):
-        if kwargs['type'] == 'monster':
-            obj = get_object_or_404(Monster, pk=kwargs['pk'])
-        elif kwargs['type'] == 'npc':
-            obj = get_object_or_404(NPC, pk=kwargs['pk'])
-        elif kwargs['type'] == 'player':
-            obj = get_object_or_404(Player, pk=kwargs['pk'])
+        obj = get_character_object(kwargs['type'], kwargs['pk'])
 
         if obj.is_published == True:
             if kwargs['type'] == 'monster':
@@ -233,9 +241,86 @@ class TavernCharacterDetailView(View):
 
 class TavernCharacterImport(View):
     def get(self, request, *args, **kwargs):
-        pass
+        obj = get_character_object(kwargs['type'], kwargs['pk'])
+
+        # create a copy of the obj
+        obj.pk = None
+        obj.id = None
+        obj.user = request.user
+        obj.is_published = False
+        obj.save()
+
+        # set this user as having imported the character
+        # redirect to the imported character
+        messages.success(request, "Character imported", fail_silently=True)
+        if kwargs['type'] == 'monster':
+            old_obj = get_object_or_404(Monster, pk=kwargs['pk'])
+            old_obj.importers.add(request.user)
+            return redirect('characters:monster_detail', monster_pk=obj.pk)
+        elif kwargs['type'] == 'npc':
+            old_obj = get_object_or_404(NPC, pk=kwargs['pk'])
+            old_obj.importers.add(request.user)
+            return redirect('characters:npc_detail', npc_pk=obj.pk)
+        elif kwargs['type'] == 'player':
+            old_obj = get_object_or_404(Player, pk=kwargs['pk'])
+            old_obj.importers.add(request.user)
+            return redirect('characters:player_detail', player_pk=obj.pk)
 
 
 class TavernCharacterReview(View):
     def get(self, request, *args, **kwargs):
-        pass
+        obj = get_character_object(kwargs['type'], kwargs['pk'])
+
+        try:
+            if kwargs['type'] == 'monster':
+                review = models.Review.objects.get(user=request.user, monster=obj)
+            elif kwargs['type'] == 'npc':
+                review = models.Review.objects.get(request.user, npc=obj)
+            elif kwargs['type'] == 'player':
+                review = models.Review.objects.get(request.user, player=obj)
+        except models.Review.DoesNotExist:
+            review = None
+
+        if review:
+            messages.info(
+                request,
+                "You've already submitted a review for this character",
+                fail_silently=True,
+            )
+            return redirect(
+                'tavern:tavern_character_detail',
+                type=kwargs['type'],
+                pk=kwargs['pk'],
+            )
+        else:
+            form = forms.TavernReviewForm()
+            return render(self.request, 'tavern/tavern_character_review.html', {
+                'obj': obj,
+                'type': kwargs['type'],
+                'form': form,
+            })
+
+    def post(self, request, *args, **kwargs):
+        obj = get_character_object(kwargs['type'], kwargs['pk'])
+        form = forms.TavernReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user = request.user
+            if kwargs['type'] == 'monster':
+                review.monster = obj
+            elif kwargs['type'] == 'npc':
+                review.npc = obj
+            elif kwargs['type'] == 'player':
+                review.player = obj
+            review.save()
+            messages.success(request, 'Review submitted', fail_silently=True)
+            return redirect(
+                'tavern:tavern_character_detail',
+                type=kwargs['type'],
+                pk=kwargs['pk'],
+            )
+        else:
+            return render(self.request, 'tavern/tavern_character_review.html', {
+                'obj': obj,
+                'type': kwargs['type'],
+            })

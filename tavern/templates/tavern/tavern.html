@@ -95,22 +95,22 @@
             <div class="col-lg-6 mb-3">
                 <div class="card">
                     <div class="card-header">
-                        <span class="font-weight-bold">Most recent monster</span>
+                        <span class="font-weight-bold">Most recent monsters</span>
                     </div>
-                    {% if recent_campaigns %}
+                    {% if recent_monsters %}
                         <table class="table table-hover mb-0">
                             <tbody>
-                                {% for campaign in recent_campaigns %}
+                                {% for monster in recent_monsters %}
                                     <tr>
-                                        <td><a href="{% url 'tavern:tavern_campaign_detail' campaign_pk=campaign.pk %}">{{ campaign.title }}</a></td>
-                                        <td class="text-right">{% rating_stars_html_tag campaign.rating as rating %}{{ rating|safe }}</td>
+                                        <td><a href="{% url 'tavern:tavern_character_detail' type='monster' pk=monster.pk %}">{{ monster }}</a></td>
+                                        <td class="text-right">{% rating_stars_html_tag monster.rating as rating %}{{ rating|safe }}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
                     {% else %}
                         <div class="card-body">
-                            <p>There aren't any published campaigns yet!</p>
+                            <p>There aren't any published monsters yet!</p>
                         </div>
                     {% endif %}
                 </div>
