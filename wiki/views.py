@@ -1,7 +1,11 @@
+from django.contrib import messages
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.views import View
 
+from . import forms
 from . import models
+from . import utils
 
 
 class ArticleDetail(View):
@@ -16,10 +20,28 @@ class ArticleDetail(View):
             'article': article,
         })
 
+
 class ArticleCreate(View):
     def get(self, request, *args, **kwargs):
         pass
 
+
 class ArticleUpdate(View):
     def get(self, request, *args, **kwargs):
-        pass
+        article = get_object_or_404(models.Article, pk=kwargs['pk'])
+        if utils.is_article_admin(request.user, article):
+            form = forms.ArticleForm(instance=article)
+            return render(request, 'wiki/article_form.html', {
+                'article': article,
+                'form': form,
+            })
+        raise Http404
+
+    def post(self, request, *args, **kwargs):
+        article = get_object_or_404(models.Article, pk=kwargs['pk'])
+        form = forms.ArticleForm(request.POST, instance=article)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, messages.SUCCESS, "Updated article")
+            return HttpResponseRedirect(article.get_absolute_url())
+        raise Http404

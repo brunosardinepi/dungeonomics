@@ -48,3 +48,30 @@ class WikiTest(TestCase):
         self.assertContains(response, self.articles[2].title)
         self.assertContains(response, self.articles[3].title)
         self.assertContains(response, self.articles[4].title)
+
+    def test_article_update(self):
+        response = self.client.get('/wiki/{}/'.format(self.articles[0].pk))
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/wiki/{}/'.format(self.articles[0].pk),
+            302, 200)
+
+        self.client.force_login(self.users[0])
+        response = self.client.get('/wiki/{}/'.format(self.articles[0].pk))
+        self.assertEqual(response.status_code, 200)
+
+        title = "new title"
+        description = "new description"
+        data = {
+            'title': title,
+            'description': description,
+        }
+        response = self.client.post('/wiki/{}/edit/'.format(self.articles[0].pk), data)
+        self.assertRedirects(response, '/wiki/{}/'.format(self.articles[0].pk), 302, 200)
+
+        response = self.client.get('/wiki/{}/'.format(self.articles[0].pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, title)
+        self.assertContains(response, description)
+        self.assertNotContains(response, self.articles[0].title)
+        self.assertNotContains(response, self.articles[0].description)

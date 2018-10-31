@@ -1,0 +1,114 @@
+{% extends 'layout.html' %}
+
+{% load widget_tweaks %}
+
+
+{% block title %}
+    {% if article.pk %}
+        Update article 
+    {% else %}
+        New article 
+    {% endif %}
+    | {{ block.super }}
+{% endblock %}
+
+{% block head_extra %}
+    {{ form.media.css }}
+    {{ form.media.js }}
+    
+    <script type="text/javascript">
+        tinymce.init({
+            selector: "#id_description",
+            height : "250",
+            plugins: [
+            'paste autosave autolink print searchreplace table textcolor wordcount link image'
+            ],
+            menu: {
+            edit: {title: 'Edit', items: 'undo redo | cut copy paste pastetext | selectall | searchreplace'},
+            insert: {title: 'Insert', items: 'image'},
+            view: {title: 'View', items: 'visualaid'},
+            format: {title: 'Format', items: 'bold italic underline strikethrough superscript subscript | formats | removeformat'},
+            table: {title: 'Table', items: 'inserttable tableprops deletetable | cell row column'}
+            },
+            toolbar: 'print | restoredraft | fontsizeselect bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link | forecolor backcolor',
+            browser_spellcheck: true,
+            paste_as_text: true,
+            fontsize_formats: "8pt 10pt 12pt 14pt 18pt 24pt 36pt",
+            relative_urls : false,
+            remove_script_host : false,
+            convert_urls : true,
+        });
+    </script>
+{% endblock %}
+
+{% block body_content %}
+    <div class="row mt-3 pb-5">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="px-1 mb-0">
+                        {% if article.pk %}
+                            <span class="font-weight-bold">{{ article.title }}</span>
+                        {% else %}
+                            <span class="font-weight-bold">New article</span>
+                        {% endif %}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="">
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        <div class="form-group">
+                            <label for="{{ form.title.id_for_label }}">Title</label>
+                            {% render_field form.title class+="form-control mb-3" %}
+                            {% if form.title.errors %}
+                                {% for error in form.title.errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ error|escape }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="{{ form.description.id_for_label }}">Description</label>
+                            {% render_field form.description class+="form-control mb-3" %}
+                            {% if form.description.errors %}
+                                {% for error in form.description.errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ error|escape }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>                        
+                </div>
+                <div class="card-footer">
+                    <div class="row justify-content-between">
+                        {% if article.pk %}
+                            <div class="col-auto">
+                                <a href="{% url 'wiki:article_detail' pk=article.pk %}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                            <div class="col-auto">
+                                <input type="submit" class="btn btn-primary" value="Update article">
+                            </div>
+                        {% else %}
+                            <div class="col-auto">
+                                <a href="{% url 'wiki:article_detail' %}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                            <div class="col-auto">
+                                <input type="submit" class="btn btn-primary" value="Create article">
+                            </div>
+                        {% endif %}
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
