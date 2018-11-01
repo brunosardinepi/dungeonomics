@@ -131,7 +131,7 @@ class CampaignCreate(LoginRequiredMixin, CreateView):
         campaign = form.save(commit=False)
         campaign.user = self.request.user
         campaign.save()
-        messages.add_message(self.request, messages.SUCCESS, "Campaign created!")
+        messages.add_message(self.request, messages.SUCCESS, "Campaign created")
         return HttpResponseRedirect(campaign.get_absolute_url())
 
 
@@ -142,7 +142,7 @@ class ChapterCreate(View):
             data = at_tagging(request)
             data['campaign'] = campaign
             data['form'] = forms.ChapterForm()
-            data['chapter_number'] = utils.get_next_chapter_number(campaign)
+            data['chapter_number'] = utils.get_next_order(campaign)
             return render(request, 'campaign/chapter_form.html', data)
         raise Http404
 
@@ -155,33 +155,39 @@ class ChapterCreate(View):
                 chapter.user = request.user
                 chapter.campaign = campaign
                 chapter.save()
-                messages.add_message(request, messages.SUCCESS, "Chapter created!")
+                messages.add_message(request, messages.SUCCESS, "Chapter created")
                 return HttpResponseRedirect(chapter.get_absolute_url())
         raise Http404
 
-@login_required
-def section_create(request, campaign_pk, chapter_pk):
-    campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-    if campaign.user == request.user:
-        data = at_tagging(request)
-        chapter = get_object_or_404(models.Chapter, pk=chapter_pk)
-        form = forms.SectionForm()
-        if request.method == 'POST':
+
+class SectionCreate(View):
+    def get(self, request, *args, **kwargs):
+        campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
+        if campaign.user == request.user:
+            data = at_tagging(request)
+            chapter = get_object_or_404(models.Chapter, pk=kwargs['chapter_pk'])
+            data['campaign'] = campaign
+            data['chapter'] = chapter
+            data['form'] = forms.SectionForm()
+            data['section_number'] = utils.get_next_order(chapter)
+            return render(request, 'campaign/section_form.html', data)
+        raise Http404
+
+    def post(self, request, *args, **kwargs):
+        campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
+        if campaign.user == request.user:
             form = forms.SectionForm(request.POST)
             if form.is_valid():
                 section = form.save(commit=False)
                 section.user = request.user
                 section.campaign = campaign
-                section.chapter = chapter
+                section.chapter = get_object_or_404(models.Chapter,
+                    pk=kwargs['chapter_pk'])
                 section.save()
-                messages.add_message(request, messages.SUCCESS, "Section created!")
+                messages.add_message(request, messages.SUCCESS, "Section created")
                 return HttpResponseRedirect(section.get_absolute_url())
-    else:
         raise Http404
-    data['campaign'] = campaign
-    data['chapter'] = chapter
-    data['form'] = form
-    return render(request, 'campaign/section_form.html', data)
+
 
 @login_required
 def campaign_update(request, campaign_pk):

@@ -18,7 +18,8 @@ urlpatterns = [
         login_required(views.ChapterCreate.as_view()),
         name='chapter_create'),
     path('<int:campaign_pk>/chapter/<int:chapter_pk>/section/create/',
-        views.section_create, name='section_create'),
+        login_required(views.SectionCreate.as_view()),
+        name='section_create'),
 
     path('<int:campaign_pk>/edit/', views.campaign_update, name='campaign_update'),
     path('<int:campaign_pk>/chapter/<int:chapter_pk>/edit/',
