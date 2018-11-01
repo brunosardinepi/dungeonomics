@@ -15,6 +15,8 @@ class ArticleDetail(View):
 
         try:
             article = get_object_or_404(models.Article, pk=kwargs['pk'])
+            article.views += 1
+            article.save()
         except KeyError:
             if articles:
                 article = articles[0]
