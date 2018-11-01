@@ -135,13 +135,20 @@ class CampaignCreate(LoginRequiredMixin, CreateView):
         return HttpResponseRedirect(campaign.get_absolute_url())
 
 
-@login_required
-def chapter_create(request, campaign_pk):
-    campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-    if campaign.user == request.user:
-        data = at_tagging(request)
-        form = forms.ChapterForm()
-        if request.method == 'POST':
+class ChapterCreate(View):
+    def get(self, request, *args, **kwargs):
+        campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
+        if campaign.user == request.user:
+            data = at_tagging(request)
+            data['campaign'] = campaign
+            data['form'] = forms.ChapterForm()
+            data['chapter_number'] = utils.get_next_chapter_number(campaign)
+            return render(request, 'campaign/chapter_form.html', data)
+        raise Http404
+
+    def post(self, request, *args, **kwargs):
+        campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
+        if campaign.user == request.user:
             form = forms.ChapterForm(request.POST)
             if form.is_valid():
                 chapter = form.save(commit=False)
@@ -150,11 +157,7 @@ def chapter_create(request, campaign_pk):
                 chapter.save()
                 messages.add_message(request, messages.SUCCESS, "Chapter created!")
                 return HttpResponseRedirect(chapter.get_absolute_url())
-    else:
         raise Http404
-    data['campaign'] = campaign
-    data['form'] = form
-    return render(request, 'campaign/chapter_form.html', data)
 
 @login_required
 def section_create(request, campaign_pk, chapter_pk):

@@ -402,3 +402,9 @@ def campaign_import(user, campaign, json_export):
                 section.save()
 
                 replace_content_urls(section, asset_references)
+
+def get_next_chapter_number(campaign):
+    # get the campaign's chapters and find the next highest number
+    chapter_number = campaign.chapter_set.all().order_by(
+        '-order').values('order').first()['order']
+    return chapter_number + 1
