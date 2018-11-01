@@ -25,15 +25,22 @@
                 </div>
                 <div class="card-body">
                     {% if articles %}
-                        <ul class="contents_list">
-                            {% for article in articles %}
+                        {% for tag in tags %}
+                            <ul class="contents_list">
                                 <li class="li-content">
-                                    <a href="{% url 'wiki:article_detail' pk=article.pk %}">{{ article.title }}</a>
+                                    {{ tag.title }}
                                 </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>You haven't created any content yet!</p>
+                                <ul style="padding-left: 30px;">
+                                    {% for article in articles %}
+                                        {% if tag in article.tags.all %}
+                                            <li class="li-content">
+                                                <a href="{% url 'wiki:article_detail' pk=article.pk %}">{{ article.title }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </ul>
+                        {% endfor %}
                     {% endif %}
                 </div>
             </div>

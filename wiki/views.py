@@ -11,12 +11,16 @@ from . import utils
 class ArticleDetail(View):
     def get(self, request, *args, **kwargs):
         articles = models.Article.objects.all().order_by('title')
+        tags = models.Tag.objects.all()
+
         try:
             article = get_object_or_404(models.Article, pk=kwargs['pk'])
         except KeyError:
             article = articles[0]
-        return render(request, 'wiki/article_list.html', {
+
+        return render(request, 'wiki/article_detail.html', {
             'articles': articles,
+            'tags': tags,
             'article': article,
         })
 
@@ -36,6 +40,10 @@ class ArticleCreate(View):
             article = form.save(commit=False)
             article.creator = request.user
             article.save()
+
+            for tag in form.cleaned_data['tags']:
+                article.tags.add(tag)
+
             utils.add_article_admins(article)
             messages.add_message(request, messages.SUCCESS, "Article created")
             return HttpResponseRedirect(article.get_absolute_url())

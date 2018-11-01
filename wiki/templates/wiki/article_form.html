@@ -77,6 +77,18 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="{{ form.tags.id_for_label }}">Tags</label>
+                            {% render_field form.tags class+="form-control mb-3" %}
+                            {% if form.tags.errors %}
+                                {% for error in form.tags.errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ error|escape }}
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
                             <label for="{{ form.description.id_for_label }}">Description</label>
                             {% render_field form.description class+="form-control mb-3" %}
                             {% if form.description.errors %}

@@ -14,5 +14,6 @@ class ArticleForm(TinyMCEForm):
         model = models.Article
         fields = [
             'title',
+            'tags',
             'description',
         ]

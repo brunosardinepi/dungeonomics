@@ -28,6 +28,11 @@ class WikiTest(TestCase):
             _fill_optional=True,
         )
         self.articles[0].admins.add(self.users[0])
+        self.articles[0].tags.add(self.tags[0])
+        self.articles[1].tags.add(self.tags[1])
+        self.articles[2].tags.add(self.tags[1])
+        self.articles[3].tags.add(self.tags[2])
+        self.articles[4].tags.add(self.tags[2])
 
     def test_article_exists(self):
         articles = models.Article.objects.all()
@@ -76,6 +81,7 @@ class WikiTest(TestCase):
         data = {
             'title': title,
             'description': description,
+            'tags': self.tags[0].pk,
         }
         response = self.client.post('/wiki/create/', data)
         articles = models.Article.objects.all().order_by('-date')
@@ -109,6 +115,7 @@ class WikiTest(TestCase):
         data = {
             'title': title,
             'description': description,
+            'tags': self.tags[1].pk,
         }
         response = self.client.post('/wiki/{}/edit/'.format(self.articles[0].pk), data)
         self.assertRedirects(response, '/wiki/{}/'.format(self.articles[0].pk), 302, 200)
