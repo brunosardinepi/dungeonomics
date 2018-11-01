@@ -14,7 +14,7 @@ class Article(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name='creator')
     date = models.DateTimeField(auto_now_add=True)
     title = models.CharField(max_length=255)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     views = models.IntegerField(default=1)
     upvotes = models.IntegerField(default=0)
     downvotes = models.IntegerField(default=0)

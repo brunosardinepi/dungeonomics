@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
 from django.views import View
 
@@ -23,7 +23,23 @@ class ArticleDetail(View):
 
 class ArticleCreate(View):
     def get(self, request, *args, **kwargs):
-        pass
+        if utils.is_wiki_admin(request.user):
+            form = forms.ArticleForm()
+            return render(request, 'wiki/article_form.html', {
+                'form': form,
+            })
+        raise Http404
+
+    def post(self, request, *args, **kwargs):
+        form = forms.ArticleForm(request.POST)
+        if form.is_valid():
+            article = form.save(commit=False)
+            article.creator = request.user
+            article.save()
+            utils.add_article_admins(article)
+            messages.add_message(request, messages.SUCCESS, "Article created")
+            return HttpResponseRedirect(article.get_absolute_url())
+        raise Http404
 
 
 class ArticleUpdate(View):
