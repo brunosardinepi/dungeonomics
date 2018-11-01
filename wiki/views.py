@@ -18,10 +18,16 @@ class ArticleDetail(View):
         except KeyError:
             article = articles[0]
 
+        if utils.is_wiki_admin(request.user):
+            admin = True
+        else:
+            admin = False
+
         return render(request, 'wiki/article_detail.html', {
             'articles': articles,
             'tags': tags,
             'article': article,
+            'admin': admin,
         })
 
 
