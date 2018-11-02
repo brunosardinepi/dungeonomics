@@ -195,6 +195,6 @@ AttributeFormSet = forms.inlineformset_factory(
     models.GeneralCharacter,
     models.Attribute,
     fields=('name', 'value',),
-    extra=1,
+    extra=2,
     min_num=0,
 )
