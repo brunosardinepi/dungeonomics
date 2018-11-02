@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+
+{% block title %}Delete tables | {{ block.super }}{% endblock %}
+
+{% block body_content %}
+    <div class="row justify-content-center mt-3 pb-3">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="px-1 mb-0">Delete tables</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <p>Select the tables that you'd like to delete:</p>
+                        <input type="checkbox" onClick="toggle(this)" style="margin-right: 8px;" />Select all
+                        <hr>
+                        {% for table in tables %}
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="table" value="{{ table.pk }}"> {{ table.name }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                </div>
+                <div class="card-footer">
+                    <div class="row justify-content-between">
+                        <div class="col-auto">
+                            <a href="{% url 'locations:location_detail' %}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                        <div class="col-auto">
+                            <input type="submit" class="btn btn-primary" value="Delete">
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body_extra %}
+<script>
+function toggle(source) {
+  checkboxes = document.getElementsByName('table');
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = source.checked;
+  }
+}
+</script>
+{% endblock %}

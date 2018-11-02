@@ -122,16 +122,6 @@ class PlayerForm(TinyMCEForm):
             'notes',
         ]
 
-class DeleteMonsterForm(forms.ModelForm):
-    class Meta:
-        model = models.Monster
-        fields = ['name']
-
-class DeleteNPCForm(forms.ModelForm):
-    class Meta:
-        model = models.NPC
-        fields = ['name']
-
 class CopyMonsterForm(forms.ModelForm):
     class Meta:
         model = models.Monster

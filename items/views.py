@@ -1,3 +1,5 @@
+from itertools import chain
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -5,6 +7,7 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
+from django.views import View
 
 from . import forms
 from . import models
@@ -95,3 +98,14 @@ def item_copy(request, item_pk):
     else:
         raise Http404
     return render(request, 'items/item_copy.html', {'form': form, 'item': item})
+
+
+class ItemsDelete(View):
+    def get(self, request, *args, **kwargs):
+        items = models.Item.objects.filter(user=request.user).order_by('name')
+        return render(request, 'items/items_delete.html', {'items': items})
+
+    def post(self, request, *args, **kwargs):
+        for item_pk in request.POST.getlist('item'):
+            models.Item.objects.get(pk=item_pk).delete()
+        return HttpResponseRedirect(reverse('items:item_detail'))

@@ -370,43 +370,38 @@ def npc_srd(request):
         return render(request, 'characters/npc_export.html', {'npcs': npc_queryset})
     return render(request, 'characters/npc_srd_form.html', {'form': form, 'npcs': npcs})
 
-@login_required
-def monsters_delete(request):
-    form = forms.DeleteMonsterForm()
-    monsters = sorted(models.Monster.objects.filter(user=request.user),
-        key=lambda monster: monster.name.lower()
-        )
-    if request.method == 'POST':
-        form = forms.DeleteMonsterForm(request.POST)
-        selected_monsters = []
-        for monster_pk in request.POST.getlist('monster'):
-            monster = models.Monster.objects.get(pk=monster_pk)
-            selected_monsters.append(monster)
-        empty_queryset = models.Monster.objects.none()
-        monster_queryset = list(chain(empty_queryset, selected_monsters))
-        for monster in monster_queryset:
-            monster.delete()
-        return HttpResponseRedirect(reverse('characters:monster_detail'))
-    return render(request, 'characters/monsters_delete.html', {'form': form, 'monsters': monsters})
 
-@login_required
-def npcs_delete(request):
-    form = forms.DeleteNPCForm()
-    npcs = sorted(models.NPC.objects.filter(user=request.user),
-        key=lambda npc: npc.name.lower()
-        )
-    if request.method == 'POST':
-        form = forms.DeleteNPCForm(request.POST)
-        selected_npcs = []
+class MonstersDelete(View):
+    def get(self, request, *args, **kwargs):
+        monsters = models.Monster.objects.filter(user=request.user).order_by('name')
+        return render(request, 'characters/monsters_delete.html', {'monsters': monsters})
+
+    def post(self, request, *args, **kwargs):
+        for monster_pk in request.POST.getlist('monster'):
+            models.Monster.objects.get(pk=monster_pk).delete()
+        return HttpResponseRedirect(reverse('characters:monster_detail'))
+
+
+class NPCsDelete(View):
+    def get(self, request, *args, **kwargs):
+        npcs = models.NPC.objects.filter(user=request.user).order_by('name')
+        return render(request, 'characters/npcs_delete.html', {'npcs': npcs})
+
+    def post(self, request, *args, **kwargs):
         for npc_pk in request.POST.getlist('npc'):
-            npc = models.NPC.objects.get(pk=npc_pk)
-            selected_npcs.append(npc)
-        empty_queryset = models.NPC.objects.none()
-        npc_queryset = list(chain(empty_queryset, selected_npcs))
-        for npc in npc_queryset:
-            npc.delete()
+            models.NPC.objects.get(pk=npc_pk).delete()
         return HttpResponseRedirect(reverse('characters:npc_detail'))
-    return render(request, 'characters/npcs_delete.html', {'form': form, 'npcs': npcs})
+
+
+class PlayersDelete(View):
+    def get(self, request, *args, **kwargs):
+        players = models.Player.objects.filter(user=request.user).order_by('name')
+        return render(request, 'characters/players_delete.html', {'players': players})
+
+    def post(self, request, *args, **kwargs):
+        for player_pk in request.POST.getlist('player'):
+            models.Player.objects.get(pk=player_pk).delete()
+        return HttpResponseRedirect(reverse('characters:player_detail'))
 
 
 class PlayerCampaigns(View):

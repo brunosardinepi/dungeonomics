@@ -239,3 +239,36 @@ class CharacterTest(TestCase):
 
         npcs = models.NPC.objects.all()
         self.assertEqual(npcs.count(), 1)
+
+    def test_monsters_delete(self):
+        response = self.client.get('/characters/monsters/delete/')
+        self.assertRedirects(response, '/accounts/login/?next=/characters/monsters/delete/', 302, 200)
+
+        self.client.force_login(self.users[0])
+        response = self.client.get('/characters/monsters/delete/')
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/characters/monsters/delete/')
+        self.assertRedirects(response, '/characters/monster/', 302, 200)
+
+    def test_npcs_delete(self):
+        response = self.client.get('/characters/npcs/delete/')
+        self.assertRedirects(response, '/accounts/login/?next=/characters/npcs/delete/', 302, 200)
+
+        self.client.force_login(self.users[0])
+        response = self.client.get('/characters/npcs/delete/')
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/characters/npcs/delete/')
+        self.assertRedirects(response, '/characters/npc/', 302, 200)
+
+    def test_players_delete(self):
+        response = self.client.get('/characters/players/delete/')
+        self.assertRedirects(response, '/accounts/login/?next=/characters/players/delete/', 302, 200)
+
+        self.client.force_login(self.users[0])
+        response = self.client.get('/characters/players/delete/')
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/characters/players/delete/')
+        self.assertRedirects(response, '/characters/player/', 302, 200)

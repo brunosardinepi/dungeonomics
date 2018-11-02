@@ -3,13 +3,13 @@
 This is the version history for Dungeonomics development.
 
 
-## Version 3.1.1
+## Version 3.2.0
 
 Release date: 11/02/2018
 
 ### Additions
 
-* None
+* #118 -- Delete multiple assets
 
 ### Changes
 

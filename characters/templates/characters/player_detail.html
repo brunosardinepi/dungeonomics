@@ -26,7 +26,8 @@
 {% endblock %}
 
 {% block character_contents_extra %}
-    <a href="{% url 'characters:player_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create player</a>
+    <a href="{% url 'characters:player_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create Player</a>
+    <a href="{% url 'characters:players_delete' %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete players</a>
 {% endblock %}
 
 {% block character_detail_title %}

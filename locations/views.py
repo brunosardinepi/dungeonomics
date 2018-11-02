@@ -1,3 +1,5 @@
+from itertools import chain
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -7,6 +9,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views import View
 
 from . import forms
 from . import models
@@ -188,3 +191,13 @@ def location_delete(request, location_pk):
         return HttpResponseRedirect(reverse('locations:location_detail'))
     else:
         raise Http404
+
+class WorldsDelete(View):
+    def get(self, request, *args, **kwargs):
+        worlds = models.World.objects.filter(user=request.user).order_by('name')
+        return render(request, 'locations/worlds_delete.html', {'worlds': worlds})
+
+    def post(self, request, *args, **kwargs):
+        for world_pk in request.POST.getlist('world'):
+            models.World.objects.get(pk=world_pk).delete()
+        return HttpResponseRedirect(reverse('locations:location_detail'))
