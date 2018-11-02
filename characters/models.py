@@ -1,8 +1,12 @@
+from math import floor
+
 from django.contrib.auth.models import User
+from django.db.models import Avg
 from django.urls import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from math import floor
+
+from tavern.models import Review
 
 
 def score_to_mod_string(score):
@@ -55,6 +59,9 @@ class Character(models.Model):
     speed = models.CharField(max_length=255, default='', blank=True)
     saving_throws = models.CharField(max_length=255, default='', blank=True)
     skills = models.CharField(max_length=255, default='', blank=True)
+    is_published = models.BooleanField(default=False)
+    published_date = models.DateTimeField(blank=True, null=True)
+    tavern_description = models.TextField(blank=True)
 
     @property
     def strength_mod(self):
@@ -93,6 +100,7 @@ class Monster(Character):
     senses = models.CharField(max_length=255, default='', blank=True)
     challenge_rating = models.CharField(max_length=255, default='', blank=True)
     content = models.TextField(blank=True)
+    importers = models.ManyToManyField(User, related_name='monster_importers')
 
     def get_absolute_url(self):
         return reverse('characters:monster_detail', kwargs={
@@ -101,6 +109,12 @@ class Monster(Character):
 
     def __str__(self):
         return self.name
+
+    def rating(self):
+        # find the average rating
+        return Review.objects.filter(
+            monster=self).aggregate(
+            Avg('score'))['score__avg'] or 0.00
 
 
 class NPC(Character):
@@ -117,6 +131,7 @@ class NPC(Character):
     senses = models.CharField(max_length=255, default='', blank=True)
     challenge_rating = models.CharField(max_length=255, default='', blank=True)
     content = models.TextField(blank=True)
+    importers = models.ManyToManyField(User, related_name='npc_importers')
 
     class Meta:
         verbose_name = 'NPC'
@@ -129,6 +144,12 @@ class NPC(Character):
 
     def __str__(self):
         return self.name
+
+    def rating(self):
+        # find the average rating
+        return Review.objects.filter(
+            npc=self).aggregate(
+            Avg('score'))['score__avg'] or 0.00
 
 
 class Player(Character):
@@ -156,6 +177,7 @@ class Player(Character):
     proficiencies = models.TextField(blank=True)
     senses = models.CharField(max_length=255, default='', blank=True)
     equipment = models.TextField(blank=True)
+    importers = models.ManyToManyField(User, related_name='player_importers')
 
     def get_absolute_url(self):
         return reverse('characters:player_detail', kwargs={
@@ -164,3 +186,9 @@ class Player(Character):
 
     def __str__(self):
         return self.character_name
+
+    def rating(self):
+        # find the average rating
+        return Review.objects.filter(
+            player=self).aggregate(
+            Avg('score'))['score__avg'] or 0.00

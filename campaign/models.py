@@ -7,6 +7,9 @@ from django.db import models
 from django.db.models import Avg
 from django.utils.translation import ugettext_lazy as _
 
+from characters.models import Monster, NPC, Player
+from tavern.models import Review
+
 
 class CampaignTemplate(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -86,12 +89,3 @@ class Section(CampaignTemplate):
             'chapter_pk': self.chapter_id,
             'section_pk': self.pk
             })
-
-
-class Review(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE)
-    date = models.DateTimeField(auto_now_add=True)
-    score = models.IntegerField(default=5,
-        validators=[MaxValueValidator(5), MinValueValidator(1)])
-    comment = models.TextField(blank=True)

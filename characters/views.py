@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views import View
 
@@ -15,9 +16,12 @@ from itertools import chain
 from . import forms
 from . import models
 from campaign.models import Campaign
+from characters.utils import get_character_object
 from dungeonomics.utils import at_tagging
 from items import models as item_models
 from locations import models as location_models
+from tavern.models import Review
+from tavern.utils import rating_stars_html
 
 import json
 
@@ -428,3 +432,78 @@ class PlayerCampaigns(View):
             return redirect('characters:player_campaigns', player_pk=player.pk)
         else:
             raise Http404
+
+
+class CharacterPublish(View):
+    def get(self, request, *args, **kwargs):
+        if kwargs['type'] == 'monster':
+            obj = get_object_or_404(models.Monster, pk=kwargs['pk'])
+            form = forms.MonsterPublishForm()
+        elif kwargs['type'] == 'npc':
+            obj = get_object_or_404(models.NPC, pk=kwargs['pk'])
+            form = forms.NPCPublishForm()
+        elif kwargs['type'] == 'player':
+            obj = get_object_or_404(models.Player, pk=kwargs['pk'])
+            form = forms.PlayerPublishForm()
+
+        if obj.user == request.user:
+            if obj.is_published == True:
+                return redirect('tavern:tavern_character_detail',
+                    type=kwargs['type'], pk=kwargs['pk'])
+            return render(self.request, 'characters/character_publish.html', {
+                'obj': obj,
+                'form': form,
+                'type': kwargs['type'],
+            })
+        raise Http404
+
+    def post(self, request, *args, **kwargs):
+        if kwargs['type'] == 'monster':
+            obj = get_object_or_404(models.Monster, pk=kwargs['pk'])
+            form = forms.MonsterPublishForm(request.POST, instance=obj)
+        elif kwargs['type'] == 'npc':
+            obj = get_object_or_404(models.NPC, pk=kwargs['pk'])
+            form = forms.NPCPublishForm(request.POST, instance=obj)
+        elif kwargs['type'] == 'player':
+            obj = get_object_or_404(models.Player, pk=kwargs['pk'])
+            form = forms.PlayerPublishForm(request.POST, instance=obj)
+
+        if obj.user == request.user:
+            # publish to the tavern
+            obj = form.save(commit=False)
+            obj.is_published = True
+            obj.published_date = timezone.now()
+            obj.save()
+            # redirect to the tavern page
+            messages.success(request, 'Character published', fail_silently=True)
+            return redirect('tavern:tavern_character_detail',
+                type=kwargs['type'], pk=kwargs['pk'])
+        raise Http404
+
+
+class CharacterUnpublish(View):
+    def get(self, request, *args, **kwargs):
+        obj = get_character_object(kwargs['type'], kwargs['pk'])
+        if obj.user == request.user:
+            # remove from the tavern
+            obj.is_published = False
+            obj.save()
+
+            # delete the importers
+            obj.importers.clear()
+
+            messages.success(request, 'Character unpublished', fail_silently=True)
+
+            if kwargs['type'] == 'monster':
+                # delete the reviews
+                Review.objects.filter(monster=obj).delete()
+                return redirect('characters:monster_detail', monster_pk=obj.pk)
+            elif kwargs['type'] == 'npc':
+                # delete the reviews
+                Review.objects.filter(npc=obj).delete()
+                return redirect('characters:npc_detail', npc_pk=obj.pk)
+            elif kwargs['type'] == 'player':
+                # delete the reviews
+                Review.objects.filter(player=obj).delete()
+                return redirect('characters:player_detail', player_pk=obj.pk)
+        raise Http404

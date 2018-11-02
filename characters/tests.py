@@ -7,6 +7,7 @@ from model_mommy import mommy
 
 from . import forms
 from . import models
+from tavern.models import Review
 
 
 class CharacterTest(TestCase):
@@ -43,6 +44,7 @@ class CharacterTest(TestCase):
         self.players = mommy.make(
             models.Player,
             user=self.users[0],
+            is_published=False,
             _fill_optional=True,
             _quantity=2,
         )
@@ -52,6 +54,7 @@ class CharacterTest(TestCase):
         self.monsters = mommy.make(
             models.Monster,
             user=self.users[0],
+            is_published=False,
             _quantity=2,
             _fill_optional=True,
         )
@@ -61,6 +64,7 @@ class CharacterTest(TestCase):
         self.npcs = mommy.make(
             models.NPC,
             user=self.users[0],
+            is_published=False,
             _quantity=2,
             _fill_optional=True,
         )
@@ -272,3 +276,151 @@ class CharacterTest(TestCase):
 
         response = self.client.post('/characters/players/delete/')
         self.assertRedirects(response, '/characters/player/', 302, 200)
+
+    def test_tavern_publish(self):
+        # unauthenticated users
+        response = self.client.get('/characters/monster/{}/publish/'.format(self.monsters[1].pk))
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/characters/monster/{}/publish/'.format(self.monsters[1].pk),
+            302, 200)
+
+        response = self.client.get('/characters/npc/{}/publish/'.format(self.npcs[1].pk))
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/characters/npc/{}/publish/'.format(self.npcs[1].pk),
+            302, 200)
+
+        response = self.client.get('/characters/player/{}/publish/'.format(self.players[1].pk))
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/characters/player/{}/publish/'.format(self.players[1].pk),
+            302, 200)
+
+        # authenticated user
+        self.client.force_login(self.users[1])
+        response = self.client.get('/characters/monster/{}/publish/'.format(self.monsters[1].pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Publish character")
+        tavern_description = "Please don't hate my character"
+        data = {
+            'tavern_description': tavern_description,
+        }
+        response = self.client.post(
+            '/characters/monster/{}/publish/'.format(self.monsters[1].pk),
+            data,
+        )
+        self.assertRedirects(
+            response,
+            '/tavern/monster/{}/'.format(self.monsters[1].pk),
+            302, 200)
+        response = self.client.get('/tavern/monster/{}/'.format(self.monsters[1].pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.monsters[1].name)
+        self.assertContains(response, tavern_description)
+
+        self.client.force_login(self.users[1])
+        response = self.client.get('/characters/npc/{}/publish/'.format(self.npcs[1].pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Publish character")
+        tavern_description = "Please don't hate my character"
+        data = {
+            'tavern_description': tavern_description,
+        }
+        response = self.client.post(
+            '/characters/npc/{}/publish/'.format(self.npcs[1].pk),
+            data,
+        )
+        self.assertRedirects(
+            response,
+            '/tavern/npc/{}/'.format(self.npcs[1].pk),
+            302, 200)
+        response = self.client.get('/tavern/npc/{}/'.format(self.npcs[1].pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.npcs[1].name)
+        self.assertContains(response, tavern_description)
+
+        self.client.force_login(self.users[1])
+        response = self.client.get('/characters/player/{}/publish/'.format(self.players[1].pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Publish character")
+        tavern_description = "Please don't hate my character"
+        data = {
+            'tavern_description': tavern_description,
+        }
+        response = self.client.post(
+            '/characters/player/{}/publish/'.format(self.players[1].pk),
+            data,
+        )
+        self.assertRedirects(
+            response,
+            '/tavern/player/{}/'.format(self.players[1].pk),
+            302, 200)
+        response = self.client.get('/tavern/player/{}/'.format(self.players[1].pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.players[1].character_name)
+        self.assertContains(response, tavern_description)
+
+    def test_tavern_unpublish(self):
+        self.monsters[1].is_published = True
+        self.monsters[1].save()
+        self.npcs[1].is_published = True
+        self.npcs[1].save()
+        self.players[1].is_published = True
+        self.players[1].save()
+
+        # unauthenticated user
+        response = self.client.get('/characters/monster/{}/unpublish/'.format(self.monsters[1].pk))
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/characters/monster/{}/unpublish/'.format(self.monsters[1].pk),
+            302, 200)
+
+        response = self.client.get('/characters/npc/{}/unpublish/'.format(self.npcs[1].pk))
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/characters/npc/{}/unpublish/'.format(self.npcs[1].pk),
+            302, 200)
+
+        response = self.client.get('/characters/player/{}/unpublish/'.format(self.players[1].pk))
+        self.assertRedirects(
+            response,
+            '/accounts/login/?next=/characters/player/{}/unpublish/'.format(self.players[1].pk),
+            302, 200)
+
+        # authenticated user
+        self.client.force_login(self.users[1])
+        response = self.client.get('/characters/monster/{}/unpublish/'.format(self.monsters[1].pk))
+        self.assertRedirects(response,
+            '/characters/monster/{}/'.format(format(self.monsters[1].pk)),
+            302, 200)
+
+        reviews = Review.objects.filter(monster=self.monsters[1]).count()
+        self.assertEqual(reviews, 0)
+
+        importers = self.monsters[1].importers.all().count()
+        self.assertEqual(reviews, 0)
+
+        self.client.force_login(self.users[1])
+        response = self.client.get('/characters/npc/{}/unpublish/'.format(self.npcs[1].pk))
+        self.assertRedirects(response,
+            '/characters/npc/{}/'.format(format(self.npcs[1].pk)),
+            302, 200)
+
+        reviews = Review.objects.filter(npc=self.npcs[1]).count()
+        self.assertEqual(reviews, 0)
+
+        importers = self.npcs[1].importers.all().count()
+        self.assertEqual(reviews, 0)
+
+        self.client.force_login(self.users[1])
+        response = self.client.get('/characters/player/{}/unpublish/'.format(self.players[1].pk))
+        self.assertRedirects(response,
+            '/characters/player/{}/'.format(format(self.players[1].pk)),
+            302, 200)
+
+        reviews = Review.objects.filter(player=self.players[1]).count()
+        self.assertEqual(reviews, 0)
+
+        importers = self.players[1].importers.all().count()
+        self.assertEqual(reviews, 0)

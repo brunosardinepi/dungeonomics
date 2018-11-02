@@ -10,6 +10,7 @@ Release date: 11/02/2018
 ### Additions
 
 * #118 -- Delete multiple assets
+* #120 -- Publish characters to the Tavern
 
 ### Changes
 

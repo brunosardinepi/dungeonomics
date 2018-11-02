@@ -3,7 +3,7 @@
 {% load humanize %}
 {% load static %}
 
-{% load campaign_extras %}
+{% load tavern_extras %}
 {% load locations_extras %}
 
 {% block title %}Tavern - {{ campaign.title }} | {{ block.super }}{% endblock %}
@@ -48,25 +48,37 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <h5>Monsters</h5>
-                    <ul>
-                        {% for monster in monsters %}
-                            <li>{{ monster.name }}</li>
-                        {% endfor %}
-                    </ul>
+                    {% if monsters %}
+                        <ul>
+                            {% for monster in monsters %}
+                                <li>{{ monster.name }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>None</p>
+                    {% endif %}
 
                     <h5>NPCs</h5>
-                    <ul>
-                        {% for npc in npcs %}
-                            <li>{{ npc.name }}</li>
-                        {% endfor %}
-                    </ul>
+                    {% if npcs %}
+                        <ul>
+                            {% for npc in npcs %}
+                                <li>{{ npc.name }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>None</p>
+                    {% endif %}
 
                     <h5>Items</h5>
-                    <ul>
-                        {% for item in items %}
-                            <li>{{ item.name }}</li>
-                        {% endfor %}
-                    </ul>
+                    {% if items %}
+                        <ul>
+                            {% for item in items %}
+                                <li>{{ item.name }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>None</p>
+                    {% endif %}
 
                     <h5>Worlds/Locations</h5>
                     <ul>
@@ -139,8 +151,8 @@
                     {% if request.user == campaign.user %}
                         <a href="{% url 'campaign:campaign_unpublish' campaign_pk=campaign.pk %}" id="campaign-unpublish" class="btn btn-danger btn-block mt-4">Unpublish campaign</a>
                     {% else %}
-                        <a id="tavern-import" href="{% url 'tavern_import' campaign_pk=campaign.pk %}" class="btn btn-success btn-block mt-4">Import campaign</a>
-                        <a href="{% url 'tavern_review' campaign_pk=campaign.pk %}" class="btn btn-primary btn-block mt-3">Review campaign</a>
+                        <a id="tavern-import" href="{% url 'tavern:tavern_campaign_import' campaign_pk=campaign.pk %}" class="btn btn-success btn-block mt-4">Import campaign</a>
+                        <a href="{% url 'tavern:tavern_campaign_review' campaign_pk=campaign.pk %}" class="btn btn-primary btn-block mt-3">Review campaign</a>
                     {% endif %}
                 </div>
             </div>
