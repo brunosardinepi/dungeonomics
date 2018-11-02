@@ -279,4 +279,5 @@ class WorldImport(View):
                 new_world = models.World.objects.get(pk=asset_references['worlds'][old_world.pk])
                 new_location.world = new_world
                 new_location.save()
-        raise Http404
+            return redirect(new_world.get_absolute_url())
+        return redirect('locations:location_detail')
