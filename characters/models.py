@@ -164,3 +164,21 @@ class Player(Character):
 
     def __str__(self):
         return self.character_name
+
+
+class GeneralCharacter(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, default='')
+    notes = models.TextField(blank=True)
+
+class Attribute(models.Model):
+    character = models.ForeignKey(GeneralCharacter, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, default='')
+    value = models.CharField(max_length=255, default='')
+
+    def __str__(self):
+        return "{}: {}".format(self.character, self.name[:10])
+
+    def get_absolute_url(self):
+        return reverse('characters:character_detail', kwargs={'pk': self.pk})
+

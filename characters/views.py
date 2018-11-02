@@ -16,6 +16,7 @@ from . import forms
 from . import models
 from campaign.models import Campaign
 from dungeonomics.utils import at_tagging
+from dungeonomics import character_suggested_attributes
 from items import models as item_models
 from locations import models as location_models
 
@@ -433,3 +434,51 @@ class PlayerCampaigns(View):
             return redirect('characters:player_campaigns', player_pk=player.pk)
         else:
             raise Http404
+
+class CharacterDetail(View):
+    def get(self, request, *args, **kwargs):
+        characters = models.GeneralCharacter.objects.filter(user=request.user).order_by('name')
+
+        try:
+            character = models.GeneralCharacter.objects.get(pk=kwargs['pk'])
+        except KeyError:
+            if characters:
+                character = characters[0]
+            else:
+                character = None
+
+        if character.user == request.user:
+            return render(request, 'characters/character_detail.html', {
+                'characters': characters,
+                'character': character,
+            })
+        raise Http404
+
+class CharacterCreate(View):
+    def get(self, request, *args, **kwargs):
+        data = at_tagging(request)
+        data['form'] = forms.CharacterForm()
+        data['formset'] = forms.AttributeFormSet()
+        data['suggested_attributes'] = character_suggested_attributes.attrs
+        return render(request, 'characters/character_form.html', data)
+
+    def post(self, request, *args, **kwargs):
+        form = forms.CharacterForm(request.POST)
+        formset = forms.AttributeFormSet(request.POST)
+        if form.is_valid() and formset.is_valid():
+            character = form.save(commit=False)
+            character.user = request.user
+            character.save()
+
+            attributes = formset.save(commit=False)
+            for attribute in attributes:
+                attribute.character = character
+                attribute.save()
+
+            messages.add_message(request, messages.SUCCESS, "Character created")
+            return HttpResponseRedirect(character.get_absolute_url())
+
+class CharacterUpdate(View):
+    def get(self, request, *args, **kwargs):
+        pass
+

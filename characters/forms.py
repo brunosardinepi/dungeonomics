@@ -182,3 +182,19 @@ NPCFormSet = forms.modelformset_factory(
     form=NPCForm,
     extra=0,
 )
+
+class CharacterForm(TinyMCEForm):
+    class Meta:
+        model = models.GeneralCharacter
+        fields = [
+            'name',
+            'notes',
+        ]
+
+AttributeFormSet = forms.inlineformset_factory(
+    models.GeneralCharacter,
+    models.Attribute,
+    fields=('name', 'value',),
+    extra=1,
+    min_num=0,
+)

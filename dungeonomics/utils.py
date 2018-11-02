@@ -6,6 +6,15 @@ from locations.models import Location, World
 from tables.models import Table
 
 
+suggested_attributes = [
+    'a',
+    'b',
+    'c',
+    'ccc',
+    'bad',
+    'ball',
+]
+
 def image_is_valid(request, form):
     if form.is_valid():
         image_raw = form.cleaned_data.get('image', False)

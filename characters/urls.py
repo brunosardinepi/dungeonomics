@@ -9,20 +9,32 @@ urlpatterns = [
     path('monster/', views.monster_detail, name='monster_detail'),
     path('npc/', views.npc_detail, name='npc_detail'),
     path('player/', views.player_detail, name='player_detail'),
+    path('character/',
+        login_required(views.CharacterDetail.as_view()),
+        name='character_detail'),
 
     path('monster/<int:monster_pk>/', views.monster_detail, name='monster_detail'),
     path('npc/<int:npc_pk>/', views.npc_detail, name='npc_detail'),
     path('player/<int:player_pk>/', views.player_detail, name='player_detail'),
+    path('character/<int:pk>/',
+        login_required(views.CharacterDetail.as_view()),
+        name='character_detail'),
 
     path('player/<int:player_pk>/campaigns/', login_required(views.PlayerCampaigns.as_view()), name='player_campaigns'),
 
     path('monster/create/', views.monster_create, name='monster_create'),
     path('npc/create/', views.npc_create, name='npc_create'),
     path('player/create/', views.player_create, name='player_create'),
+    path('character/create/',
+        login_required(views.CharacterCreate.as_view()),
+        name='character_create'),
 
     path('monster/<int:monster_pk>/edit/', views.monster_update, name='monster_update'),
     path('npc/<int:npc_pk>/edit/', views.npc_update, name='npc_update'),
     path('player/<int:player_pk>/edit/', views.player_update, name='player_update'),
+    path('character/<int:pk>/edit/',
+        login_required(views.CharacterUpdate.as_view()),
+        name='character_update'),
 
     path('monster/<int:monster_pk>/delete/', views.monster_delete, name='monster_delete'),
     path('npc/<int:npc_pk>/delete/', views.npc_delete, name='npc_delete'),

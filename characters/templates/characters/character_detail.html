@@ -1,0 +1,73 @@
+{% extends 'characters/character_layout.html' %}
+
+{% block title %}
+    {% if character %}
+        {{ character.name }} 
+    {% else %}
+        Characters 
+    {% endif %}
+    | {{ block.super }}
+{% endblock %}
+
+{% block character_list_title %}Character list{% endblock %}
+
+{% block character_list %}
+    {% if characters %}
+        {% for c in characters %}
+            <li>
+                <a {% if c == character %}class="font-weight-bold" {% endif %}href="{% url 'characters:character_detail' pk=c.pk %}">
+                    {{ c.name }}
+                </a>
+            </li>
+        {% endfor %}
+    {% else %}
+        <li>You haven't created any characters yet!</li>
+    {% endif %}
+{% endblock %}
+
+{% block character_contents_extra %}
+    <a href="{% url 'characters:character_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create character</a>
+{% endblock %}
+
+{% block character_detail_title %}
+    {% if character %}
+        {{ character.name }}
+    {% else %}
+        Characters
+    {% endif %}
+{% endblock %}
+
+{% block character_detail_extra %}
+    {% if character %}
+        <a href="{% url 'characters:character_update' pk=character.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit character</a>
+    {% else %}
+        <a href="{% url 'characters:character_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create character</a>
+    {% endif %}
+{% endblock %}
+
+{% block character_detail %}
+    {% if character %}
+
+        {% for attribute in character.attribute_set.all %}
+            <div class="row">
+                <div class="col-md-12">
+                    <p><span class="font-weight-bold">{{ attribute.name }}</span> {{ attribute.value }}</p>
+                </div>
+            </div>
+
+            <hr>
+        {% endfor %}
+
+        {% if character.notes %}
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    {{ character.notes|safe }}
+                </div>
+            </div>
+        {% endif %}
+
+    {% else %}
+        <p>You haven't created any characters yet!</p>
+    {% endif %}
+{% endblock %}
