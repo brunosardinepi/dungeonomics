@@ -234,7 +234,7 @@ def monster_copy(request, monster_pk):
                 monster.pk = None
                 monster.name = monster.name + "_Copy"
                 monster.save()
-                messages.add_message(request, messages.SUCCESS, "Monster Copied!")
+                messages.add_message(request, messages.SUCCESS, "Monster copied!")
                 return HttpResponseRedirect(monster.get_absolute_url())
     else:
         raise Http404
@@ -429,7 +429,7 @@ class PlayerCampaigns(View):
             for pk in campaigns:
                 campaign = get_object_or_404(Campaign, pk=pk)
                 player.campaigns.remove(campaign)
-            messages.add_message(request, messages.SUCCESS, "Player has been removed from Campaign(s)")
+            messages.add_message(request, messages.SUCCESS, "Player has been removed from campaign(s)")
             return redirect('characters:player_campaigns', player_pk=player.pk)
         else:
             raise Http404

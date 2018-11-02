@@ -130,17 +130,17 @@
                 <div class="card-body">
                     <h5>Summary</h5>
                     <ul class="contents_list">
-                        <li>{{ chapters.count }} Chapter{{ chapters|pluralize }}, {{ sections.count }} Section{{ sections|pluralize }}</li>
-                        <li>{{ monsters|length }} Monster{{ monsters|pluralize }}, {{ npcs|length }} NPC{{ npcs|pluralize }}</li>
-                        <li>{{ items|length }} Item{{ items|pluralize }}</li>
-                        <li>{{ worlds|length }} World{{ worlds|pluralize }}, {{ locations|length }} Location{{ locations|pluralize }}</li>
-                        <li>{{ tables|length }} Table{{ tables|pluralize }}</li>
+                        <li>{{ chapters.count }} chapter{{ chapters|pluralize }}, {{ sections.count }} section{{ sections|pluralize }}</li>
+                        <li>{{ monsters|length }} monster{{ monsters|pluralize }}, {{ npcs|length }} NPC{{ npcs|pluralize }}</li>
+                        <li>{{ items|length }} item{{ items|pluralize }}</li>
+                        <li>{{ worlds|length }} world{{ worlds|pluralize }}, {{ locations|length }} location{{ locations|pluralize }}</li>
+                        <li>{{ tables|length }} table{{ tables|pluralize }}</li>
                     </ul>
                     {% if request.user == campaign.user %}
-                        <a href="{% url 'campaign:campaign_unpublish' campaign_pk=campaign.pk %}" id="campaign-unpublish" class="btn btn-danger btn-block mt-4">Unpublish Campaign</a>
+                        <a href="{% url 'campaign:campaign_unpublish' campaign_pk=campaign.pk %}" id="campaign-unpublish" class="btn btn-danger btn-block mt-4">Unpublish campaign</a>
                     {% else %}
-                        <a id="tavern-import" href="{% url 'tavern_import' campaign_pk=campaign.pk %}" class="btn btn-success btn-block mt-4">Import Campaign</a>
-                        <a href="{% url 'tavern_review' campaign_pk=campaign.pk %}" class="btn btn-primary btn-block mt-3">Review Campaign</a>
+                        <a id="tavern-import" href="{% url 'tavern_import' campaign_pk=campaign.pk %}" class="btn btn-success btn-block mt-4">Import campaign</a>
+                        <a href="{% url 'tavern_review' campaign_pk=campaign.pk %}" class="btn btn-primary btn-block mt-3">Review campaign</a>
                     {% endif %}
                 </div>
             </div>

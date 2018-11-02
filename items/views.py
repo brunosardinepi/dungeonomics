@@ -46,7 +46,7 @@ def item_create(request):
             item = form.save(commit=False)
             item.user = request.user
             item.save()
-            messages.add_message(request, messages.SUCCESS, "Item/Spell created!")
+            messages.add_message(request, messages.SUCCESS, "Item/spell created!")
             return HttpResponseRedirect(item.get_absolute_url())
     data['form'] = form
     return render(request, 'items/item_form.html', data)
@@ -90,7 +90,7 @@ def item_copy(request, item_pk):
                 item.pk = None
                 item.name = item.name + "_Copy"
                 item.save()
-                messages.add_message(request, messages.SUCCESS, "Item/Spell copied!")
+                messages.add_message(request, messages.SUCCESS, "Item/spell copied!")
                 return HttpResponseRedirect(item.get_absolute_url())
     else:
         raise Http404

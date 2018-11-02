@@ -38,14 +38,14 @@
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="px-1 mb-0">Publish Campaign</h5>
+                    <h5 class="px-1 mb-0">Publish campaign</h5>
                 </div>
                 <div class="card-body">
                     <form method="POST" action="">
                         {% csrf_token %}
-                        <p>Please confirm that you would like to publish the <span class="font-weight-bold">{{ campaign.title }}</span> Campaign. If published, users will be able to import your Campaign and all of its assets into their account. This won't affect your Campaign at all, but they will be able to see everything you've put in the Campaign. Please make sure to remove any personal information like real-life player names or specifics.</p>
-                        <p>After your Campaign is published to The Tavern, other users will also be able to rate and comment on the quality of the Campaign.</p>
-                        <p>If you'd like, provide an optional description of your Campaign so others know what to expect:</p>
+                        <p>Please confirm that you would like to publish the <span class="font-weight-bold">{{ campaign.title }}</span> campaign. If published, users will be able to import your campaign and all of its assets into their account. This won't affect your campaign at all, but they will be able to see everything you've put in the campaign. Please make sure to remove any personal information like real-life player names or specifics.</p>
+                        <p>After your campaign is published to The Tavern, other users will also be able to rate and comment on the quality of the campaign.</p>
+                        <p>If you'd like, provide an optional description of your campaign so others know what to expect:</p>
 
                         {% if form.non_field_errors %}
                             <div class="alert alert-danger" role="alert">
