@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'votes',
     'tables',
     'tavern',
+    'wiki',
 ]
 
 MIDDLEWARE = [
