@@ -12,6 +12,7 @@ Release date: 11/02/2018
 * #118 -- Delete multiple assets
 * #120 -- Publish characters to the Tavern
 * #117 -- Wiki
+* #94 -- automatically set the order for new chapters/sections
 
 ### Changes
 

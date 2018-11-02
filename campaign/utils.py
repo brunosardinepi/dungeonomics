@@ -379,3 +379,31 @@ def campaign_import(user, campaign, json_export):
                 section.save()
 
                 replace_content_urls(section, asset_references)
+
+def get_next_chapter_number(campaign):
+    # get the campaign's chapters and find the next order number
+    order = campaign.chapter_set.all().order_by(
+        '-order').values('order').first()['order']
+    return order + 1
+
+def get_next_section_number(chapter):
+    # get the chapter's sections and find the next order number
+    order = chapter.section_set.all().order_by(
+        '-order').values('order').first()['order']
+    return order + 1
+
+def get_next_order(obj):
+    if isinstance(obj, Campaign):
+        if obj.chapter_set.all():
+            order = obj.chapter_set.all().order_by(
+                '-order').values('order').first()['order']
+        else:
+            order = 0
+    elif isinstance(obj, Chapter):
+        if obj.section_set.all():
+            order = obj.section_set.all().order_by(
+                '-order').values('order').first()['order']
+        else:
+            order = 0
+
+    return order + 1
