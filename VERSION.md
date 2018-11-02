@@ -3,6 +3,23 @@
 This is the version history for Dungeonomics development.
 
 
+## Version 3.1.1
+
+Release date: 11/02/2018
+
+### Additions
+
+* None
+
+### Changes
+
+* None
+
+### Fixes
+
+* #119 -- Fixed all the weird uppercase Campaign/Monster/Character words on the site
+
+
 ## Version 3.1.0
 
 Release date: 10/19/2018
