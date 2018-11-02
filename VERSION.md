@@ -14,7 +14,7 @@ Release date: 11/02/2018
 
 ### Changes
 
-* None
+* #121 -- upgraded requests version
 
 ### Fixes
 
