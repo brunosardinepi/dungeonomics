@@ -22,9 +22,7 @@
         <div class="row pb-3">
             <div class="col-lg-6 mb-3">
                 <div class="card">
-                    <div class="card-header">
-                        <span class="font-weight-bold">Most popular campaigns</span>
-                    </div>
+                    {% include "tavern/tavern_card_header.html" with text="Most popular campaigns" %}
                     {% if popular_campaigns %}
                         <table class="table table-hover mb-0">
                             <tbody>
@@ -45,9 +43,7 @@
             </div>
             <div class="col-lg-6 mb-3">
                 <div class="card">
-                    <div class="card-header">
-                        <span class="font-weight-bold">Most recent campaigns</span>
-                    </div>
+                    {% include "tavern/tavern_card_header.html" with text="Most recent campaigns" %}
                     {% if recent_campaigns %}
                         <table class="table table-hover mb-0">
                             <tbody>
@@ -71,9 +67,7 @@
         <div class="row pb-3">
             <div class="col-lg-6 mb-3">
                 <div class="card">
-                    <div class="card-header">
-                        <span class="font-weight-bold">Most popular monsters</span>
-                    </div>
+                    {% include "tavern/tavern_card_header.html" with text="Most popular monsters" %}
                     {% if popular_monsters %}
                         <table class="table table-hover mb-0">
                             <tbody>
@@ -94,9 +88,7 @@
             </div>
             <div class="col-lg-6 mb-3">
                 <div class="card">
-                    <div class="card-header">
-                        <span class="font-weight-bold">Most recent monsters</span>
-                    </div>
+                    {% include "tavern/tavern_card_header.html" with text="Most recent monsters" %}
                     {% if recent_monsters %}
                         <table class="table table-hover mb-0">
                             <tbody>
@@ -120,9 +112,7 @@
         <div class="row pb-3">
             <div class="col-lg-6 mb-3">
                 <div class="card">
-                    <div class="card-header">
-                        <span class="font-weight-bold">Most popular NPCs</span>
-                    </div>
+                    {% include "tavern/tavern_card_header.html" with text="Most popular NPCs" %}
                     {% if popular_npcs %}
                         <table class="table table-hover mb-0">
                             <tbody>
@@ -143,9 +133,7 @@
             </div>
             <div class="col-lg-6 mb-3">
                 <div class="card">
-                    <div class="card-header">
-                        <span class="font-weight-bold">Most recent NPCs</span>
-                    </div>
+                    {% include "tavern/tavern_card_header.html" with text="Most recent NPCs" %}
                     {% if recent_npcs %}
                         <table class="table table-hover mb-0">
                             <tbody>
@@ -169,9 +157,7 @@
         <div class="row pb-3">
             <div class="col-lg-6 mb-3">
                 <div class="card">
-                    <div class="card-header">
-                        <span class="font-weight-bold">Most popular players</span>
-                    </div>
+                    {% include "tavern/tavern_card_header.html" with text="Most popular players" %}
                     {% if popular_players %}
                         <table class="table table-hover mb-0">
                             <tbody>
@@ -192,9 +178,7 @@
             </div>
             <div class="col-lg-6 mb-3">
                 <div class="card">
-                    <div class="card-header">
-                        <span class="font-weight-bold">Most recent players</span>
-                    </div>
+                    {% include "tavern/tavern_card_header.html" with text="Most recent players" %}
                     {% if recent_players %}
                         <table class="table table-hover mb-0">
                             <tbody>

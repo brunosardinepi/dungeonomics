@@ -610,3 +610,38 @@ class TavernTest(TestCase):
         response = self.client.get('/tavern/player/{}/'.format(self.players[0].pk))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, comment)
+
+    def test_tavern_search(self):
+        types = [
+            "campaign",
+            "monster",
+            "npc",
+            "player",
+        ]
+
+        # unauthenticated user
+        for type in types:
+            response = self.client.get('/tavern/search/{}/'.format(type))
+            self.assertRedirects(response,
+                '/accounts/login/?next=/tavern/search/{}/'.format(type),
+                302, 200)
+
+        # authenticated user
+        self.client.force_login(self.users[0])
+
+        for type in types:
+            response = self.client.get('/tavern/search/{}/'.format(type))
+            self.assertEqual(response.status_code, 200)
+
+            if type == "campaign":
+                results = self.campaigns
+            elif type == "monster":
+                results = self.monsters
+            elif type == "npc":
+                results = self.npcs
+            elif type == "player":
+                results = self.players
+
+            for result in results:
+                if result.is_published == True:
+                    self.assertContains(response, result)
