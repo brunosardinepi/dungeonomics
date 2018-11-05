@@ -171,6 +171,12 @@ class GeneralCharacter(models.Model):
     name = models.CharField(max_length=255, default='')
     notes = models.TextField(blank=True)
 
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('characters:character_detail', kwargs={'pk': self.pk})
+
 class Attribute(models.Model):
     character = models.ForeignKey(GeneralCharacter, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, default='')
@@ -182,3 +188,5 @@ class Attribute(models.Model):
     def get_absolute_url(self):
         return reverse('characters:character_detail', kwargs={'pk': self.pk})
 
+    class Meta:
+        ordering = ['name']

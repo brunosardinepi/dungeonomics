@@ -74,6 +74,11 @@ function createRowHTML(formPrefix) {
     return formRowTemplate;
 }
 
+function updateTotalForms() {
+    // <input type="hidden" name="tableoption_set-TOTAL_FORMS" value="4" id="id_tableoption_set-TOTAL_FORMS">
+    $('#id_' + options.formPrefix + '-TOTAL_FORMS').val(totalForms);
+}
+
 function createAddButton() {
     // find the last row of the formset and add the "add" button
     var addButtonHTML = '<a href="" id="' + options.addButtonID + '">test</a>';
@@ -92,6 +97,9 @@ $(document).on("click", "#add-button", function(event) {
     // add a new form for the formset
     var formRowTemplate = createRowHTML(options.formPrefix);
     $(".formset-row").last().after(formRowTemplate);
+
+    // update the total-forms value
+    updateTotalForms();
 
     // remove the add button from where it is
     deleteAddButton();

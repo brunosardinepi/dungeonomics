@@ -470,6 +470,7 @@ class CharacterCreate(View):
             character.user = request.user
             character.save()
 
+            print("formset = {}".format(formset))
             attributes = formset.save(commit=False)
             for attribute in attributes:
                 attribute.character = character
