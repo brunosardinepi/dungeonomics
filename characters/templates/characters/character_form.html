@@ -169,7 +169,7 @@
                         {{ formset.management_form }}
 
                         {% for form in formset %}
-                            <div class="form-row formset-row">
+                            <div class="form-row formset-row" id="row-{{ forloop.counter0 }}">
                                 <div class="form-group col-md-4">
                                     <label for="{{ form.name.id_for_label }}">Attribute name</label>
                                     {{ form.id }}
@@ -179,7 +179,7 @@
                                     <label for="{{ form.value.id_for_label }}">Value</label>
                                     {% render_field form.value class+="form-control" %}
                                 </div>
-                                <div class="form-group col-md-2 col-delete align-self-end text-right add-row">
+                                <div class="form-group col-md-2 col-delete align-self-end text-right add-row" id="col-delete-{{ forloop.counter0 }}">
                                     {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
                                 </div>
                             </div>

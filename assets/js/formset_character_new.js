@@ -51,14 +51,16 @@ var initialForms = $('#id_' + options.formPrefix + '-INITIAL_FORMS').val();
 var minNumForms = $('#id_' + options.formPrefix + '-MIN_NUM_FORMS').val();
 var maxNumForms = $('#id_' + options.formPrefix + '-MAX_NUM_FORMS').val();
 
+var deleteButtonHTML = '<span class="fa-stack" style="vertical-align: top;"><i class="fas fa-square fa-stack-2x text-danger"></i><i class="far fa-trash-alt fa-stack-1x fa-inverse"></i></span>';
+var addButtonHTML = '<span class="fa-stack" style="vertical-align: top;"><i class="fas fa-square fa-stack-2x text-success"></i><i class="far fa-plus fa-stack-1x fa-inverse"></i></span>';
+
 function createRowHTML(formPrefix) {
     // create the html for a new form row
-    totalForms++;
     var formsetName = formPrefix + '-' + totalForms + '-name';
     var formsetID = formPrefix + '-' + totalForms + '-id';
     var formsetValue = formPrefix + '-' + totalForms + '-value';
 
-    var formRowTemplate = '<div class="form-row formset-row">';
+    var formRowTemplate = '<div class="form-row formset-row" id="row-' + totalForms + '">';
     formRowTemplate += '<div class="form-group col-md-4">';
     formRowTemplate += '<label for="' + formsetName + '">Attribute name</label>';
     formRowTemplate += '<input type="hidden" name="' + formsetID + '" id="' + formsetID + '">';
@@ -68,7 +70,11 @@ function createRowHTML(formPrefix) {
     formRowTemplate += '<label for="id_' + formsetValue + '">Value</label>';
     formRowTemplate += '<input type="text" name="' + formsetValue + '" class="form-control" maxlength="255" id="id_' + formsetValue + '">';
     formRowTemplate += '</div>';
-    formRowTemplate += '<div class="form-group col-md-2 col-delete align-self-end text-right ' + options.addClass + '"></div>';
+    formRowTemplate += '<div class="form-group col-md-2 col-delete align-self-end text-right ' + options.addClass + '" id="col-delete-' + totalForms + '">';
+    formRowTemplate += '<a href="" id="delete-' + totalForms + '">';
+    formRowTemplate += deleteButtonHTML;
+    formRowTemplate += '</a>'
+    formRowTemplate += '</div>';
     formRowTemplate += '</div>';
 
     return formRowTemplate;
@@ -81,14 +87,31 @@ function updateTotalForms() {
 
 function createAddButton() {
     // find the last row of the formset and add the "add" button
-    var addButtonHTML = '<a href="" id="' + options.addButtonID + '">test</a>';
-    $(".formset-row").last().find("." + options.addClass).append(addButtonHTML);
+    var html = '<a href="" id="' + options.addButtonID + '">';
+    html += addButtonHTML;
+    html += '</a>';
+    $(".formset-row").last().find("." + options.addClass).append(html);
+}
+
+function createDeleteButton() {
+    // add a delete button to all existing rows
+    for (i = 0; i < totalForms; i++) {
+        var html = '<a href="" id="delete-' + i + '">';
+        html += deleteButtonHTML;
+        html += '</a>';
+        $("#col-delete-" + i).append(html);
+    }
 }
 
 function deleteAddButton() {
     $("#" + options.addButtonID).remove();
 }
 
+function deleteRow(counter) {
+    $("#row-" + counter).remove();
+}
+
+createDeleteButton();
 createAddButton();
 
 $(document).on("click", "#add-button", function(event) {
@@ -99,7 +122,24 @@ $(document).on("click", "#add-button", function(event) {
     $(".formset-row").last().after(formRowTemplate);
 
     // update the total-forms value
+    totalForms++;
     updateTotalForms();
+
+    // remove the add button from where it is
+    deleteAddButton();
+
+    // and add it to the new end row
+    createAddButton();
+});
+
+$(document).on("click", "[id^=delete-]", function(event) {
+    event.preventDefault();
+
+    // find the id number
+    var counter = $(this).attr('id').split("delete-")[1];
+
+    // delete the row with the corresponding id number
+    deleteRow(counter);
 
     // remove the add button from where it is
     deleteAddButton();
