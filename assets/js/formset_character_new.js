@@ -1,44 +1,3 @@
-/*
-** click the add button and a new row shows up
-** click the delete button and that row goes away
-*/
-
-/*
-** example structure
-<input type="hidden" name="attribute_set-TOTAL_FORMS" value="2" id="id_attribute_set-TOTAL_FORMS">
-<input type="hidden" name="attribute_set-INITIAL_FORMS" value="0" id="id_attribute_set-INITIAL_FORMS">
-<input type="hidden" name="attribute_set-MIN_NUM_FORMS" value="0" id="id_attribute_set-MIN_NUM_FORMS">
-<input type="hidden" name="attribute_set-MAX_NUM_FORMS" value="1000" id="id_attribute_set-MAX_NUM_FORMS">
-
-
-<div class="form-row">
-    <div class="form-group col-md-4">
-        <label for="id_attribute_set-0-name">Attribute name</label>
-        <input type="hidden" name="attribute_set-0-id" id="id_attribute_set-0-id">
-        <input type="text" name="attribute_set-0-name" id="id_attribute_set-0-name" maxlength="255" class="form-control ui-autocomplete-input" autocomplete="off">
-    </div>
-    <div class="form-group col-md-6">
-        <label for="id_attribute_set-0-value">Value</label>
-        <input type="text" name="attribute_set-0-value" id="id_attribute_set-0-value" maxlength="255" class="form-control">
-    </div>
-    <div class="form-group col-md-2 col-delete align-self-end text-right"></div>
-</div>
-
-<div class="form-row">
-    <div class="form-group col-md-4">
-        <label for="id_attribute_set-1-name">Attribute name</label>
-        <input type="hidden" name="attribute_set-1-id" id="id_attribute_set-1-id">
-        <input type="text" name="attribute_set-1-name" class="form-control ui-autocomplete-input" maxlength="255" id="id_attribute_set-1-name" autocomplete="off">
-    </div>
-    <div class="form-group col-md-6">
-        <label for="id_attribute_set-1-value">Value</label>
-        <input type="text" name="attribute_set-1-value" class="form-control" maxlength="255" id="id_attribute_set-1-value">
-    </div>
-    <div class="form-group col-md-2 col-delete align-self-end text-right"></div>
-</div>
-
-*/
-
 var options = {
     addButtonID: 'add-button',
     addClass: 'add-row', // name of the class that has the add button
@@ -61,16 +20,16 @@ function createRowHTML(formPrefix) {
     var formsetValue = formPrefix + '-' + totalForms + '-value';
 
     var formRowTemplate = '<div class="form-row formset-row" id="row-' + totalForms + '">';
-    formRowTemplate += '<div class="form-group col-md-4">';
+    formRowTemplate += '<div class="form-group col-lg-4">';
     formRowTemplate += '<label for="' + formsetName + '">Attribute name</label>';
     formRowTemplate += '<input type="hidden" name="' + formsetID + '" id="' + formsetID + '">';
     formRowTemplate += '<input type="text" name="' + formsetName + '" class="form-control ui-autocomplete-input" maxlength="255" id="id_' + formsetName + '" autocomplete="off">';
     formRowTemplate += '</div>';
-    formRowTemplate += '<div class="form-group col-md-6">';
+    formRowTemplate += '<div class="form-group col-lg-7">';
     formRowTemplate += '<label for="id_' + formsetValue + '">Value</label>';
     formRowTemplate += '<input type="text" name="' + formsetValue + '" class="form-control" maxlength="255" id="id_' + formsetValue + '">';
     formRowTemplate += '</div>';
-    formRowTemplate += '<div class="form-group col-md-2 col-delete align-self-end text-right ' + options.addClass + '" id="col-delete-' + totalForms + '">';
+    formRowTemplate += '<div class="form-group col-lg-1 col-delete align-self-end text-right ' + options.addClass + '" id="col-delete-' + totalForms + '">';
     formRowTemplate += '<a href="" id="delete-' + totalForms + '">';
     formRowTemplate += deleteButtonHTML;
     formRowTemplate += '</a>'
