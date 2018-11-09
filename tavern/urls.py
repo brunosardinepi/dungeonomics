@@ -26,5 +26,9 @@ urlpatterns = [
         login_required(views.TavernCharacterImport.as_view()),
         name='tavern_character_import'),
 
+    path('search/<str:type>/',
+        login_required(views.TavernSearch.as_view()),
+        name='tavern_search'),
+
     path('', login_required(views.TavernView.as_view()), name='tavern'),
 ]

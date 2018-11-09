@@ -1,0 +1,41 @@
+{% extends 'layout.html' %}
+
+{% load static %}
+{% load humanize %}
+
+{% load lib_extras %}
+{% load tavern_extras %}
+
+{% block title %} Tavern search | {{ block.super }}{% endblock %}
+
+{% block body_content %}
+        <div class="row mt-4 pb-3">
+            <div class="col-lg-12 mb-3">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h2>Tavern: All {{ type|asset_title }}s</h2>
+                        {% if results %}
+                            <table class="table table-hover mb-0">
+                                <tbody>
+                                    {% for result in results %}
+                                        <tr>
+                                            <td>
+                                                {% if type == "campaign" %}
+                                                    <a href="{% url 'tavern:tavern_campaign_detail' campaign_pk=result.pk %}">{{ result }}</a>
+                                                {% else %}
+                                                    <a href="{% url 'tavern:tavern_character_detail' type=type pk=result.pk %}">{{ result }}</a>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-right">{% rating_stars_html_tag result.rating as rating %}{{ rating|safe }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <p>No results</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

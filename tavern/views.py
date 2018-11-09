@@ -335,3 +335,21 @@ class TavernCharacterReview(View):
                 'obj': obj,
                 'type': kwargs['type'],
             })
+
+class TavernSearch(View):
+    def get(self, request, *args, **kwargs):
+        type = kwargs['type']
+        if type == "campaign":
+            results = Campaign.objects.filter(is_published=True).order_by('title')
+        elif type == "monster":
+            results = Monster.objects.filter(is_published=True).order_by('name')
+        elif type == "npc":
+            results = NPC.objects.filter(is_published=True).order_by('name')
+        elif type == "player":
+            results = Player.objects.filter(is_published=True).order_by('character_name')
+        else:
+            raise Http404
+        return render(request, 'tavern/tavern_search.html', {
+            'results': results,
+            'type': type,
+        })

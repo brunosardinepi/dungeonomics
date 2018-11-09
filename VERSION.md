@@ -3,6 +3,23 @@
 This is the version history for Dungeonomics development.
 
 
+## Version 3.3.0
+
+Release date: 11/09/2018
+
+### Additions
+
+* #127 -- Search all on Tavern
+
+### Changes
+
+* None
+
+### Fixes
+
+* None
+
+
 ## Version 3.2.0
 
 Release date: 11/02/2018
