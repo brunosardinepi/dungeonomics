@@ -32,9 +32,10 @@ urlpatterns = [
     path('monster/<int:monster_pk>/edit/', views.monster_update, name='monster_update'),
     path('npc/<int:npc_pk>/edit/', views.npc_update, name='npc_update'),
     path('player/<int:player_pk>/edit/', views.player_update, name='player_update'),
-    path('character/<int:pk>/edit/',
-        login_required(views.CharacterUpdate.as_view()),
-        name='character_update'),
+#    path('character/<int:pk>/edit/',
+#        login_required(views.CharacterUpdate.as_view()),
+#        name='character_update'),
+    path('character/<int:pk>/edit/', views.character_update, name='character_update'),
 
     path('monster/<int:monster_pk>/delete/', views.monster_delete, name='monster_delete'),
     path('npc/<int:npc_pk>/delete/', views.npc_delete, name='npc_delete'),

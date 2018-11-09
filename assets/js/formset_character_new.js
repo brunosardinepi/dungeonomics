@@ -66,9 +66,12 @@ function deleteAddButton() {
     $("#" + options.addButtonID).remove();
 }
 
-function deleteRow(counter) {
-    $("#row-" + counter).remove();
+function hideRow(counter) {
+    $("#row-" + counter).hide();
 }
+
+// remove all checkboxes from default formset
+$('input:checkbox').hide();
 
 createDeleteButton();
 createAddButton();
@@ -79,6 +82,11 @@ $(document).on("click", "#add-button", function(event) {
     // add a new form for the formset
     var formRowTemplate = createRowHTML(options.formPrefix);
     $(".formset-row").last().after(formRowTemplate);
+
+    // attach autocomplete to the new form's "name" input
+    $(".formset-row").last().find("[id^=id_attribute_set]").autocomplete({
+        source: suggestedAttributes,
+    });
 
     // update the total-forms value
     totalForms++;
@@ -97,8 +105,11 @@ $(document).on("click", "[id^=delete-]", function(event) {
     // find the id number
     var counter = $(this).attr('id').split("delete-")[1];
 
-    // delete the row with the corresponding id number
-    deleteRow(counter);
+    // hide the row with the corresponding id number
+    hideRow(counter);
+
+    // check the "delete" checkbox
+    $('#id_' + options.formPrefix + '-' + counter + '-DELETE').prop('checked', true);
 
     // remove the add button from where it is
     deleteAddButton();

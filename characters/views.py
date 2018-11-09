@@ -448,9 +448,26 @@ class CharacterDetail(View):
                 character = None
 
         if character.user == request.user:
+            stats = {
+                "Strength": 0,
+                "Dexterity": 0,
+                "Constitution": 0,
+                "Intelligence": 0,
+                "Wisdom": 0,
+                "Charisma": 0,
+            }
+            for stat, value in stats.items():
+                print("stat = {}, value = {}".format(stat, value))
+                try:
+                    attribute = character.attribute_set.get(name=stat)
+                except models.Attribute.DoesNotExist:
+                    attribute = None
+                stats[stat] = attribute
+            print("stats = {}".format(stats))
             return render(request, 'characters/character_detail.html', {
                 'characters': characters,
                 'character': character,
+                'stats': stats,
             })
         raise Http404
 
@@ -478,7 +495,33 @@ class CharacterCreate(View):
             messages.add_message(request, messages.SUCCESS, "Character created")
             return HttpResponseRedirect(character.get_absolute_url())
 
-class CharacterUpdate(View):
-    def get(self, request, *args, **kwargs):
-        pass
-
+@login_required
+def character_update(request, pk):
+    character = get_object_or_404(models.GeneralCharacter, pk=pk)
+    if character.user == request.user:
+        form = forms.CharacterForm(instance=character)
+        formset = forms.AttributeFormSet(instance=character)
+        if request.method == 'POST':
+            form = forms.CharacterForm(request.POST, instance=character)
+            formset = forms.AttributeFormSet(request.POST, instance=character)
+            if form.is_valid() and formset.is_valid():
+                form.save()
+                attributes = formset.save(commit=False)
+                for attribute in attributes:
+                    attribute.character = character
+                    attribute.save()
+                for attribute in formset.deleted_objects:
+                    attribute.delete()
+                messages.add_message(request,
+                    messages.SUCCESS,
+                    "Updated character: {}".format(form.cleaned_data['name'])
+                )
+                return HttpResponseRedirect(character.get_absolute_url())
+    else:
+        raise Http404
+    data = at_tagging(request)
+    data['suggested_attributes'] = character_suggested_attributes.attrs
+    data['form'] = form
+    data['formset'] = formset
+    data['character'] = character
+    return render(request, 'characters/character_form.html', data)

@@ -20,10 +20,10 @@
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
+        var suggestedAttributes = {{suggested_attributes|safe}};
+
         $(function() {
-            var suggestedAttributes = {{suggested_attributes|safe}};
             $("[id^='id_attribute_set-'][id$='-name']").autocomplete({
-            //$("#id_attribute_set-*-name").autocomplete({
                 source: suggestedAttributes,
             });
         });
@@ -170,6 +170,13 @@
 
                         {% for form in formset %}
                             <div class="form-row formset-row" id="row-{{ forloop.counter0 }}">
+                                {% if form.errors %}
+                                    {% for error in form.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
                                 <div class="form-group col-lg-4">
                                     <label for="{{ form.name.id_for_label }}">Attribute name</label>
                                     {{ form.id }}

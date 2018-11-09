@@ -48,6 +48,59 @@
 {% block character_detail %}
     {% if character %}
 
+        {% if stats.Strength or stats.Dexterity or stats.Constitution or stats.Intelligence or stats.Wisdom or stats.Charisma %}
+        <div class="row">
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>STR</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ monster.strength }} ({{ monster.strength_mod }})</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>DEX</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ monster.dexterity }} ({{ monster.dexterity_mod }})</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>CON</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ monster.constitution }} ({{ monster.constitution_mod }})</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>INT</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ monster.intelligence }} ({{ monster.intelligence_mod }})</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>WIS</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ monster.wisdom }} ({{ monster.wisdom_mod }})</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="character-label">
+                    <p>CHA</p>
+                </div>
+                <div class="character-details">
+                    <p>{{ monster.charisma }} ({{ monster.charisma_mod }})</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
         {% for attribute in character.attribute_set.all %}
             <div class="row">
                 <div class="col-md-12">
