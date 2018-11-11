@@ -98,3 +98,14 @@ class TableTest(TestCase):
 
         tables = models.Table.objects.all()
         self.assertEqual(tables.count(), 1)
+
+    def test_tables_delete(self):
+        response = self.client.get('/tables/delete/')
+        self.assertRedirects(response, '/accounts/login/?next=/tables/delete/', 302, 200)
+
+        self.client.force_login(self.users[0])
+        response = self.client.get('/tables/delete/')
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/tables/delete/')
+        self.assertRedirects(response, '/tables/', 302, 200)

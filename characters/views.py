@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views import View
 
@@ -15,10 +16,13 @@ from itertools import chain
 from . import forms
 from . import models
 from campaign.models import Campaign
+from characters.utils import get_character_object
 from dungeonomics.utils import at_tagging
 from dungeonomics import character_suggested_attributes
 from items import models as item_models
 from locations import models as location_models
+from tavern.models import Review
+from tavern.utils import rating_stars_html
 
 import json
 
@@ -235,7 +239,7 @@ def monster_copy(request, monster_pk):
                 monster.pk = None
                 monster.name = monster.name + "_Copy"
                 monster.save()
-                messages.add_message(request, messages.SUCCESS, "Monster Copied!")
+                messages.add_message(request, messages.SUCCESS, "Monster copied!")
                 return HttpResponseRedirect(monster.get_absolute_url())
     else:
         raise Http404
@@ -371,43 +375,38 @@ def npc_srd(request):
         return render(request, 'characters/npc_export.html', {'npcs': npc_queryset})
     return render(request, 'characters/npc_srd_form.html', {'form': form, 'npcs': npcs})
 
-@login_required
-def monsters_delete(request):
-    form = forms.DeleteMonsterForm()
-    monsters = sorted(models.Monster.objects.filter(user=request.user),
-        key=lambda monster: monster.name.lower()
-        )
-    if request.method == 'POST':
-        form = forms.DeleteMonsterForm(request.POST)
-        selected_monsters = []
-        for monster_pk in request.POST.getlist('monster'):
-            monster = models.Monster.objects.get(pk=monster_pk)
-            selected_monsters.append(monster)
-        empty_queryset = models.Monster.objects.none()
-        monster_queryset = list(chain(empty_queryset, selected_monsters))
-        for monster in monster_queryset:
-            monster.delete()
-        return HttpResponseRedirect(reverse('characters:monster_detail'))
-    return render(request, 'characters/monsters_delete.html', {'form': form, 'monsters': monsters})
 
-@login_required
-def npcs_delete(request):
-    form = forms.DeleteNPCForm()
-    npcs = sorted(models.NPC.objects.filter(user=request.user),
-        key=lambda npc: npc.name.lower()
-        )
-    if request.method == 'POST':
-        form = forms.DeleteNPCForm(request.POST)
-        selected_npcs = []
+class MonstersDelete(View):
+    def get(self, request, *args, **kwargs):
+        monsters = models.Monster.objects.filter(user=request.user).order_by('name')
+        return render(request, 'characters/monsters_delete.html', {'monsters': monsters})
+
+    def post(self, request, *args, **kwargs):
+        for monster_pk in request.POST.getlist('monster'):
+            models.Monster.objects.get(pk=monster_pk).delete()
+        return HttpResponseRedirect(reverse('characters:monster_detail'))
+
+
+class NPCsDelete(View):
+    def get(self, request, *args, **kwargs):
+        npcs = models.NPC.objects.filter(user=request.user).order_by('name')
+        return render(request, 'characters/npcs_delete.html', {'npcs': npcs})
+
+    def post(self, request, *args, **kwargs):
         for npc_pk in request.POST.getlist('npc'):
-            npc = models.NPC.objects.get(pk=npc_pk)
-            selected_npcs.append(npc)
-        empty_queryset = models.NPC.objects.none()
-        npc_queryset = list(chain(empty_queryset, selected_npcs))
-        for npc in npc_queryset:
-            npc.delete()
+            models.NPC.objects.get(pk=npc_pk).delete()
         return HttpResponseRedirect(reverse('characters:npc_detail'))
-    return render(request, 'characters/npcs_delete.html', {'form': form, 'npcs': npcs})
+
+
+class PlayersDelete(View):
+    def get(self, request, *args, **kwargs):
+        players = models.Player.objects.filter(user=request.user).order_by('name')
+        return render(request, 'characters/players_delete.html', {'players': players})
+
+    def post(self, request, *args, **kwargs):
+        for player_pk in request.POST.getlist('player'):
+            models.Player.objects.get(pk=player_pk).delete()
+        return HttpResponseRedirect(reverse('characters:player_detail'))
 
 
 class PlayerCampaigns(View):
@@ -430,7 +429,7 @@ class PlayerCampaigns(View):
             for pk in campaigns:
                 campaign = get_object_or_404(Campaign, pk=pk)
                 player.campaigns.remove(campaign)
-            messages.add_message(request, messages.SUCCESS, "Player has been removed from Campaign(s)")
+            messages.add_message(request, messages.SUCCESS, "Player has been removed from campaign(s)")
             return redirect('characters:player_campaigns', player_pk=player.pk)
         else:
             raise Http404
@@ -525,3 +524,77 @@ def character_update(request, pk):
     data['formset'] = formset
     data['character'] = character
     return render(request, 'characters/character_form.html', data)
+
+class CharacterPublish(View):
+    def get(self, request, *args, **kwargs):
+        if kwargs['type'] == 'monster':
+            obj = get_object_or_404(models.Monster, pk=kwargs['pk'])
+            form = forms.MonsterPublishForm()
+        elif kwargs['type'] == 'npc':
+            obj = get_object_or_404(models.NPC, pk=kwargs['pk'])
+            form = forms.NPCPublishForm()
+        elif kwargs['type'] == 'player':
+            obj = get_object_or_404(models.Player, pk=kwargs['pk'])
+            form = forms.PlayerPublishForm()
+
+        if obj.user == request.user:
+            if obj.is_published == True:
+                return redirect('tavern:tavern_character_detail',
+                    type=kwargs['type'], pk=kwargs['pk'])
+            return render(self.request, 'characters/character_publish.html', {
+                'obj': obj,
+                'form': form,
+                'type': kwargs['type'],
+            })
+        raise Http404
+
+    def post(self, request, *args, **kwargs):
+        if kwargs['type'] == 'monster':
+            obj = get_object_or_404(models.Monster, pk=kwargs['pk'])
+            form = forms.MonsterPublishForm(request.POST, instance=obj)
+        elif kwargs['type'] == 'npc':
+            obj = get_object_or_404(models.NPC, pk=kwargs['pk'])
+            form = forms.NPCPublishForm(request.POST, instance=obj)
+        elif kwargs['type'] == 'player':
+            obj = get_object_or_404(models.Player, pk=kwargs['pk'])
+            form = forms.PlayerPublishForm(request.POST, instance=obj)
+
+        if obj.user == request.user:
+            # publish to the tavern
+            obj = form.save(commit=False)
+            obj.is_published = True
+            obj.published_date = timezone.now()
+            obj.save()
+            # redirect to the tavern page
+            messages.success(request, 'Character published', fail_silently=True)
+            return redirect('tavern:tavern_character_detail',
+                type=kwargs['type'], pk=kwargs['pk'])
+        raise Http404
+
+
+class CharacterUnpublish(View):
+    def get(self, request, *args, **kwargs):
+        obj = get_character_object(kwargs['type'], kwargs['pk'])
+        if obj.user == request.user:
+            # remove from the tavern
+            obj.is_published = False
+            obj.save()
+
+            # delete the importers
+            obj.importers.clear()
+
+            messages.success(request, 'Character unpublished', fail_silently=True)
+
+            if kwargs['type'] == 'monster':
+                # delete the reviews
+                Review.objects.filter(monster=obj).delete()
+                return redirect('characters:monster_detail', monster_pk=obj.pk)
+            elif kwargs['type'] == 'npc':
+                # delete the reviews
+                Review.objects.filter(npc=obj).delete()
+                return redirect('characters:npc_detail', npc_pk=obj.pk)
+            elif kwargs['type'] == 'player':
+                # delete the reviews
+                Review.objects.filter(player=obj).delete()
+                return redirect('characters:player_detail', player_pk=obj.pk)
+        raise Http404

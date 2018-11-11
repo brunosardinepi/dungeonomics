@@ -2,21 +2,21 @@
 
 {% load widget_tweaks %}
 
-{% block title %}Review - {{ campaign.title }} | {{ block.super }}{% endblock %}
+{% block title %}Review - {{ obj.title }} | {{ block.super }}{% endblock %}
 
 {% block body_content %}
     <div class="row justify-content-center mt-3 pb-3">
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="px-1 mb-0">Review Campaign</h5>
+                    <h5 class="px-1 mb-0">Review character</h5>
                 </div>
                 <div class="card-body">
                     <form method="POST" action="">
                         {% csrf_token %}
-                        <p>Give this Campaign a rating <span class="font-weight-bold">from 1 to 5 stars</span>. An example of a 1-star Campaign would be something you ran with your group and nobody had fun, the content was poorly organized to the point of confusion, it was a complete waste of your time to even attempt to run this Campaign, and the rest of your day was completely ruined because of it. An example of a 5-star Campaign would be something you ran with your group and thoroughly enjoyed, everything was planned well and was a cohesive story, and everyone you were with had a great time participating in it.</p>
-                        <p>Additionally, you can leave a comment to help explain your rating, provide criticism for the Campaign writer, or let other users know if you'd recommend this Campaign.</p>
-                        <p><span class="font-weight-bold">Note:</span> Remember, people spend a lot of their time working on these Campaigns. Just because you don't like someone's ideas doesn't mean they're bad ideas. Be mindful of the differences. You can be constructively critical without being a jerk.</p>
+                        <p>Give this character a rating <span class="font-weight-bold">from 1 to 5 stars</span>. An example of a 1-star character would be something that the creator put no effort into and has no place to be on the Tavern. An example of a 5-star character would be something that had a detailed description, included everything you needed for that character, was well thought out, and was easy to implement in your campaign.</p>
+                        <p>Additionally, you can leave a comment to help explain your rating, provide criticism for the character creator, or let other users know if you'd recommend this character.</p>
+                        <p><span class="font-weight-bold">Note:</span> Remember, people spend a lot of their time working on these characters. Just because you don't like someone's ideas doesn't mean they're bad ideas. Be mindful of the differences. You can be constructively critical without being a jerk.</p>
                         {% if form.non_field_errors %}
                             <div class="alert alert-danger" role="alert">
                                 {{ form.non_field_errors }}
@@ -50,7 +50,7 @@
                 <div class="card-footer">
                     <div class="row justify-content-between">
                         <div class="col-auto">
-                            <a href="{% url 'tavern_detail' campaign_pk=campaign.pk %}" class="btn btn-secondary">Cancel</a>
+                            <a href="{% url 'tavern:tavern_character_detail' type=type pk=obj.pk %}" class="btn btn-secondary">Cancel</a>
                         </div>
                         <div class="col-auto">
                             <input type="submit" class="btn btn-primary" value="Submit">

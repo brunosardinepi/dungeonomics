@@ -1,0 +1,18 @@
+<div class="card-header">
+    <div class="row justify-content-between align-items-center">
+        <div class="col-auto">
+            <span class="font-weight-bold">{{ text }}</span>
+        </div>
+        <div class="col-auto">
+            {% if text == "Most popular campaigns" or text == "Most recent campaigns" %}
+                <a class="btn btn-sm btn-secondary" href="{% url 'tavern:tavern_search' type='campaign' %}" role="button">See all</a>
+            {% elif text == "Most popular monsters" or text == "Most recent monsters" %}
+                <a class="btn btn-sm btn-secondary" href="{% url 'tavern:tavern_search' type='monster' %}" role="button">See all</a>
+            {% elif text == "Most popular NPCs" or text == "Most recent NPCs" %}
+                <a class="btn btn-sm btn-secondary" href="{% url 'tavern:tavern_search' type='npc' %}" role="button">See all</a>
+            {% elif text == "Most popular players" or text == "Most recent players" %}
+                <a class="btn btn-sm btn-secondary" href="{% url 'tavern:tavern_search' type='player' %}" role="button">See all</a>
+            {% endif %}
+        </div>
+    </div>
+</div>

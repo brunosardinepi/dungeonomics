@@ -4,7 +4,7 @@ from django import template
 from django.shortcuts import get_object_or_404
 
 from campaign.models import Campaign
-from characters.models import Player
+from characters.models import Monster, NPC, Player
 
 
 register = template.Library()
@@ -58,3 +58,9 @@ def campaign_has_players(campaign_pk):
 def post_user(email):
     return email.split('@')[0]
 
+@register.filter
+def asset_title(obj):
+    if obj == "npc":
+        return obj.upper()
+    else:
+        return obj.capitalize()

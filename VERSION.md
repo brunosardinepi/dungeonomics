@@ -3,6 +3,43 @@
 This is the version history for Dungeonomics development.
 
 
+## Version 3.3.0
+
+Release date: 11/09/2018
+
+### Additions
+
+* #127 -- Search all on Tavern
+
+### Changes
+
+* None
+
+### Fixes
+
+* None
+
+
+## Version 3.2.0
+
+Release date: 11/02/2018
+
+### Additions
+
+* #118 -- Delete multiple assets
+* #120 -- Publish characters to the Tavern
+* #117 -- Wiki
+* #94 -- automatically set the order for new chapters/sections
+
+### Changes
+
+* #121 -- upgraded requests version
+
+### Fixes
+
+* #119 -- Fixed all the weird uppercase Campaign/Monster/Character words on the site
+
+
 ## Version 3.1.0
 
 Release date: 10/19/2018

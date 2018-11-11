@@ -20,7 +20,9 @@ urlpatterns = [
         login_required(views.CharacterDetail.as_view()),
         name='character_detail'),
 
-    path('player/<int:player_pk>/campaigns/', login_required(views.PlayerCampaigns.as_view()), name='player_campaigns'),
+    path('player/<int:player_pk>/campaigns/',
+        login_required(views.PlayerCampaigns.as_view()),
+        name='player_campaigns'),
 
     path('monster/create/', views.monster_create, name='monster_create'),
     path('npc/create/', views.npc_create, name='npc_create'),
@@ -50,9 +52,21 @@ urlpatterns = [
     path('monster/import/', views.monster_import, name='monster_import'),
     path('npc/import/', views.npc_import, name='npc_import'),
 
+    path('<str:type>/<int:pk>/publish/',
+        login_required(views.CharacterPublish.as_view()),
+        name='character_publish'),
+    path('<str:type>/<int:pk>/unpublish/',
+        login_required(views.CharacterUnpublish.as_view()),
+        name='character_unpublish'),
+
     path('monster/srd/', views.monster_srd, name='monster_srd'),
     path('npc/srd/', views.npc_srd, name='npc_srd'),
 
-    path('monsters/delete/', views.monsters_delete, name='monsters_delete'),
-    path('npcs/delete/', views.npcs_delete, name='npcs_delete'),
+    path('monsters/delete/',
+        login_required(views.MonstersDelete.as_view()),
+        name='monsters_delete'),
+    path('npcs/delete/', login_required(views.NPCsDelete.as_view()), name='npcs_delete'),
+    path('players/delete/',
+        login_required(views.PlayersDelete.as_view()),
+        name='players_delete'),
 ]

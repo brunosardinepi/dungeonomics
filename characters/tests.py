@@ -7,6 +7,7 @@ from model_mommy import mommy
 
 from . import forms
 from . import models
+from tavern.models import Review
 
 
 class CharacterTest(TestCase):
@@ -28,6 +29,7 @@ class CharacterTest(TestCase):
         self.characters = mommy.make(
             models.GeneralCharacter,
             user=self.users[0],
+            is_published=False,
             _quantity=2,
             _fill_optional=True,
         )

@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect, Http404, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
+from django.views import View
 
 from . import forms
 from . import models
@@ -131,3 +132,13 @@ def table_roll(request):
     }
 
     return JsonResponse(data)
+
+class TablesDelete(View):
+    def get(self, request, *args, **kwargs):
+        tables = models.Table.objects.filter(user=request.user).order_by('name')
+        return render(request, 'tables/tables_delete.html', {'tables': tables})
+
+    def post(self, request, *args, **kwargs):
+        for table_pk in request.POST.getlist('table'):
+            models.Table.objects.get(pk=table_pk).delete()
+        return HttpResponseRedirect(reverse('tables:table_detail'))

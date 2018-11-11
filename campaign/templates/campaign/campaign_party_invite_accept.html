@@ -15,11 +15,11 @@
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="px-1 mb-0">Join Campaign</h5>
+                    <h5 class="px-1 mb-0">Join campaign</h5>
                 </div>
                 <div class="card-body">
-                    <p>You've been invited to join the <span class="font-weight-bold">{{ campaign.title }}</span> Campaign. Choose a character to use, and click "join" to join the Campaign.</p>
-                    <p class="small">Note: joining this Campaign with your Character does not limit your Character to this Campaign. It can still be used in other Campaigns.</p>
+                    <p>You've been invited to join the <span class="font-weight-bold">{{ campaign.title }}</span> campaign. Choose a character to use, and click "join" to join the campaign.</p>
+                    <p class="small">Note: joining this campaign with your character does not limit your character to this campaign. It can still be used in other campaigns.</p>
 
                     {% if players %}
                         <form class="pt-3" method="post" action="">
@@ -35,7 +35,7 @@
                             <button type="submit" class="btn btn-block btn-success mt-3">Join</button>
                         </form>
                     {% else %}
-                        <p>You haven't created any Players. <a href="{% url 'characters:player_create' %}" target="_blank">Create a Player</a> and then refresh this page.</p>
+                        <p>You haven't created any players. <a href="{% url 'characters:player_create' %}" target="_blank">Create a player</a> and then refresh this page.</p>
                     {% endif %}
 
                 </div>

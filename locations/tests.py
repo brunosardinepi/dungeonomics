@@ -122,6 +122,17 @@ class LocationTest(TestCase):
         worlds = models.World.objects.all()
         self.assertEqual(worlds.count(), 1)
 
+    def test_worlds_delete(self):
+        response = self.client.get('/locations/delete/')
+        self.assertRedirects(response, '/accounts/login/?next=/locations/delete/', 302, 200)
+
+        self.client.force_login(self.users[0])
+        response = self.client.get('/locations/delete/')
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/locations/delete/')
+        self.assertRedirects(response, '/locations/', 302, 200)
+
     def test_location_exists(self):
         locations = models.Location.objects.all()
         self.assertIn(self.locations[0], locations)
@@ -178,3 +189,24 @@ class LocationTest(TestCase):
 
         locations = models.Location.objects.all()
         self.assertEqual(locations.count(), 2)
+
+    def test_world_export(self):
+        response = self.client.get('/locations/export/')
+        self.assertRedirects(response,
+            '/accounts/login/?next=/locations/export/', 302, 200)
+
+        self.client.force_login(self.users[0])
+        response = self.client.get('/locations/export/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_world_import(self):
+        response = self.client.get('/locations/import/')
+        self.assertRedirects(response,
+            '/accounts/login/?next=/locations/import/', 302, 200)
+
+        self.client.force_login(self.users[0])
+        response = self.client.get('/locations/import/')
+        self.assertEqual(response.status_code, 200)
+
+#        response = self.client.post('/locations/import/', {'user_import': '{}'})
+#        self.assertRedirects(response, '/locations/', 302, 200)

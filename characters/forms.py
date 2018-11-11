@@ -122,16 +122,6 @@ class PlayerForm(TinyMCEForm):
             'notes',
         ]
 
-class DeleteMonsterForm(forms.ModelForm):
-    class Meta:
-        model = models.Monster
-        fields = ['name']
-
-class DeleteNPCForm(forms.ModelForm):
-    class Meta:
-        model = models.NPC
-        fields = ['name']
-
 class CopyMonsterForm(forms.ModelForm):
     class Meta:
         model = models.Monster
@@ -198,3 +188,24 @@ AttributeFormSet = forms.inlineformset_factory(
     extra=2,
     min_num=0,
 )
+
+class MonsterPublishForm(TinyMCEForm):
+    class Meta:
+        model = models.Monster
+        fields = [
+            'tavern_description',
+        ]
+
+class NPCPublishForm(TinyMCEForm):
+    class Meta:
+        model = models.NPC
+        fields = [
+            'tavern_description',
+        ]
+
+class PlayerPublishForm(TinyMCEForm):
+    class Meta:
+        model = models.Player
+        fields = [
+            'tavern_description',
+        ]

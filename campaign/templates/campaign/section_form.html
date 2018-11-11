@@ -171,7 +171,12 @@
 
                         <div class="form-group">
                             <label for="{{ form.order.id_for_label }}">Order</label>
-                            {% render_field form.order class+="form-control mb-3" %}
+                            {% if section %}
+                                {% render_field form.order class+="form-control mb-3" %}
+                            {% else %}
+                                <input type="number" name="{{ form.order.name }}" value="{{ section_number }}" id="{{ form.order.id_for_label }}" class="form-control mb-3" required>
+                            {% endif %}
+
                             {% if form.order.errors %}
                                 {% for error in form.order.errors %}
                                     <div class="alert alert-danger" role="alert">

@@ -1,20 +1,25 @@
+from itertools import chain
+from shutil import copyfile
+import json
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.core import serializers
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views import View
 
 from . import forms
 from . import models
 from characters import models as character_models
+from dungeonomics import settings
 from dungeonomics.utils import at_tagging, image_is_valid
 from items import models as item_models
-
-import json
 
 
 @login_required
@@ -187,4 +192,91 @@ def location_delete(request, location_pk):
         messages.success(request, 'Location deleted', fail_silently=True)
         return HttpResponseRedirect(reverse('locations:location_detail'))
     else:
+        raise Http404
+
+class WorldsDelete(View):
+    def get(self, request, *args, **kwargs):
+        worlds = models.World.objects.filter(user=request.user).order_by('name')
+        return render(request, 'locations/worlds_delete.html', {'worlds': worlds})
+
+    def post(self, request, *args, **kwargs):
+        for world_pk in request.POST.getlist('world'):
+            models.World.objects.get(pk=world_pk).delete()
+        return HttpResponseRedirect(reverse('locations:location_detail'))
+
+class WorldExport(View):
+    def get(self, request, *args, **kwargs):
+        worlds = models.World.objects.filter(user=request.user).order_by('name')
+        locations = models.Location.objects.filter(user=request.user).order_by('name')
+
+        combined_list = list(chain(worlds, locations))
+        worlds_locations = serializers.serialize("json", combined_list, indent=2)
+
+        return render(request,
+            'locations/world_export.html',
+            {'worlds_locations': worlds_locations},
+        )
+
+class WorldImport(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'locations/world_import.html')
+
+    def post(self, request, *args, **kwargs):
+        if request.POST.get('user_import'):
+            user_import = request.POST.get('user_import')
+
+            asset_references = {
+                "worlds": {},
+                "locations": {},
+            }
+
+            # create a copy of the asset
+            # and update a dictionary that holds a reference of the old pk and the new pk
+
+            for obj in serializers.deserialize("json", user_import):
+                # grab the old pk for reference
+                old_pk = obj.object.pk
+
+                # create a copy of the asset
+                obj.object.pk = None
+                obj.object.user = request.user
+
+                if obj.object.image:
+                    # create a new filename
+                    random_string = models.create_random_string()
+                    ext = obj.object.image.url.split('.')[-1]
+                    new_filename = "media/user/images/%s.%s" % (random_string, ext)
+
+                    # copy the old file to a new file
+                    # and save it to the new object
+                    old_image_url = settings.MEDIA_ROOT + obj.object.image.name
+                    new_image_url = settings.MEDIA_ROOT + new_filename
+                    copyfile(old_image_url, new_image_url)
+                    obj.object.image = new_filename
+
+                obj.object.save()
+
+                new_pk = obj.object.pk
+
+                if isinstance(obj.object, models.World):
+                    asset_references['worlds'][old_pk] = new_pk
+                elif isinstance(obj.object, models.Location):
+                    asset_references['locations'][old_pk] = new_pk
+
+            for old_pk, new_pk in asset_references['locations'].items():
+                # for each location, set the parent location to the new parent location.
+                # also, set the world to the new world
+                old_location = models.Location.objects.get(pk=old_pk)
+                if old_location.parent_location:
+                    old_location_parent = old_location.parent_location
+
+                new_location = models.Location.objects.get(pk=new_pk)
+                if new_location.parent_location:
+                    new_location_parent = models.Location.objects.get(pk=asset_references['locations'][old_location_parent.pk])
+                    new_location.parent_location = new_location_parent
+
+                old_world = old_location.world
+                new_world = models.World.objects.get(pk=asset_references['worlds'][old_world.pk])
+                new_location.world = new_world
+                new_location.save()
         raise Http404

@@ -1,0 +1,106 @@
+<div class="row">
+    <div class="col-md-12">
+        <p>{% if npc.get_size_display %} {{ npc.get_size_display }}{% endif %}{% if npc.creature_type %} {{ npc.creature_type }}{% endif %}{% if npc.get_alignment_display %}, {{ npc.get_alignment_display }}{% endif %}</p>
+    </div>
+</div>
+
+<hr>
+
+<div class="row">
+    <div class="col-md-12">
+        {% if npc.challenge_rating %}<p><span class="font-weight-bold">Challenge Rating</span> {{ npc.challenge_rating }}</p>{% endif %}
+        {% if npc.armor_class %}<p><span class="font-weight-bold">Armor Class</span> {{ npc.armor_class }}</p>{% endif %}
+        {% if npc.hit_points %}<p><span class="font-weight-bold">Hit Points</span> {{ npc.hit_points }}</p>{% endif %}
+        {% if npc.speed %}<p><span class="font-weight-bold">Speed</span> {{ npc.speed }}</p>{% endif %}
+    </div>
+</div>
+
+{% if npc.challenge_rating or npc.armor_class or npc.hit_points or npc.speed %}<hr>{% endif %}
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="character-label">
+            <p>STR</p>
+        </div>
+        <div class="character-details">
+            <p>{{ npc.strength }} ({{ npc.strength_mod }})</p>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="character-label">
+            <p>DEX</p>
+        </div>
+        <div class="character-details">
+            <p>{{ npc.dexterity }} ({{ npc.dexterity_mod }})</p>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="character-label">
+            <p>CON</p>
+        </div>
+        <div class="character-details">
+            <p>{{ npc.constitution }} ({{ npc.constitution_mod }})</p>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="character-label">
+            <p>INT</p>
+        </div>
+        <div class="character-details">
+            <p>{{ npc.intelligence }} ({{ npc.intelligence_mod }})</p>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="character-label">
+            <p>WIS</p>
+        </div>
+        <div class="character-details">
+            <p>{{ npc.wisdom }} ({{ npc.wisdom_mod }})</p>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="character-label">
+            <p>CHA</p>
+        </div>
+        <div class="character-details">
+            <p>{{ npc.charisma }} ({{ npc.charisma_mod }})</p>
+        </div>
+    </div>
+</div>
+
+{% if npc.race or npc.npc_class or npc.age or npc.height or npc.weight %}<hr>{% endif %}
+
+<div class="row">
+    <div class="col-md-12">
+        {% if npc.race %}<p><span class="font-weight-bold">Race</span> {{ npc.race }}</p>{% endif %}
+        {% if npc.npc_class %}<p><span class="font-weight-bold">Class</span> {{ npc.npc_class }}</p>{% endif %}
+        {% if npc.age %}<p><span class="font-weight-bold">Age</span> {{ npc.age }}</p>{% endif %}
+        {% if npc.height %}<p><span class="font-weight-bold">Height</span> {{ npc.height }}</p>{% endif %}
+        {% if npc.weight %}<p><span class="font-weight-bold">Weight</span> {{ npc.weight }}</p>{% endif %}
+    </div>
+</div>
+
+{% if npc.race or npc.npc_class or npc.age or npc.height or npc.weight %}<hr>{% endif %}
+
+<div class="row">
+    <div class="col-md-12">
+        {% if npc.saving_throws %}<p><span class="font-weight-bold">Saving Throws</span> {{ npc.saving_throws }}</p>{% endif %}
+        {% if npc.skills %}<p><span class="font-weight-bold">Skills</span> {{ npc.skills }}</p>{% endif %}
+        {% if npc.senses %}<p><span class="font-weight-bold">Senses</span> {{ npc.senses }}</p>{% endif %}
+        {% if npc.languages %}<p><span class="font-weight-bold">Languages</span> {{ npc.languages }}</p>{% endif %}
+        {% if npc.damage_vulnerabilities %}<p><span class="font-weight-bold">Damage Vulnerabilities</span> {{ npc.damage_vulnerabilities }}</p>{% endif %}
+        {% if npc.damage_immunities %}<p><span class="font-weight-bold">Damage Immunities</span> {{ npc.damage_immunities }}</p>{% endif %}
+        {% if npc.damage_resistances %}<p><span class="font-weight-bold">Damage Resistances</span> {{ npc.damage_resistances }}</p>{% endif %}
+        {% if npc.condition_immunities %}<p><span class="font-weight-bold">Condition Immunities</span> {{ npc.condition_immunities }}</p>{% endif %}
+    </div>
+</div>
+
+{% if npc.content %}
+    <hr>
+    <div class="row">
+        <div class="col-md-12">
+            {{ npc.content|safe }}
+        </div>
+    </div>
+{% endif %}
+

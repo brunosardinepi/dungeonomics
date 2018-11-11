@@ -26,6 +26,9 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="table-of-contents-dropdown">
                                     <a href="{% url 'locations:world_create' %}" class="dropdown-item text-success"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> Create world</a>
+                                    <a href="{% url 'locations:worlds_delete' %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete worlds</a>
+                                    <a href="{% url 'locations:world_export' %}" class="dropdown-item"><i class="fal fa-fw fa-cloud-download" aria-hidden="true"></i> Export worlds</a>
+                                    <a href="{% url 'locations:world_import' %}" class="dropdown-item"><i class="fal fa-fw fa-cloud-upload" aria-hidden="true"></i> Import worlds</a>
                                 </div>
                             </div>
                         </div>
