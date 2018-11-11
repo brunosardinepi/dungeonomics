@@ -1,3 +1,6 @@
+from itertools import chain
+from collections import OrderedDict
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -10,8 +13,6 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views import View
-
-from itertools import chain
 
 from . import forms
 from . import models
@@ -447,22 +448,20 @@ class CharacterDetail(View):
                 character = None
 
         if character.user == request.user:
-            stats = {
-                "Strength": 0,
-                "Dexterity": 0,
-                "Constitution": 0,
-                "Intelligence": 0,
-                "Wisdom": 0,
-                "Charisma": 0,
-            }
-            for stat, value in stats.items():
-                print("stat = {}, value = {}".format(stat, value))
+            stats = OrderedDict([
+                ("Strength", {"title": "STR", "attribute": None}),
+                ("Dexterity", {"title": "DEX", "attribute": None}),
+                ("Constitution", {"title": "CON", "attribute": None}),
+                ("Intelligence", {"title": "INT", "attribute": None}),
+                ("Wisdom", {"title": "WIS", "attribute": None}),
+                ("Charisma", {"title": "CHA", "attribute": None}),
+            ])
+            for stat, attribute in stats.items():
                 try:
                     attribute = character.attribute_set.get(name=stat)
                 except models.Attribute.DoesNotExist:
                     attribute = None
-                stats[stat] = attribute
-            print("stats = {}".format(stats))
+                stats[stat]['attribute'] = attribute
             return render(request, 'characters/character_detail.html', {
                 'characters': characters,
                 'character': character,
