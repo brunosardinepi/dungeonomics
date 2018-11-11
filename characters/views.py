@@ -177,7 +177,6 @@ class CharacterPublish(View):
                 type=kwargs['type'], pk=kwargs['pk'])
         raise Http404
 
-
 class CharacterUnpublish(View):
     def get(self, request, *args, **kwargs):
         obj = get_character_object(kwargs['type'], kwargs['pk'])
@@ -205,320 +204,30 @@ class CharacterUnpublish(View):
                 return redirect('characters:player_detail', player_pk=obj.pk)
         raise Http404
 
-@login_required
-def monster_detail(request, monster_pk=None):
-    user = None
-    if request.user.is_authenticated:
-        user = request.user.pk
-    monsters = sorted(models.Monster.objects.filter(user=user),
-        key=lambda monster: monster.name.lower()
-        )
-    if monster_pk:
-        monster = get_object_or_404(models.Monster, pk=monster_pk)
-        if monster.user == request.user:
-            return render(request, 'characters/monster_detail.html', {'monster': monster, 'monsters': monsters})
-        else:
-            raise Http404
-    elif len(monsters) > 0:
-        monster = monsters[0]
-        if monster.user == request.user:
-            return render(request, 'characters/monster_detail.html', {'monster': monster, 'monsters': monsters})
-        else:
-            raise Http404
-    else:
-        monster = None
-    return render(request, 'characters/monster_detail.html', {'monster': monster, 'monsters': monsters})
-
-@login_required
-def npc_detail(request, npc_pk=''):
-    user = None
-    if request.user.is_authenticated:
-        user = request.user.pk
-    npcs = sorted(models.NPC.objects.filter(user=user),
-        key=lambda npc: npc.name.lower()
-        )
-    if npc_pk:
-        npc = get_object_or_404(models.NPC, pk=npc_pk)
-        if npc.user == request.user:
-            return render(request, 'characters/npc_detail.html', {'npc': npc, 'npcs': npcs})
-        else:
-            raise Http404
-    elif len(npcs) > 0:
-        npc = npcs[0]
-        if npc.user == request.user:
-            return render(request, 'characters/npc_detail.html', {'npc': npc, 'npcs': npcs})
-        else:
-            raise Http404
-    else:
-        npc = None
-    return render(request, 'characters/npc_detail.html', {'npc': npc, 'npcs': npcs})
-
-@login_required
-def player_detail(request, player_pk=None):
-    user = None
-    if request.user.is_authenticated:
-        user = request.user.pk
-    players = sorted(models.Player.objects.filter(user=user),
-        key=lambda player: player.player_name.lower()
-        )
-    if player_pk:
-        player = get_object_or_404(models.Player, pk=player_pk)
-        if player.user == request.user:
-            return render(request, 'characters/player_detail.html', {'player': player, 'players': players})
-        else:
-            raise Http404
-    elif len(players) > 0:
-        player = players[0]
-        if player.user == request.user:
-            return render(request, 'characters/player_detail.html', {'player': player, 'players': players})
-        else:
-            raise Http404
-    else:
-        player = None
-    return render(request, 'characters/player_detail.html', {'player': player, 'players': players})
-
-@login_required
-def monster_create(request):
-    data = at_tagging(request)
-    form = forms.MonsterForm()
-    if request.method == 'POST':
-        form = forms.MonsterForm(request.POST)
-        if form.is_valid():
-            monster = form.save(commit=False)
-            monster.user = request.user
-            monster.save()
-            messages.add_message(request, messages.SUCCESS, "Monster created!")
-            return HttpResponseRedirect(monster.get_absolute_url())
-    data['form'] = form
-    return render(request, 'characters/monster_form.html', data)
-
-@login_required
-def npc_create(request):
-    data = at_tagging(request)
-    form = forms.NPCForm()
-    if request.method == 'POST':
-        form = forms.NPCForm(request.POST)
-        if form.is_valid():
-            npc = form.save(commit=False)
-            npc.user = request.user
-            npc.save()
-            messages.add_message(request, messages.SUCCESS, "NPC created!")
-            return HttpResponseRedirect(npc.get_absolute_url())
-    data['form'] = form
-    return render(request, 'characters/npc_form.html', data)
-
-@login_required
-def player_create(request):
-    data = at_tagging(request)
-    form = forms.PlayerForm()
-    if request.method == 'POST':
-        form = forms.PlayerForm(request.POST)
-        if form.is_valid():
-            player = form.save(commit=False)
-            player.user = request.user
-            player.save()
-            messages.add_message(request, messages.SUCCESS, "Player created!")
-            return HttpResponseRedirect(player.get_absolute_url())
-    data['form'] = form
-    return render(request, 'characters/player_form.html', data)
-
-@login_required
-def monster_update(request, monster_pk):
-    data = at_tagging(request)
-    monster = get_object_or_404(models.Monster, pk=monster_pk)
-    if monster.user == request.user:
-        form = forms.MonsterForm(instance=monster)
-        if request.method == 'POST':
-            form = forms.MonsterForm(instance=monster, data=request.POST)
-            if form.is_valid():
-                form.save()
-                messages.add_message(request, messages.SUCCESS, "Updated monster: {}".format(form.cleaned_data['name']))
-                return HttpResponseRedirect(monster.get_absolute_url())
-    else:
-        raise Http404
-    data['monster'] = monster
-    data['form'] = form
-    return render(request, 'characters/monster_form.html', data)
-
-@login_required
-def npc_update(request, npc_pk):
-    data = at_tagging(request)
-    npc = get_object_or_404(models.NPC, pk=npc_pk)
-    if npc.user == request.user:
-        form = forms.NPCForm(instance=npc)
-        if request.method == 'POST':
-            form = forms.NPCForm(instance=npc, data=request.POST)
-            if form.is_valid():
-                form.save()
-                messages.add_message(request, messages.SUCCESS, "Updated NPC: {}".format(form.cleaned_data['name']))
-                return HttpResponseRedirect(npc.get_absolute_url())
-    else:
-        raise Http404
-    data['npc'] = npc
-    data['form'] = form
-    return render(request, 'characters/npc_form.html', data)
-
-@login_required
-def player_update(request, player_pk):
-    data = at_tagging(request)
-    player = get_object_or_404(models.Player, pk=player_pk)
-    if player.user == request.user:
-        form = forms.PlayerForm(instance=player)
-        if request.method == 'POST':
-            form = forms.PlayerForm(instance=player, data=request.POST)
-            if form.is_valid():
-                form.save()
-                messages.add_message(request, messages.SUCCESS, "Updated player")
-                return HttpResponseRedirect(player.get_absolute_url())
-    else:
-        raise Http404
-    data['player'] = player
-    data['form'] = form
-    return render(request, 'characters/player_form.html', data)
-
-@login_required
-def monster_delete(request, monster_pk):
-    monster = get_object_or_404(models.Monster, pk=monster_pk)
-    if monster.user == request.user:
-        monster.delete()
-        messages.success(request, 'Monster deleted', fail_silently=True)
-        return HttpResponseRedirect(reverse('characters:monster_detail'))
-    else:
+class CharacterDelete(View):
+    def get(self, request, *args, **kwargs):
+        character = get_object_or_404(models.GeneralCharacter, pk=kwargs['pk'])
+        if character.user == request.user:
+            character.delete()
+            messages.success(request, 'Character deleted', fail_silently=True)
+            return redirect('characters:character_detail')
         raise Http404
 
-@login_required
-def npc_delete(request, npc_pk):
-    npc = get_object_or_404(models.NPC, pk=npc_pk)
-    if npc.user == request.user:
-        npc.delete()
-        messages.success(request, 'NPC deleted', fail_silently=True)
-        return HttpResponseRedirect(reverse('characters:npc_detail'))
-    else:
-        raise Http404
-
-@login_required
-def player_delete(request, player_pk):
-    player = get_object_or_404(models.Player, pk=player_pk)
-    if player.user == request.user:
-        player.delete()
-        messages.success(request, 'Player deleted', fail_silently=True)
-        return HttpResponseRedirect(reverse('characters:player_detail'))
-    else:
-        raise Http404
-
-@login_required
-def monster_copy(request, monster_pk):
-    monster = get_object_or_404(models.Monster, pk=monster_pk)
-    if monster.user == request.user:
-        form = forms.CopyMonsterForm(instance=monster)
-        if request.method == 'POST':
-            form = forms.CopyMonsterForm(request.POST, instance=monster)
-            if monster.user.pk == request.user.pk:
-                monster.pk = None
-                monster.name = monster.name + "_Copy"
-                monster.save()
-                messages.add_message(request, messages.SUCCESS, "Monster copied!")
-                return HttpResponseRedirect(monster.get_absolute_url())
-    else:
-        raise Http404
-    return render(request, 'characters/monster_copy.html', {'form': form, 'monster': monster})
-
-
-@login_required
-def npc_copy(request, npc_pk):
-    npc = get_object_or_404(models.NPC, pk=npc_pk)
-    if npc.user == request.user:
-        form = forms.CopyNPCForm(instance=npc)
-        if request.method == 'POST':
-            form = forms.CopyNPCForm(request.POST, instance=npc)
-            if npc.user.pk == request.user.pk:
-                npc.pk = None
-                npc.name = npc.name + "_Copy"
-                npc.save()
-                messages.add_message(request, messages.SUCCESS, "NPC copied!")
-                return HttpResponseRedirect(npc.get_absolute_url())
-    else:
-        raise Http404
-    return render(request, 'characters/npc_copy.html', {'form': form, 'npc': npc})
-
-
-@login_required
-def player_copy(request, player_pk):
-    player = get_object_or_404(models.Player, pk=player_pk)
-    if player.user == request.user:
-        form = forms.CopyPlayerForm(instance=player)
-        if request.method == 'POST':
-            form = forms.CopyPlayerForm(request.POST, instance=player)
-            if player.user.pk == request.user.pk:
-                player.pk = None
-                player.player_name = player.player_name + "_Copy"
-                player.save()
-                messages.add_message(request, messages.SUCCESS, "Player copied!")
-                return HttpResponseRedirect(player.get_absolute_url())
-    else:
-        raise Http404
-    return render(request, 'characters/player_copy.html', {'form': form, 'player': player})
-
-@login_required
-def monster_import(request):
-    user_import = None
-    form = forms.ImportMonsterForm()
-    if request.method == 'POST':
-        if request.POST.get('user_import'):
-            user_import = request.POST.get('user_import')
-
-            for obj in serializers.deserialize("json", user_import):
-                obj.object.pk = None
-                obj.object.user = request.user
-                obj.object.save()
-            return HttpResponseRedirect(reverse('characters:monster_detail'))
-        else:
-            return Http404
-    return render(request, 'characters/monster_import.html', {'form': form})
-
-@login_required
-def npc_import(request):
-    user_import = None
-    form = forms.ImportNPCForm()
-    if request.method == 'POST':
-        if request.POST.get('user_import'):
-            user_import = request.POST.get('user_import')
-
-            for obj in serializers.deserialize("json", user_import):
-                obj.object.pk = None
-                obj.object.user = request.user
-                obj.object.save()
-            return HttpResponseRedirect(reverse('characters:npc_detail'))
-        else:
-            return Http404
-    return render(request, 'characters/npc_import.html', {'form': form})
-
-@login_required
-def monster_export(request):
-    user = None
-    if request.user.is_authenticated:
-        user = request.user.pk
-
-    queryset = models.Monster.objects.filter(user=user).order_by('name')
-    monsters = serializers.serialize("json", queryset, indent=2)
-
-    if monsters:
-        return render(request, 'characters/monster_export.html', {'monsters': monsters})
-    else:
-        raise Http404
-
-@login_required
-def npc_export(request):
-    user = None
-    if request.user.is_authenticated:
-        user = request.user.pk
-
-    queryset = models.NPC.objects.filter(user=user).order_by('name')
-    npcs = serializers.serialize("json", queryset, indent=2)
-
-    if npcs:
-        return render(request, 'characters/npc_export.html', {'npcs': npcs})
-    else:
+class CharacterCopy(View):
+    def get(self, request, *args, **kwargs):
+        character = get_object_or_404(models.GeneralCharacter, pk=kwargs['pk'])
+        if character.user == request.user:
+            attributes = character.attribute_set.all()
+            character.pk = None
+            character.name += "_copy"
+            character.save()
+            for attribute in attributes:
+                attribute.pk = None
+                attribute.save()
+                attribute.character = character
+                attribute.save()
+            messages.add_message(request, messages.SUCCESS, "Character copied!")
+            return redirect(character.get_absolute_url())
         raise Http404
 
 @login_required
@@ -553,39 +262,18 @@ def npc_srd(request):
         return render(request, 'characters/npc_export.html', {'npcs': npc_queryset})
     return render(request, 'characters/npc_srd_form.html', {'form': form, 'npcs': npcs})
 
-
-class MonstersDelete(View):
+class CharactersDelete(View):
     def get(self, request, *args, **kwargs):
-        monsters = models.Monster.objects.filter(user=request.user).order_by('name')
-        return render(request, 'characters/monsters_delete.html', {'monsters': monsters})
+        characters = models.GeneralCharacter.objects.filter(
+            user=request.user).order_by('name')
+        return render(request, 'characters/characters_delete.html', {
+            'characters': characters,
+        })
 
     def post(self, request, *args, **kwargs):
-        for monster_pk in request.POST.getlist('monster'):
-            models.Monster.objects.get(pk=monster_pk).delete()
-        return HttpResponseRedirect(reverse('characters:monster_detail'))
-
-
-class NPCsDelete(View):
-    def get(self, request, *args, **kwargs):
-        npcs = models.NPC.objects.filter(user=request.user).order_by('name')
-        return render(request, 'characters/npcs_delete.html', {'npcs': npcs})
-
-    def post(self, request, *args, **kwargs):
-        for npc_pk in request.POST.getlist('npc'):
-            models.NPC.objects.get(pk=npc_pk).delete()
-        return HttpResponseRedirect(reverse('characters:npc_detail'))
-
-
-class PlayersDelete(View):
-    def get(self, request, *args, **kwargs):
-        players = models.Player.objects.filter(user=request.user).order_by('name')
-        return render(request, 'characters/players_delete.html', {'players': players})
-
-    def post(self, request, *args, **kwargs):
-        for player_pk in request.POST.getlist('player'):
-            models.Player.objects.get(pk=player_pk).delete()
-        return HttpResponseRedirect(reverse('characters:player_detail'))
-
+        for character_pk in request.POST.getlist('character'):
+            models.GeneralCharacter.objects.get(pk=character_pk).delete()
+        return redirect('characters:character_detail')
 
 class PlayerCampaigns(View):
     def get(self, request, player_pk):
