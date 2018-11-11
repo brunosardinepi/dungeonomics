@@ -11,3 +11,17 @@ def get_character_object(type, pk):
     elif type == 'player':
         obj = get_object_or_404(models.Player, pk=pk)
     return obj
+
+def get_character_types(user):
+    # find all of the user's characters
+    characters = models.GeneralCharacter.objects.filter(user=user)
+
+    # find all of the "character type" attributes
+    types = []
+    for character in characters:
+        attributes = character.attribute_set.filter(
+            name="Character type").values_list('value', flat=True)
+        for attribute in attributes:
+            types.append(attribute)
+
+    return types

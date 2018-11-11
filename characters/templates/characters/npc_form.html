@@ -152,7 +152,7 @@
                                 {% endif %}
                             </div>
                             <div class="form-group col-md-3">
-                                <label for="{{ form.creature_type.id_for_label }}">Creature type</label>
+                                <label for="{{ form.creature_type.id_for_label }}">Character type</label>
                                 {% render_field form.creature_type class+="form-control" %}
                                 {% if form.creature_type.errors %}
                                     {% for error in form.creature_type.errors %}

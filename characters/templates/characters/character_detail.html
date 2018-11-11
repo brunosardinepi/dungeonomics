@@ -1,4 +1,7 @@
-{% extends 'characters/character_layout.html' %}
+{% extends 'layout.html' %}
+
+{% load static from staticfiles %}
+
 
 {% block title %}
     {% if character %}
@@ -9,82 +12,119 @@
     | {{ block.super }}
 {% endblock %}
 
-{% block character_list_title %}Character list{% endblock %}
-
-{% block character_list %}
-    {% if characters %}
-        {% for c in characters %}
-            <li>
-                <a {% if c == character %}class="font-weight-bold" {% endif %}href="{% url 'characters:character_detail' pk=c.pk %}">
-                    {{ c.name }}
-                </a>
-            </li>
-        {% endfor %}
-    {% else %}
-        <li>You haven't created any characters yet!</li>
-    {% endif %}
-{% endblock %}
-
-{% block character_contents_extra %}
-    <a href="{% url 'characters:character_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create character</a>
-{% endblock %}
-
-{% block character_detail_title %}
-    {% if character %}
-        {{ character.name }}
-    {% else %}
-        Characters
-    {% endif %}
-{% endblock %}
-
-{% block character_detail_extra %}
-    {% if character %}
-        <a href="{% url 'characters:character_update' pk=character.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit character</a>
-    {% else %}
-        <a href="{% url 'characters:character_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create character</a>
-    {% endif %}
-{% endblock %}
-
-{% block character_detail %}
-    {% if character %}
-
-        {% if stats %}
-            <div class="row mb-3 justify-content-center">
-                {% for stat, values in stats.items %}
-                    {% if values.attribute.value %}
-                        <div class="col-md-2">
-                            <div class="character-label">
-                                <p>{{ values.title }}</p>
-                            </div>
-                            <div class="character-details">
-                                <p>{{ values.attribute.value }}</p>
+{% block body_content %}
+    <div class="row mt-3 pb-5">
+        <div class="col-lg-4 mb-3">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-auto">
+                            <h5 class="px-1 mb-0">Character list</h5>
+                        </div>
+                        <div class="col-auto">
+                            <div class="dropdown">
+                                <a class="btn btn-sm text-dark dropdown-toggle" href="#" role="button" id="table-of-contents-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-lg fa-cog"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="table-of-contents-dropdown">
+                                    <a href="{% url 'characters:character_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create character</a>
+                                </div>
                             </div>
                         </div>
-                    {% endif %}
-                {% endfor %}
-            </div>
-        {% endif %}
-
-        {% for attribute in character.attribute_set.all %}
-            {% if attribute.name not in stats and attribute.name != "Creature type" %}
-                <div class="row">
-                    <div class="col-md-12">
-                        <p><span class="font-weight-bold">{{ attribute.name }}</span> {{ attribute.value }}</p>
                     </div>
                 </div>
-            {% endif %}
-        {% endfor %}
-
-        {% if character.notes %}
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    {{ character.notes|safe }}
+                <div class="card-body">
+                    {% if characters %}
+                        {% for type, character_list in characters.items %}
+                            <span class="font-weight-bold">{{ type }}</span>
+                            <ul class="contents_list">
+                            {% for c in character_list %}
+                                <li class="ml-3">
+                                    <a {% if c == character %}class="font-weight-bold" {% endif %}href="{% url 'characters:character_detail' pk=c.pk %}">
+                                        {{ c.name }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        {% endfor %}
+                    {% else %}
+                        You haven't created any characters yet!
+                    {% endif %}
                 </div>
             </div>
-        {% endif %}
+        </div>
 
-    {% else %}
-        <p>You haven't created any characters yet!</p>
-    {% endif %}
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-auto">
+                            <h5 class="px-1 mb-0">{% if character %}{{ character.name }}{% else %}Characters{% endif %}</h5>
+                        </div>
+                        <div class="col-auto">
+                            <div class="dropdown">
+                                <a class="btn btn-sm text-dark dropdown-toggle" href="#" role="button" id="contents-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-lg fa-cog"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="contents-dropdown">
+                                    {% if character %}
+                                        <a href="{% url 'characters:character_update' pk=character.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit character</a>
+                                    {% else %}
+                                        <a href="{% url 'characters:character_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create character</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if character %}
+                
+                        {% if stats %}
+                            <div class="row mb-3 justify-content-center">
+                                {% for stat, values in stats.items %}
+                                    {% if values.attribute.value %}
+                                        <div class="col-md-2">
+                                            <div class="character-label">
+                                                <p>{{ values.title }}</p>
+                                            </div>
+                                            <div class="character-details">
+                                                <p>{{ values.attribute.value }}</p>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                
+                        {% for attribute in character.attribute_set.all %}
+                            {% if attribute.name not in stats and attribute.name != "Character type" %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p><span class="font-weight-bold">{{ attribute.name }}</span> {{ attribute.value }}</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                
+                        {% if character.notes %}
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {{ character.notes|safe }}
+                                </div>
+                            </div>
+                        {% endif %}
+                
+                    {% else %}
+                        <p>You haven't created any characters yet!</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body_extra %}
+    <script src="{% static 'js/character_delete.js' %}"></script>
 {% endblock %}

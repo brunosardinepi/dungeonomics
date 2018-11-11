@@ -38,6 +38,21 @@ def nav_campaign_list(request):
     campaigns = sorted(campaigns, key=lambda s: s.title.lower())
     return campaigns
 
+@register.simple_tag
+def nav_character_list(user):
+    # find all characters that this user has created
+    characters = GeneralCharacter.objects.filter(user=user)
+
+    # find all "character type" attributes for these characters
+    types = []
+    for character in characters:
+        attributes = character.attribute_set.filter(name="Character type")
+        for attributes in attributes:
+            print("attribute = {}".format(attribute))
+            #types.append(attributes)
+
+    return types
+
 @register.filter
 def model_name(obj):
     return obj.__class__.__name__.lower()
