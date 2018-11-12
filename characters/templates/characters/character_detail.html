@@ -115,9 +115,9 @@
                                 </div>
                             {% endif %}
                         {% endfor %}
-                
+
                         {% if character.notes %}
-                            <hr>
+                            {% if character.attribute_set.all.count > 1 %}<hr>{% endif %}
                             <div class="row">
                                 <div class="col-md-12">
                                     {{ character.notes|safe }}

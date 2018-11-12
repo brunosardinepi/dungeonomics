@@ -31,20 +31,12 @@
 
     <script type="text/javascript">
         var taggable = [];
-        var monsters_dict = {{monsters|safe}};
-        for (var key in monsters_dict) {
+        var characters_dict = {{characters|safe}};
+        for (var key in characters_dict) {
             taggable.push({
-                    'name': monsters_dict[key],
+                    'name': characters_dict[key],
                     'id': key,
-                    'type': 'monster'
-                });
-        }
-        var npcs_dict = {{npcs|safe}};
-        for (var key in npcs_dict) {
-            taggable.push({
-                    'name': npcs_dict[key],
-                    'id': key,
-                    'type': 'npc'
+                    'type': 'character'
                 });
         }
         var items_dict = {{items|safe}};
@@ -53,14 +45,6 @@
                     'name': items_dict[key],
                     'id': key,
                     'type': 'item'
-                });
-        }
-        var players_dict = {{players|safe}};
-        for (var key in players_dict) {
-            taggable.push({
-                    'name': players_dict[key],
-                    'id': key,
-                    'type': 'player'
                 });
         }
         var worlds_dict = {{worlds|safe}};
