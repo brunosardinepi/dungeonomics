@@ -7,7 +7,7 @@ from django.core import serializers
 from django.shortcuts import get_object_or_404
 
 from campaign.models import Campaign, Chapter, Section
-from characters.models import Monster, NPC, Player
+from characters.models import Monster, NPC, Player, GeneralCharacter
 from dungeonomics import settings
 from items.models import Item
 from locations.models import Location, World, create_random_string
@@ -19,10 +19,10 @@ def has_campaign_access(user, campaign_pk):
     if user == campaign.user:
         return True
 
-    campaign_players = campaign.player_set.all()
-    players = Player.objects.filter(user=user)
-    for player in players:
-        if player in campaign_players:
+    campaign_characters = campaign.generalcharacter_set.all()
+    characters = GeneralCharacter.objects.filter(user=user)
+    for character in characters:
+        if character in campaign_characters:
             return True
 
     return False

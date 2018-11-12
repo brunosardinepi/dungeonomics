@@ -7,7 +7,7 @@ from model_mommy import mommy
 
 from . import models
 from campaign.models import Campaign
-from characters.models import Player
+from characters.models import GeneralCharacter
 
 
 class PostTest(TestCase):
@@ -25,14 +25,14 @@ class PostTest(TestCase):
         self.campaigns[1].user = self.users[1]
         self.campaigns[1].save()
 
-        self.players = mommy.make(
-            Player,
+        self.characters = mommy.make(
+            GeneralCharacter,
             user=self.users[1],
             _quantity=3,
             _fill_optional=True,
         )
-        self.players[1].campaigns.add(self.campaigns[0])
-        self.players[2].campaigns.add(self.campaigns[0])
+        self.characters[1].campaigns.add(self.campaigns[0])
+        self.characters[2].campaigns.add(self.campaigns[0])
 
         self.post = mommy.make(
             models.Post,
