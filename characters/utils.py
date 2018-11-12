@@ -21,7 +21,25 @@ def get_character_types(user):
     for character in characters:
         attributes = character.attribute_set.filter(
             name="Character type").values_list('value', flat=True)
-        for attribute in attributes:
-            types.append(attribute)
+        if attributes:
+            # found type
+            for attribute in attributes:
+                types.append(attribute)
+        else:
+            # no type specified
+            types.append("None")
 
     return types
+
+def create_character_copy(character, user):
+    # copy the character and its attributes
+    # set the owner to the user
+    attributes = character.attribute_set.all()
+    character.pk = None
+    character.user = user
+    character.save()
+    for attribute in attributes:
+        attribute.pk = None
+        attribute.save()
+        attribute.character = character
+        attribute.save()

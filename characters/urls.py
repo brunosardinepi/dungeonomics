@@ -25,13 +25,11 @@ urlpatterns = [
     path('delete/',
         login_required(views.CharactersDelete.as_view()),
         name='characters_delete'),
+    path('srd/', views.character_srd, name='character_srd'),
 
     path('player/<int:player_pk>/campaigns/',
         login_required(views.PlayerCampaigns.as_view()),
         name='player_campaigns'),
-
-    path('monster/srd/', views.monster_srd, name='monster_srd'),
-    path('npc/srd/', views.npc_srd, name='npc_srd'),
 
     path('<int:pk>/',
         login_required(views.CharacterDetail.as_view()),

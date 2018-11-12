@@ -44,37 +44,50 @@ class CharacterTest(TestCase):
 
     def test_character_page(self):
         # unauthenticated user
-        response = self.client.get('/characters/character/{}/'.format(self.characters[0].pk))
+        response = self.client.get('/characters/{}/'.format(self.characters[0].pk))
         self.assertRedirects(response,
-            '/accounts/login/?next=/characters/character/{}/'.format(self.characters[0].pk),
+            '/accounts/login/?next=/characters/{}/'.format(self.characters[0].pk),
             302, 200)
 
         # authenticated user on incorrect character
         self.client.force_login(self.users[0])
-        response = self.client.get('/characters/character/{}/'.format(self.characters[1].pk))
+        response = self.client.get('/characters/{}/'.format(self.characters[1].pk))
         self.assertEqual(response.status_code, 404)
 
         # authenticated user on correct character
-        response = self.client.get('/characters/character/{}/'.format(self.characters[0].pk))
+        response = self.client.get('/characters/{}/'.format(self.characters[0].pk))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.characters[0].name)
         self.assertContains(response, self.characters[0].name)
 
-    def test_character_create_page(self):
+    def test_character_create(self):
         # unauthenticated user
-        response = self.client.get('/characters/character/{}/'.format(self.characters[0].pk))
+        response = self.client.get('/characters/{}/'.format(self.characters[0].pk))
         self.assertRedirects(response,
-            '/accounts/login/?next=/characters/character/{}/'.format(self.characters[0].pk),
+            '/accounts/login/?next=/characters/{}/'.format(self.characters[0].pk),
             302, 200)
 
         # authenticated user
         self.client.force_login(self.users[0])
-        response = self.client.get('/characters/character/create/')
+        response = self.client.get('/characters/create/')
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post('/characters/character/create/', self.character_form_data)
+        response = self.client.post('/characters/create/', self.character_form_data)
         character = models.GeneralCharacter.objects.get(name='test character name')
-        self.assertRedirects(response, '/characters/character/{}/'.format(character.pk), 302, 200)
+        self.assertRedirects(response, '/characters/{}/'.format(character.pk), 302, 200)
 
         characters = models.GeneralCharacter.objects.all()
         self.assertIn(character, characters)
+
+    def test_character_srd(self):
+        # unauthenticated user
+        response = self.client.get('/characters/srd/')
+        self.assertRedirects(response, '/accounts/login/?next=/characters/srd/', 302, 200)
+
+        # authenticated user
+        self.client.force_login(self.users[0])
+        response = self.client.get('/characters/srd/')
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/characters/srd/', {})
+        self.assertRedirects(response, '/characters/', 302, 200)

@@ -17,7 +17,9 @@ from django.views import View
 from . import forms
 from . import models
 from campaign.models import Campaign
-from characters.utils import get_character_object, get_character_types
+from characters.utils import (create_character_copy,
+                              get_character_object,
+                              get_character_types)
 from dungeonomics.utils import at_tagging
 from dungeonomics import character_suggested_attributes
 from items import models as item_models
@@ -33,46 +35,66 @@ class CharacterDetail(View):
         character_types = get_character_types(request.user)
         characters = OrderedDict()
         for character_type in character_types:
+            # create a dict key for the type and an empty list to hold the characters
+            # with the corresponding character type
             characters[character_type] = []
-            attributes = models.Attribute.objects.filter(
-                character__user=request.user,
-                name="Character type",
-                value=character_type,
-            ).order_by('character__name')
-            for attribute in attributes:
-                if attribute.character not in characters[character_type]:
-                    characters[character_type].append(attribute.character)
 
+            if character_type == "None":
+                # find all the characters for this user
+                # that don't have an attribute named "Character type"
+                characters_queryset = models.GeneralCharacter.objects.filter(
+                    user=request.user).exclude(attribute__name="Character type")
+                for character in characters_queryset:
+                    characters[character_type].append(character)
+            else:
+                # find all the attributes that are named "Character type"
+                # then get their associated character and add it to the dict list
+                attributes = models.Attribute.objects.filter(
+                    character__user=request.user,
+                    name="Character type",
+                    value=character_type,
+                ).order_by('character__name')
+                for attribute in attributes:
+                    if attribute.character not in characters[character_type]:
+                        characters[character_type].append(attribute.character)
+
+        # check if we have a specific character to show
         try:
             character = models.GeneralCharacter.objects.get(pk=kwargs['pk'])
+        # no character was specified
         except KeyError:
+            # if the user has characters, show the first available
             if characters:
                 first_character_type = next(iter(characters))
                 character = characters[first_character_type][0]
             else:
                 character = None
 
-        if character.user == request.user:
-            stats = OrderedDict([
-                ("Strength", {"title": "STR", "attribute": None}),
-                ("Dexterity", {"title": "DEX", "attribute": None}),
-                ("Constitution", {"title": "CON", "attribute": None}),
-                ("Intelligence", {"title": "INT", "attribute": None}),
-                ("Wisdom", {"title": "WIS", "attribute": None}),
-                ("Charisma", {"title": "CHA", "attribute": None}),
-            ])
-            for stat, attribute in stats.items():
-                try:
-                    attribute = character.attribute_set.get(name=stat)
-                except models.Attribute.DoesNotExist:
-                    attribute = None
-                stats[stat]['attribute'] = attribute
-            return render(request, 'characters/character_detail.html', {
-                'characters': characters,
-                'character': character,
-                'stats': stats,
-                'character_types': character_types,
-            })
+        if character:
+            if character.user == request.user:
+                stats = OrderedDict([
+                    ("Strength", {"title": "STR", "attribute": None}),
+                    ("Dexterity", {"title": "DEX", "attribute": None}),
+                    ("Constitution", {"title": "CON", "attribute": None}),
+                    ("Intelligence", {"title": "INT", "attribute": None}),
+                    ("Wisdom", {"title": "WIS", "attribute": None}),
+                    ("Charisma", {"title": "CHA", "attribute": None}),
+                ])
+                for stat, attribute in stats.items():
+                    try:
+                        attribute = character.attribute_set.get(name=stat)
+                    except models.Attribute.DoesNotExist:
+                        attribute = None
+                    stats[stat]['attribute'] = attribute
+                return render(request, 'characters/character_detail.html', {
+                    'characters': characters,
+                    'character': character,
+                    'stats': stats,
+                    'character_types': character_types,
+                })
+            raise Http404
+        else:
+            return render(request, 'characters/character_detail.html')
         raise Http404
 
 class CharacterCreate(View):
@@ -217,50 +239,24 @@ class CharacterCopy(View):
     def get(self, request, *args, **kwargs):
         character = get_object_or_404(models.GeneralCharacter, pk=kwargs['pk'])
         if character.user == request.user:
-            attributes = character.attribute_set.all()
-            character.pk = None
+            create_character_copy(character, request.user)
             character.name += "_copy"
             character.save()
-            for attribute in attributes:
-                attribute.pk = None
-                attribute.save()
-                attribute.character = character
-                attribute.save()
             messages.add_message(request, messages.SUCCESS, "Character copied!")
             return redirect(character.get_absolute_url())
         raise Http404
 
 @login_required
-def monster_srd(request):
-    form = forms.SRDMonsterForm()
-    monsters = sorted(models.Monster.objects.filter(user=3029),
-        key=lambda monster: monster.name.lower()
+def character_srd(request):
+    characters = sorted(models.GeneralCharacter.objects.filter(user=3029),
+        key=lambda c: c.name.lower()
         )
     if request.method == 'POST':
-        form = forms.MonsterForm(request.POST)
-        selected_monsters = []
-        for monster_pk in request.POST.getlist('monster'):
-            monster = models.Monster.objects.get(pk=monster_pk)
-            selected_monsters.append(monster)
-        monster_queryset = serializers.serialize("json", selected_monsters, indent=2)
-        return render(request, 'characters/monster_export.html', {'monsters': monster_queryset})
-    return render(request, 'characters/monster_srd_form.html', {'form': form, 'monsters': monsters})
-
-@login_required
-def npc_srd(request):
-    form = forms.SRDNPCForm()
-    npcs = sorted(models.NPC.objects.filter(user=3029),
-        key=lambda npc: npc.name.lower()
-        )
-    if request.method == 'POST':
-        form = forms.NPCForm(request.POST)
-        selected_npcs = []
-        for npc_pk in request.POST.getlist('npc'):
-            npc = models.NPC.objects.get(pk=npc_pk)
-            selected_npcs.append(npc)
-        npc_queryset = serializers.serialize("json", selected_npcs, indent=2)
-        return render(request, 'characters/npc_export.html', {'npcs': npc_queryset})
-    return render(request, 'characters/npc_srd_form.html', {'form': form, 'npcs': npcs})
+        for pk in request.POST.getlist('character'):
+            character = models.GeneralCharacter.objects.get(pk=pk)
+            create_character_copy(character, request.user)
+        return redirect('characters:character_detail')
+    return render(request, 'characters/character_srd_form.html', {'characters': characters})
 
 class CharactersDelete(View):
     def get(self, request, *args, **kwargs):
