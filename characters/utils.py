@@ -1,16 +1,9 @@
+from collections import OrderedDict
+
 from django.shortcuts import get_object_or_404
 
 from . import models
 
-
-def get_character_object(type, pk):
-    if type == 'monster':
-        obj = get_object_or_404(models.Monster, pk=pk)
-    elif type == 'npc':
-        obj = get_object_or_404(models.NPC, pk=pk)
-    elif type == 'player':
-        obj = get_object_or_404(models.Player, pk=pk)
-    return obj
 
 def get_character_types(user):
     # find all of the user's characters
@@ -43,3 +36,20 @@ def create_character_copy(character, user):
         attribute.save()
         attribute.character = character
         attribute.save()
+
+def get_character_stats(character):
+    stats = OrderedDict([
+        ("Strength", {"title": "STR", "attribute": None}),
+        ("Dexterity", {"title": "DEX", "attribute": None}),
+        ("Constitution", {"title": "CON", "attribute": None}),
+        ("Intelligence", {"title": "INT", "attribute": None}),
+        ("Wisdom", {"title": "WIS", "attribute": None}),
+        ("Charisma", {"title": "CHA", "attribute": None}),
+    ])
+    for stat, attribute in stats.items():
+        try:
+            attribute = character.attribute_set.get(name=stat)
+        except models.Attribute.DoesNotExist:
+            attribute = None
+        stats[stat]['attribute'] = attribute
+    return stats

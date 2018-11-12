@@ -116,7 +116,6 @@ class Monster(Character):
             monster=self).aggregate(
             Avg('score'))['score__avg'] or 0.00
 
-
 class NPC(Character):
     npc_class = models.CharField(verbose_name= _('Class'),max_length=255, default='', blank=True)
     race = models.CharField(max_length=255, default='', blank=True)
@@ -150,7 +149,6 @@ class NPC(Character):
         return Review.objects.filter(
             npc=self).aggregate(
             Avg('score'))['score__avg'] or 0.00
-
 
 class Player(Character):
     campaigns = models.ManyToManyField('campaign.Campaign')
@@ -200,12 +198,19 @@ class GeneralCharacter(models.Model):
     is_published = models.BooleanField(default=False)
     published_date = models.DateTimeField(blank=True, null=True)
     tavern_description = models.TextField(blank=True)
+    importers = models.ManyToManyField(User, related_name='character_importers')
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
         return reverse('characters:character_detail', kwargs={'pk': self.pk})
+
+    def rating(self):
+        # find the average rating
+        return Review.objects.filter(
+            character=self).aggregate(
+            Avg('score'))['score__avg'] or 0.00
 
 class Attribute(models.Model):
     character = models.ForeignKey(GeneralCharacter, on_delete=models.CASCADE)

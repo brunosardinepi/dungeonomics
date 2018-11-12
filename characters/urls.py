@@ -16,10 +16,10 @@ urlpatterns = [
     path('<int:pk>/copy/',
         login_required(views.CharacterCopy.as_view()),
         name='character_copy'),
-    path('<str:type>/<int:pk>/publish/',
+    path('<int:pk>/publish/',
         login_required(views.CharacterPublish.as_view()),
         name='character_publish'),
-    path('<str:type>/<int:pk>/unpublish/',
+    path('<int:pk>/unpublish/',
         login_required(views.CharacterUnpublish.as_view()),
         name='character_unpublish'),
     path('delete/',
@@ -27,7 +27,7 @@ urlpatterns = [
         name='characters_delete'),
     path('srd/', views.character_srd, name='character_srd'),
 
-    path('player/<int:player_pk>/campaigns/',
+    path('player/<int:pk>/campaigns/',
         login_required(views.PlayerCampaigns.as_view()),
         name='player_campaigns'),
 

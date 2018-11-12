@@ -17,9 +17,7 @@ from django.views import View
 from . import forms
 from . import models
 from campaign.models import Campaign
-from characters.utils import (create_character_copy,
-                              get_character_object,
-                              get_character_types)
+from characters.utils import create_character_copy, get_character_stats, get_character_types
 from dungeonomics.utils import at_tagging
 from dungeonomics import character_suggested_attributes
 from items import models as item_models
@@ -72,25 +70,11 @@ class CharacterDetail(View):
 
         if character:
             if character.user == request.user:
-                stats = OrderedDict([
-                    ("Strength", {"title": "STR", "attribute": None}),
-                    ("Dexterity", {"title": "DEX", "attribute": None}),
-                    ("Constitution", {"title": "CON", "attribute": None}),
-                    ("Intelligence", {"title": "INT", "attribute": None}),
-                    ("Wisdom", {"title": "WIS", "attribute": None}),
-                    ("Charisma", {"title": "CHA", "attribute": None}),
-                ])
-                for stat, attribute in stats.items():
-                    try:
-                        attribute = character.attribute_set.get(name=stat)
-                    except models.Attribute.DoesNotExist:
-                        attribute = None
-                    stats[stat]['attribute'] = attribute
                 return render(request, 'characters/character_detail.html', {
                     'characters': characters,
                     'character': character,
-                    'stats': stats,
                     'character_types': character_types,
+                    'stats': get_character_stats(character),
                 })
             raise Http404
         else:
@@ -155,75 +139,47 @@ def character_update(request, pk):
 
 class CharacterPublish(View):
     def get(self, request, *args, **kwargs):
-        if kwargs['type'] == 'monster':
-            obj = get_object_or_404(models.Monster, pk=kwargs['pk'])
-            form = forms.MonsterPublishForm()
-        elif kwargs['type'] == 'npc':
-            obj = get_object_or_404(models.NPC, pk=kwargs['pk'])
-            form = forms.NPCPublishForm()
-        elif kwargs['type'] == 'player':
-            obj = get_object_or_404(models.Player, pk=kwargs['pk'])
-            form = forms.PlayerPublishForm()
-
-        if obj.user == request.user:
-            if obj.is_published == True:
-                return redirect('tavern:tavern_character_detail',
-                    type=kwargs['type'], pk=kwargs['pk'])
+        character = get_object_or_404(models.GeneralCharacter, pk=kwargs['pk'])
+        form = forms.CharacterPublishForm()
+        if character.user == request.user:
+            if character.is_published == True:
+                return redirect('tavern:tavern_character_detail', pk=kwargs['pk'])
             return render(self.request, 'characters/character_publish.html', {
-                'obj': obj,
+                'character': character,
                 'form': form,
-                'type': kwargs['type'],
             })
         raise Http404
 
     def post(self, request, *args, **kwargs):
-        if kwargs['type'] == 'monster':
-            obj = get_object_or_404(models.Monster, pk=kwargs['pk'])
-            form = forms.MonsterPublishForm(request.POST, instance=obj)
-        elif kwargs['type'] == 'npc':
-            obj = get_object_or_404(models.NPC, pk=kwargs['pk'])
-            form = forms.NPCPublishForm(request.POST, instance=obj)
-        elif kwargs['type'] == 'player':
-            obj = get_object_or_404(models.Player, pk=kwargs['pk'])
-            form = forms.PlayerPublishForm(request.POST, instance=obj)
-
-        if obj.user == request.user:
+        character = get_object_or_404(models.GeneralCharacter, pk=kwargs['pk'])
+        form = forms.CharacterPublishForm(request.POST, instance=character)
+        if character.user == request.user:
             # publish to the tavern
-            obj = form.save(commit=False)
-            obj.is_published = True
-            obj.published_date = timezone.now()
-            obj.save()
+            character = form.save(commit=False)
+            character.is_published = True
+            character.published_date = timezone.now()
+            character.save()
             # redirect to the tavern page
             messages.success(request, 'Character published', fail_silently=True)
-            return redirect('tavern:tavern_character_detail',
-                type=kwargs['type'], pk=kwargs['pk'])
+            return redirect('tavern:tavern_character_detail', pk=kwargs['pk'])
         raise Http404
 
 class CharacterUnpublish(View):
     def get(self, request, *args, **kwargs):
-        obj = get_character_object(kwargs['type'], kwargs['pk'])
-        if obj.user == request.user:
+        character = get_object_or_404(models.GeneralCharacter, pk=kwargs['pk'])
+        if character.user == request.user:
             # remove from the tavern
-            obj.is_published = False
-            obj.save()
+            character.is_published = False
+            character.save()
 
             # delete the importers
-            obj.importers.clear()
+            character.importers.clear()
 
             messages.success(request, 'Character unpublished', fail_silently=True)
 
-            if kwargs['type'] == 'monster':
-                # delete the reviews
-                Review.objects.filter(monster=obj).delete()
-                return redirect('characters:monster_detail', monster_pk=obj.pk)
-            elif kwargs['type'] == 'npc':
-                # delete the reviews
-                Review.objects.filter(npc=obj).delete()
-                return redirect('characters:npc_detail', npc_pk=obj.pk)
-            elif kwargs['type'] == 'player':
-                # delete the reviews
-                Review.objects.filter(player=obj).delete()
-                return redirect('characters:player_detail', player_pk=obj.pk)
+            # delete the reviews
+            Review.objects.filter(character=character).delete()
+            return redirect('characters:character_detail', pk=character.pk)
         raise Http404
 
 class CharacterDelete(View):

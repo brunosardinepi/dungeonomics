@@ -72,9 +72,9 @@
                                     {% if character %}
                                         <a href="{% url 'characters:character_update' pk=character.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit character</a>
                                         {% if character.is_published == True %}
-                                            <a href="{% url 'tavern:tavern_character_detail' type='character' pk=character.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-cloud-upload" aria-hidden="true"></i> View on The Tavern</a>
+                                            <a href="{% url 'tavern:tavern_character_detail' pk=character.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-cloud-upload" aria-hidden="true"></i> View on The Tavern</a>
                                         {% else %}
-                                            <a href="{% url 'characters:character_publish' type='character' pk=character.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-cloud-upload" aria-hidden="true"></i> Publish character</a>
+                                            <a href="{% url 'characters:character_publish' pk=character.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-cloud-upload" aria-hidden="true"></i> Publish character</a>
                                         {% endif %}
                                         <a href="{% url 'characters:character_copy' pk=character.pk %}" class="dropdown-item"><i class="fal fa-fw fa-copy" aria-hidden="true"></i> Copy character</a>
                                         <a id="character-delete" href="{% url 'characters:character_delete' pk=character.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete character</a>
@@ -88,43 +88,7 @@
                 </div>
                 <div class="card-body">
                     {% if character %}
-                
-                        {% if stats %}
-                            <div class="row mb-3 justify-content-center">
-                                {% for stat, values in stats.items %}
-                                    {% if values.attribute.value %}
-                                        <div class="col-md-2">
-                                            <div class="character-label">
-                                                <p>{{ values.title }}</p>
-                                            </div>
-                                            <div class="character-details">
-                                                <p>{{ values.attribute.value }}</p>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                
-                        {% for attribute in character.attribute_set.all %}
-                            {% if attribute.name not in stats and attribute.name != "Character type" %}
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <p><span class="font-weight-bold">{{ attribute.name }}</span> {{ attribute.value }}</p>
-                                    </div>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-
-                        {% if character.notes %}
-                            {% if character.attribute_set.all.count > 1 %}<hr>{% endif %}
-                            <div class="row">
-                                <div class="col-md-12">
-                                    {{ character.notes|safe }}
-                                </div>
-                            </div>
-                        {% endif %}
-                
+                        {% include "characters/character_stats.html" with character=character stats=stats %}
                     {% else %}
                         <p>You haven't created any characters yet!</p>
                     {% endif %}

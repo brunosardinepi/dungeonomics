@@ -504,9 +504,9 @@ class CampaignTest(TestCase):
         )
         self.assertRedirects(
             response,
-            '/tavern/campaign/{}/'.format(self.campaigns[1].pk),
+            '/tavern/campaigns/{}/'.format(self.campaigns[1].pk),
             302, 200)
-        response = self.client.get('/tavern/campaign/{}/'.format(self.campaigns[1].pk))
+        response = self.client.get('/tavern/campaigns/{}/'.format(self.campaigns[1].pk))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.campaigns[1].title)
         self.assertContains(response, tavern_description)

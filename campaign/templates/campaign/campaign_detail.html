@@ -28,7 +28,7 @@
                                     <a href="{% url 'campaign:chapter_create' campaign_pk=campaign.pk %}" class="dropdown-item text-success"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> Create chapter</a>
                                     <a href="{% url 'campaign:campaign_update' campaign_pk=campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-edit" aria-hidden="true"></i> Edit campaign</a>
                                     {% if campaign.is_published == True %}
-                                        <a href="{% url 'tavern:tavern_campaign_detail' campaign_pk=campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-cloud-upload" aria-hidden="true"></i> View on The Tavern</a>
+                                        <a href="{% url 'tavern:tavern_campaign_detail' pk=campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-cloud-upload" aria-hidden="true"></i> View on The Tavern</a>
                                     {% else %}
                                         <a href="{% url 'campaign:campaign_publish' campaign_pk=campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-cloud-upload" aria-hidden="true"></i> Publish campaign</a>
                                     {% endif %}

@@ -91,3 +91,25 @@ class CharacterTest(TestCase):
 
         response = self.client.post('/characters/srd/', {})
         self.assertRedirects(response, '/characters/', 302, 200)
+
+    def test_character_publish(self):
+        # unauthenticated user
+        response = self.client.get('/characters/{}/publish/'.format(self.characters[0].pk))
+        self.assertRedirects(response,
+            '/accounts/login/?next=/characters/{}/publish/'.format(self.characters[0].pk),
+            302, 200)
+
+        # authenticated user
+        self.client.force_login(self.users[0])
+        response = self.client.get('/characters/{}/publish/'.format(self.characters[0].pk))
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(
+            '/characters/{}/publish/'.format(self.characters[0].pk), {})
+        self.assertRedirects(response,
+            '/tavern/characters/{}/'.format(self.characters[0].pk),
+            302, 200)
+
+        response = self.client.get('/tavern/characters/{}/'.format(self.characters[0].pk))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.characters[0].name)

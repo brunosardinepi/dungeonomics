@@ -461,7 +461,7 @@ class CampaignPublish(View):
             campaign.save()
             # redirect to the tavern page
             messages.success(request, 'Campaign published', fail_silently=True)
-            return redirect('tavern:tavern_campaign_detail', campaign_pk=campaign.pk)
+            return redirect('tavern:tavern_campaign_detail', pk=campaign.pk)
         else:
             raise Http404
 

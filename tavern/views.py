@@ -16,9 +16,9 @@ from campaign.utils import (campaign_export,
                             campaign_import,
                             get_content_url,
                             get_url_object)
-from characters.models import Monster, NPC, Player
-from characters.utils import get_character_object
-from dungeonomics.utils import at_tagging, rating_monster
+from characters.models import GeneralCharacter
+from characters.utils import get_character_stats
+from dungeonomics.utils import at_tagging
 from dungeonomics import settings
 from items.models import Item
 from locations.models import Location, World
@@ -33,46 +33,27 @@ class TavernView(View):
             popular_campaigns,
             key=lambda c: c.rating(),
             reverse=True)[:5]
-        popular_monsters = Monster.objects.filter(is_published=True)
-        popular_monsters = sorted(
-            popular_monsters,
-            key=lambda c: c.rating(),
-            reverse=True)[:5]
-        popular_npcs = NPC.objects.filter(is_published=True)
-        popular_npcs = sorted(
-            popular_npcs,
-            key=lambda c: c.rating(),
-            reverse=True)[:5]
-        popular_players = Player.objects.filter(is_published=True)
-        popular_players = sorted(
-            popular_players,
+        popular_characters = GeneralCharacter.objects.filter(is_published=True)
+        popular_characters = sorted(
+            popular_characters,
             key=lambda c: c.rating(),
             reverse=True)[:5]
 
         recent_campaigns = Campaign.objects.filter(
             is_published=True).order_by('-published_date')[:5]
-        recent_monsters = Monster.objects.filter(
-            is_published=True).order_by('-published_date')[:5]
-        recent_npcs = NPC.objects.filter(
-            is_published=True).order_by('-published_date')[:5]
-        recent_players = Player.objects.filter(
+        recent_characters = GeneralCharacter.objects.filter(
             is_published=True).order_by('-published_date')[:5]
 
         return render(self.request, 'tavern/tavern.html', {
             'popular_campaigns': popular_campaigns,
-            'popular_monsters': popular_monsters,
-            'popular_npcs': popular_npcs,
-            'popular_players': popular_players,
+            'popular_characters': popular_characters,
             'recent_campaigns': recent_campaigns,
-            'recent_monsters': recent_monsters,
-            'recent_npcs': recent_npcs,
-            'recent_players': recent_players,
+            'recent_characters': recent_characters,
         })
-
 
 class TavernCampaignDetailView(View):
     def get(self, request, *args, **kwargs):
-        campaign = get_object_or_404(Campaign, pk=kwargs['campaign_pk'])
+        campaign = get_object_or_404(Campaign, pk=kwargs['pk'])
         if campaign.is_published == True:
             chapters = Chapter.objects.filter(campaign=campaign)
             sections = Section.objects.filter(campaign=campaign)
@@ -154,14 +135,14 @@ class TavernCampaignDetailView(View):
 
 class TavernCampaignReview(View):
     def get(self, request, *args, **kwargs):
-        campaign = get_object_or_404(Campaign, pk=kwargs['campaign_pk'])
+        campaign = get_object_or_404(Campaign, pk=kwargs['pk'])
         try:
             review = models.Review.objects.get(user=request.user, campaign=campaign)
         except models.Review.DoesNotExist:
             review = None
         if review:
             messages.info(request, "You've already submitted a review for this Campaign", fail_silently=True)
-            return redirect('tavern:tavern_campaign_detail', campaign_pk=campaign.pk)
+            return redirect('tavern:tavern_campaign_detail', pk=campaign.pk)
         else:
             form = forms.TavernReviewForm()
             return render(self.request, 'tavern/tavern_campaign_review.html', {
@@ -170,7 +151,7 @@ class TavernCampaignReview(View):
             })
 
     def post(self, request, *args, **kwargs):
-        campaign = get_object_or_404(Campaign, pk=kwargs['campaign_pk'])
+        campaign = get_object_or_404(Campaign, pk=kwargs['pk'])
         form = forms.TavernReviewForm(request.POST)
         if form.is_valid():
             review = form.save(commit=False)
@@ -178,7 +159,7 @@ class TavernCampaignReview(View):
             review.campaign = campaign
             review.save()
             messages.success(request, 'Review submitted', fail_silently=True)
-            return redirect('tavern:tavern_campaign_detail', campaign_pk=campaign.pk)
+            return redirect('tavern:tavern_campaign_detail', pk=campaign.pk)
         else:
             return render(self.request, 'tavern/tavern_campaign_review.html', {
                 'campaign': campaign,
@@ -188,7 +169,7 @@ class TavernCampaignReview(View):
 
 class TavernCampaignImport(View):
     def get(self, request, *args, **kwargs):
-        campaign = get_object_or_404(Campaign, pk=kwargs['campaign_pk'])
+        campaign = get_object_or_404(Campaign, pk=kwargs['pk'])
 
         # get the campaign export
         json_export = campaign_export(campaign)
@@ -205,7 +186,7 @@ class TavernCampaignImport(View):
         campaign_import(request.user, campaign, json_export)
 
         # set this user as having imported the campaign
-        old_campaign = get_object_or_404(Campaign, pk=kwargs['campaign_pk'])
+        old_campaign = get_object_or_404(Campaign, pk=kwargs['pk'])
         old_campaign.importers.add(request.user)
 
         # redirect to the imported campaign
@@ -215,15 +196,10 @@ class TavernCampaignImport(View):
 
 class TavernCharacterDetailView(View):
     def get(self, request, *args, **kwargs):
-        obj = get_character_object(kwargs['type'], kwargs['pk'])
+        character = get_object_or_404(GeneralCharacter, pk=kwargs['pk'])
 
-        if obj.is_published == True:
-            if kwargs['type'] == 'monster':
-                reviews = models.Review.objects.filter(monster=obj).order_by('-date')
-            elif kwargs['type'] == 'npc':
-                reviews = models.Review.objects.filter(npc=obj).order_by('-date')
-            elif kwargs['type'] == 'player':
-                reviews = models.Review.objects.filter(player=obj).order_by('-date')
+        if character.is_published == True:
+            reviews = models.Review.objects.filter(character=character).order_by('-date')
 
             rating = 0
             for review in reviews:
@@ -234,11 +210,11 @@ class TavernCharacterDetailView(View):
                 rating = 0
             rating = rating_stars_html(rating)
 
-            importers = obj.importers.all().count()
+            importers = character.importers.all().count()
 
             return render(self.request, 'tavern/tavern_character_detail.html', {
-                'obj': obj,
-                'type': kwargs['type'],
+                'character': character,
+                'stats': get_character_stats(character),
                 'reviews': reviews,
                 'rating': rating,
                 'importers': importers,
@@ -249,46 +225,28 @@ class TavernCharacterDetailView(View):
 
 class TavernCharacterImport(View):
     def get(self, request, *args, **kwargs):
-        obj = get_character_object(kwargs['type'], kwargs['pk'])
+        character = get_object_or_404(GeneralCharacter, pk=kwargs['pk'])
 
-        # create a copy of the obj
-        obj.pk = None
-        obj.id = None
-        obj.user = request.user
-        obj.is_published = False
-        obj.save()
+        # create a copy of the character
+        character.pk = None
+        character.id = None
+        character.user = request.user
+        character.is_published = False
+        character.save()
 
         # set this user as having imported the character
         # redirect to the imported character
         messages.success(request, "Character imported", fail_silently=True)
-        if kwargs['type'] == 'monster':
-            old_obj = get_object_or_404(Monster, pk=kwargs['pk'])
-            old_obj.importers.add(request.user)
-            return redirect('characters:monster_detail', monster_pk=obj.pk)
-        elif kwargs['type'] == 'npc':
-            old_obj = get_object_or_404(NPC, pk=kwargs['pk'])
-            old_obj.importers.add(request.user)
-            return redirect('characters:npc_detail', npc_pk=obj.pk)
-        elif kwargs['type'] == 'player':
-            old_obj = get_object_or_404(Player, pk=kwargs['pk'])
-            old_obj.importers.add(request.user)
-            # blank out the player name
-            obj.player_name = ''
-            obj.save()
-            return redirect('characters:player_detail', player_pk=obj.pk)
-
+        old_character = get_object_or_404(GeneralCharacter, pk=kwargs['pk'])
+        old_character.importers.add(request.user)
+        return redirect('characters:character_detail', pk=character.pk)
 
 class TavernCharacterReview(View):
     def get(self, request, *args, **kwargs):
-        obj = get_character_object(kwargs['type'], kwargs['pk'])
+        character = get_object_or_404(GeneralCharacter, pk=kwargs['pk'])
 
         try:
-            if kwargs['type'] == 'monster':
-                review = models.Review.objects.get(user=request.user, monster=obj)
-            elif kwargs['type'] == 'npc':
-                review = models.Review.objects.get(user=request.user, npc=obj)
-            elif kwargs['type'] == 'player':
-                review = models.Review.objects.get(user=request.user, player=obj)
+            review = models.Review.objects.get(user=request.user, character=character)
         except models.Review.DoesNotExist:
             review = None
 
@@ -298,55 +256,39 @@ class TavernCharacterReview(View):
                 "You've already submitted a review for this character",
                 fail_silently=True,
             )
-            return redirect(
-                'tavern:tavern_character_detail',
-                type=kwargs['type'],
-                pk=kwargs['pk'],
-            )
+            return redirect('tavern:tavern_character_detail', pk=kwargs['pk'])
         else:
             form = forms.TavernReviewForm()
             return render(self.request, 'tavern/tavern_character_review.html', {
-                'obj': obj,
-                'type': kwargs['type'],
+                'character': character,
                 'form': form,
             })
 
     def post(self, request, *args, **kwargs):
-        obj = get_character_object(kwargs['type'], kwargs['pk'])
+        character = get_object_or_404(GeneralCharacter, pk=kwargs['pk'])
         form = forms.TavernReviewForm(request.POST)
         if form.is_valid():
             review = form.save(commit=False)
             review.user = request.user
-            if kwargs['type'] == 'monster':
-                review.monster = obj
-            elif kwargs['type'] == 'npc':
-                review.npc = obj
-            elif kwargs['type'] == 'player':
-                review.player = obj
+            review.character = character
             review.save()
             messages.success(request, 'Review submitted', fail_silently=True)
             return redirect(
                 'tavern:tavern_character_detail',
-                type=kwargs['type'],
                 pk=kwargs['pk'],
             )
         else:
             return render(self.request, 'tavern/tavern_character_review.html', {
                 'obj': obj,
-                'type': kwargs['type'],
             })
 
 class TavernSearch(View):
     def get(self, request, *args, **kwargs):
         type = kwargs['type']
-        if type == "campaign":
+        if type == "campaigns":
             results = Campaign.objects.filter(is_published=True).order_by('title')
-        elif type == "monster":
-            results = Monster.objects.filter(is_published=True).order_by('name')
-        elif type == "npc":
-            results = NPC.objects.filter(is_published=True).order_by('name')
-        elif type == "player":
-            results = Player.objects.filter(is_published=True).order_by('character_name')
+        elif type == "characters":
+            results = GeneralCharacter.objects.filter(is_published=True).order_by('name')
         else:
             raise Http404
         return render(request, 'tavern/tavern_search.html', {
