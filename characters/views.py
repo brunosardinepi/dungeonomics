@@ -37,7 +37,7 @@ class CharacterDetail(View):
             # with the corresponding character type
             characters[character_type] = []
 
-            if character_type == "None":
+            if character_type == "Other":
                 # find all the characters for this user
                 # that don't have an attribute named "Character type"
                 characters_queryset = models.GeneralCharacter.objects.filter(

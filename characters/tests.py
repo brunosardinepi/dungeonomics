@@ -113,3 +113,25 @@ class CharacterTest(TestCase):
         response = self.client.get('/tavern/characters/{}/'.format(self.characters[0].pk))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.characters[0].name)
+
+    def test_character_copy(self):
+        # unauthenticated user
+        response = self.client.get('/characters/{}/copy/'.format(self.characters[0].pk))
+        self.assertRedirects(response,
+            '/accounts/login/?next=/characters/{}/copy/'.format(self.characters[0].pk),
+            302, 200)
+
+        # authenticated user
+        self.client.force_login(self.users[0])
+        self.characters[0].name = "name for this test"
+        self.characters[0].save()
+        response = self.client.get('/characters/{}/copy/'.format(self.characters[0].pk))
+        character = models.GeneralCharacter.objects.get(
+            name='{}_copy'.format(self.characters[0].name))
+        self.assertRedirects(response,
+            '/characters/{}/'.format(character.pk),
+            302, 200)
+
+        self.assertEqual(character.is_published, False)
+        response = self.client.get('/tavern/')
+        self.assertNotContains(response, character.name)

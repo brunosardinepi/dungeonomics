@@ -20,7 +20,7 @@ def get_character_types(user):
                 types.append(attribute)
         else:
             # no type specified
-            types.append("None")
+            types.append("Other")
 
     return types
 
@@ -29,6 +29,7 @@ def create_character_copy(character, user):
     # set the owner to the user
     attributes = character.attribute_set.all()
     character.pk = None
+    character.is_published = False
     character.user = user
     character.save()
     for attribute in attributes:
