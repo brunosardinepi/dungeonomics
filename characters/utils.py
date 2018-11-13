@@ -17,10 +17,12 @@ def get_character_types(user):
         if attributes:
             # found type
             for attribute in attributes:
-                types.append(attribute)
+                if attribute not in types:
+                    types.append(attribute)
         else:
             # no type specified
-            types.append("Other")
+            if "Other" not in types:
+                types.append("Other")
 
     return types
 
