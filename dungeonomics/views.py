@@ -10,8 +10,8 @@ from allauth.account import views
 
 from . import forms
 from allauth.account import models as allauth_models
-from campaign import models as campaign_models
-from characters import models as character_models
+from campaign.models import Campaign
+from characters.models import GeneralCharacter
 from votes.models import Feature, Vote
 
 
@@ -25,19 +25,18 @@ def home_view(request):
         return render(request, 'home.html', {'features': features})
     else:
         users = allauth_models.EmailAddress.objects.count()
-        campaigns = campaign_models.Campaign.objects.count()
-        monsters = character_models.Monster.objects.count()
-        npcs = character_models.NPC.objects.count()
-        characters = monsters + npcs
-        return render(request, 'home.html', {'users': users, 'campaigns': campaigns, 'characters': characters})
+        campaigns = Campaign.objects.count()
+        characters = GeneralCharacter.objects.count()
+        return render(request, 'home.html', {
+            'users': users,
+            'campaigns': campaigns,
+            'characters': characters,
+        })
 
 @login_required
 def profile_detail(request):
     user = get_object_or_404(User, pk=request.user.pk)
-    campaigns = campaign_models.Campaign.objects.filter(user=user).count()
-    monsters = character_models.Monster.objects.filter(user=user).count()
-    npcs = character_models.NPC.objects.filter(user=user).count()
-    return render(request, 'profile.html', {'user': user, 'campaigns': campaigns, 'monsters': monsters, 'npcs': npcs})
+    return render(request, 'profile.html', {'user': user })
 
 class LoginView(views.LoginView):
     template_name = 'login.html'
