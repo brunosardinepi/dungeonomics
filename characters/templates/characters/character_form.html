@@ -118,13 +118,25 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="px-1 mb-0">
-                        {% if character %}
-                            <span class="font-weight-bold">Update character:</span> {{ character.name }}
-                        {% else %}
-                            <span class="font-weight-bold">New character</span>
-                        {% endif %}
-                    </h4>
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-auto">
+                            <h5 class="px-1 mb-0">
+                                {% if character %}
+                                    <span class="font-weight-bold">Update character:</span> {{ character.name }}
+                                {% else %}
+                                    <span class="font-weight-bold">New character</span>
+                                {% endif %}
+                            </h5>
+                        </div>
+                        <div class="col-auto">
+                            <div class="dropdown">
+                                <a class="btn text-dark dropdown-toggle" href="#" role="button" id="presets-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Presets</a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="presets-dropdown">
+                                    <a id="character-preset-5e" href="#" class="dropdown-item">D&D 5e</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     <form method="POST" action="">
@@ -154,20 +166,22 @@
 
                         {% for form in formset %}
                             <div class="form-row formset-row" id="row-{{ forloop.counter0 }}">
-                                {% if form.errors %}
-                                    {% for error in form.errors %}
-                                        <div class="alert alert-danger" role="alert">
-                                            {{ error|escape }}
-                                        </div>
-                                    {% endfor %}
-                                {% endif %}
                                 <div class="form-group col-lg-4">
                                     <label for="{{ form.name.id_for_label }}">Attribute name</label>
                                     {{ form.id }}
                                     {% render_field form.name class+="form-control" %}
                                 </div>
                                 <div class="form-group col-lg-7">
-                                    <label for="{{ form.value.id_for_label }}">Value</label>
+                                    <label for="{{ form.value.id_for_label }}">
+                                        Value
+                                        {% if form.value.errors %}
+                                            {% for error in form.value.errors %}
+                                                <span class="text-danger">
+                                                    <i class="fas fa-exclamation-circle ml-2"></i> {{ error|escape }}
+                                                </span>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </label>
                                     {% render_field form.value class+="form-control" %}
                                 </div>
                                 <div class="form-group col-lg-1 col-delete align-self-end text-right add-row" id="col-delete-{{ forloop.counter0 }}">
@@ -228,5 +242,7 @@
 
 {% block body_extra %}
     <script src="{% static 'js/formset_character_new.js' %}"></script>
+    <script>var attributes = {{ suggested_attributes|safe }};</script>
+    <script src="{% static 'js/character_preset_5e.js' %}"></script>
 {% endblock %}
 

@@ -6,9 +6,7 @@ from . import views
 
 app_name = 'characters'
 urlpatterns = [
-    path('create/',
-        login_required(views.CharacterCreate.as_view()),
-        name='character_create'),
+    path('create/', views.character_create, name='character_create'),
     path('<int:pk>/edit/', views.character_update, name='character_update'),
     path('<int:pk>/delete/',
         login_required(views.CharacterDelete.as_view()),

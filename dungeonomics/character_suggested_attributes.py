@@ -1,5 +1,4 @@
 attrs = [
-    'Name',
     'Level',
     'Alignment',
     'Size',
@@ -14,7 +13,6 @@ attrs = [
     'Hit points',
     'Speed',
     'Saving throws',
-    'Skills',
     'Class',
     'Race',
     'Character type',
@@ -30,17 +28,7 @@ attrs = [
     'Height',
     'Weight',
     'Initiative',
-    'Personality',
-    'Bonds',
-    'Ideals',
-    'Flaws',
-    'Feats',
-    'Attack',
-    'Spell',
-    'Traits',
-    'Proficiencies',
     'Senses',
-    'Equipment',
 ]
 
 

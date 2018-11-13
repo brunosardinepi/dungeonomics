@@ -108,6 +108,10 @@ $(document).on("click", "[id^=delete-]", function(event) {
     // hide the row with the corresponding id number
     hideRow(counter);
 
+    // set the attribute name and value to be blank
+    $('#id_' + options.formPrefix + '-' + counter + '-name').val('');
+    $('#id_' + options.formPrefix + '-' + counter + '-value').val('');
+
     // check the "delete" checkbox
     $('#id_' + options.formPrefix + '-' + counter + '-DELETE').prop('checked', true);
 

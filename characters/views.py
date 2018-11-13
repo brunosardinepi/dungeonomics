@@ -3,15 +3,11 @@ from collections import OrderedDict
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.core import serializers
-from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, redirect, render
-from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views import View
 
 from . import forms
@@ -81,30 +77,43 @@ class CharacterDetail(View):
             return render(request, 'characters/character_detail.html')
         raise Http404
 
-class CharacterCreate(View):
-    def get(self, request, *args, **kwargs):
-        data = at_tagging(request)
-        data['form'] = forms.CharacterForm()
-        data['formset'] = forms.AttributeFormSet()
-        data['suggested_attributes'] = character_suggested_attributes.attrs
-        data['suggested_attributes'].sort()
-        return render(request, 'characters/character_form.html', data)
+@login_required
+def character_create(request):
+    # assets for '@' tagging
+    data = at_tagging(request)
+    # form for character name and notes
+    form = forms.CharacterForm()
+    # formset for character attributes
+    formset = forms.AttributeFormSet()
+    # preset attributes for attribute name dropdown
+    suggested_attributes = character_suggested_attributes.attrs
+    # sort the attributes alphabetically
+    suggested_attributes.sort()
 
-    def post(self, request, *args, **kwargs):
+    if request.method == 'POST':
         form = forms.CharacterForm(request.POST)
         formset = forms.AttributeFormSet(request.POST)
         if form.is_valid() and formset.is_valid():
             character = form.save(commit=False)
+            # set the character's user
             character.user = request.user
             character.save()
 
             attributes = formset.save(commit=False)
             for attribute in attributes:
+                # assign the attribute to the character
                 attribute.character = character
                 attribute.save()
 
             messages.add_message(request, messages.SUCCESS, "Character created")
-            return HttpResponseRedirect(character.get_absolute_url())
+            return redirect(character.get_absolute_url())
+
+    # added to data variable because it's already a dictionary
+    # and this makes things cleaner in the template
+    data['form'] = form
+    data['formset'] = formset
+    data['suggested_attributes'] = suggested_attributes
+    return render(request, 'characters/character_form.html', data)
 
 @login_required
 def character_update(request, pk):
