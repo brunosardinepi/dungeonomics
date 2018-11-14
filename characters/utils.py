@@ -5,6 +5,15 @@ from django.shortcuts import get_object_or_404
 from . import models
 
 
+def get_character_type(character):
+    try:
+        attribute = models.Attribute.objects.filter(
+            character=character, name="Character type").order_by('pk').first()
+    except models.Attribute.DoesNotExist:
+        attribute = None
+
+    return attribute
+
 def get_character_types(user):
     # find all of the user's characters
     characters = models.GeneralCharacter.objects.filter(user=user)

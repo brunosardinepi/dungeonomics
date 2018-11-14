@@ -15,6 +15,7 @@
                     <h3>{{ character }}</h3>
                     <p>{{ rating|safe }} <span class="ml-1">{{ reviews.count }} <a href="#reviews">review{{ reviews.count|pluralize }}</a>, imported {{ importers }} time{{ importers|pluralize }}</span></p>
 
+                    <p><span class="font-weight-bold">Character type</span> {% if character_type %}{{ character_type.value }}{% else %}None{% endif %}</p>
                     <h5>Description</h5>
                     {% if character.tavern_description %}
                         {{ character.tavern_description|safe }}

@@ -17,7 +17,9 @@ from campaign.utils import (campaign_export,
                             get_content_url,
                             get_url_object)
 from characters.models import GeneralCharacter
-from characters.utils import get_character_stats
+from characters.utils import (create_character_copy,
+                              get_character_stats,
+                              get_character_type)
 from dungeonomics.utils import at_tagging
 from dungeonomics import settings
 from items.models import Item
@@ -199,6 +201,7 @@ class TavernCharacterDetailView(View):
         character = get_object_or_404(GeneralCharacter, pk=kwargs['pk'])
 
         if character.is_published == True:
+            character_type = get_character_type(character)
             reviews = models.Review.objects.filter(character=character).order_by('-date')
 
             rating = 0
@@ -214,6 +217,7 @@ class TavernCharacterDetailView(View):
 
             return render(self.request, 'tavern/tavern_character_detail.html', {
                 'character': character,
+                'character_type': character_type,
                 'stats': get_character_stats(character),
                 'reviews': reviews,
                 'rating': rating,
@@ -227,12 +231,7 @@ class TavernCharacterImport(View):
     def get(self, request, *args, **kwargs):
         character = get_object_or_404(GeneralCharacter, pk=kwargs['pk'])
 
-        # create a copy of the character
-        character.pk = None
-        character.id = None
-        character.user = request.user
-        character.is_published = False
-        character.save()
+        create_character_copy(character, request.user)
 
         # set this user as having imported the character
         # redirect to the imported character
