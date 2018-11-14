@@ -1,6 +1,7 @@
 from itertools import chain
 
 from django import template
+from django.core import serializers
 from django.shortcuts import get_object_or_404
 
 from campaign.models import Campaign
@@ -74,3 +75,11 @@ def asset_title(obj):
         return obj.upper()
     else:
         return obj.capitalize()
+
+@register.simple_tag
+def url_from_json_object(obj):
+    # deserialize an object from json and return the object's full url
+    print("obj (type: {}) = {}".format(type(obj), obj))
+#    obj = serializers.deserialize("json", obj)
+#    print("obj = {}".format(obj))
+#    return obj.object.get_full_url()

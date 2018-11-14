@@ -1,11 +1,13 @@
 from math import floor
 
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 from django.db.models import Avg
 from django.urls import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from dungeonomics import config
 from tavern.models import Review
 
 
@@ -206,6 +208,12 @@ class GeneralCharacter(models.Model):
 
     def get_absolute_url(self):
         return reverse('characters:character_detail', kwargs={'pk': self.pk})
+
+    def get_full_url(self):
+        protocol = config.settings['protocol']
+        domain = Site.objects.get_current().domain
+        path = reverse('characters:character_detail', kwargs={'pk': self.pk})
+        return "{}://{}{}".format(protocol, domain, path)
 
     def rating(self):
         # find the average rating

@@ -20,7 +20,6 @@ from characters.models import GeneralCharacter
 from characters.utils import (create_character_copy,
                               get_character_stats,
                               get_character_type)
-from dungeonomics.utils import at_tagging
 from dungeonomics import settings
 from items.models import Item
 from locations.models import Location, World

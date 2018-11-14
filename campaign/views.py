@@ -141,11 +141,12 @@ class ChapterCreate(View):
     def get(self, request, *args, **kwargs):
         campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
         if campaign.user == request.user:
-            data = at_tagging(request)
-            data['campaign'] = campaign
-            data['form'] = forms.ChapterForm()
-            data['chapter_number'] = utils.get_next_order(campaign)
-            return render(request, 'campaign/chapter_form.html', data)
+            return render(request, 'campaign/chapter_form.html', {
+                'assets': at_tagging(request),
+                'campaign': campaign,
+                'form': forms.ChapterForm(),
+                'chapter_number': utils.get_next_order(campaign),
+            })
         raise Http404
 
     def post(self, request, *args, **kwargs):
@@ -166,13 +167,14 @@ class SectionCreate(View):
     def get(self, request, *args, **kwargs):
         campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
         if campaign.user == request.user:
-            data = at_tagging(request)
             chapter = get_object_or_404(models.Chapter, pk=kwargs['chapter_pk'])
-            data['campaign'] = campaign
-            data['chapter'] = chapter
-            data['form'] = forms.SectionForm()
-            data['section_number'] = utils.get_next_order(chapter)
-            return render(request, 'campaign/section_form.html', data)
+            return render(request, 'campaign/section_form.html', {
+                'assets': at_tagging(request),
+                'campaign': campaign,
+                'chapter': chapter,
+                'form': forms.SectionForm(),
+                'section_number': utils.get_next_order(chapter),
+            })
         raise Http404
 
     def post(self, request, *args, **kwargs):
@@ -222,7 +224,6 @@ def campaign_update(request, campaign_pk):
 def chapter_update(request, campaign_pk, chapter_pk):
     chapter = get_object_or_404(models.Chapter, pk=chapter_pk, campaign_id=campaign_pk)
     if chapter.user == request.user:
-        data = at_tagging(request)
         sections = models.Section.objects.filter(chapter=chapter)
         form = forms.ChapterForm(instance=chapter)
         section_forms = forms.SectionInlineFormSet(queryset=form.instance.section_set.all())
@@ -242,18 +243,19 @@ def chapter_update(request, campaign_pk, chapter_pk):
                 return HttpResponseRedirect(chapter.get_absolute_url())
     else:
         raise Http404
-    data['campaign'] = chapter.campaign
-    data['chapter'] = chapter
-    data['sections'] = sections
-    data['form'] = form
-    data['formset'] = section_forms
-    return render(request, 'campaign/chapter_form.html', data)
+    return render(request, 'campaign/chapter_form.html', {
+        'assets': at_tagging(request),
+        'campaign': chapter.campaign,
+        'chapter': chapter,
+        'sections': sections,
+        'form': form,
+        'formset': section_forms,
+    })
 
 @login_required
 def section_update(request, campaign_pk, chapter_pk, section_pk):
     section = get_object_or_404(models.Section, pk=section_pk, chapter_id=chapter_pk, campaign_id=campaign_pk)
     if section.user == request.user:
-        data = at_tagging(request)
         form = forms.SectionForm(instance=section)
         if request.method == 'POST':
             form = forms.SectionForm(instance=section, data=request.POST)
@@ -263,11 +265,13 @@ def section_update(request, campaign_pk, chapter_pk, section_pk):
                 return HttpResponseRedirect(section.get_absolute_url())
     else:
         raise Http404
-    data['form'] = form
-    data['campaign'] = section.chapter.campaign
-    data['chapter'] = section.chapter
-    data['section'] = section
-    return render(request, 'campaign/section_form.html', data)
+    return render(request, 'campaign/section_form.html', {
+        'assets': at_tagging(request),
+        'form': form,
+        'campaign': section.chapter.campaign,
+        'chapter': section.chapter,
+        'section': section,
+    })
 
 @login_required
 def campaign_print(request, campaign_pk):

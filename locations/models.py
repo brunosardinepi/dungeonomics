@@ -3,11 +3,14 @@ import random
 import string
 
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 from django.urls import reverse
 from django.db import models
 from django.db.models.signals import post_delete, post_save, pre_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
+
+from dungeonomics import config
 
 
 def create_random_string(length=30):
@@ -45,9 +48,13 @@ class World(LocationTemplate):
         ordering = ['name',]
 
     def get_absolute_url(self):
-        return reverse('locations:location_detail', kwargs={
-            'world_pk': self.pk
-            })
+        return reverse('locations:location_detail', kwargs={'world_pk': self.pk})
+
+    def get_full_url(self):
+        protocol = config.settings['protocol']
+        domain = Site.objects.get_current().domain
+        path = reverse('locations:location_detail', kwargs={'world_pk': self.pk})
+        return "{}://{}{}".format(protocol, domain, path)
 
 
 class Location(LocationTemplate):
@@ -62,10 +69,13 @@ class Location(LocationTemplate):
         ordering = ['name',]
 
     def get_absolute_url(self):
-        return reverse('locations:location_detail', kwargs={
-            'location_pk': self.pk
-            })
+        return reverse('locations:location_detail', kwargs={'location_pk': self.pk})
 
+    def get_full_url(self):
+        protocol = config.settings['protocol']
+        domain = Site.objects.get_current().domain
+        path = reverse('locations:location_detail', kwargs={'location_pk': self.pk})
+        return "{}://{}{}".format(protocol, domain, path)
 
 @receiver(pre_save, sender=World)
 def delete_old_world_image(sender, instance, **kwargs):

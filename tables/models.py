@@ -1,6 +1,9 @@
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 from django.urls import reverse
 from django.db import models
+
+from dungeonomics import config
 
 
 class Table(models.Model):
@@ -12,9 +15,13 @@ class Table(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('tables:table_detail',
-            kwargs={'table_pk': self.pk}
-        )
+        return reverse('tables:table_detail', kwargs={'table_pk': self.pk})
+
+    def get_full_url(self):
+        protocol = config.settings['protocol']
+        domain = Site.objects.get_current().domain
+        path = reverse('tables:table_detail', kwargs={'table_pk': self.pk})
+        return "{}://{}{}".format(protocol, domain, path)
 
     def options(self):
         return self.tableoption_set.all().order_by('pk')

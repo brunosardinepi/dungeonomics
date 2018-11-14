@@ -48,7 +48,6 @@ def location_detail(request, world_pk=None, location_pk=None):
 
 @login_required
 def world_create(request):
-    data = at_tagging(request)
     form = forms.WorldForm()
     if request.method == 'POST':
         form = forms.WorldForm(request.POST, request.FILES)
@@ -66,12 +65,13 @@ def world_create(request):
             world.save()
             messages.add_message(request, messages.SUCCESS, "World created!")
             return HttpResponseRedirect(world.get_absolute_url())
-    data['form'] = form
-    return render(request, 'locations/world_form.html', data)
+    return render(request, 'locations/world_form.html', {
+        'assets': at_tagging(request),
+        'form': form,
+    })
 
 @login_required
 def location_create(request, world_pk, location_pk=None):
-    data = at_tagging(request)
     world = get_object_or_404(models.World, pk=world_pk)
     if world.user == request.user:
         initial = {'world': world}
@@ -103,13 +103,14 @@ def location_create(request, world_pk, location_pk=None):
                 return HttpResponseRedirect(location.get_absolute_url())
     else:
         raise Http404
-    data['world'] = world
-    data['form'] = form
-    return render(request, 'locations/location_form.html', data)
+    return render(request, 'locations/location_form.html', {
+        'assets': at_tagging(request),
+        'world': world,
+        'form': form,
+    })
 
 @login_required
 def world_update(request, world_pk):
-    data = at_tagging(request)
     world = get_object_or_404(models.World, pk=world_pk)
     if world.user == request.user:
         form = forms.WorldForm(instance=world)
@@ -140,14 +141,15 @@ def world_update(request, world_pk):
                 return HttpResponseRedirect(world.get_absolute_url())
     else:
         raise Http404
-    data['world'] = world
-    data['form'] = form
-    data['formset'] = location_forms
-    return render(request, 'locations/world_form.html', data)
+    return render(request, 'locations/world_form.html', {
+        'assets': at_tagging(request),
+        'world': world,
+        'form': form,
+        'formset': location_forms,
+    })
 
 @login_required
 def location_update(request, location_pk):
-    data = at_tagging(request)
     location = get_object_or_404(models.Location, pk=location_pk)
     if location.user == request.user:
         form = forms.LocationForm(request.user.pk, location.world.pk, location_pk, instance=location)
@@ -169,10 +171,12 @@ def location_update(request, location_pk):
                 return HttpResponseRedirect(location.get_absolute_url())
     else:
         raise Http404
-    data['location'] = location
-    data['world'] = location.world
-    data['form'] = form
-    return render(request, 'locations/location_form.html', data)
+    return render(request, 'locations/location_form.html', {
+        'assets': at_tagging(request),
+        'location': location,
+        'world': location.world,
+        'form': form,
+    })
 
 @login_required
 def world_delete(request, world_pk):

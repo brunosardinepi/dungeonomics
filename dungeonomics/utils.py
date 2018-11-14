@@ -1,4 +1,7 @@
+from itertools import chain
+
 from django.conf import settings
+from django.core import serializers
 from django.db.models import Avg
 
 from tavern.models import Review
@@ -25,34 +28,22 @@ def image_is_valid(request, form):
                     return "bad type"
 
 def at_tagging(request):
-    characters_raw = GeneralCharacter.objects.filter(user=request.user).order_by('name')
-    characters = {}
-    for character in characters_raw:
-        characters[character.pk] = character.name
-    items_raw = Item.objects.filter(user=request.user).order_by('name')
-    items = {}
-    for item in items_raw:
-        items[item.pk] = item.name
-    worlds_raw = World.objects.filter(user=request.user).order_by('name')
-    worlds = {}
-    for world in worlds_raw:
-        worlds[world.pk] = world.name
-    locations_raw = Location.objects.filter(user=request.user).order_by('name')
-    locations = {}
-    for location in locations_raw:
-        locations[location.pk] = location.name
-    tables_raw = Table.objects.filter(user=request.user).order_by('name')
-    tables = {}
-    for table in tables_raw:
-        tables[table.pk] = table.name
+    characters = GeneralCharacter.objects.filter(user=request.user).order_by('name')
+    items = Item.objects.filter(user=request.user).order_by('name')
+    worlds = World.objects.filter(user=request.user).order_by('name')
+    locations = Location.objects.filter(user=request.user).order_by('name')
+    tables = Table.objects.filter(user=request.user).order_by('name')
 
-    return {
-        'characters': characters,
-        'items': items,
-        'worlds': worlds,
-        'locations': locations,
-        'tables': tables,
-    }
+    combined_assets = list(chain(characters, items, worlds, locations, tables))
+
+    assets = []
+    for asset in combined_assets:
+        assets.append({
+            'name': asset.name,
+            'url': asset.get_full_url(),
+        })
+
+    return assets
 
 def rating_monster(monster):
     # find the average rating

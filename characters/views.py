@@ -79,8 +79,6 @@ class CharacterDetail(View):
 
 @login_required
 def character_create(request):
-    # assets for '@' tagging
-    data = at_tagging(request)
     # form for character name and notes
     form = forms.CharacterForm()
     # formset for character attributes
@@ -108,12 +106,12 @@ def character_create(request):
             messages.add_message(request, messages.SUCCESS, "Character created")
             return redirect(character.get_absolute_url())
 
-    # added to data variable because it's already a dictionary
-    # and this makes things cleaner in the template
-    data['form'] = form
-    data['formset'] = formset
-    data['suggested_attributes'] = suggested_attributes
-    return render(request, 'characters/character_form.html', data)
+    return render(request, 'characters/character_form.html', {
+        'assets': at_tagging(request),
+        'form': form,
+        'formset': formset,
+        'suggested_attributes': suggested_attributes,
+    })
 
 @login_required
 def character_update(request, pk):
@@ -139,12 +137,14 @@ def character_update(request, pk):
                 return HttpResponseRedirect(character.get_absolute_url())
     else:
         raise Http404
-    data = at_tagging(request)
-    data['suggested_attributes'] = character_suggested_attributes.attrs
-    data['form'] = form
-    data['formset'] = formset
-    data['character'] = character
-    return render(request, 'characters/character_form.html', data)
+
+    return render(request, 'characters/character_form.html', {
+        'assets': at_tagging(request),
+        'suggested_attributes': character_suggested_attributes.attrs,
+        'form': form,
+        'formset': formset,
+        'character': character,
+    })
 
 class CharacterPublish(View):
     def get(self, request, *args, **kwargs):
