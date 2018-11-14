@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 
 from campaign.models import Campaign
 from characters.models import Monster, NPC, Player
+from dungeonomics import settings
 
 
 register = template.Library()
@@ -64,3 +65,7 @@ def asset_title(obj):
         return obj.upper()
     else:
         return obj.capitalize()
+
+@register.simple_tag
+def use_ga():
+    return settings.USE_GA
