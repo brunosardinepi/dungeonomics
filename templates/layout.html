@@ -70,44 +70,16 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav mr-auto">
                         {% if user.is_authenticated %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="dropdownCampaigns"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Campaigns
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownCampaigns">
-                                    {% include "campaign_nav.html" with request=request %}
-                                    <a class="dropdown-item text-success" href="{% url 'campaign:campaign_create' %}">
-                                        <i class="fal mr-1 fa-fw fa-plus"></i> Create campaign
-                                    </a>
-                                    <a class="dropdown-item text-primary" href="{% url 'campaign:campaign_import' %}">
-                                        <i class="fal mr-1 fa-fw fa-cloud-upload"></i> Import campaign
-                                    </a>
-                                </div>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Campaigns</a>
                             </li>
             
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="dropdownCharacters"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Characters
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownCharacters">
-                                    <a class="dropdown-item" href="{% url 'characters:player_detail' %}">Players</a>
-                                    <a class="dropdown-item" href="{% url 'characters:monster_detail' %}">Monsters</a>
-                                    <a class="dropdown-item" href="{% url 'characters:npc_detail' %}">NPCs</a>
-                                </div>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Characters</a>
                             </li>
             
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="dropdownResources"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Resources
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownResources">
-                                    <a class="dropdown-item" href="{% url 'items:item_detail' %}">Items/spells</a>
-                                    <a class="dropdown-item" href="{% url 'locations:location_detail' %}">Locations</a>
-                                    <a class="dropdown-item" href="{% url 'tables:table_detail' %}">Tables</a>
-                                </div>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Resources</a>
                             </li>
 
                             <li class="nav-item">
@@ -157,7 +129,7 @@
         {% block header_title %}{% endblock %}
 
         {% if request.resolver_match.url_name != 'home' or request.user.is_authenticated %}
-            <div class="container">
+            <div class="container-fluid">
         {% endif %}
                 {% include "messages.html" %}
                 {% block body_content %}{% endblock %}

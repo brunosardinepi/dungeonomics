@@ -12,3 +12,9 @@ div[class^="world-locations"]{display:none;}
 @media (max-width:575.98px){body{margin-bottom:180px}.footer{height:180px}#footer-social li{padding:0 0.25rem}.back-to-party{text-align:left}}
 @media (min-width:576px){.back-to-party{text-align:right}}
 @media (min-width:992px){body{margin-bottom:60px}.footer{height:60px}#footer-social{text-align:right!important}}
+
+.full-vh{height:calc(100vh - 60px - 56px);padding-top:1rem!important}
+.shadow-right{box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1)}
+.shadow-left{box-shadow: inset 1px 0 0 rgba(0, 0, 0, .1)}
+.bg-white{background:#fff}
+.container-fluid{font-size:0.875rem!important}

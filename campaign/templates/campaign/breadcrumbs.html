@@ -1,23 +1,21 @@
-<div class="jumbotron py-1 px-0 mb-0 breadcrumbs">
-    <div class="container">
-        {% if request.user == campaign.user %}
-            <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk %}">{{ campaign.title }}</a>
+<div class="container-fluid breadcrumbs py-1">
+    {% if request.user == campaign.user %}
+        <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk %}">{{ campaign.title }}</a>
+    {% else %}
+        <span class="font-weight-bold">{{ campaign.title }}</span>
+    {% endif %}
+    {% if chapter %}
+        <span class="breadcrumbs_separator"> / </span>
+        {% if section %}
+            <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}">{{ chapter.title }}</a>
+            <span class="breadcrumbs_separator"> / </span>
+            {{ section.title }}
         {% else %}
-            <span class="font-weight-bold">{{ campaign.title }}</span>
+            {{ chapter.title }}
         {% endif %}
-        {% if chapter %}
-            <span class="breadcrumbs_separator"> / </span>
-            {% if section %}
-                <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}">{{ chapter.title }}</a>
-                <span class="breadcrumbs_separator"> / </span>
-                {{ section.title }}
-            {% else %}
-                {{ chapter.title }}
-            {% endif %}
-        {% endif %}
-        {% if action %}
-            <span class="breadcrumbs_separator"> / </span>
-            {{ action }}
-        {% endif %}
-    </div>
+    {% endif %}
+    {% if action %}
+        <span class="breadcrumbs_separator"> / </span>
+        {{ action }}
+    {% endif %}
 </div>

@@ -6,118 +6,81 @@
 
 {% block title %}{{ campaign.title }} | {{ block.super }}{% endblock %}
 
-{% block breadcrumbs %}
-    {% include "campaign/breadcrumbs.html" %}
-{% endblock %}
-
 {% block body_content %}
-    <div class="row mt-3 pb-5">
-        <div class="col-lg-4 mb-3">
-            <div class="card mb-3">
-                <div class="card-header">
-                    <div class="row justify-content-between align-items-center">
-                        <div class="col-auto">
-                            <h5 class="px-1 mb-0">Contents</h5>
-                        </div>
-                        <div class="col-auto">
-                            <div class="dropdown">
-                                <a class="btn btn-sm text-dark dropdown-toggle" href="#" role="button" id="table-of-contents-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-lg fa-cog"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="table-of-contents-dropdown">
-                                    <a href="{% url 'campaign:chapter_create' campaign_pk=campaign.pk %}" class="dropdown-item text-success"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> Create chapter</a>
-                                    <a href="{% url 'campaign:campaign_update' campaign_pk=campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-edit" aria-hidden="true"></i> Edit campaign</a>
-                                    {% if campaign.is_published == True %}
-                                        <a href="{% url 'tavern:tavern_campaign_detail' campaign_pk=campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-cloud-upload" aria-hidden="true"></i> View on The Tavern</a>
-                                    {% else %}
-                                        <a href="{% url 'campaign:campaign_publish' campaign_pk=campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-cloud-upload" aria-hidden="true"></i> Publish campaign</a>
-                                    {% endif %}
-                                    <a href="{% url 'campaign:campaign_export' campaign_pk=campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-cloud-download" aria-hidden="true"></i> Export campaign</a>
-                                    <a href="{% url 'campaign:campaign_print' campaign_pk=campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-print" aria-hidden="true"></i> Print campaign</a>
-                                    <a id="campaign-delete"  href="{% url 'campaign:campaign_delete' campaign_pk=campaign.pk %}" class="dropdown-item text-danger"><i class="mr-1 fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete campaign</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <ul class="contents_list">
-                        {% if chapters %}
-                            {% for c in chapters %}
-                                <li class="li-content">
-                                    {{ c.order }}. 
-                                    <a {% if c == chapter and not section %}class="font-weight-bold" {% endif %}href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=c.pk %}">
-                                        {{ c.title }}
-                                    </a>
-                                </li>
-                                <ul style="padding-left: 30px;">
-                                    {% for s in sections %}
-                                        {% if s.chapter.pk == c.pk %}
-                                            <li class="li-content">
-                                                {{ s.order }}. 
-                                                <a {% if s == section %}class="font-weight-bold" {% endif %}href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=c.pk section_pk=s.pk %}">
-                                                    {{ s.title }}
-                                                </a>
-                                            </li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
+    <div class="row">
+
+        <div class="col-lg-2 bg-light full-vh shadow-right">
+            <h6 class="d-flex justify-content-between align-items-center">
+                <span>Campaigns</span>
+                <a class="text-dark" href="#"><i class="fas fa-cog"></i></a>
+            </h6>
+            <ul class="contents_list">
+                {% for c in campaigns %}
+                    <li{% if c == campaign %} class="font-weight-bold"{% endif %}>
+                        <a href="{% url 'campaign:campaign_detail' campaign_pk=c.pk %}">{{ c }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="col-lg-2 bg-light full-vh shadow-right">
+            <h6 class="d-flex justify-content-between align-items-center">
+                <span>Contents</span>
+                <a class="text-dark" href="#"><i class="fas fa-cog"></i></a>
+            </h6>
+            <ul class="contents_list">
+                {% if chapters %}
+                    {% for c in chapters %}
+                        <li class="li-content">
+                            <a {% if c == chapter and not section %}class="font-weight-bold" {% endif %}href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=c.pk %}">
+                                {{ c.title }}
+                            </a>
+                        </li>
+                        <ul class="pl-3">
+                            {% for s in sections %}
+                                {% if s.chapter.pk == c.pk %}
+                                    <li class="li-content">
+                                        <a {% if s == section %}class="font-weight-bold" {% endif %}href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=c.pk section_pk=s.pk %}">
+                                            {{ s.title }}
+                                        </a>
+                                    </li>
+                                {% endif %}
                             {% endfor %}
-                        {% else %}
-                            <li>You haven't created any content yet!</li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <div class="row justify-content-between align-items-center">
-                        <div class="col-auto">
-                            <h5 class="px-1 mb-0"><a href="{% url 'campaign:campaign_party' campaign_pk=campaign.pk %}">Party</a></h5>
-                        </div>
-                        <div class="col-auto">
-                            <div class="dropdown">
-                                <a class="btn btn-sm text-dark dropdown-toggle" href="#" role="button" id="table-of-contents-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-lg fa-cog"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="table-of-contents-dropdown">
-                                    <a href="{% url 'campaign:campaign_party' campaign_pk=campaign.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-eye" aria-hidden="true"></i> View party</a>
-                                    <a href="{% url 'campaign:post_create' campaign_pk=campaign.pk %}" class="dropdown-item text-primary"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> New post</a>
-                                    <a href="{% url 'campaign:campaign_party_invite' campaign_pk=campaign.pk %}" class="dropdown-item text-success"><i class="mr-1 fal fa-fw fa-user-plus" aria-hidden="true"></i> Invite players</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    {% include "posts/party_feed.html" with posts=posts%}
-                </div>
-            </div>
-
-        </div>
-        <div class="col-lg-8">
-            <div class="card">
-                {% if chapter %}
-                    {% if not section %}
-                        {% include "campaign/card_header.html" with obj=chapter %}
-                        <div class="card-body">
-                            {{ chapter.content|safe }}
-                        </div>
-                    {% elif section %}
-                        {% include "campaign/card_header.html" with obj=section %}
-                        <div class="card-body">
-                            {{ section.content|safe }}
-                        </div>
-                    {% endif %}
+                        </ul>
+                    {% endfor %}
                 {% else %}
-                    {% include "campaign/card_header.html" with obj=campaign %}
-                    <div class="card-body">
-                        <p>You haven't created any content yet!</p>
-                    </div>
+                    <li>No chapters</li>
                 {% endif %}
-            </div>
+            </ul>
+            <h6 class="d-flex justify-content-between align-items-center mt-5">
+                <span>Party</span>
+                <a class="text-dark" href="#"><i class="fas fa-cog"></i></a>
+            </h6>
+            {% include "posts/party_feed.html" with posts=posts%}
         </div>
+
+        <div class="col-lg-6 bg-white full-vh shadow-right">
+            {% if chapter %}
+                {% if not section %}
+                    <h4>{{ chapter.title }}</h4>
+                    {{ chapter.content|safe }}
+                {% elif section %}
+                    <h4>{{ section.title }}</h4>
+                    {{ section.content|safe }}
+                {% endif %}
+            {% else %}
+                <h4>{{ campaign.title }}</h4>
+                <p>No content</p>
+            {% endif %}
+        </div>
+
+        <div class="col-lg-2 bg-light full-vh">
+            <h6 class="d-flex justify-content-between align-items-center">
+                <span>Tags</span>
+                <a class="text-dark" href="#"><i class="fas fa-cog"></i></a>
+            </h6>
+        </div>
+
     </div>
 {% endblock %}
 

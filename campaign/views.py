@@ -32,6 +32,7 @@ from tavern.models import Review
 
 @login_required
 def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None):
+    campaigns = models.Campaign.objects.filter(user=request.user).order_by('title')
     if campaign_pk:
         campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
         posts = Post.objects.filter(campaign=campaign).order_by('-date')[:5]
@@ -63,6 +64,7 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
             if chapter:
                 if section:
                     return render(request, 'campaign/campaign_detail.html', {
+                        'campaigns': campaigns,
                         'campaign': campaign,
                         'chapter': chapter,
                         'section': section,
@@ -72,6 +74,7 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
                     })
                 else:
                     return render(request, 'campaign/campaign_detail.html', {
+                        'campaigns': campaigns,
                         'campaign': campaign,
                         'chapter': chapter,
                         'chapters': chapters,
@@ -80,6 +83,7 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
                     })
             else:
                 return render(request, 'campaign/campaign_detail.html', {
+                    'campaigns': campaigns,
                     'campaign': campaign,
                     'posts': posts,
                 })
@@ -90,8 +94,8 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
         user = None
         if request.user.is_authenticated:
             user = request.user.pk
-        campaigns = sorted(models.Campaign.objects.filter(user=user),
-            key=lambda campaign: campaign.title)
+#        campaigns = sorted(models.Campaign.objects.filter(user=user),
+#            key=lambda campaign: campaign.title)
         if len(campaigns) > 0:
             campaign = campaigns[0]
             posts = Post.objects.filter(campaign=campaign).order_by('-date')[:5]
@@ -111,6 +115,7 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
             sections = [item for sublist in sections for item in sublist]
 
             return render(request, 'campaign/campaign_detail.html', {
+                'campaigns': campaigns,
                 'campaign': campaign,
                 'chapter': chapter,
                 'chapters': chapters,
@@ -118,9 +123,9 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
                 'posts': posts,
             })
         return render(request, 'campaign/campaign_detail.html', {
+            'campaigns': campaigns,
             'campaign': campaign,
         })
-
 
 class CampaignCreate(LoginRequiredMixin, CreateView):
     model = models.Campaign
