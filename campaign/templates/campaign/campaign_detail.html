@@ -9,7 +9,7 @@
 {% block body_content %}
     <div class="row">
 
-        <div class="col-lg-2 bg-light full-vh shadow-right">
+        <div class="col-md-4 col-lg-2 order-1 bg-light full-vh col-shadow">
             <h6 class="d-flex justify-content-between align-items-center">
                 <span>Campaigns</span>
                 <a class="text-dark" href="#"><i class="fas fa-cog"></i></a>
@@ -23,7 +23,7 @@
             </ul>
         </div>
 
-        <div class="col-lg-2 bg-light full-vh shadow-right">
+        <div class="col-md-4 col-lg-2 order-2 bg-light full-vh col-shadow">
             <h6 class="d-flex justify-content-between align-items-center">
                 <span>Contents</span>
                 <a class="text-dark" href="#"><i class="fas fa-cog"></i></a>
@@ -52,14 +52,15 @@
                     <li>No chapters</li>
                 {% endif %}
             </ul>
-            <h6 class="d-flex justify-content-between align-items-center mt-5">
+            <hr>
+            <h6 class="d-flex justify-content-between align-items-center">
                 <span>Party</span>
                 <a class="text-dark" href="#"><i class="fas fa-cog"></i></a>
             </h6>
             {% include "posts/party_feed.html" with posts=posts%}
         </div>
 
-        <div class="col-lg-6 bg-white full-vh shadow-right">
+        <div class="col-md-12 col-lg-6 order-lg-3 order-4 bg-white full-vh notes-shadow">
             {% if chapter %}
                 {% if not section %}
                     <h4>{{ chapter.title }}</h4>
@@ -74,7 +75,7 @@
             {% endif %}
         </div>
 
-        <div class="col-lg-2 bg-light full-vh">
+        <div class="col-md-4 col-lg-2 order-lg-4 order-3 bg-light full-vh">
             <h6 class="d-flex justify-content-between align-items-center">
                 <span>Tags</span>
                 <a class="text-dark" href="#"><i class="fas fa-cog"></i></a>
