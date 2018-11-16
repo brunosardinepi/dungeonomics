@@ -14,6 +14,7 @@ div[class^="world-locations"]{display:none;}
 .col-shadow{box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .1)}
 .notes-shadow{box-shadow: inset 0 1px 0 rgba(0, 0, 0, .1)}
 .container-fluid{font-size:1rem!important}
+h6 span{text-transform: uppercase;font-size: 0.875rem;font-weight: 500;color: #444}
 
 @media (max-width:991.99px){body{margin-bottom:180px}.footer{height:180px;text-align:center!important}}
 @media (max-width:575.98px){body{margin-bottom:180px}.footer{height:180px}#footer-social li{padding:0 0.25rem}.back-to-party{text-align:left}}

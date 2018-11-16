@@ -31,7 +31,7 @@
             <ul class="contents_list">
                 {% if chapters %}
                     {% for c in chapters %}
-                        <li class="li-content">
+                        <li>
                             <a {% if c == chapter and not section %}class="font-weight-bold" {% endif %}href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=c.pk %}">
                                 {{ c.title }}
                             </a>
@@ -39,7 +39,7 @@
                         <ul class="pl-3">
                             {% for s in sections %}
                                 {% if s.chapter.pk == c.pk %}
-                                    <li class="li-content">
+                                    <li>
                                         <a {% if s == section %}class="font-weight-bold" {% endif %}href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=c.pk section_pk=s.pk %}">
                                             {{ s.title }}
                                         </a>
