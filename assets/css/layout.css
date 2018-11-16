@@ -27,6 +27,22 @@ div[id$="-tools"] a{display:block;width:100%}
 div[id$="-tools"] p{margin:0;padding:0.5rem 0}
 div[id$="-tools"] a:hover{color:#000!important;text-decoration:none}
 
+.rotate-cw-180, .rotate-ccw-180{
+-moz-transition: all 0.5s linear;
+-webkit-transition: all 0.5s linear;
+transition: all 0.5s linear;
+}
+.rotate-cw-180{
+-moz-transform:rotate(180deg);
+-webkit-transform:rotate(180deg);
+transform:rotate(180deg);
+}
+.rotate-ccw-180{
+-moz-transform:rotate(-0deg);
+-webkit-transform:rotate(-0deg);
+transform:rotate(-0deg);
+}
+
 @media (max-width:991.99px){body{margin-bottom:180px}.footer{height:180px;text-align:center!important}}
 @media (max-width:575.98px){body{margin-bottom:180px}.footer{height:180px}#footer-social li{padding:0 0.25rem}.back-to-party{text-align:left}}
 @media (min-width:576px){.back-to-party{text-align:right}}
