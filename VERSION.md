@@ -3,6 +3,23 @@
 This is the version history for Dungeonomics development.
 
 
+## Version 3.3.1
+
+Release date: 11/16/2018
+
+### Additions
+
+* None
+
+### Changes
+
+* None
+
+### Fixes
+
+* #124 -- import worlds/locations bug
+
+
 ## Version 3.3.0
 
 Release date: 11/09/2018
