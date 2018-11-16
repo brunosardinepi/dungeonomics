@@ -12,14 +12,12 @@
         <div class="col-md-4 col-lg-2 order-1 bg-light full-vh col-shadow">
             <h6 class="d-flex justify-content-between align-items-center">
                 <span>Campaigns</span>
-                <a class="text-dark" href="#"><i class="fas fa-cog"></i></a>
+                <a href="" id="campaigns-tools-dropdown" class="text-dark"><i class="fas fa-cog"></i></a>
             </h6>
 
             <div id="campaigns-tools">
-                <p class="tools-dropdown pt-3 pb-2">
                     <input type="text" class="form-control form-control-sm" placeholder="Search for campaigns">
-                </p>
-                <p class="tools-dropdown pb-3 mb-3">
+                <p>
                     <a href="" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create campaign</span></a>
                 </p>
             </div>
@@ -36,26 +34,26 @@
         <div class="col-md-4 col-lg-2 order-2 bg-light full-vh col-shadow">
             <h6 class="d-flex justify-content-between align-items-center">
                 <span>Contents</span>
-                <a class="text-dark" href="#"><i class="fas fa-cog"></i></a>
+                <a href="" id="campaign-tools-dropdown" class="text-dark"><i class="fas fa-cog"></i></a>
             </h6>
 
             <div id="campaign-tools">
-                <p class="tools-dropdown pt-3 pb-2">
+                <p>
                     <input type="text" class="form-control form-control-sm" placeholder="Search in contents">
                 </p>
-                <p class="tools-dropdown">
+                <p>
                     <a href="" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create campaign</span></a>
                 </p>
-                <p class="tools-dropdown">
+                <p>
                     <a href="" class="text-teal"><i class="fas fa-fw fa-lg fa-pen-square"></i><span>Edit campaign</span></a>
                 </p>
-                <p class="tools-dropdown">
+                <p>
                     <a href="" class="text-purple"><i class="fas fa-fw fa-lg fa-cloud-upload"></i><span>Publish campaign</span></a>
                 </p>
-                <p class="tools-dropdown">
+                <p>
                     <a href="" class="text-orange"><i class="fas fa-fw fa-lg fa-save"></i><span>Print campaign</span></a>
                 </p>
-                <p class="tools-dropdown pb-3 mb-3">
+                <p>
                     <a href="" class="text-danger"><i class="fas fa-fw fa-lg fa-trash-alt"></i><span>Delete campaign</span></a>
                 </p>
             </div>
@@ -87,20 +85,20 @@
             <hr>
             <h6 class="d-flex justify-content-between align-items-center">
                 <span>Party</span>
-                <a class="text-dark" href="#"><i class="fas fa-cog"></i></a>
+                <a href="" id="party-tools-dropdown" class="text-dark"><i class="fas fa-cog"></i></a>
             </h6>
 
             <div id="party-tools">
-                <p class="tools-dropdown pt-3 pb-2">
+                <p>
                     <input type="text" class="form-control form-control-sm" placeholder="Search for posts">
                 </p>
-                <p class="tools-dropdown">
+                <p>
                     <a href="" class="text-pink"><i class="fas fa-fw fa-lg fa-swords"></i><span>View party</span></a>
                 </p>
-                <p class="tools-dropdown">
+                <p>
                     <a href="" class="text-teal"><i class="fas fa-fw fa-lg fa-comment"></i><span>New post</span></a>
                 </p>
-                <p class="tools-dropdown pb-3 mb-3">
+                <p>
                     <a href="" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Invite players</span></a>
                 </p>
             </div>
@@ -126,17 +124,17 @@
         <div class="col-md-4 col-lg-2 order-lg-4 order-3 bg-light full-vh">
             <h6 class="d-flex justify-content-between align-items-center">
                 <span>Tags</span>
-                <a class="text-dark" href="#"><i class="fas fa-cog"></i></a>
+                <a href="" id="tags-tools-dropdown" class="text-dark"><i class="fas fa-cog"></i></a>
             </h6>
 
             <div id="tags-tools">
-                <p class="tools-dropdown pt-3 pb-2">
+                <p>
                     <input type="text" class="form-control form-control-sm" placeholder="Search for tags">
                 </p>
-                <p class="tools-dropdown">
+                <p>
                     <a href="" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create tags</span></a>
                 </p>
-                <p class="tools-dropdown pb-3 mb-3">
+                <p>
                     <a href="" class="text-danger"><i class="fas fa-fw fa-lg fa-trash-alt"></i><span>Delete tags</span></a>
                 </p>
             </div>
@@ -148,4 +146,5 @@
 
 {% block body_extra %}
     <script src="{% static 'js/campaign_delete.js' %}"></script>
+    <script src="{% static 'js/tools_dropdown.js' %}"></script>
 {% endblock %}

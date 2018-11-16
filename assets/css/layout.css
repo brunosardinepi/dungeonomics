@@ -19,19 +19,16 @@ div[class^="world-locations"]{display:none;}
 .container-fluid{font-size:1rem!important}
 h6 span{text-transform: uppercase;font-size: 0.875rem;font-weight: 500;color: #444}
 
-.tools-dropdown{margin:0 -15px;padding:0.25rem 15px;background: #eee}
-.tools-dropdown svg{margin-right:0.25rem}
-.tools-dropdown span{font-weight:500}
-.tools-dropdown a{display:block;width:100%}
-.tools-dropdown a:hover{color:#000!important;text-decoration:none}
+div[id$="-tools"]{display:none;margin:0 -15px 1rem;padding:1rem 15px;background: #eee}
+div[id$="-tools"] svg{margin-right:0.25rem}
+div[id$="-tools"] span{font-weight:500}
+div[id$="-tools"] input{margin:0.25rem 0 1rem}
+div[id$="-tools"] a{display:block;width:100%}
+div[id$="-tools"] p{margin:0;padding:0.5rem 0}
+div[id$="-tools"] a:hover{color:#000!important;text-decoration:none}
 
 @media (max-width:991.99px){body{margin-bottom:180px}.footer{height:180px;text-align:center!important}}
 @media (max-width:575.98px){body{margin-bottom:180px}.footer{height:180px}#footer-social li{padding:0 0.25rem}.back-to-party{text-align:left}}
 @media (min-width:576px){.back-to-party{text-align:right}}
-@media (min-width:768px){.tools-dropdown{margin-left: -15px;margin-right: -15px;padding-left: 15px;padding-right: 15px;background: #eee;box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1)}.col-shadow{box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1)}}
-@media (min-width:992px){
-.full-vh{height:calc(100vh - 60px - 56px);padding-top:1rem!important}
-.notes-shadow{box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1)}
-.container-fluid{font-size:0.875rem!important}
-body{margin-bottom:60px}.footer{height:60px}#footer-social{text-align:right!important}
-}
+@media (min-width:768px){div[id$="-tools"]{box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1)}.col-shadow{box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1)}}
+@media (min-width:992px){div[id$="-tools"] p{padding:0.25rem 0}.full-vh{height:calc(100vh - 60px - 56px);padding-top:1rem!important}.notes-shadow{box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1)}.container-fluid{font-size:0.875rem!important}body{margin-bottom:60px}.footer{height:60px}#footer-social{text-align:right!important}}
