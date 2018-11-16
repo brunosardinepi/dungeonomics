@@ -71,7 +71,7 @@
                     <ul class="navbar-nav mr-auto">
                         {% if user.is_authenticated %}
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Campaigns</a>
+                                <a class="nav-link" href="{% url 'campaign:campaign_detail' %}">Campaigns</a>
                             </li>
             
                             <li class="nav-item">

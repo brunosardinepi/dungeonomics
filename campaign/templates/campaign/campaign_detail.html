@@ -14,6 +14,16 @@
                 <span>Campaigns</span>
                 <a class="text-dark" href="#"><i class="fas fa-cog"></i></a>
             </h6>
+
+            <div id="campaigns-tools">
+                <p class="tools-dropdown pt-3 pb-2">
+                    <input type="text" class="form-control form-control-sm" placeholder="Search for campaigns">
+                </p>
+                <p class="tools-dropdown pb-3 mb-3">
+                    <a href="" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create campaign</span></a>
+                </p>
+            </div>
+
             <ul class="contents_list">
                 {% for c in campaigns %}
                     <li{% if c == campaign %} class="font-weight-bold"{% endif %}>
@@ -28,6 +38,28 @@
                 <span>Contents</span>
                 <a class="text-dark" href="#"><i class="fas fa-cog"></i></a>
             </h6>
+
+            <div id="campaign-tools">
+                <p class="tools-dropdown pt-3 pb-2">
+                    <input type="text" class="form-control form-control-sm" placeholder="Search in contents">
+                </p>
+                <p class="tools-dropdown">
+                    <a href="" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create campaign</span></a>
+                </p>
+                <p class="tools-dropdown">
+                    <a href="" class="text-teal"><i class="fas fa-fw fa-lg fa-pen-square"></i><span>Edit campaign</span></a>
+                </p>
+                <p class="tools-dropdown">
+                    <a href="" class="text-purple"><i class="fas fa-fw fa-lg fa-cloud-upload"></i><span>Publish campaign</span></a>
+                </p>
+                <p class="tools-dropdown">
+                    <a href="" class="text-orange"><i class="fas fa-fw fa-lg fa-save"></i><span>Print campaign</span></a>
+                </p>
+                <p class="tools-dropdown pb-3 mb-3">
+                    <a href="" class="text-danger"><i class="fas fa-fw fa-lg fa-trash-alt"></i><span>Delete campaign</span></a>
+                </p>
+            </div>
+
             <ul class="contents_list">
                 {% if chapters %}
                     {% for c in chapters %}
@@ -57,6 +89,22 @@
                 <span>Party</span>
                 <a class="text-dark" href="#"><i class="fas fa-cog"></i></a>
             </h6>
+
+            <div id="party-tools">
+                <p class="tools-dropdown pt-3 pb-2">
+                    <input type="text" class="form-control form-control-sm" placeholder="Search for posts">
+                </p>
+                <p class="tools-dropdown">
+                    <a href="" class="text-pink"><i class="fas fa-fw fa-lg fa-swords"></i><span>View party</span></a>
+                </p>
+                <p class="tools-dropdown">
+                    <a href="" class="text-teal"><i class="fas fa-fw fa-lg fa-comment"></i><span>New post</span></a>
+                </p>
+                <p class="tools-dropdown pb-3 mb-3">
+                    <a href="" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Invite players</span></a>
+                </p>
+            </div>
+
             {% include "posts/party_feed.html" with posts=posts%}
         </div>
 
@@ -80,6 +128,19 @@
                 <span>Tags</span>
                 <a class="text-dark" href="#"><i class="fas fa-cog"></i></a>
             </h6>
+
+            <div id="tags-tools">
+                <p class="tools-dropdown pt-3 pb-2">
+                    <input type="text" class="form-control form-control-sm" placeholder="Search for tags">
+                </p>
+                <p class="tools-dropdown">
+                    <a href="" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create tags</span></a>
+                </p>
+                <p class="tools-dropdown pb-3 mb-3">
+                    <a href="" class="text-danger"><i class="fas fa-fw fa-lg fa-trash-alt"></i><span>Delete tags</span></a>
+                </p>
+            </div>
+
         </div>
 
     </div>
