@@ -18,6 +18,7 @@ Release date: 11/16/2018
 ### Fixes
 
 * #124 -- import worlds/locations bug
+* Google analytics update
 
 
 ## Version 3.3.0
