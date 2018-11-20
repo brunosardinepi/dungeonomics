@@ -1,6 +1,5 @@
 {% extends "_cover.html" %}
 
-{% load bootstrap3 %}
 {% load i18n %}
 {% load account socialaccount %}
 
@@ -33,13 +32,11 @@
                         </p>
                         <form class="signup" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
                             {% csrf_token %}
-                            {% bootstrap_form form %}
+                            {{ form }}
                             {% if redirect_field_value %}
                                 <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                             {% endif %}
-                                {% buttons %}
-                                    <button type="submit" class="btn btn-success btn-block">Sign up</button>
-                                {% endbuttons %}
+                            <button type="submit" class="btn btn-success btn-block">Sign up</button>
                         </form>
                     </div>
                 </div>
