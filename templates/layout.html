@@ -128,7 +128,6 @@
 
         {% block header_title %}{% endblock %}
 
-        {% include "messages.html" %}
         {% block body_content %}{% endblock %}
         {% if request.resolver_match.url_name != 'home' or request.user.is_authenticated %}
             </div>

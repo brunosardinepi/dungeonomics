@@ -137,7 +137,6 @@ class CampaignCreate(LoginRequiredMixin, CreateView):
         campaign = form.save(commit=False)
         campaign.user = self.request.user
         campaign.save()
-        messages.add_message(self.request, messages.SUCCESS, "Campaign created")
         return HttpResponseRedirect(campaign.get_absolute_url())
 
 
