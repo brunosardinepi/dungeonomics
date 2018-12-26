@@ -1,0 +1,22 @@
+<div class="col-md-4 col-lg-2 order-1 bg-light full-vh col-shadow">
+    <h6 class="d-flex justify-content-between align-items-center">
+        <span>Campaigns</span>
+        <a href="" id="campaigns-tools-dropdown" class="text-dark"><i class="fas fa-cog"></i></a>
+    </h6>
+
+    <div id="campaigns-tools">
+            <input type="text" class="form-control form-control-sm" placeholder="Search for campaigns">
+        <p>
+            <a href="{% url 'campaign:campaign_create' %}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create campaign</span></a>
+        </p>
+    </div>
+
+    <ul class="contents_list">
+        {% for c in campaigns %}
+            <li{% if c == campaign %} class="font-weight-bold"{% endif %}>
+                <a href="{% url 'campaign:campaign_detail' campaign_pk=c.pk %}">{{ c }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
