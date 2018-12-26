@@ -3,7 +3,7 @@ from django.conf.urls import url, include
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.views.generic import TemplateView
 
 from . import config
@@ -13,7 +13,7 @@ from . import views
 urlpatterns = [
     path('{}/'.format(config.settings['admin']), admin.site.urls),
     path('accounts/password/reset/done/', views.PasswordResetDoneView.as_view(), name='account_reset_password_done'),
-    path('accounts/password/reset/key/<uuid:uidb36>-<str:key>/',
+    re_path('accounts/password/reset/key/(?P<uidb36>[0-9A-Za-z]+)-(?P<key>.+)/$',
         views.CustomPasswordResetFromKeyView.as_view(),
         name="account_reset_password_from_key"),
     path('accounts/password/reset/key/done/',
