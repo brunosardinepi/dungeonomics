@@ -69,9 +69,7 @@
     
                     {% if socialaccount_providers %}
                         {% for socialaccount_provider in socialaccount_providers %}
-                            {% if socialaccount_provider.name|lower == 'facebook' %}
-                                <a class="btn btn-block facebook" href="http://dungeonomics.com/accounts/facebook/login/?process=login"><i class="fab fa-fw fa-facebook-f mr-2"></i> Sign up with Facebook</a>
-                            {% elif socialaccount_provider.name|lower == 'google' %}
+                            {% if socialaccount_provider.name|lower == 'google' %}
                                 <a class="btn btn-block google"href="http://dungeonomics.com/accounts/google/login/?process=login"><i class="fab fa-fw fa-google mr-2"></i> Sign up with Google</a>
                             {% endif %}
                         {% endfor %}
