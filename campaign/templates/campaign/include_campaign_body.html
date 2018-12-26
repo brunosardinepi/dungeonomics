@@ -1,14 +1,58 @@
 <div class="col-md-12 col-lg-6 order-lg-3 order-4 bg-white full-vh notes-shadow">
+
+    <h4 class="d-flex justify-content-between align-items-center">
+        <span>
+            {% if chapter %}
+                {% if not section %}
+                    {{ chapter.title }}
+                {% elif section %}
+                    {{ section.title }}
+                {% endif %}
+            {% else %}
+                {{ campaign.title }}
+            {% endif %}
+        </span>
+        <a href="" id="body-tools-dropdown" class="text-dark"><i class="fas fa-cog"></i></a>
+    </h4>
+
+    <div id="body-tools">
+        {% if chapter %}
+            {% if not section %}
+                <p>
+                    <a href="{% url 'campaign:section_create' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create section</span></a>
+                </p>
+                <p>
+                    <a href="{% url 'campaign:chapter_update' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="text-teal"><i class="fas fa-fw fa-lg fa-pen-square"></i><span>Edit chapter</span></a>
+                </p>
+                <p>
+                    <a id="chapter-delete" href="{% url 'campaign:chapter_delete' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="text-danger"><i class="fas fa-fw fa-lg fa-trash-alt"></i><span>Delete chapter</span></a>
+                </p>
+            {% elif section %}
+                <p>
+                    <a href="{% url 'campaign:section_create' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create another section</span></a>
+                </p>
+                <p>
+                    <a href="{% url 'campaign:section_update' campaign_pk=campaign.pk chapter_pk=chapter.pk section_pk=section.pk%}" class="text-teal"><i class="fas fa-fw fa-lg fa-pen-square"></i><span>Edit section</span></a>
+                </p>
+                <p>
+                    <a id="section-delete" href="{% url 'campaign:section_delete' campaign_pk=campaign.pk chapter_pk=chapter.pk section_pk=section.pk %}" class="text-danger"><i class="fas fa-fw fa-lg fa-trash-alt"></i><span>Delete section</span></a>
+                </p>
+            {% endif %}
+        {% else %}
+            <p>
+                <a href="{% url 'campaign:chapter_create' campaign_pk=campaign.pk %}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create chapter</span></a>
+            </p>
+        {% endif %}
+
+    </div>
+
     {% if chapter %}
         {% if not section %}
-            <h4>{{ chapter.title }}</h4>
             {{ chapter.content|safe }}
         {% elif section %}
-            <h4>{{ section.title }}</h4>
             {{ section.content|safe }}
         {% endif %}
     {% else %}
-        <h4>{{ campaign.title }}</h4>
         <p>No content</p>
     {% endif %}
 </div>
