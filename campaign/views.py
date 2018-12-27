@@ -21,7 +21,7 @@ from . import forms
 from . import models
 from . import utils
 from characters.models import Monster, NPC, Player
-from dungeonomics.utils import at_tagging, rating_monster
+from dungeonomics.utils import at_tagging, campaign_context, rating_monster
 from dungeonomics import settings
 from items.models import Item
 from locations.models import Location, World
@@ -31,101 +31,40 @@ from tavern.models import Review
 
 
 @login_required
-def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None):
-    campaigns = models.Campaign.objects.filter(user=request.user).order_by('title')
-    if campaign_pk:
-        campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-        posts = Post.objects.filter(campaign=campaign).order_by('-date')[:5]
-        if campaign.user == request.user:
-            chapters = sorted(models.Chapter.objects.filter(campaign=campaign),
-            key=lambda chapter: chapter.order)
+def campaign_detail(request, campaign_pk=None):
+    data = campaign_context(
+        request=request,
+        data={},
+        campaign_pk=campaign_pk,
+        chapter_pk=None,
+        section_pk=None,
+    )
+    data['action'] = "campaign_detail"
+    return render(request, 'campaign/body_detail.html', data)
 
-            if chapter_pk:
-                chapter = get_object_or_404(models.Chapter, pk=chapter_pk)
-            else:
-                if len(chapters) > 0:
-                    chapter = chapters[0]
-                else:
-                    chapter = None
+@login_required
+def chapter_detail(request, campaign_pk, chapter_pk):
+    data = campaign_context(
+        request=request,
+        data={},
+        campaign_pk=campaign_pk,
+        chapter_pk=chapter_pk,
+        section_pk=None,
+    )
+    data['action'] = "chapter_detail"
+    return render(request, 'campaign/body_detail.html', data)
 
-            sections = []
-            for c in chapters:
-                sections.append(sorted(
-                    models.Section.objects.filter(chapter=c),
-                    key=lambda section: section.order
-                    ))
-            sections = [item for sublist in sections for item in sublist]
-
-            if section_pk:
-                section = get_object_or_404(models.Section, pk=section_pk)
-            else:
-                section = None
-
-            if chapter:
-                if section:
-                    return render(request, 'campaign/campaign_detail.html', {
-                        'campaigns': campaigns,
-                        'campaign': campaign,
-                        'chapter': chapter,
-                        'section': section,
-                        'chapters': chapters,
-                        'sections': sections,
-                        'posts': posts,
-                    })
-                else:
-                    return render(request, 'campaign/campaign_detail.html', {
-                        'campaigns': campaigns,
-                        'campaign': campaign,
-                        'chapter': chapter,
-                        'chapters': chapters,
-                        'sections': sections,
-                        'posts': posts,
-                    })
-            else:
-                return render(request, 'campaign/campaign_detail.html', {
-                    'campaigns': campaigns,
-                    'campaign': campaign,
-                    'posts': posts,
-                })
-        else:
-            raise Http404
-    else:
-        campaign = None
-        user = None
-        if request.user.is_authenticated:
-            user = request.user.pk
-#        campaigns = sorted(models.Campaign.objects.filter(user=user),
-#            key=lambda campaign: campaign.title)
-        if len(campaigns) > 0:
-            campaign = campaigns[0]
-            posts = Post.objects.filter(campaign=campaign).order_by('-date')[:5]
-
-            chapters = sorted(models.Chapter.objects.filter(campaign=campaign), key=lambda chapter: chapter.order)
-            if len(chapters) > 0:
-                chapter = chapters[0]
-            else:
-                chapter = None
-
-            sections = []
-            for c in chapters:
-                sections.append(sorted(
-                    models.Section.objects.filter(chapter=c),
-                    key=lambda section: section.order
-                    ))
-            sections = [item for sublist in sections for item in sublist]
-
-            return render(request, 'campaign/campaign_detail.html', {
-                'campaigns': campaigns,
-                'campaign': campaign,
-                'chapter': chapter,
-                'chapters': chapters,
-                'sections': sections,
-                'posts': posts,
-            })
-        return render(request, 'campaign/campaign_detail.html', {
-            'campaigns': campaigns,
-            'campaign': campaign,
-        })
+@login_required
+def section_detail(request, campaign_pk, chapter_pk, section_pk):
+    data = campaign_context(
+        request=request,
+        data={},
+        campaign_pk=campaign_pk,
+        chapter_pk=chapter_pk,
+        section_pk=section_pk,
+    )
+    data['action'] = "section_detail"
+    return render(request, 'campaign/body_detail.html', data)
 
 class CampaignCreate(LoginRequiredMixin, CreateView):
     model = models.Campaign
@@ -145,10 +84,17 @@ class ChapterCreate(View):
         campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
         if campaign.user == request.user:
             data = at_tagging(request)
-            data['campaign'] = campaign
+            data = campaign_context(
+                request=request,
+                data=data,
+                campaign_pk=kwargs['campaign_pk'],
+                chapter_pk=None,
+                section_pk=None,
+            )
+            data['action'] = "chapter_create"
             data['form'] = forms.ChapterForm()
-            data['chapter_number'] = utils.get_next_order(campaign)
-            return render(request, 'campaign/chapter_form.html', data)
+            data['order_number'] = utils.get_next_order(data['campaign'])
+            return render(request, 'campaign/cs_form.html', data)
         raise Http404
 
     def post(self, request, *args, **kwargs):
@@ -170,12 +116,17 @@ class SectionCreate(View):
         campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
         if campaign.user == request.user:
             data = at_tagging(request)
-            chapter = get_object_or_404(models.Chapter, pk=kwargs['chapter_pk'])
-            data['campaign'] = campaign
-            data['chapter'] = chapter
+            data = campaign_context(
+                request=request,
+                data=data,
+                campaign_pk=kwargs['campaign_pk'],
+                chapter_pk=kwargs['chapter_pk'],
+                section_pk=None,
+            )
+            data['action'] = "section_create"
             data['form'] = forms.SectionForm()
-            data['section_number'] = utils.get_next_order(chapter)
-            return render(request, 'campaign/section_form.html', data)
+            data['order_number'] = utils.get_next_order(data['chapter'])
+            return render(request, 'campaign/cs_form.html', data)
         raise Http404
 
     def post(self, request, *args, **kwargs):
@@ -226,12 +177,21 @@ def chapter_update(request, campaign_pk, chapter_pk):
     chapter = get_object_or_404(models.Chapter, pk=chapter_pk, campaign_id=campaign_pk)
     if chapter.user == request.user:
         data = at_tagging(request)
-        sections = models.Section.objects.filter(chapter=chapter)
+        data = campaign_context(
+            request=request,
+            data=data,
+            campaign_pk=chapter.campaign.pk,
+            chapter_pk=chapter.pk,
+            section_pk=None,
+        )
+        data['action'] = "chapter_update"
+#        sections = models.Section.objects.filter(chapter=chapter)
         form = forms.ChapterForm(instance=chapter)
         section_forms = forms.SectionInlineFormSet(queryset=form.instance.section_set.all())
         if request.method == 'POST':
             form = forms.ChapterForm(request.POST, instance=chapter)
-            section_forms = forms.SectionInlineFormSet(request.POST, queryset=form.instance.section_set.all())
+            section_forms = forms.SectionInlineFormSet(
+                request.POST, queryset=form.instance.section_set.all())
             if form.is_valid() and section_forms.is_valid():
                 form.save()
                 sections = section_forms.save(commit=False)
@@ -245,18 +205,26 @@ def chapter_update(request, campaign_pk, chapter_pk):
                 return HttpResponseRedirect(chapter.get_absolute_url())
     else:
         raise Http404
-    data['campaign'] = chapter.campaign
-    data['chapter'] = chapter
-    data['sections'] = sections
+#    data['campaign'] = chapter.campaign
+#    data['chapter'] = chapter
+#    data['sections'] = sections
     data['form'] = form
     data['formset'] = section_forms
-    return render(request, 'campaign/chapter_form.html', data)
+    return render(request, 'campaign/cs_form.html', data)
 
 @login_required
 def section_update(request, campaign_pk, chapter_pk, section_pk):
     section = get_object_or_404(models.Section, pk=section_pk, chapter_id=chapter_pk, campaign_id=campaign_pk)
     if section.user == request.user:
         data = at_tagging(request)
+        data = campaign_context(
+            request=request,
+            data=data,
+            campaign_pk=section.chapter.campaign.pk,
+            chapter_pk=section.chapter.pk,
+            section_pk=section.pk,
+        )
+        data['action'] = "section_update"
         form = forms.SectionForm(instance=section)
         if request.method == 'POST':
             form = forms.SectionForm(instance=section, data=request.POST)
@@ -267,10 +235,10 @@ def section_update(request, campaign_pk, chapter_pk, section_pk):
     else:
         raise Http404
     data['form'] = form
-    data['campaign'] = section.chapter.campaign
-    data['chapter'] = section.chapter
-    data['section'] = section
-    return render(request, 'campaign/section_form.html', data)
+#    data['campaign'] = section.chapter.campaign
+#    data['chapter'] = section.chapter
+#    data['section'] = section
+    return render(request, 'campaign/cs_form.html', data)
 
 @login_required
 def campaign_print(request, campaign_pk):

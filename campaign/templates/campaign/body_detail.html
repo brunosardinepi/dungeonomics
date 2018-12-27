@@ -1,0 +1,24 @@
+{% extends 'campaign/template_campaign.html' %}
+
+{% load widget_tweaks %}
+
+
+{% block title %}
+    {% if section %}
+        {{ section.title }}
+    {% elif chapter %}
+        {{ chapter.title }}
+    {% else %}
+        {{ campaign.title }}
+    {% endif %} | {{ block.super }}
+{% endblock %}
+
+{% block body_main %}
+    {% if section %}
+        {{ section.content|safe }}
+    {% elif chapter %}
+        {{ chapter.content|safe }}
+    {% else %}
+        <p>No content</p>
+    {% endif %}
+{% endblock %}

@@ -4,10 +4,14 @@
 
 
 {% block title %}
-    {% if chapter.pk %}
-        Update chapter 
-    {% else %}
+    {% if action == "chapter_create" %}
         New chapter 
+    {% elif action == "chapter_update" %}
+        Update chapter 
+    {% elif action == "section_create" %}
+        New section 
+    {% elif action == "section_update" %}
+        Update section 
     {% endif %}
     | {{ block.super }}
 {% endblock %}
@@ -76,7 +80,7 @@
         }
         tinymce.init({
             selector: "#id_content",
-            height : "250",
+            height : "200",
             plugins: [
             'paste autosave autolink print searchreplace table textcolor wordcount link image mention'
             ],
@@ -117,5 +121,84 @@
 {% endblock %}
 
 {% block body_main %}
-    {% include "campaign/include_chapter_body.html" %}
+    <form method="POST" action="">
+        {% csrf_token %}
+    
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+    
+        <div class="form-group">
+            <label for="{{ form.title.id_for_label }}">Title</label>
+            {% render_field form.title class+="form-control mb-3" %}
+            {% if form.title.errors %}
+                {% for error in form.title.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error|escape }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    
+        <div class="form-group">
+            {% render_field form.content class+="form-control mb-3" %}
+            {% if form.content.errors %}
+                {% for error in form.content.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error|escape }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    
+        <div class="form-group">
+            <label for="{{ form.order.id_for_label }}">Order</label>
+            {% if "update" in action %}
+                {% render_field form.order class+="form-control mb-3" %}
+            {% else %}
+                <input type="number" name="{{ form.order.name }}" value="{{ order_number }}" id="{{ form.order.id_for_label }}" class="form-control mb-3" required>
+            {% endif %}
+            {% if form.order.errors %}
+                {% for error in form.order.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error|escape }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    
+        {{ formset.management_form }}
+
+        {% if formset %}
+                {% for form in formset %}
+                    {% if forloop.first %}
+                        <label>Sections</label>
+                    {% endif %}
+                    <div class="row mb-4 mb-lg-1">
+                        <div class="col-md-2">{{ form.id }}{% render_field form.order class+="form-control" placeholder+="Order" %}</div>
+                        <div class="col-md-8">{% render_field form.title class+="form-control" placeholder+="Title" %}</div>
+                        <div class="col-md-2 align-self-center text-center">{% if form.instance.pk %}{% render_field form.DELETE class+="form-check-label" %} Delete{% endif %}</div>
+                    </div>
+                {% endfor %}
+        {% endif %}
+    
+        <div class="row justify-content-between mt-3">
+            <div class="col-auto">
+                {% if chapter %}
+                    {% if section %}
+                        <a href="{% url 'campaign:section_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk section_pk=section.pk %}" class="btn btn-secondary">Cancel</a>
+                    {% else %}
+                        <a href="{% url 'campaign:chapter_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="btn btn-secondary">Cancel</a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk %}" class="btn btn-secondary">Cancel</a>
+                {% endif %}
+            </div>
+            <div class="col-auto">
+                <input type="submit" class="btn btn-primary" value="Save">
+            </div>
+        </div>
+    </form>
 {% endblock %}

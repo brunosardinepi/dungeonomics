@@ -9,9 +9,9 @@ app_name = 'campaign'
 urlpatterns = [
     path('<int:campaign_pk>/', views.campaign_detail, name='campaign_detail'),
     path('<int:campaign_pk>/chapter/<int:chapter_pk>/',
-        views.campaign_detail, name='campaign_detail'),
+        views.chapter_detail, name='chapter_detail'),
     path('<int:campaign_pk>/chapter/<int:chapter_pk>/section/<int:section_pk>/',
-        views.campaign_detail, name='campaign_detail'),
+        views.section_detail, name='section_detail'),
 
     path('create/', views.CampaignCreate.as_view(), name='campaign_create'),
     path('<int:campaign_pk>/chapter/create/',

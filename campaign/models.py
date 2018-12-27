@@ -67,7 +67,7 @@ class Chapter(CampaignTemplate):
         ordering = ['order', 'title', ]
 
     def get_absolute_url(self):
-        return reverse('campaign:campaign_detail', kwargs={
+        return reverse('campaign:chapter_detail', kwargs={
             'campaign_pk': self.campaign_id,
             'chapter_pk': self.pk
             })
@@ -84,7 +84,7 @@ class Section(CampaignTemplate):
         ordering = ['order', 'title',]
 
     def get_absolute_url(self):
-        return reverse('campaign:campaign_detail', kwargs={
+        return reverse('campaign:section_detail', kwargs={
             'campaign_pk': self.campaign_id,
             'chapter_pk': self.chapter_id,
             'section_pk': self.pk

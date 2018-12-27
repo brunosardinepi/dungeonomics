@@ -50,4 +50,4 @@ transform:rotate(-0deg);
 @media (max-width:575.98px){body{margin-bottom:180px}.footer{height:180px}#footer-social li{padding:0 0.25rem}.back-to-party{text-align:left}}
 @media (min-width:576px){.back-to-party{text-align:right}}
 @media (min-width:768px){div[id$="-tools"]{box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1)}.col-shadow{box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1)}}
-@media (min-width:992px){div[id$="-tools"] p{padding:0.25rem 0}.full-vh{min-height:calc(100vh - 60px - 56px);padding-top:1rem!important}.notes-shadow{box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1)}.container-fluid{font-size:0.875rem!important}body{margin-bottom:60px}.footer{height:60px}#footer-social{text-align:right!important}}
+@media (min-width:992px){div[id$="-tools"] p{padding:0.25rem 0}.full-vh{overflow-y:auto;height:calc(100vh - 60px - 56px);padding-top:1rem!important}.notes-shadow{box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1)}.container-fluid{font-size:0.875rem!important}body{margin-bottom:60px}.footer{height:60px}#footer-social{text-align:right!important}}
