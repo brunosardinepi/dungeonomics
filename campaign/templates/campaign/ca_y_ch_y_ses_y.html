@@ -1,0 +1,125 @@
+{% extends "_cols.html" %}
+
+
+{% block col1_order %}order-1{% endblock col1_order %}
+
+{% block col1_title %}Campaigns{% endblock col1_title %}
+
+{% block col1_tools %}
+    <input type="text" class="form-control form-control-sm" placeholder="Search for campaigns">
+    <p>
+        <a href="{% url 'campaign:campaign_create' %}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create campaign</span></a>
+    </p>
+{% endblock col1_tools %}
+
+{% block col1_contents %}
+    <ul class="contents_list">
+        {% for c in campaigns %}
+            <li{% if c == campaign %} class="font-weight-bold"{% endif %}>
+                <a href="{% url 'campaign:campaign_detail' campaign_pk=c.pk %}">{{ c }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock col1_contents %}
+
+
+{% block col2_order %}order-2{% endblock col2_order %}
+
+{% block col2_title %}Contents{% endblock col2_title %}
+
+{% block col2_tools %}
+    <input type="text" class="form-control form-control-sm" placeholder="Search in contents">
+    <p>
+        <a href="{% url 'campaign:chapter_create' campaign_pk=campaign.pk%}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create chapter</span></a>
+    </p>
+    <p>
+        <a href="{%url 'campaign:campaign_update' campaign_pk=campaign.pk %}" class="text-teal"><i class="fas fa-fw fa-lg fa-pen-square"></i><span>Edit campaign</span></a>
+    </p>
+    <p>
+        <a href="" class="text-purple"><i class="fas fa-fw fa-lg fa-cloud-upload"></i><span>Publish campaign</span></a>
+    </p>
+    <p>
+        <a href="" class="text-orange"><i class="fas fa-fw fa-lg fa-save"></i><span>Print campaign</span></a>
+    </p>
+    <p>
+        <a id="campaign-delete" href="{% url 'campaign:campaign_delete' campaign_pk=campaign.pk %}" class="text-danger"><i class="fas fa-fw fa-lg fa-trash-alt"></i><span>Delete campaign</span></a>
+    </p>
+{% endblock col2_tools %}
+
+{% block col2_contents %}
+    <ul class="contents_list">
+        {% for c in chapters %}
+            <li>
+                <a {% if c == chapter and not section and "chapter_create" not in action %}class="font-weight-bold" {% endif %}href="{% url 'campaign:chapter_detail' campaign_pk=campaign.pk chapter_pk=c.pk %}">
+                    {{ c.title }}
+                </a>
+            </li>
+            <ul class="pl-3">
+                {% for s in sections %}
+                    {% if s.chapter.pk == c.pk %}
+                        <li>
+                            <a {% if s == section %}class="font-weight-bold" {% endif %}href="{% url 'campaign:section_detail' campaign_pk=campaign.pk chapter_pk=c.pk section_pk=s.pk %}">
+                                {{ s.title }}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </ul>
+    <hr>
+    <h6 class="d-flex justify-content-between align-items-center">
+        <span>Party</span>
+        <a href="" id="party-tools-dropdown" class="text-dark"><i class="fas fa-cog"></i></a>
+    </h6>
+    <div id="party-tools">
+        <input type="text" class="form-control form-control-sm" placeholder="Search for posts">
+        <p>
+            <a href="{% url 'campaign:campaign_party' campaign_pk=campaign.pk %}" class="text-pink"><i class="fas fa-fw fa-lg fa-swords"></i><span>View party</span></a>
+        </p>
+        <p>
+            <a href="{% url 'campaign:post_create' campaign_pk=campaign.pk %}" class="text-teal"><i class="fas fa-fw fa-lg fa-comment"></i><span>New post</span></a>
+        </p>
+        <p>
+            <a href="{% url 'campaign:campaign_party_invite' campaign_pk=campaign.pk %}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Invite players</span></a>
+        </p>
+    </div>
+    {% include "posts/party_feed.html" with posts=posts %}
+{% endblock col2_contents %}
+
+
+{% block col3_order %}order-lg-3 order-4{% endblock col3_order %}
+
+{% block col3_title %}{{ chapter.title }}{% endblock col3_title %}
+
+{% block col3_tools %}
+    <p>
+        <a href="{% url 'campaign:section_create' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create section</span></a>
+    </p>
+    <p>
+        <a href="{%url 'campaign:chapter_update' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="text-teal"><i class="fas fa-fw fa-lg fa-pen-square"></i><span>Edit chapter</span></a>
+    </p>
+    <p>
+        <a id="chapter-delete" href="{% url 'campaign:chapter_delete' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="text-danger"><i class="fas fa-fw fa-lg fa-trash-alt"></i><span>Delete chapter</span></a>
+    </p>
+{% endblock col3_tools %}
+
+{% block col3_contents %}{{ chapter.content|safe }}{% endblock col3_contents %}
+
+
+{% block col4_order %}order-lg-4 order-3{% endblock col4_order %}
+
+{% block col4_title %}Tags{% endblock col4_title %}
+
+{% block col4_tools %}
+    <input type="text" class="form-control form-control-sm" placeholder="Search for tags">
+    <p>
+        <a href="" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create tags</span></a>
+    </p>
+    <p>
+        <a href="" class="text-danger"><i class="fas fa-fw fa-lg fa-trash-alt"></i><span>Delete tags</span></a>
+    </p>
+{% endblock col4_tools %}
+
+{% block col4_contents %}
+{% endblock col4_contents %}

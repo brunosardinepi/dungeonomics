@@ -23,7 +23,7 @@ class CampaignTest(TestCase):
             models.Campaign,
             user=self.users[0],
             is_published=True,
-            _quantity=2,
+            _quantity=3,
             _fill_optional=True,
         )
         self.campaigns[1].user = self.users[1]
@@ -182,7 +182,13 @@ class CampaignTest(TestCase):
     def test_campaign_delete(self):
         self.client.force_login(self.users[0])
         response = self.client.get('/campaign/{}/delete/'.format(self.campaigns[0].pk))
+        # user[0] has multiple campaigns so this will redirect to the campaign page
         self.assertRedirects(response, '/campaign/', 302, 200)
+
+        self.client.force_login(self.users[1])
+        response = self.client.get('/campaign/{}/delete/'.format(self.campaigns[1].pk))
+        # user[1] has one campaign so this will redirect to the campaign create page
+        self.assertRedirects(response, '/campaign/', 302, 302)
 
         campaigns = models.Campaign.objects.all()
         self.assertNotIn(self.campaigns[0], campaigns)

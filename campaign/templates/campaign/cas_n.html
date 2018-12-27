@@ -1,0 +1,59 @@
+{% extends "_cols.html" %}
+
+
+{% block col1_order %}order-1{% endblock col1_order %}
+
+{% block col1_title %}Campaigns{% endblock col1_title %}
+
+{% block col1_tools %}
+    <p>
+        <a href="{% url 'campaign:campaign_create' %}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create campaign</span></a>
+    </p>
+{% endblock col1_tools %}
+
+{% block col1_contents %}
+    <p>No campaigns</p>
+{% endblock col1_contents %}
+
+
+{% block col2_order %}order-2{% endblock col2_order %}
+
+{% block col2_title %}Contents{% endblock col2_title %}
+
+{% block col2_tools %}
+    <p>
+        <a href="{% url 'campaign:campaign_create' %}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create campaign</span></a>
+    </p>
+{% endblock col2_tools %}
+
+{% block col2_contents %}
+    <p>No campaigns</p>
+{% endblock col2_contents %}
+
+
+{% block col3_order %}order-lg-3 order-4{% endblock col3_order %}
+
+{% block col3_title %}{% endblock col3_title %}
+
+{% block col3_tools %}
+    <p>
+        <a href="{% url 'campaign:campaign_create' %}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create campaign</span></a>
+    </p>
+{% endblock col3_tools %}
+
+{% block col3_contents %}
+{% endblock col3_contents %}
+
+
+{% block col4_order %}order-lg-4 order-3{% endblock col4_order %}
+
+{% block col4_title %}Tags{% endblock col4_title %}
+
+{% block col4_tools %}
+    <p>
+        <a href="{% url 'campaign:campaign_create' %}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create campaign</span></a>
+    </p>
+{% endblock col4_tools %}
+
+{% block col4_contents %}
+{% endblock col4_contents %}

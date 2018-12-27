@@ -9,7 +9,7 @@ assets.forEach(function(element){
 
 tinymce.init({
     selector: "textarea",
-    height : "100",
+    height : "300",
     plugins: [
     'paste autosave autolink print searchreplace table textcolor wordcount link image mention hr'
     ],

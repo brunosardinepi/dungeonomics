@@ -41,7 +41,22 @@ def campaign_detail(request, campaign_pk=None):
         section_pk=None,
     )
     data['action'] = "campaign_detail"
-    return render(request, 'campaign/body_detail.html', data)
+
+    template = "campaign/"
+    if data.get('section'):
+        template += "ca_y_ch_y_se_y"
+    elif data.get('chapter'):
+        if data.get('sections'):
+            template += "ca_y_ch_y_ses_y"
+        else:
+            template += "ca_y_ch_y_ses_n"
+    elif data.get('campaign'):
+        template += "ca_y_chs_n"
+    else:
+        return redirect('campaign:campaign_create')
+    template += ".html"
+
+    return render(request, template, data)
 
 @login_required
 def chapter_detail(request, campaign_pk, chapter_pk):
@@ -53,7 +68,17 @@ def chapter_detail(request, campaign_pk, chapter_pk):
         section_pk=None,
     )
     data['action'] = "chapter_detail"
-    return render(request, 'campaign/body_detail.html', data)
+
+    template = "campaign/"
+    if data.get('section'):
+        template += "ca_y_ch_y_se_y"
+    elif data.get('sections'):
+        template += "ca_y_ch_y_ses_y"
+    else:
+        template += "ca_y_ch_y_ses_n"
+    template += ".html"
+
+    return render(request, template, data)
 
 @login_required
 def section_detail(request, campaign_pk, chapter_pk, section_pk):
@@ -65,7 +90,8 @@ def section_detail(request, campaign_pk, chapter_pk, section_pk):
         section_pk=section_pk,
     )
     data['action'] = "section_detail"
-    return render(request, 'campaign/body_detail.html', data)
+
+    return render(request, 'campaign/ca_y_ch_y_se_y.html', data)
 
 class CampaignCreate(LoginRequiredMixin, CreateView):
     model = models.Campaign

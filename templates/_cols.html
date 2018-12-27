@@ -1,0 +1,72 @@
+{% extends 'layout.html' %}
+
+{% load static from staticfiles %}
+{% load campaign_extras %}
+
+
+{% block title %}{{ campaign.title }} | {{ block.super }}{% endblock %}
+
+{% block body_content %}
+    <div class="container-fluid container-full-vh bg-white">
+        <div class="row row-full-vh">
+
+            <!-- COL 1 -->
+            <div class="col-md-4 col-lg-2 {% block col1_order %}{% endblock col1_order %} bg-light full-vh col-shadow">
+                <h6 class="d-flex justify-content-between align-items-center">
+                    <span>{% block col1_title %}{% endblock col1_title %}</span>
+                    <a href="" id="col1-tools-dropdown" class="text-dark"><i class="fas fa-cog"></i></a>
+                </h6>
+                <div id="col1-tools">
+                    {% block col1_tools %}{% endblock col1_tools %}
+                </div>
+                {% block col1_contents %}{% endblock col1_contents %}
+            </div>
+            <!-- END COL 1 -->
+
+            <!-- COL 2 -->
+            <div class="col-md-4 col-lg-2 {% block col2_order %}{% endblock col2_order %} bg-light full-vh col-shadow">
+                <h6 class="d-flex justify-content-between align-items-center">
+                    <span>{% block col2_title %}{% endblock col2_title %}</span>
+                    <a href="" id="col2-tools-dropdown" class="text-dark"><i class="fas fa-cog"></i></a>
+                </h6>
+                <div id="col2-tools">
+                    {% block col2_tools %}{% endblock col2_tools %}
+                </div>
+                {% block col2_contents %}{% endblock col2_contents %}
+            </div>
+            <!-- END COL 2 -->
+
+            <!-- COL 3 -->
+            <div class="col-md-12 col-lg-6 {% block col3_order %}{% endblock col3_order %} bg-white full-vh notes-shadow pb-3">
+                <h4 class="d-flex justify-content-between align-items-center">
+                    <span>{% block col3_title %}{% endblock col3_title %}</span>
+                    <a href="" id="col3-tools-dropdown" class="text-dark"><i class="fas fa-cog"></i></a>
+                </h4>
+                <div id="col3-tools">
+                    {% block col3_tools %}{% endblock col3_tools %}
+                </div>
+                {% block col3_contents %}{% endblock col3_contents %}
+            </div>
+            <!-- END COL 3 -->
+
+            <!-- COL 4 -->
+            <div class="col-md-4 col-lg-2 {% block col4_order %}{% endblock col4_order %} bg-light full-vh">
+                <h6 class="d-flex justify-content-between align-items-center">
+                    <span>{% block col4_title %}{% endblock col4_title %}</span>
+                    <a href="" id="col4-tools-dropdown" class="text-dark"><i class="fas fa-cog"></i></a>
+                </h6>
+                <div id="col4-tools">
+                    {% block col4_tools %}{% endblock col4_tools %}
+                </div>
+                {% block col4_contents %}{% endblock col4_contents %}
+            </div>
+            <!-- END COL 4 -->
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block body_extra %}
+    <script src="{% static 'js/campaign_delete.js' %}"></script>
+    <script src="{% static 'js/tools_dropdown.js' %}"></script>
+{% endblock %}
