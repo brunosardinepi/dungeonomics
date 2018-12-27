@@ -1,0 +1,12 @@
+{% for type, character_list in characters.items %}
+    <span class="font-weight-bold">{{ type }}</span>
+    <ul class="contents_list">
+    {% for c in character_list %}
+        <li class="ml-3">
+            <a {% if c == character %}class="font-weight-bold" {% endif %}href="{% url 'characters:character_detail' pk=c.pk %}">
+                {{ c.name }}
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+{% endfor %}
