@@ -1,5 +1,5 @@
 {% if stats %}
-    <div class="row justify-content-center bg-light pt-3 my-3">
+    <div class="row justify-content-center pt-3 my-3">
         {% for stat, values in stats.items %}
             {% if values.attribute.value %}
                 <div class="col-md-1 col">
@@ -17,9 +17,12 @@
 
 {% for attribute in character.attribute_set.all %}
     {% if attribute.name not in stats and attribute.name != "Character type" %}
-        <div class="row">
-            <div class="col-md-12">
-                <p><span class="font-weight-bold">{{ attribute.name }}</span> {{ attribute.value }}</p>
+        <div class="row mb-md-1 mb-3">
+            <div class="col-md-auto pr-0">
+                <span class="font-weight-bold">{{ attribute.name }}</span>
+            </div>
+            <div class="col">
+                {{ attribute.value }}
             </div>
         </div>
     {% endif %}
