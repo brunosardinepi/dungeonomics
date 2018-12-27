@@ -185,7 +185,6 @@ def chapter_update(request, campaign_pk, chapter_pk):
             section_pk=None,
         )
         data['action'] = "chapter_update"
-#        sections = models.Section.objects.filter(chapter=chapter)
         form = forms.ChapterForm(instance=chapter)
         section_forms = forms.SectionInlineFormSet(queryset=form.instance.section_set.all())
         if request.method == 'POST':
@@ -205,9 +204,6 @@ def chapter_update(request, campaign_pk, chapter_pk):
                 return HttpResponseRedirect(chapter.get_absolute_url())
     else:
         raise Http404
-#    data['campaign'] = chapter.campaign
-#    data['chapter'] = chapter
-#    data['sections'] = sections
     data['form'] = form
     data['formset'] = section_forms
     return render(request, 'campaign/cs_form.html', data)
@@ -235,9 +231,6 @@ def section_update(request, campaign_pk, chapter_pk, section_pk):
     else:
         raise Http404
     data['form'] = form
-#    data['campaign'] = section.chapter.campaign
-#    data['chapter'] = section.chapter
-#    data['section'] = section
     return render(request, 'campaign/cs_form.html', data)
 
 @login_required
@@ -271,7 +264,7 @@ def campaign_delete(request, campaign_pk):
     if campaign.user == request.user:
         campaign.delete()
         messages.success(request, 'Campaign deleted', fail_silently=True)
-        return HttpResponseRedirect(reverse('home'))
+        return HttpResponseRedirect(reverse('campaign:campaign_detail'))
     else:
         raise Http404
 
