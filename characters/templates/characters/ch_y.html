@@ -1,0 +1,88 @@
+{% extends "_cols.html" %}
+
+
+{% block col1_order %}order-1{% endblock col1_order %}
+
+{% block col1_title %}Campaigns{% endblock col1_title %}
+
+{% block col1_tools %}
+    <input type="text" class="form-control form-control-sm" placeholder="Search for characters">
+    <p>
+        <a href="{% url 'characters:character_create' %}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create character</span></a>
+    </p>
+{% endblock col1_tools %}
+
+{% block col1_contents %}
+    {% for type, character_list in characters.items %}
+        <span class="font-weight-bold">{{ type }}</span>
+        <ul class="contents_list">
+        {% for c in character_list %}
+            <li class="ml-3">
+                <a {% if c == character %}class="font-weight-bold" {% endif %}href="{% url 'characters:character_detail' pk=c.pk %}">
+                    {{ c.name }}
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+{% endblock col1_contents %}
+
+
+{% block col2_order %}order-2{% endblock col2_order %}
+
+{% block col2_title %}Contents{% endblock col2_title %}
+
+{% block col2_tools %}
+{% endblock col2_tools %}
+
+{% block col2_contents %}
+{% endblock col2_contents %}
+
+
+{% block col3_order %}order-lg-3 order-4{% endblock col3_order %}
+
+{% block col3_title %}{{ character.name }}{% endblock col3_title %}
+
+{% block col3_tools %}
+    <p>
+        <a href="{% url 'characters:character_update' pk=character.pk %}" class="text-teal"><i class="fas fa-fw fa-lg fa-pen-square"></i><span>Edit character</span></a>
+    </p>
+
+    {% if character.is_published == True %}
+        <p>
+            <a href="{% url 'tavern:tavern_character_detail' pk=character.pk %}" class="text-purple"><i class="fas fa-fw fa-lg fa-cloud-upload"></i><span>View on The Tavern</span></a>
+        </p>
+    {% else %}
+        <p>
+            <a href="{% url 'characters:character_publish' pk=character.pk %}" class="text-purple"><i class="fas fa-fw fa-lg fa-cloud-upload"></i><span>Publish character</span></a>
+        </p>
+    {% endif %}
+    <p>
+        <a href="{% url 'characters:character_copy' pk=character.pk %}" class="text-orange"><i class="fas fa-fw fa-lg fa-copy"></i><span>Copy character</span></a>
+    </p>
+    <p>
+        <a id="character-delete" href="{% url 'characters:character_delete' pk=character.pk %}" class="text-danger"><i class="fas fa-fw fa-lg fa-trash-alt"></i><span>Delete character</span></a>
+    </p>
+{% endblock col3_tools %}
+
+{% block col3_contents %}
+    {% include "characters/character_stats.html" with character=character stats=stats %}
+{% endblock col3_contents %}
+
+
+{% block col4_order %}order-lg-4 order-3{% endblock col4_order %}
+
+{% block col4_title %}Tags{% endblock col4_title %}
+
+{% block col4_tools %}
+    <input type="text" class="form-control form-control-sm" placeholder="Search for tags">
+    <p>
+        <a href="" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create tags</span></a>
+    </p>
+    <p>
+        <a href="" class="text-danger"><i class="fas fa-fw fa-lg fa-trash-alt"></i><span>Delete tags</span></a>
+    </p>
+{% endblock col4_tools %}
+
+{% block col4_contents %}
+{% endblock col4_contents %}

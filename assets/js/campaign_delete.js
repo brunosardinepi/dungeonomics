@@ -9,3 +9,7 @@ $(document).on('click', '#chapter-delete', function() {
 $(document).on('click', '#section-delete', function() {
     return confirm("Are you sure you want to delete this section? It will be gone forever!")
 });
+
+$(document).on('click', '#character-delete', function() {
+    return confirm("Are you sure you want to delete this character? It will be gone forever!")
+});

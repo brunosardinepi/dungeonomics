@@ -66,7 +66,7 @@ class CharacterDetail(View):
 
         if character:
             if character.user == request.user:
-                return render(request, 'characters/character_detail.html', {
+                return render(request, 'characters/ch_y.html', {
                     'characters': characters,
                     'character': character,
                     'character_types': character_types,
@@ -74,7 +74,7 @@ class CharacterDetail(View):
                 })
             raise Http404
         else:
-            return render(request, 'characters/character_detail.html')
+            return render(request, 'characters/ch_n.html')
         raise Http404
 
 @login_required
