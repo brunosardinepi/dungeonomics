@@ -54,7 +54,6 @@ def table_detail(request, table_pk=None):
 
 @login_required
 def table_create(request):
-    data = at_tagging(request)
     form = forms.TableForm()
     formset = forms.TableOptionFormSet()
     if request.method == 'POST':
@@ -72,13 +71,14 @@ def table_create(request):
 
             messages.add_message(request, messages.SUCCESS, "Table created!")
             return HttpResponseRedirect(table.get_absolute_url())
-    data['form'] = form
-    data['formset'] = formset
-    return render(request, 'tables/table_form.html', data)
+    return render(request, 'tables/table_form.html', {
+        'assets': at_tagging(request),
+        'form': form,
+        'formset': formset,
+    })
 
 @login_required
 def table_update(request, table_pk):
-    data = at_tagging(request)
     table = get_object_or_404(models.Table, pk=table_pk)
     if table.user == request.user:
         form = forms.TableForm(instance=table)
@@ -101,10 +101,12 @@ def table_update(request, table_pk):
                 return HttpResponseRedirect(table.get_absolute_url())
     else:
         raise Http404
-    data['form'] = form
-    data['formset'] = formset
-    data['table'] = table
-    return render(request, 'tables/table_form.html', data)
+    return render(request, 'tables/table_form.html', {
+        'assets': at_tagging(request),
+        'form': form,
+        'formset': formset,
+        'table': table,
+    })
 
 @login_required
 def table_delete(request, table_pk):
@@ -127,9 +129,7 @@ def table_roll(request):
 
     # pick a random one and return the pk
     random_option = choice(table_options).pk
-    data = {
-        'pk': random_option
-    }
+    data = {'pk': random_option}
 
     return JsonResponse(data)
 

@@ -8,7 +8,7 @@ from model_mommy import mommy
 
 from . import forms
 from . import models
-from characters.models import Player
+from characters.models import GeneralCharacter
 from posts.models import Post
 from tavern.models import Review
 
@@ -54,14 +54,14 @@ class CampaignTest(TestCase):
         self.sections[1].chapter = self.chapters[1]
         self.sections[1].save()
 
-        self.players = mommy.make(
-            Player,
+        self.characters = mommy.make(
+            GeneralCharacter,
             _quantity=3,
             user=self.users[1],
             _fill_optional=True,
         )
-        self.players[1].campaigns.add(self.campaigns[0])
-        self.players[2].campaigns.add(self.campaigns[0])
+        self.characters[1].campaigns.add(self.campaigns[0])
+        self.characters[2].campaigns.add(self.campaigns[0])
 
         self.post = mommy.make(
             Post,
@@ -181,8 +181,8 @@ class CampaignTest(TestCase):
 
     def test_campaign_delete(self):
         self.client.force_login(self.users[0])
-        response = self.client.post('/campaign/{}/delete/'.format(self.campaigns[0].pk), {})
-        self.assertRedirects(response, '/', 302, 200)
+        response = self.client.get('/campaign/{}/delete/'.format(self.campaigns[0].pk))
+        self.assertRedirects(response, '/campaign/', 302, 200)
 
         campaigns = models.Campaign.objects.all()
         self.assertNotIn(self.campaigns[0], campaigns)
@@ -276,7 +276,8 @@ class CampaignTest(TestCase):
 
     def test_chapter_delete(self):
         self.client.force_login(self.users[0])
-        response = self.client.post('/campaign/{}/chapter/{}/delete/'.format(self.campaigns[0].pk, self.chapters[0].pk), {})
+        response = self.client.get('/campaign/{}/chapter/{}/delete/'.format(
+            self.campaigns[0].pk, self.chapters[0].pk), {})
         self.assertRedirects(response, '/campaign/{}/'.format(self.campaigns[0].pk), 302, 200)
 
         chapters = models.Chapter.objects.all()
@@ -317,7 +318,11 @@ class CampaignTest(TestCase):
 
     def test_section_edit_page(self):
         self.client.force_login(self.users[0])
-        response = self.client.get('/campaign/{}/chapter/{}/section/{}/edit/'.format(self.campaigns[0].pk, self.chapters[0].pk, self.sections[0].pk))
+        response = self.client.get('/campaign/{}/chapter/{}/section/{}/edit/'.format(
+            self.campaigns[0].pk,
+            self.chapters[0].pk,
+            self.sections[0].pk,
+        ))
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.campaigns[0].title)
@@ -342,8 +347,12 @@ class CampaignTest(TestCase):
 
     def test_section_delete(self):
         self.client.force_login(self.users[0])
-        response = self.client.post('/campaign/{}/chapter/{}/section/{}/delete/'.format(self.campaigns[0].pk, self.chapters[0].pk, self.sections[0].pk), {})
-        self.assertRedirects(response, '/campaign/{}/chapter/{}/'.format(self.campaigns[0].pk, self.chapters[0].pk), 302, 200)
+        response = self.client.get('/campaign/{}/chapter/{}/section/{}/delete/'.format(
+            self.campaigns[0].pk,
+            self.chapters[0].pk,
+            self.sections[0].pk))
+        self.assertRedirects(response, '/campaign/{}/chapter/{}/'.format(
+            self.campaigns[0].pk, self.chapters[0].pk), 302, 200)
 
         sections = models.Section.objects.all()
         self.assertNotIn(self.sections[0], sections)
@@ -354,10 +363,8 @@ class CampaignTest(TestCase):
         response = self.client.get('/campaign/{}/party/'.format(self.campaigns[0].pk))
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.players[1].player_name)
-        self.assertContains(response, self.players[1].character_name)
-        self.assertContains(response, self.players[2].player_name)
-        self.assertContains(response, self.players[2].character_name)
+        self.assertContains(response, self.characters[1].name)
+        self.assertContains(response, self.characters[2].name)
         self.assertContains(response, self.post.title)
         self.assertContains(response, self.post.body)
 
@@ -375,8 +382,7 @@ class CampaignTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.campaigns[0].title)
-        self.assertContains(response, self.players[0].player_name)
-        self.assertContains(response, self.players[0].character_name)
+        self.assertContains(response, self.characters[0].name)
 
     def test_campaign_party_invite_accept_page_no_players(self):
         self.client.force_login(self.users[0])
@@ -384,7 +390,7 @@ class CampaignTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.campaigns[0].title)
-        self.assertContains(response, "You haven't created any players")
+        self.assertContains(response, "You haven't created any characters")
 
     def test_campaign_party_invite_accept_page_no_auth_no_invite(self):
         response = self.client.get('/campaign/{}/'.format(self.campaigns[0].public_url))
@@ -392,26 +398,23 @@ class CampaignTest(TestCase):
 
     def test_campaign_party_invite(self):
         self.client.force_login(self.users[1])
-        response = self.client.post('/campaign/{}/'.format(self.campaigns[0].public_url), {'player': self.players[0].pk})
+        response = self.client.post('/campaign/{}/'.format(self.campaigns[0].public_url), {'character': self.characters[0].pk})
         self.assertRedirects(response, '/campaign/{}/party/'.format(self.campaigns[0].pk), 302, 200)
 
-        players = self.campaigns[0].player_set.all()
-        self.assertEqual(players.count(), 3)
+        characters = self.campaigns[0].generalcharacter_set.all()
+        self.assertEqual(characters.count(), 3)
 
         response = self.client.get('/campaign/{}/party/'.format(self.campaigns[0].pk))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.players[0].player_name)
-        self.assertContains(response, self.players[0].character_name)
+        self.assertContains(response, self.characters[0].name)
 
     def test_campaign_party_remove_page_players(self):
         self.client.force_login(self.users[0])
         response = self.client.get('/campaign/{}/party/remove/'.format(self.campaigns[0].pk))
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.players[1].player_name)
-        self.assertContains(response, self.players[1].character_name)
-        self.assertContains(response, self.players[2].player_name)
-        self.assertContains(response, self.players[2].character_name)
+        self.assertContains(response, self.characters[1].name)
+        self.assertContains(response, self.characters[2].name)
 
     def test_campaign_party_remove_page_no_players(self):
         self.client.force_login(self.users[1])
@@ -427,61 +430,75 @@ class CampaignTest(TestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_campaign_party_remove_page_no_auth(self):
-        response = self.client.get('/campaign/{}/party/remove/'.format(self.campaigns[1].pk))
-        self.assertRedirects(response, '/accounts/login/?next=/campaign/{}/party/remove/'.format(self.campaigns[1].pk), 302, 200)
+        response = self.client.get(
+            '/campaign/{}/party/remove/'.format(self.campaigns[1].pk))
+        self.assertRedirects(response,
+            '/accounts/login/?next=/campaign/{}/party/remove/'.format(
+                self.campaigns[1].pk),
+            302, 200)
 
     def test_campaign_party_remove(self):
-        players = self.campaigns[0].player_set.all()
-        self.assertEqual(players.count(), 2)
+        characters = self.campaigns[0].generalcharacter_set.all()
+        self.assertEqual(characters.count(), 2)
 
         self.client.force_login(self.users[0])
-        response = self.client.post('/campaign/{}/party/remove/'.format(self.campaigns[0].pk), {'players': [self.players[1].pk, self.players[2].pk]})
-        self.assertRedirects(response, '/campaign/{}/party/'.format(self.campaigns[0].pk), 302, 200)
+        response = self.client.post(
+            '/campaign/{}/party/remove/'.format(self.campaigns[0].pk),
+            {'characters': [self.characters[1].pk, self.characters[2].pk]},
+        )
+        self.assertRedirects(response,
+            '/campaign/{}/party/'.format(self.campaigns[0].pk),
+            302, 200)
 
-        players = self.campaigns[0].player_set.all()
-        self.assertEqual(players.count(), 0)
+        characters = self.campaigns[0].generalcharacter_set.all()
+        self.assertEqual(characters.count(), 0)
 
         response = self.client.get('/campaign/{}/party/'.format(self.campaigns[0].pk))
         self.assertEqual(response.status_code, 200)
-        self.assertNotContains(response, self.players[1].player_name)
-        self.assertNotContains(response, self.players[1].character_name)
-        self.assertNotContains(response, self.players[2].player_name)
-        self.assertNotContains(response, self.players[2].character_name)
+        self.assertNotContains(response, self.characters[1].name)
+        self.assertNotContains(response, self.characters[2].name)
         self.assertContains(response, "You haven't invited anyone to your party")
 
     def test_campaign_party_player_detail_owner(self):
         self.client.force_login(self.users[0])
-        response = self.client.get('/campaign/{}/party/players/{}/'.format(self.campaigns[0].pk, self.players[0].pk))
+        response = self.client.get(
+            '/campaign/{}/party/players/{}/'.format(
+                self.campaigns[0].pk, self.characters[0].pk)
+        )
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.players[0].player_name)
-        self.assertContains(response, self.players[0].character_name)
-        self.assertNotContains(response, self.players[1].player_name)
-        self.assertNotContains(response, self.players[1].character_name)
-        self.assertNotContains(response, self.players[1].player_name)
-        self.assertNotContains(response, self.players[1].character_name)
+        self.assertContains(response, self.characters[0].name)
+        self.assertNotContains(response, self.characters[1].name)
 
     def test_campaign_party_player_detail_player(self):
         self.client.force_login(self.users[1])
-        response = self.client.get('/campaign/{}/party/players/{}/'.format(self.campaigns[0].pk, self.players[0].pk))
+        response = self.client.get(
+            '/campaign/{}/party/players/{}/'.format(
+                self.campaigns[0].pk, self.characters[0].pk)
+        )
 
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, self.players[0].player_name)
-        self.assertContains(response, self.players[0].character_name)
-        self.assertNotContains(response, self.players[1].player_name)
-        self.assertNotContains(response, self.players[1].character_name)
-        self.assertNotContains(response, self.players[1].player_name)
-        self.assertNotContains(response, self.players[1].character_name)
+        self.assertContains(response, self.characters[0].name)
+        self.assertNotContains(response, self.characters[1].name)
 
     def test_campaign_party_player_detail_auth_no_perms(self):
         self.client.force_login(self.users[2])
-        response = self.client.get('/campaign/{}/party/players/{}/'.format(self.campaigns[0].pk, self.players[0].pk))
+        response = self.client.get(
+            '/campaign/{}/party/players/{}/'.format(
+                self.campaigns[0].pk, self.characters[0].pk)
+        )
 
         self.assertEqual(response.status_code, 404)
 
     def test_campaign_party_player_detail_no_auth(self):
-        response = self.client.get('/campaign/{}/party/players/{}/'.format(self.campaigns[0].pk, self.players[0].pk))
-        self.assertRedirects(response, '/accounts/login/?next=/campaign/{}/party/players/{}/'.format(self.campaigns[0].pk, self.players[0].pk), 302, 200)
+        response = self.client.get(
+            '/campaign/{}/party/players/{}/'.format(
+                self.campaigns[0].pk, self.characters[0].pk)
+        )
+        self.assertRedirects(response,
+            '/accounts/login/?next=/campaign/{}/party/players/{}/'.format(
+                self.campaigns[0].pk, self.characters[0].pk),
+            302, 200)
 
     def test_tavern_publish(self):
         response = self.client.get('/campaign/{}/publish/'.format(self.campaigns[1].pk))
@@ -504,9 +521,9 @@ class CampaignTest(TestCase):
         )
         self.assertRedirects(
             response,
-            '/tavern/campaign/{}/'.format(self.campaigns[1].pk),
+            '/tavern/campaigns/{}/'.format(self.campaigns[1].pk),
             302, 200)
-        response = self.client.get('/tavern/campaign/{}/'.format(self.campaigns[1].pk))
+        response = self.client.get('/tavern/campaigns/{}/'.format(self.campaigns[1].pk))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.campaigns[1].title)
         self.assertContains(response, tavern_description)

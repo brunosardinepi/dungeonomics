@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% load static from staticfiles %}
+{% load static %}
 {% load humanize %}
 {% load vote_extras %}
 
@@ -73,39 +73,60 @@
             <div class="container">
                 <h1 class="text-center">Features</h1>
                 <div class="row justify-content-between">
-                    <div class="col-md-auto mb-3">
+                    <div class="col-md-3 mb-3">
                         <a href="{% static 'img/screenshot_01_full.png' %}"
                             data-lightbox="features"
-                            data-title="Here, you can enter your notes and create chapters as your party progresses through the plot, allowing for a seamless progression.">
+                            data-title="Enter your notes and create chapters as your party progresses through the plot.">
                             <img src="{% static 'img/screenshot_01_thumb.png' %}" class="img-thumbnail">
                         </a>
                     </div>
-                    <div class="col-md-auto mb-3">
+                    <div class="col-md-3 mb-3">
+                        <a href="{% static 'img/screenshot_06_full.png' %}"
+                            data-lightbox="features"
+                            data-title="Keep track of your locations and upload maps of the worlds you create.">
+                            <img src="{% static 'img/screenshot_06_thumb.png' %}" class="img-thumbnail">
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
                         <a href="{% static 'img/screenshot_04_full.png' %}"
                             data-lightbox="features"
-                            data-title="Using our monster and NPC tools, you can create your own characters to use in your campaigns. We have created a way for you to input all the information you'll need for any monster or NPC in any RPG system, not just D&D.">
+                            data-title="Create your own characters to use in your campaigns. We have created a way for you to input all the information you'll need for any character in any RPG system, not just D&D.">
                             <img src="{% static 'img/screenshot_04_thumb.png' %}" class="img-thumbnail">
                         </a>
                     </div>
-                    <div class="col-md-auto mb-3">
+                    <div class="col-md-3 mb-3">
                         <a href="{% static 'img/screenshot_02_full.png' %}"
                             data-lightbox="features"
-                            data-title="When you create monsters and NPCs, quickly pull up their stats by tagging them in your campaign.">
+                            data-title="When you create characters, quickly pull up their stats by tagging them in your campaign.">
                             <img src="{% static 'img/screenshot_02_thumb.png' %}" class="img-thumbnail">
                         </a>
                     </div>
-                    <div class="col-md-auto mb-3">
+                    <div class="col-md-3 mb-3">
                         <a href="{% static 'img/screenshot_03_full.png' %}"
                             data-lightbox="features"
-                            data-title="When you've tagged a monster or NPC, it will automatically create a link to that character in your campaign. All you have to do is click that generated link and it will take you to your monster or NPC statblock.">
+                            data-title="When you've tagged a character, location, or item, it will automatically create a link to that asset.">
                             <img src="{% static 'img/screenshot_03_thumb.png' %}" class="img-thumbnail">
                         </a>
                     </div>
-                    <div class="col-md-auto mb-3">
+                    <div class="col-md-3 mb-3">
                         <a href="{% static 'img/screenshot_05_full.png' %}"
                             data-lightbox="features"
-                            data-title="We have a wiki that is constantly being updated to help with any questions you have. We also have thousands of registered users and the generous support of the reddit community.">
+                            data-title="Our wiki is constantly being updated to help with any questions you have. We also have thousands of registered users and the generous support of the reddit community.">
                             <img src="{% static 'img/screenshot_05_thumb.png' %}" class="img-thumbnail">
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="{% static 'img/screenshot_07_full.png' %}"
+                            data-lightbox="features"
+                            data-title="Publish your campaigns and characters to the Tavern so other users can use them and contribute.">
+                            <img src="{% static 'img/screenshot_07_thumb.png' %}" class="img-thumbnail">
+                        </a>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a href="{% static 'img/screenshot_08_full.png' %}"
+                            data-lightbox="features"
+                            data-title="Vote for new features to be added to the site every week.">
+                            <img src="{% static 'img/screenshot_08_thumb.png' %}" class="img-thumbnail">
                         </a>
                     </div>
                 </div>
@@ -116,18 +137,18 @@
             <div class="container">
                 <div class="row justify-content-center" style="color:#fff;">
                     <div class="col-md-4 text-center">
-                        <p><i class="fas fa-users fa-5x" aria-hidden="true"></i></p>
+                        <p><i class="fas fa-helmet-battle fa-5x" aria-hidden="true"></i></p>
                         <h2>Users</h2>
                         <h2>{{ users|intcomma }}</h2>
                     </div>
                     <div class="col-md-4 text-center">
-                        <p><i class="fas fa-book fa-5x" aria-hidden="true"></i></p>
+                        <p><i class="fas fa-book-dead fa-5x" aria-hidden="true"></i></p>
                         <h2>Campaigns</h2>
                         <h2>{{ campaigns|intcomma }}</h2>
                     </div>
                     <div class="col-md-4 text-center">
-                        <p><i class="fas fa-paw fa-5x" aria-hidden="true"></i></p>
-                        <h2>Creatures</h2>
+                        <p><i class="fas fa-dragon fa-5x" aria-hidden="true"></i></p>
+                        <h2>Characters</h2>
                         <h2>{{ characters|intcomma }}</h2>
                     </div>
                 </div>

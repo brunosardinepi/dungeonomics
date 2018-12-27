@@ -1,0 +1,36 @@
+attrs = [
+    'Level',
+    'Alignment',
+    'Size',
+    'Languages',
+    'Strength',
+    'Dexterity',
+    'Constitution',
+    'Intelligence',
+    'Wisdom',
+    'Charisma',
+    'Armor class',
+    'Hit points',
+    'Speed',
+    'Saving throws',
+    'Class',
+    'Race',
+    'Character type',
+    'Damage vulnerabilities',
+    'Damage immunities',
+    'Damage resistances',
+    'Condition immunities',
+    'Challenge rating',
+    'Proficiency bonus',
+    'Experience points',
+    'Background',
+    'Age',
+    'Height',
+    'Weight',
+    'Initiative',
+    'Senses',
+]
+
+
+
+

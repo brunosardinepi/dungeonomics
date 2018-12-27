@@ -25,6 +25,11 @@ class Review(models.Model):
         null=True,
         on_delete=models.CASCADE,
     )
+    character = models.ForeignKey('characters.GeneralCharacter',
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+    )
     date = models.DateTimeField(auto_now_add=True)
     score = models.IntegerField(default=5,
         validators=[MaxValueValidator(5), MinValueValidator(1)])

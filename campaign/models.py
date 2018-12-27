@@ -48,7 +48,7 @@ class Campaign(CampaignTemplate):
             })
 
     def players(self):
-        return self.player_set.all().order_by('character_name')
+        return self.generalcharacter_set.all().order_by('name')
 
     def rating(self):
         # find the average rating for this campaign

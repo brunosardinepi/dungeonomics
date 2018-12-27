@@ -1,0 +1,36 @@
+{% if stats %}
+    <div class="row mb-3 justify-content-center">
+        {% for stat, values in stats.items %}
+            {% if values.attribute.value %}
+                <div class="col-md-2">
+                    <div class="character-label">
+                        <p>{{ values.title }}</p>
+                    </div>
+                    <div class="character-details">
+                        <p>{{ values.attribute.value }}</p>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+{% for attribute in character.attribute_set.all %}
+    {% if attribute.name not in stats and attribute.name != "Character type" %}
+        <div class="row">
+            <div class="col-md-12">
+                <p><span class="font-weight-bold">{{ attribute.name }}</span> {{ attribute.value }}</p>
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}
+
+{% if character.notes %}
+    {% if character.attribute_set.all.count > 1 %}<hr>{% endif %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ character.notes|safe }}
+        </div>
+    </div>
+{% endif %}
+

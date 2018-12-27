@@ -1,0 +1,103 @@
+{% extends 'layout.html' %}
+
+{% load static from staticfiles %}
+
+
+{% block title %}
+    {% if character %}
+        {{ character.name }} 
+    {% else %}
+        Characters 
+    {% endif %}
+    | {{ block.super }}
+{% endblock %}
+
+{% block body_content %}
+    <div class="row mt-3 pb-5">
+        <div class="col-lg-4 mb-3">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-auto">
+                            <h5 class="px-1 mb-0">Character list</h5>
+                        </div>
+                        <div class="col-auto">
+                            <div class="dropdown">
+                                <a class="btn btn-sm text-dark dropdown-toggle" href="#" role="button" id="table-of-contents-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-lg fa-cog"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="table-of-contents-dropdown">
+                                    <a href="{% url 'characters:character_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create character</a>
+                                    <a href="{% url 'characters:character_srd' %}" class="dropdown-item"><i class="fal fa-fw fa-book" aria-hidden="true"></i> SRD characters</a>
+                                    <a href="{% url 'characters:characters_delete' %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete characters</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if characters %}
+                        {% for type, character_list in characters.items %}
+                            <span class="font-weight-bold">{{ type }}</span>
+                            <ul class="contents_list">
+                            {% for c in character_list %}
+                                <li class="ml-3">
+                                    <a {% if c == character %}class="font-weight-bold" {% endif %}href="{% url 'characters:character_detail' pk=c.pk %}">
+                                        {{ c.name }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        {% endfor %}
+                    {% else %}
+                        You haven't created any characters yet!
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-auto">
+                            <h5 class="px-1 mb-0">{% if character %}{{ character.name }}{% else %}Characters{% endif %}</h5>
+                        </div>
+                        <div class="col-auto">
+                            <div class="dropdown">
+                                <a class="btn btn-sm text-dark dropdown-toggle" href="#" role="button" id="contents-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-lg fa-cog"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="contents-dropdown">
+                                    {% if character %}
+                                        <a href="{% url 'characters:character_update' pk=character.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit character</a>
+                                        {% if character.is_published == True %}
+                                            <a href="{% url 'tavern:tavern_character_detail' pk=character.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-cloud-upload" aria-hidden="true"></i> View on The Tavern</a>
+                                        {% else %}
+                                            <a href="{% url 'characters:character_publish' pk=character.pk %}" class="dropdown-item"><i class="mr-1 fal fa-fw fa-cloud-upload" aria-hidden="true"></i> Publish character</a>
+                                        {% endif %}
+                                        <a href="{% url 'characters:character_copy' pk=character.pk %}" class="dropdown-item"><i class="fal fa-fw fa-copy" aria-hidden="true"></i> Copy character</a>
+                                        <a id="character-delete" href="{% url 'characters:character_delete' pk=character.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete character</a>
+                                    {% else %}
+                                        <a href="{% url 'characters:character_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create character</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    {% if character %}
+                        {% include "characters/character_stats.html" with character=character stats=stats %}
+                    {% else %}
+                        <p>You haven't created any characters yet!</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body_extra %}
+    <script src="{% static 'js/character_delete.js' %}"></script>
+{% endblock %}

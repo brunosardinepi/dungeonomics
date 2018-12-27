@@ -1,11 +1,13 @@
 from math import floor
 
 from django.contrib.auth.models import User
+from django.contrib.sites.models import Site
 from django.db.models import Avg
 from django.urls import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from dungeonomics import config
 from tavern.models import Review
 
 
@@ -103,9 +105,7 @@ class Monster(Character):
     importers = models.ManyToManyField(User, related_name='monster_importers')
 
     def get_absolute_url(self):
-        return reverse('characters:monster_detail', kwargs={
-            'monster_pk': self.pk
-            })
+        pass
 
     def __str__(self):
         return self.name
@@ -115,7 +115,6 @@ class Monster(Character):
         return Review.objects.filter(
             monster=self).aggregate(
             Avg('score'))['score__avg'] or 0.00
-
 
 class NPC(Character):
     npc_class = models.CharField(verbose_name= _('Class'),max_length=255, default='', blank=True)
@@ -138,9 +137,7 @@ class NPC(Character):
         verbose_name_plural = 'NPCs'
 
     def get_absolute_url(self):
-        return reverse('characters:npc_detail', kwargs={
-            'npc_pk': self.pk
-            })
+        pass
 
     def __str__(self):
         return self.name
@@ -150,7 +147,6 @@ class NPC(Character):
         return Review.objects.filter(
             npc=self).aggregate(
             Avg('score'))['score__avg'] or 0.00
-
 
 class Player(Character):
     campaigns = models.ManyToManyField('campaign.Campaign')
@@ -180,9 +176,7 @@ class Player(Character):
     importers = models.ManyToManyField(User, related_name='player_importers')
 
     def get_absolute_url(self):
-        return reverse('characters:player_detail', kwargs={
-            'player_pk': self.pk
-            })
+        pass
 
     def __str__(self):
         return self.character_name
@@ -192,3 +186,45 @@ class Player(Character):
         return Review.objects.filter(
             player=self).aggregate(
             Avg('score'))['score__avg'] or 0.00
+
+class GeneralCharacter(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, default='')
+    notes = models.TextField(blank=True)
+    campaigns = models.ManyToManyField('campaign.Campaign')
+    is_published = models.BooleanField(default=False)
+    published_date = models.DateTimeField(blank=True, null=True)
+    tavern_description = models.TextField(blank=True)
+    importers = models.ManyToManyField(User, related_name='character_importers')
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('characters:character_detail', kwargs={'pk': self.pk})
+
+    def get_full_url(self):
+        protocol = config.settings['protocol']
+        domain = Site.objects.get_current().domain
+        path = reverse('characters:character_detail', kwargs={'pk': self.pk})
+        return "{}://{}{}".format(protocol, domain, path)
+
+    def rating(self):
+        # find the average rating
+        return Review.objects.filter(
+            character=self).aggregate(
+            Avg('score'))['score__avg'] or 0.00
+
+class Attribute(models.Model):
+    character = models.ForeignKey(GeneralCharacter, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, default='')
+    value = models.CharField(max_length=255, default='')
+
+    def __str__(self):
+        return "{}: {}".format(self.character, self.name[:10])
+
+    def get_absolute_url(self):
+        return reverse('characters:character_detail', kwargs={'pk': self.pk})
+
+    class Meta:
+        ordering = ['name']

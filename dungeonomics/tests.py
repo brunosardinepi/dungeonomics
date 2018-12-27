@@ -25,7 +25,7 @@ class HomeTest(TestCase):
         self.assertContains(response, "Features")
         self.assertContains(response, "Users")
         self.assertContains(response, "Campaigns")
-        self.assertContains(response, "Creatures")
+        self.assertContains(response, "Characters")
         self.assertContains(response, "Donate")
 
     def test_home_logged_in(self):

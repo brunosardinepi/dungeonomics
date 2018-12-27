@@ -20,8 +20,9 @@ from django.views import View
 from . import forms
 from . import models
 from . import utils
-from characters.models import Monster, NPC, Player
-from dungeonomics.utils import at_tagging, campaign_context, rating_monster
+from dungeonomics.utils import at_tagging, campaign_context
+from characters.models import Monster, NPC, Player, GeneralCharacter
+from characters.utils import get_character_stats
 from dungeonomics import settings
 from items.models import Item
 from locations.models import Location, World
@@ -83,14 +84,14 @@ class ChapterCreate(View):
     def get(self, request, *args, **kwargs):
         campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
         if campaign.user == request.user:
-            data = at_tagging(request)
             data = campaign_context(
                 request=request,
-                data=data,
+                data={},
                 campaign_pk=kwargs['campaign_pk'],
                 chapter_pk=None,
                 section_pk=None,
             )
+            data['assets'] = at_tagging(request)
             data['action'] = "chapter_create"
             data['form'] = forms.ChapterForm()
             data['order_number'] = utils.get_next_order(data['campaign'])
@@ -110,19 +111,21 @@ class ChapterCreate(View):
                 return HttpResponseRedirect(chapter.get_absolute_url())
         raise Http404
 
+def chapter_create_null(request):
+    pass
 
 class SectionCreate(View):
     def get(self, request, *args, **kwargs):
         campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
         if campaign.user == request.user:
-            data = at_tagging(request)
             data = campaign_context(
                 request=request,
-                data=data,
+                data={},
                 campaign_pk=kwargs['campaign_pk'],
                 chapter_pk=kwargs['chapter_pk'],
                 section_pk=None,
             )
+            data['assets'] = at_tagging(request)
             data['action'] = "section_create"
             data['form'] = forms.SectionForm()
             data['order_number'] = utils.get_next_order(data['chapter'])
@@ -176,14 +179,14 @@ def campaign_update(request, campaign_pk):
 def chapter_update(request, campaign_pk, chapter_pk):
     chapter = get_object_or_404(models.Chapter, pk=chapter_pk, campaign_id=campaign_pk)
     if chapter.user == request.user:
-        data = at_tagging(request)
         data = campaign_context(
             request=request,
-            data=data,
+            data={},
             campaign_pk=chapter.campaign.pk,
             chapter_pk=chapter.pk,
             section_pk=None,
         )
+        data['assets'] = at_tagging(request)
         data['action'] = "chapter_update"
         form = forms.ChapterForm(instance=chapter)
         section_forms = forms.SectionInlineFormSet(queryset=form.instance.section_set.all())
@@ -212,14 +215,14 @@ def chapter_update(request, campaign_pk, chapter_pk):
 def section_update(request, campaign_pk, chapter_pk, section_pk):
     section = get_object_or_404(models.Section, pk=section_pk, chapter_id=chapter_pk, campaign_id=campaign_pk)
     if section.user == request.user:
-        data = at_tagging(request)
         data = campaign_context(
             request=request,
-            data=data,
+            data={},
             campaign_pk=section.chapter.campaign.pk,
             chapter_pk=section.chapter.pk,
             section_pk=section.pk,
         )
+        data['assets'] = at_tagging(request)
         data['action'] = "section_update"
         form = forms.SectionForm(instance=section)
         if request.method == 'POST':
@@ -289,7 +292,7 @@ def section_delete(request, campaign_pk, chapter_pk, section_pk):
         if section.user == request.user:
             section.delete()
             messages.success(request, 'Section deleted', fail_silently=True)
-            return HttpResponseRedirect(reverse('campaign:campaign_detail', kwargs={
+            return HttpResponseRedirect(reverse('campaign:chapter_detail', kwargs={
                 'campaign_pk': campaign.pk,
                 'chapter_pk': chapter.pk,
             }))
@@ -327,7 +330,6 @@ class CampaignImport(View):
                 return HttpResponseRedirect(campaign.get_absolute_url())
         return Http404
 
-
 class CampaignParty(View):
     def get(self, request, campaign_pk):
         campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
@@ -340,7 +342,6 @@ class CampaignParty(View):
         else:
             raise Http404
 
-
 class CampaignPartyInvite(View):
     def get(self, request, campaign_pk):
         campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
@@ -349,59 +350,60 @@ class CampaignPartyInvite(View):
         else:
             raise Http404
 
-
 class CampaignPartyInviteAccept(View):
     def get(self, request, campaign_public_url):
         campaign = get_object_or_404(models.Campaign, public_url=campaign_public_url)
-        players = Player.objects.filter(user=request.user)
+        characters = GeneralCharacter.objects.filter(user=request.user)
         return render(self.request, 'campaign/campaign_party_invite_accept.html', {
             'campaign': campaign,
-            'players': players,
+            'characters': characters,
         })
 
     def post(self, request, campaign_public_url):
         campaign = get_object_or_404(models.Campaign, public_url=campaign_public_url)
-        player_pk = self.request.POST.get('player')
-        player = get_object_or_404(Player, pk=player_pk)
-        if player.user == request.user:
-            player.campaigns.add(campaign)
+        character_pk = self.request.POST.get('character')
+        character = get_object_or_404(GeneralCharacter, pk=character_pk)
+        if character.user == request.user:
+            character.campaigns.add(campaign)
             return redirect('campaign:campaign_party', campaign_pk=campaign.pk)
         else:
             raise Http404
 
-
 class CampaignPartyRemove(View):
-    def get(self, request, campaign_pk):
-        campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+    def get(self, request, *args, **kwargs):
+        campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
         if request.user == campaign.user:
-            return render(self.request, 'campaign/campaign_party_remove.html', {'campaign': campaign})
+            return render(self.request,
+                'campaign/campaign_party_remove.html',
+                {'campaign': campaign},
+            )
         else:
             raise Http404
 
-    def post(self, request, campaign_pk):
-        campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+    def post(self, request, *args, **kwargs):
+        campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
         if campaign.user == request.user:
-            players = self.request.POST.getlist('players')
-            # for each player, remove them from the campaign
-            for pk in players:
-                player = get_object_or_404(Player, pk=pk)
-                player.campaigns.remove(campaign)
+            characters = self.request.POST.getlist('characters')
+            # for each character, remove them from the campaign
+            for pk in characters:
+                character = get_object_or_404(GeneralCharacter, pk=pk)
+                character.campaigns.remove(campaign)
             return redirect('campaign:campaign_party', campaign_pk=campaign.pk)
         else:
             raise Http404
 
 class CampaignPartyPlayersDetail(View):
-    def get(self, request, campaign_pk, player_pk):
-        campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-        if utils.has_campaign_access(request.user, campaign_pk):
-            player = get_object_or_404(Player, pk=player_pk)
+    def get(self, request, *args, **kwargs):
+        campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
+        if utils.has_campaign_access(request.user, kwargs['campaign_pk']):
+            character = get_object_or_404(GeneralCharacter, pk=kwargs['player_pk'])
             return render(self.request, 'campaign/campaign_party_player_detail.html', {
                 'campaign': campaign,
-                'player': player,
+                'character': character,
+                'stats': get_character_stats(character),
             })
         else:
             raise Http404
-
 
 class CampaignPublish(View):
     def get(self, request, *args, **kwargs):
@@ -426,7 +428,7 @@ class CampaignPublish(View):
             campaign.save()
             # redirect to the tavern page
             messages.success(request, 'Campaign published', fail_silently=True)
-            return redirect('tavern:tavern_campaign_detail', campaign_pk=campaign.pk)
+            return redirect('tavern:tavern_campaign_detail', pk=campaign.pk)
         else:
             raise Http404
 

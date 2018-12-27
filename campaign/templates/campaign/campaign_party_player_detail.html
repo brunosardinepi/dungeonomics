@@ -3,7 +3,7 @@
 {% load static from staticfiles %}
 
 
-{% block title %}{{ campaign.title }} - {{ player.character_name }} | {{ block.super }}{% endblock %}
+{% block title %}{{ campaign.title }} - {{ character.name }} | {{ block.super }}{% endblock %}
 
 {% block breadcrumbs %}
     {% include "campaign/breadcrumbs.html" with action="Player" %}
@@ -19,10 +19,10 @@
         <div class="col-12 mb-3">
             <div class="card">
                 <div class="card-header font-weight-bold">
-                    {{ player.character_name }} ({{ player.player_name }})
+                    {{ character.name }}
                 </div>
                 <div class="card-body">
-                    {% include "characters/player_template.html" with player=player %}
+                    {% include "characters/character_stats.html" with character=character stats=stats %}
                 </div>
             </div>
         </div>

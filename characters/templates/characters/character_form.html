@@ -1,0 +1,169 @@
+{% extends 'layout.html' %}
+
+{% load static %}
+{% load lib_extras %}
+{% load widget_tweaks %}
+
+
+{% block title %}
+    {% if character %}
+        Update character 
+    {% else %}
+        New character 
+    {% endif %}
+    | {{ block.super }}
+{% endblock %}
+
+{% block head_extra %}
+    {{ form.media.css }}
+    {{ form.media.js }}
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        var suggestedAttributes = {{suggested_attributes|safe}};
+
+        $(function() {
+            $("[id^='id_attribute_set-'][id$='-name']").autocomplete({
+                source: suggestedAttributes,
+            });
+        });
+    </script>
+
+    <script type="text/javascript">var assets = {{assets|safe}};</script>
+    <script src="{% static 'js/tags.js' %}"></script>
+{% endblock %}
+
+{% block body_content %}
+    <div class="row mt-3 mb-3">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-auto">
+                            <h5 class="px-1 mb-0">
+                                {% if character %}
+                                    <span class="font-weight-bold">Update character:</span> {{ character.name }}
+                                {% else %}
+                                    <span class="font-weight-bold">New character</span>
+                                {% endif %}
+                            </h5>
+                        </div>
+                        <div class="col-auto">
+                            <div class="dropdown">
+                                <a class="btn text-dark dropdown-toggle" href="#" role="button" id="presets-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Presets</a>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="presets-dropdown">
+                                    <a id="character-preset-5e" href="#" class="dropdown-item">D&D 5e</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="">
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ form.non_field_errors }}
+                            </div>
+                        {% endif %}
+
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label for="{{ form.name.id_for_label }}">Character name</label>
+                                {% render_field form.name class+="form-control" %}
+                                {% if form.name.errors %}
+                                    {% for error in form.name.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                       
+                        {{ formset.management_form }}
+
+                        {% for form in formset %}
+                            <div class="form-row formset-row" id="row-{{ forloop.counter0 }}">
+                                <div class="form-group col-lg-4">
+                                    <label for="{{ form.name.id_for_label }}">Attribute name</label>
+                                    {{ form.id }}
+                                    {% render_field form.name class+="form-control" %}
+                                </div>
+                                <div class="form-group col-lg-7">
+                                    <label for="{{ form.value.id_for_label }}">
+                                        Value
+                                        {% if form.value.errors %}
+                                            {% for error in form.value.errors %}
+                                                <span class="text-danger">
+                                                    <i class="fas fa-exclamation-circle ml-2"></i> {{ error|escape }}
+                                                </span>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </label>
+                                    {% render_field form.value class+="form-control" %}
+                                </div>
+                                <div class="form-group col-lg-1 col-delete align-self-end text-right add-row" id="col-delete-{{ forloop.counter0 }}">
+                                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <label for="{{ form.notes.id_for_label }}">Notes</label>
+                                {% render_field form.notes class+="form-control" %}
+                                {% if form.notes.errors %}
+                                    {% for error in form.notes.errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {{ error|escape }}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row justify-content-between">
+                        {% if character %}
+                            <div class="col-auto">
+                                <a href="{% url 'characters:character_detail' pk=character.pk%}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                            <div class="col-auto">
+                                <input type="submit" class="btn btn-primary" value="Update character">
+                            </div>
+                        {% else %}
+                            <div class="col-auto">
+                                <a href="{% url 'characters:character_detail' %}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                            <div class="col-auto">
+                                <input type="submit" class="btn btn-primary" value="Create character">
+                            </div>
+                        {% endif %}
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row pb-5">
+        <div class="col-12">
+            <div class="alert alert-info" role="alert" style="text-align:left !important;">
+                <p>Each character has the option to have an unlimited amount of attributes. Enter the <span class="font-weight-bold">attribute name</span> and then give it a <span class="font-weight-bold">value</span>.</p>
+                <p>We have a list of suggested attributes that have special formatting on the character's stat sheet if used. Type in the <span class="font-weight-bold">attribute name</span> input and a list will dropdown with suggested attributes. We prefer that you use these if your attribute is listed so that we can make your character sheet cleaner.</p>
+                <p><span class="font-weight-bold">Note:</span> using the "Character type" attribute will group similar types of characters on your main character page. We highly recommend this.</p>
+                <p>Additionally, '@' tagging is available in the <span class="font-weight-bold">Notes</span> section so you can reference other assets.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body_extra %}
+    <script src="{% static 'js/formset_character_new.js' %}"></script>
+    <script>var attributes = {{ suggested_attributes|safe }};</script>
+    <script src="{% static 'js/character_preset_5e.js' %}"></script>
+{% endblock %}
+

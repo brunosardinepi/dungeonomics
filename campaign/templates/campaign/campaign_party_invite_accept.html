@@ -21,21 +21,21 @@
                     <p>You've been invited to join the <span class="font-weight-bold">{{ campaign.title }}</span> campaign. Choose a character to use, and click "join" to join the campaign.</p>
                     <p class="small">Note: joining this campaign with your character does not limit your character to this campaign. It can still be used in other campaigns.</p>
 
-                    {% if players %}
+                    {% if characters %}
                         <form class="pt-3" method="post" action="">
                             {% csrf_token %}
-                            {% for player in players %}
+                            {% for character in characters %}
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="player" id="player-{{ player.pk }}" value="{{ player.pk }}">
-                                    <label class="form-check-label" for="player-{{ player.pk }}">
-                                        {{ player.player_name }} ({{ player.character_name }})
+                                    <input class="form-check-input" type="radio" name="character" id="character-{{ character.pk }}" value="{{ character.pk }}">
+                                    <label class="form-check-label" for="character-{{ character.pk }}">
+                                        {{ character.name }}
                                     </label>
                                 </div>
                             {% endfor %}
                             <button type="submit" class="btn btn-block btn-success mt-3">Join</button>
                         </form>
                     {% else %}
-                        <p>You haven't created any players. <a href="{% url 'characters:player_create' %}" target="_blank">Create a player</a> and then refresh this page.</p>
+                        <p>You haven't created any characters. <a href="{% url 'characters:character_create' %}" target="_blank">Create a character</a> and then refresh this page.</p>
                     {% endif %}
 
                 </div>

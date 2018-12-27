@@ -20,10 +20,10 @@
                                     {% for result in results %}
                                         <tr>
                                             <td>
-                                                {% if type == "campaign" %}
-                                                    <a href="{% url 'tavern:tavern_campaign_detail' campaign_pk=result.pk %}">{{ result }}</a>
+                                                {% if type == "campaigns" %}
+                                                    <a href="{% url 'tavern:tavern_campaign_detail' pk=result.pk %}">{{ result }}</a>
                                                 {% else %}
-                                                    <a href="{% url 'tavern:tavern_character_detail' type=type pk=result.pk %}">{{ result }}</a>
+                                                    <a href="{% url 'tavern:tavern_character_detail' pk=result.pk %}">{{ result }}</a>
                                                 {% endif %}
                                             </td>
                                             <td class="text-right">{% rating_stars_html_tag result.rating as rating %}{{ rating|safe }}</td>

@@ -37,71 +37,73 @@
                     <span>Contents</span>
                     <a href="" id="campaign-tools-dropdown" class="text-dark"><i class="fas fa-cog"></i></a>
                 </h6>
-                <div id="campaign-tools">
-                    <p>
-                        <input type="text" class="form-control form-control-sm" placeholder="Search in contents">
-                    </p>
-                    <p>
-                        <a href="{% url 'campaign:chapter_create' campaign_pk=campaign.pk%}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create chapter</span></a>
-                    </p>
-                    <p>
-                        <a href="{%url 'campaign:campaign_update' campaign_pk=campaign.pk %}" class="text-teal"><i class="fas fa-fw fa-lg fa-pen-square"></i><span>Edit campaign</span></a>
-                    </p>
-                    <p>
-                        <a href="" class="text-purple"><i class="fas fa-fw fa-lg fa-cloud-upload"></i><span>Publish campaign</span></a>
-                    </p>
-                    <p>
-                        <a href="" class="text-orange"><i class="fas fa-fw fa-lg fa-save"></i><span>Print campaign</span></a>
-                    </p>
-                    <p>
-                        <a id="campaign-delete" href="{% url 'campaign:campaign_delete' campaign_pk=campaign.pk %}" class="text-danger"><i class="fas fa-fw fa-lg fa-trash-alt"></i><span>Delete campaign</span></a>
-                    </p>
+                {% if campaign %}
+                    <div id="campaign-tools">
+                        <p>
+                            <input type="text" class="form-control form-control-sm" placeholder="Search in contents">
+                        </p>
+                        <p>
+                            <a href="{% url 'campaign:chapter_create' campaign_pk=campaign.pk%}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create chapter</span></a>
+                        </p>
+                        <p>
+                            <a href="{%url 'campaign:campaign_update' campaign_pk=campaign.pk %}" class="text-teal"><i class="fas fa-fw fa-lg fa-pen-square"></i><span>Edit campaign</span></a>
+                        </p>
+                        <p>
+                            <a href="" class="text-purple"><i class="fas fa-fw fa-lg fa-cloud-upload"></i><span>Publish campaign</span></a>
+                        </p>
+                        <p>
+                            <a href="" class="text-orange"><i class="fas fa-fw fa-lg fa-save"></i><span>Print campaign</span></a>
+                        </p>
+                        <p>
+                            <a id="campaign-delete" href="{% url 'campaign:campaign_delete' campaign_pk=campaign.pk %}" class="text-danger"><i class="fas fa-fw fa-lg fa-trash-alt"></i><span>Delete campaign</span></a>
+                        </p>
+                    </div>
+                    <ul class="contents_list">
+                        {% if chapters %}
+                            {% for c in chapters %}
+                                <li>
+                                    <a {% if c == chapter and not section and "chapter_create" not in action %}class="font-weight-bold" {% endif %}href="{% url 'campaign:chapter_detail' campaign_pk=campaign.pk chapter_pk=c.pk %}">
+                                        {{ c.title }}
+                                    </a>
+                                </li>
+                                <ul class="pl-3">
+                                    {% for s in sections %}
+                                        {% if s.chapter.pk == c.pk %}
+                                            <li>
+                                                <a {% if s == section %}class="font-weight-bold" {% endif %}href="{% url 'campaign:section_detail' campaign_pk=campaign.pk chapter_pk=c.pk section_pk=s.pk %}">
+                                                    {{ s.title }}
+                                                </a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            {% endfor %}
+                        {% else %}
+                            <li>No chapters</li>
+                        {% endif %}
+                    </ul>
+                    <hr>
+                    <h6 class="d-flex justify-content-between align-items-center">
+                        <span>Party</span>
+                        <a href="" id="party-tools-dropdown" class="text-dark"><i class="fas fa-cog"></i></a>
+                    </h6>
+                    <div id="party-tools">
+                        <p>
+                            <input type="text" class="form-control form-control-sm" placeholder="Search for posts">
+                        </p>
+                        <p>
+                            <a href="{% url 'campaign:campaign_party' campaign_pk=campaign.pk %}" class="text-pink"><i class="fas fa-fw fa-lg fa-swords"></i><span>View party</span></a>
+                        </p>
+                        <p>
+                            <a href="{% url 'campaign:post_create' campaign_pk=campaign.pk %}" class="text-teal"><i class="fas fa-fw fa-lg fa-comment"></i><span>New post</span></a>
+                        </p>
+                        <p>
+                            <a href="{% url 'campaign:campaign_party_invite' campaign_pk=campaign.pk %}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Invite players</span></a>
+                        </p>
+                    </div>
+                    {% include "posts/party_feed.html" with posts=posts %}
                 </div>
-                <ul class="contents_list">
-                    {% if chapters %}
-                        {% for c in chapters %}
-                            <li>
-                                <a {% if c == chapter and not section and "chapter_create" not in action %}class="font-weight-bold" {% endif %}href="{% url 'campaign:chapter_detail' campaign_pk=campaign.pk chapter_pk=c.pk %}">
-                                    {{ c.title }}
-                                </a>
-                            </li>
-                            <ul class="pl-3">
-                                {% for s in sections %}
-                                    {% if s.chapter.pk == c.pk %}
-                                        <li>
-                                            <a {% if s == section %}class="font-weight-bold" {% endif %}href="{% url 'campaign:section_detail' campaign_pk=campaign.pk chapter_pk=c.pk section_pk=s.pk %}">
-                                                {{ s.title }}
-                                            </a>
-                                        </li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                        {% endfor %}
-                    {% else %}
-                        <li>No chapters</li>
-                    {% endif %}
-                </ul>
-                <hr>
-                <h6 class="d-flex justify-content-between align-items-center">
-                    <span>Party</span>
-                    <a href="" id="party-tools-dropdown" class="text-dark"><i class="fas fa-cog"></i></a>
-                </h6>
-                <div id="party-tools">
-                    <p>
-                        <input type="text" class="form-control form-control-sm" placeholder="Search for posts">
-                    </p>
-                    <p>
-                        <a href="{% url 'campaign:campaign_party' campaign_pk=campaign.pk %}" class="text-pink"><i class="fas fa-fw fa-lg fa-swords"></i><span>View party</span></a>
-                    </p>
-                    <p>
-                        <a href="{% url 'campaign:post_create' campaign_pk=campaign.pk %}" class="text-teal"><i class="fas fa-fw fa-lg fa-comment"></i><span>New post</span></a>
-                    </p>
-                    <p>
-                        <a href="{% url 'campaign:campaign_party_invite' campaign_pk=campaign.pk %}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Invite players</span></a>
-                    </p>
-                </div>
-                {% include "posts/party_feed.html" with posts=posts %}
-            </div>
+            {% endif %}
 
             <!-- CAMPAIGN BODY -->
             <div class="col-md-12 col-lg-6 order-lg-3 order-4 bg-white full-vh notes-shadow pb-3">

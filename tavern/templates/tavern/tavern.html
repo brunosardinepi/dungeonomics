@@ -28,7 +28,7 @@
                             <tbody>
                                 {% for campaign in popular_campaigns %}
                                     <tr>
-                                        <td><a href="{% url 'tavern:tavern_campaign_detail' campaign_pk=campaign.pk %}">{{ campaign.title }}</a></td>
+                                        <td><a href="{% url 'tavern:tavern_campaign_detail' pk=campaign.pk %}">{{ campaign.title }}</a></td>
                                         <td class="text-right">{% rating_stars_html_tag campaign.rating as rating %}{{ rating|safe }}</td>
                                     </tr>
                                 {% endfor %}
@@ -49,7 +49,7 @@
                             <tbody>
                                 {% for campaign in recent_campaigns %}
                                     <tr>
-                                        <td><a href="{% url 'tavern:tavern_campaign_detail' campaign_pk=campaign.pk %}">{{ campaign.title }}</a></td>
+                                        <td><a href="{% url 'tavern:tavern_campaign_detail' pk=campaign.pk %}">{{ campaign.title }}</a></td>
                                         <td class="text-right">{% rating_stars_html_tag campaign.rating as rating %}{{ rating|safe }}</td>
                                     </tr>
                                 {% endfor %}
@@ -67,132 +67,42 @@
         <div class="row pb-3">
             <div class="col-lg-6 mb-3">
                 <div class="card">
-                    {% include "tavern/tavern_card_header.html" with text="Most popular monsters" %}
-                    {% if popular_monsters %}
+                    {% include "tavern/tavern_card_header.html" with text="Most popular characters" %}
+                    {% if popular_characters %}
                         <table class="table table-hover mb-0">
                             <tbody>
-                                {% for monster in popular_monsters %}
+                                {% for character in popular_characters %}
                                     <tr>
-                                        <td><a href="{% url 'tavern:tavern_character_detail' type='monster' pk=monster.pk %}">{{ monster }}</a></td>
-                                        <td class="text-right">{% rating_stars_html_tag monster.rating as rating %}{{ rating|safe }}</td>
+                                        <td><a href="{% url 'tavern:tavern_character_detail' pk=character.pk %}">{{ character }}</a></td>
+                                        <td class="text-right">{% rating_stars_html_tag character.rating as rating %}{{ rating|safe }}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
                     {% else %}
                         <div class="card-body">
-                            <p>There aren't any published monsters yet!</p>
+                            <p>There aren't any published characters yet!</p>
                         </div>
                     {% endif %}
                 </div>
             </div>
             <div class="col-lg-6 mb-3">
                 <div class="card">
-                    {% include "tavern/tavern_card_header.html" with text="Most recent monsters" %}
-                    {% if recent_monsters %}
+                    {% include "tavern/tavern_card_header.html" with text="Most recent characters" %}
+                    {% if recent_characters %}
                         <table class="table table-hover mb-0">
                             <tbody>
-                                {% for monster in recent_monsters %}
+                                {% for character in recent_characters %}
                                     <tr>
-                                        <td><a href="{% url 'tavern:tavern_character_detail' type='monster' pk=monster.pk %}">{{ monster }}</a></td>
-                                        <td class="text-right">{% rating_stars_html_tag monster.rating as rating %}{{ rating|safe }}</td>
+                                        <td><a href="{% url 'tavern:tavern_character_detail' pk=character.pk %}">{{ character }}</a></td>
+                                        <td class="text-right">{% rating_stars_html_tag character.rating as rating %}{{ rating|safe }}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
                         </table>
                     {% else %}
                         <div class="card-body">
-                            <p>There aren't any published monsters yet!</p>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <div class="row pb-3">
-            <div class="col-lg-6 mb-3">
-                <div class="card">
-                    {% include "tavern/tavern_card_header.html" with text="Most popular NPCs" %}
-                    {% if popular_npcs %}
-                        <table class="table table-hover mb-0">
-                            <tbody>
-                                {% for npc in popular_npcs %}
-                                    <tr>
-                                        <td><a href="{% url 'tavern:tavern_character_detail' type='npc' pk=npc.pk %}">{{ npc }}</a></td>
-                                        <td class="text-right">{% rating_stars_html_tag npc.rating as rating %}{{ rating|safe }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    {% else %}
-                        <div class="card-body">
-                            <p>There aren't any published NPCs yet!</p>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="col-lg-6 mb-3">
-                <div class="card">
-                    {% include "tavern/tavern_card_header.html" with text="Most recent NPCs" %}
-                    {% if recent_npcs %}
-                        <table class="table table-hover mb-0">
-                            <tbody>
-                                {% for npc in recent_npcs %}
-                                    <tr>
-                                        <td><a href="{% url 'tavern:tavern_character_detail' type='npc' pk=npc.pk %}">{{ npc }}</a></td>
-                                        <td class="text-right">{% rating_stars_html_tag npc.rating as rating %}{{ rating|safe }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    {% else %}
-                        <div class="card-body">
-                            <p>There aren't any published NPCs yet!</p>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-
-        <div class="row pb-3">
-            <div class="col-lg-6 mb-3">
-                <div class="card">
-                    {% include "tavern/tavern_card_header.html" with text="Most popular players" %}
-                    {% if popular_players %}
-                        <table class="table table-hover mb-0">
-                            <tbody>
-                                {% for player in popular_players %}
-                                    <tr>
-                                        <td><a href="{% url 'tavern:tavern_character_detail' type='player' pk=player.pk %}">{{ player }}</a></td>
-                                        <td class="text-right">{% rating_stars_html_tag player.rating as rating %}{{ rating|safe }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    {% else %}
-                        <div class="card-body">
-                            <p>There aren't any published players yet!</p>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-            <div class="col-lg-6 mb-3">
-                <div class="card">
-                    {% include "tavern/tavern_card_header.html" with text="Most recent players" %}
-                    {% if recent_players %}
-                        <table class="table table-hover mb-0">
-                            <tbody>
-                                {% for player in recent_players %}
-                                    <tr>
-                                        <td><a href="{% url 'tavern:tavern_character_detail' type='player' pk=player.pk %}">{{ player }}</a></td>
-                                        <td class="text-right">{% rating_stars_html_tag player.rating as rating %}{{ rating|safe }}</td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    {% else %}
-                        <div class="card-body">
-                            <p>There aren't any published players yet!</p>
+                            <p>There aren't any published characters yet!</p>
                         </div>
                     {% endif %}
                 </div>

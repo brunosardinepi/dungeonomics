@@ -1,7 +1,9 @@
 {% extends 'layout.html' %}
+
 {% load campaign_extras %}
 
-{% block title %}Export NPCs | {{ block.super }}{% endblock %}
+
+{% block title %}Export characters | {{ block.super }}{% endblock %}
 
 {% block head_extra %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
@@ -9,7 +11,7 @@
 
 {% block body_content %}
     <div class="alert alert-info mt-3" role="alert">
-        Copy the following code and then share it with friends! They will need to <a href="{% url 'characters:npc_import' %}" class="alert-link">import</a> it in order to view it.
+        Copy the following code and then share it with friends! They will need to <a href="{% url 'characters:character_import' %}" class="alert-link">import</a> it in order to view it.
     </div>
 
     <div class="alert alert-info mt-3" role="alert">
@@ -20,11 +22,11 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="px-1 mb-0">Export NPCs</h5>
+                    <h5 class="px-1 mb-0">Export characters</h5>
                 </div>
                 <div class="card-body">
                     <div class="pre-scrollable" style="max-height: 400px;">
-                        <pre id="code">{% autoescape on %}{{ npcs }}{% endautoescape %}</pre>
+                        <pre id="code">{% autoescape on %}{{ characters }}{% endautoescape %}</pre>
                     </div>
                 </div>
                 <div class="card-footer">

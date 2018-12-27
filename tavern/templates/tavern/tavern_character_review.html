@@ -2,7 +2,7 @@
 
 {% load widget_tweaks %}
 
-{% block title %}Review - {{ obj.title }} | {{ block.super }}{% endblock %}
+{% block title %}Review - {{ character }} | {{ block.super }}{% endblock %}
 
 {% block body_content %}
     <div class="row justify-content-center mt-3 pb-3">
@@ -50,7 +50,7 @@
                 <div class="card-footer">
                     <div class="row justify-content-between">
                         <div class="col-auto">
-                            <a href="{% url 'tavern:tavern_character_detail' type=type pk=obj.pk %}" class="btn btn-secondary">Cancel</a>
+                            <a href="{% url 'tavern:tavern_character_detail' pk=character.pk %}" class="btn btn-secondary">Cancel</a>
                         </div>
                         <div class="col-auto">
                             <input type="submit" class="btn btn-primary" value="Submit">

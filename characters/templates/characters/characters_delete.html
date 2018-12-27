@@ -1,24 +1,24 @@
 {% extends 'layout.html' %}
 
-{% block title %}Delete monsters | {{ block.super }}{% endblock %}
+{% block title %}Delete characters | {{ block.super }}{% endblock %}
 
 {% block body_content %}
     <div class="row justify-content-center mt-3 pb-3">
         <div class="col-lg-6">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="px-1 mb-0">Delete monsters</h5>
+                    <h5 class="px-1 mb-0">Delete characters</h5>
                 </div>
                 <div class="card-body">
                     <form method="POST" action="">
                         {% csrf_token %}
-                        <p>Select the monsters that you'd like to delete:</p>
+                        <p>Select the characters that you'd like to delete:</p>
                         <input type="checkbox" onClick="toggle(this)" style="margin-right: 8px;" />Select all
                         <hr>
-                        {% for monster in monsters %}
+                        {% for character in characters %}
                         <div class="checkbox">
                             <label>
-                                <input type="checkbox" name="monster" value="{{ monster.pk }}"> {{ monster.name }}
+                                <input type="checkbox" name="character" value="{{ character.pk }}"> {{ character.name }}
                             </label>
                         </div>
                         {% endfor %}
@@ -26,7 +26,7 @@
                 <div class="card-footer">
                     <div class="row justify-content-between">
                         <div class="col-auto">
-                            <a href="{% url 'characters:monster_detail' %}" class="btn btn-secondary">Cancel</a>
+                            <a href="{% url 'characters:character_detail' %}" class="btn btn-secondary">Cancel</a>
                         </div>
                         <div class="col-auto">
                             <input type="submit" class="btn btn-primary" value="Delete">
@@ -42,7 +42,7 @@
 {% block body_extra %}
 <script>
 function toggle(source) {
-  checkboxes = document.getElementsByName('monster');
+  checkboxes = document.getElementsByName('character');
   for(var i=0, n=checkboxes.length;i<n;i++) {
     checkboxes[i].checked = source.checked;
   }

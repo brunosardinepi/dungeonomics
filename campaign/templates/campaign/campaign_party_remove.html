@@ -31,9 +31,9 @@
                             {% csrf_token %}
                             {% for player in campaign.players %}
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="players" id="player-{{ player.pk }}" value="{{ player.pk }}">
-                                    <label class="form-check-label" for="player-{{ player.pk }}">
-                                        {{ player.character_name }} ({{ player.player_name }})
+                                    <input class="form-check-input" type="checkbox" name="characters" id="character-{{ player.pk }}" value="{{ player.pk }}">
+                                    <label class="form-check-label" for="character-{{ player.pk }}">
+                                        {{ player }}
                                     </label>
                                 </div>
                             {% endfor %}

@@ -42,7 +42,6 @@ def item_detail(request, item_pk=None):
 
 @login_required
 def item_create(request):
-    data = at_tagging(request)
     form = forms.ItemForm()
     if request.method == 'POST':
         form = forms.ItemForm(request.POST)
@@ -52,12 +51,13 @@ def item_create(request):
             item.save()
             messages.add_message(request, messages.SUCCESS, "Item/spell created!")
             return HttpResponseRedirect(item.get_absolute_url())
-    data['form'] = form
-    return render(request, 'items/item_form.html', data)
+    return render(request, 'items/item_form.html', {
+        'assets': at_tagging(request),
+        'form': form,
+    })
 
 @login_required
 def item_update(request, item_pk):
-    data = at_tagging(request)
     item = get_object_or_404(models.Item, pk=item_pk)
     if item.user == request.user:
         form = forms.ItemForm(instance=item)
@@ -69,9 +69,11 @@ def item_update(request, item_pk):
                 return HttpResponseRedirect(item.get_absolute_url())
     else:
         raise Http404
-    data['form'] = form
-    data['item'] = item
-    return render(request, 'items/item_form.html', data)
+    return render(request, 'items/item_form.html', {
+        'assets': at_tagging(request),
+        'item': item,
+        'form': form,
+    })
 
 @login_required
 def item_delete(request, item_pk):

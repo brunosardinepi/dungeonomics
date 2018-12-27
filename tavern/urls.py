@@ -6,23 +6,23 @@ from . import views
 
 app_name = 'tavern'
 urlpatterns = [
-    path('campaign/<int:campaign_pk>/',
+    path('campaigns/<int:pk>/',
         login_required(views.TavernCampaignDetailView.as_view()),
         name='tavern_campaign_detail'),
-    path('campaign/<int:campaign_pk>/review/',
+    path('campaigns/<int:pk>/review/',
         login_required(views.TavernCampaignReview.as_view()),
         name='tavern_campaign_review'),
-    path('campaign/<int:campaign_pk>/import/',
+    path('campaigns/<int:pk>/import/',
         login_required(views.TavernCampaignImport.as_view()),
         name='tavern_campaign_import'),
 
-    path('<str:type>/<int:pk>/',
+    path('characters/<int:pk>/',
         login_required(views.TavernCharacterDetailView.as_view()),
         name='tavern_character_detail'),
-    path('<str:type>/<int:pk>/review/',
+    path('characters/<int:pk>/review/',
         login_required(views.TavernCharacterReview.as_view()),
         name='tavern_character_review'),
-    path('<str:type>/<int:pk>/import/',
+    path('characters/<int:pk>/import/',
         login_required(views.TavernCharacterImport.as_view()),
         name='tavern_character_import'),
 
