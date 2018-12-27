@@ -21,7 +21,6 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.facebook',
     'widget_tweaks',
     'campaign',
     'characters',
@@ -108,6 +107,9 @@ USE_L10N = True
 USE_TZ = True
 
 PROTOCOL = config.settings['protocol']
+
+# google analytics
+USE_GA = config.settings['ga']
 
 # allauth
 SITE_ID = 1

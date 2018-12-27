@@ -3,6 +3,41 @@
 This is the version history for Dungeonomics development.
 
 
+## Version 3.3.2
+
+Release date: 12/11/2018
+
+### Additions
+
+* None
+
+### Changes
+
+* None
+
+### Fixes
+
+* HR button was missing from text editor toolbar
+
+
+## Version 3.3.1
+
+Release date: 11/16/2018
+
+### Additions
+
+* None
+
+### Changes
+
+* None
+
+### Fixes
+
+* #124 -- import worlds/locations bug
+* Google analytics update
+
+
 ## Version 3.3.0
 
 Release date: 11/09/2018

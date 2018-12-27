@@ -208,5 +208,5 @@ class LocationTest(TestCase):
         response = self.client.get('/locations/import/')
         self.assertEqual(response.status_code, 200)
 
-#        response = self.client.post('/locations/import/', {'user_import': '{}'})
-#        self.assertRedirects(response, '/locations/', 302, 200)
+        response = self.client.post('/locations/import/', {})
+        self.assertRedirects(response, '/locations/', 302, 200)

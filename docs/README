@@ -1,5 +1,0 @@
-The settings_template.py file here is an exact copy of the production settings.py file, with sensitive data removed.
-
-The social accounts may need to be removed from the INSTALLED_APPS in order for the site to function properly.
-
-You can install the project requirements with 'pip install -r requirements.txt' after copying the project to your local server.
