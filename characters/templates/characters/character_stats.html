@@ -1,8 +1,8 @@
 {% if stats %}
-    <div class="row mb-3 justify-content-center">
+    <div class="row justify-content-center bg-light pt-3 my-3">
         {% for stat, values in stats.items %}
             {% if values.attribute.value %}
-                <div class="col-md-2">
+                <div class="col-md-1 col">
                     <div class="character-label">
                         <p>{{ values.title }}</p>
                     </div>
