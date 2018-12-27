@@ -1,0 +1,17 @@
+<hr>
+<h6 class="d-flex justify-content-between align-items-center">
+    <span>Party</span>
+    <a href="" id="party-tools-dropdown" class="text-dark"><i class="fas fa-cog"></i></a>
+</h6>
+<div id="party-tools">
+    <input type="text" class="form-control form-control-sm" placeholder="Search for posts">
+    <p>
+        <a href="{% url 'campaign:campaign_party' campaign_pk=campaign.pk %}" class="text-pink"><i class="fas fa-fw fa-lg fa-swords"></i><span>View party</span></a>
+    </p>
+    <p>
+        <a href="{% url 'campaign:post_create' campaign_pk=campaign.pk %}" class="text-teal"><i class="fas fa-fw fa-lg fa-comment"></i><span>New post</span></a>
+    </p>
+    <p>
+        <a href="{% url 'campaign:campaign_party_invite' campaign_pk=campaign.pk %}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Invite players</span></a>
+    </p>
+</div>

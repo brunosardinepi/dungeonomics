@@ -1,0 +1,7 @@
+<ul class="contents_list">
+    {% for c in campaigns %}
+        <li{% if c == campaign %} class="font-weight-bold"{% endif %}>
+            <a href="{% url 'campaign:campaign_detail' campaign_pk=c.pk %}">{{ c }}</a>
+        </li>
+    {% endfor %}
+</ul>

@@ -1,0 +1,9 @@
+<p>
+    <a href="{% url 'campaign:section_create' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create section</span></a>
+</p>
+<p>
+    <a href="{%url 'campaign:chapter_update' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="text-teal"><i class="fas fa-fw fa-lg fa-pen-square"></i><span>Edit chapter</span></a>
+</p>
+<p>
+    <a id="chapter-delete" href="{% url 'campaign:chapter_delete' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="text-danger"><i class="fas fa-fw fa-lg fa-trash-alt"></i><span>Delete chapter</span></a>
+</p>

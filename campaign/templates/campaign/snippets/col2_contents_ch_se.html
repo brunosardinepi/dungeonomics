@@ -1,0 +1,20 @@
+<ul class="contents_list">
+    {% for c in chapters %}
+        <li>
+            <a {% if c == chapter and not section and "chapter_create" not in action %}class="font-weight-bold" {% endif %}href="{% url 'campaign:chapter_detail' campaign_pk=campaign.pk chapter_pk=c.pk %}">
+                {{ c.title }}
+            </a>
+        </li>
+        <ul class="pl-3">
+            {% for s in sections %}
+                {% if s.chapter.pk == c.pk %}
+                    <li>
+                        <a {% if s == section %}class="font-weight-bold" {% endif %}href="{% url 'campaign:section_detail' campaign_pk=campaign.pk chapter_pk=c.pk section_pk=s.pk %}">
+                            {{ s.title }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endfor %}
+</ul>

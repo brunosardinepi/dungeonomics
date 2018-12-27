@@ -1,0 +1,16 @@
+<input type="text" class="form-control form-control-sm" placeholder="Search in contents">
+<p>
+    <a href="{% url 'campaign:chapter_create' campaign_pk=campaign.pk%}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create chapter</span></a>
+</p>
+<p>
+    <a href="{%url 'campaign:campaign_update' campaign_pk=campaign.pk %}" class="text-teal"><i class="fas fa-fw fa-lg fa-pen-square"></i><span>Edit campaign</span></a>
+</p>
+<p>
+    <a href="" class="text-purple"><i class="fas fa-fw fa-lg fa-cloud-upload"></i><span>Publish campaign</span></a>
+</p>
+<p>
+    <a href="" class="text-orange"><i class="fas fa-fw fa-lg fa-save"></i><span>Print campaign</span></a>
+</p>
+<p>
+    <a id="campaign-delete" href="{% url 'campaign:campaign_delete' campaign_pk=campaign.pk %}" class="text-danger"><i class="fas fa-fw fa-lg fa-trash-alt"></i><span>Delete campaign</sp$
+</p>
