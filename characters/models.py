@@ -191,11 +191,11 @@ class GeneralCharacter(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, default='')
     notes = models.TextField(blank=True)
-    campaigns = models.ManyToManyField('campaign.Campaign')
+    campaigns = models.ManyToManyField('campaign.Campaign', blank=True)
     is_published = models.BooleanField(default=False)
     published_date = models.DateTimeField(blank=True, null=True)
     tavern_description = models.TextField(blank=True)
-    importers = models.ManyToManyField(User, related_name='character_importers')
+    importers = models.ManyToManyField(User, blank=True, related_name='character_importers')
 
     def __str__(self):
         return self.name

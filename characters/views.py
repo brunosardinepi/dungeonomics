@@ -218,9 +218,7 @@ class CharacterCopy(View):
 
 @login_required
 def character_srd(request):
-    characters = sorted(GeneralCharacter.objects.filter(user=3029),
-        key=lambda c: c.name.lower()
-        )
+    characters = GeneralCharacter.objects.filter(user=3029).order_by('name')
     if request.method == 'POST':
         for pk in request.POST.getlist('character'):
             character = GeneralCharacter.objects.get(pk=pk)
