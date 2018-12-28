@@ -2,21 +2,21 @@ from collections import OrderedDict
 
 from django.shortcuts import get_object_or_404
 
-from . import models
+from .models import Attribute, GeneralCharacter
 
 
 def get_character_type(character):
     try:
-        attribute = models.Attribute.objects.filter(
+        attribute = Attribute.objects.filter(
             character=character, name="Character type").order_by('pk').first()
-    except models.Attribute.DoesNotExist:
+    except Attribute.DoesNotExist:
         attribute = None
 
     return attribute
 
 def get_character_types(user):
     # find all of the user's characters
-    characters = models.GeneralCharacter.objects.filter(user=user)
+    characters = GeneralCharacter.objects.filter(user=user)
 
     # find all of the "character type" attributes
     types = []
@@ -32,6 +32,9 @@ def get_character_types(user):
             # no type specified
             if "Other" not in types:
                 types.append("Other")
+
+    # sort alphabetically
+    types.sort(key=lambda x: x.lower())
 
     return types
 
@@ -61,7 +64,36 @@ def get_character_stats(character):
     for stat, attribute in stats.items():
         try:
             attribute = character.attribute_set.get(name=stat)
-        except models.Attribute.DoesNotExist:
+        except Attribute.DoesNotExist:
             attribute = None
         stats[stat]['attribute'] = attribute
     return stats
+
+def get_characters(user):
+    character_types = get_character_types(user)
+    characters = OrderedDict()
+    for character_type in character_types:
+        # create a dict key for the type and an empty list to hold the characters
+        # with the corresponding character type
+        characters[character_type] = []
+
+        if character_type == "Other":
+            # find all the characters for this user
+            # that don't have an attribute named "Character type"
+            characters_queryset = GeneralCharacter.objects.filter(
+                user=user).exclude(attribute__name="Character type")
+            for character in characters_queryset:
+                characters[character_type].append(character)
+        else:
+            # find all the attributes that are named "Character type"
+            # then get their associated character and add it to the dict list
+            attributes = Attribute.objects.filter(
+                character__user=user,
+                name="Character type",
+                value=character_type,
+            ).order_by('character__name')
+            for attribute in attributes:
+                if attribute.character not in characters[character_type]:
+                    characters[character_type].append(attribute.character)
+
+    return characters

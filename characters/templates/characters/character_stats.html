@@ -15,6 +15,17 @@
     </div>
 {% endif %}
 
+{% if character_type %}
+    <div class="row mb-md-1 mb-3">
+        <div class="col-md-auto pr-0">
+            <span class="font-weight-bold">Character type</span>
+        </div>
+        <div class="col">
+            {{ character_type.value }}
+        </div>
+    </div>
+{% endif %}
+
 {% for attribute in character.attribute_set.all %}
     {% if attribute.name not in stats and attribute.name != "Character type" %}
         <div class="row mb-md-1 mb-3">
