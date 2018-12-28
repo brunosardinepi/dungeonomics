@@ -1,0 +1,136 @@
+{% extends "_cols.html" %}
+
+{% load static %}
+{% load widget_tweaks %}
+
+{% block head_extra %}
+    {{ form.media.css }}
+    {{ form.media.js }}
+    
+    <script type="text/javascript">var assets = {{assets|safe}};</script>
+    <script src="{% static 'js/tags.js' %}"></script>
+{% endblock %}
+
+
+{% block col1_order %}order-1{% endblock col1_order %}
+
+{% block col1_title %}Campaigns{% endblock col1_title %}
+
+{% block col1_tools %}
+    {% include "campaign/snippets/col1_tools_ca.html" %}
+{% endblock col1_tools %}
+
+{% block col1_contents %}
+    {% include "campaign/snippets/col1_contents_ca.html" with campaigns=campaigns campaign=campaign %}
+{% endblock col1_contents %}
+
+
+{% block col2_order %}order-2{% endblock col2_order %}
+
+{% block col2_title %}Contents{% endblock col2_title %}
+
+{% block col2_tools %}
+    {% include "campaign/snippets/col2_tools_ca.html" with campaign=campaign %}
+{% endblock col2_tools %}
+
+{% block col2_contents %}
+    {% include "campaign/snippets/col2_contents_ch_se.html" with campaign=campaign chapters=chapters sections=sections %}
+    {% include "campaign/snippets/col2_contents_party.html" with campaign=campaign %}
+    {% include "posts/party_feed.html" with posts=posts %}
+{% endblock col2_contents %}
+
+
+{% block col3_order %}order-lg-3 order-4{% endblock col3_order %}
+
+{% block col3_title %}
+    {% if section %}
+        Edit section
+    {% else %}
+        New section
+    {% endif %}
+{% endblock col3_title %}
+
+{% block col3_tools %}
+    <p>
+        <a href="{% url 'campaign:section_create' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create section</span></a>
+    </p>
+{% endblock col3_tools %}
+
+{% block col3_contents %}
+    <form method="POST" action="">
+        {% csrf_token %}
+    
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+    
+        <div class="form-group">
+            <label for="{{ form.title.id_for_label }}">Title</label>
+            {% render_field form.title class+="form-control mb-3" %}
+            {% if form.title.errors %}
+                {% for error in form.title.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error|escape }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        {% include "snippets/tag_info.html" %}
+    
+        <div class="form-group">
+            <label for="{{ form.content.id_for_label }}">Content</label>
+            {% render_field form.content class+="form-control mb-3" %}
+            {% if form.content.errors %}
+                {% for error in form.content.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error|escape }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    
+        <div class="form-group">
+            <label for="{{ form.order.id_for_label }}">Order</label>
+            {% if section %}
+                {% render_field form.order class+="form-control mb-3" %}
+            {% else %}
+                <input type="number" name="{{ form.order.name }}" value="{{ order_number }}" id="{{ form.order.id_for_label }}" class="form-control mb-3" required>
+            {% endif %}
+    
+            {% if form.order.errors %}
+                {% for error in form.order.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ error|escape }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    
+        <div class="row justify-content-between">
+            <div class="col-auto">
+                {% if section %}
+                    <a href ="{% url 'campaign:section_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk section_pk=section.pk %}" class="btn btn-secondary">Cancel</a>
+                {% else %}
+                    <a href="{% url 'campaign:chapter_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="btn btn-secondary">Cancel</a>
+                {% endif %}
+            </div>
+            <div class="col-auto">
+                <input type="submit" class="btn btn-primary" value="Save">
+            </div>
+        </div>
+    </form>
+{% endblock col3_contents %}
+
+
+{% block col4_order %}order-lg-4 order-3{% endblock col4_order %}
+
+{% block col4_title %}Tags{% endblock col4_title %}
+
+{% block col4_tools %}
+    {% include "campaign/snippets/col4_tools_tags.html" %}
+{% endblock col4_tools %}
+
+{% block col4_contents %}{% endblock col4_contents %}

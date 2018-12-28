@@ -1,21 +1,7 @@
-{% extends 'campaign/template_campaign.html' %}
+{% extends "_cols.html" %}
 
 {% load static %}
 {% load widget_tweaks %}
-
-
-{% block title %}
-    {% if action == "chapter_create" %}
-        New chapter 
-    {% elif action == "chapter_update" %}
-        Update chapter 
-    {% elif action == "section_create" %}
-        New section 
-    {% elif action == "section_update" %}
-        Update section 
-    {% endif %}
-    | {{ block.super }}
-{% endblock %}
 
 {% block head_extra %}
     {{ form.media.css }}
@@ -25,7 +11,52 @@
     <script src="{% static 'js/tags.js' %}"></script>
 {% endblock %}
 
-{% block body_main %}
+
+{% block col1_order %}order-1{% endblock col1_order %}
+
+{% block col1_title %}Campaigns{% endblock col1_title %}
+
+{% block col1_tools %}
+    {% include "campaign/snippets/col1_tools_ca.html" %}
+{% endblock col1_tools %}
+
+{% block col1_contents %}
+    {% include "campaign/snippets/col1_contents_ca.html" with campaigns=campaigns campaign=campaign %}
+{% endblock col1_contents %}
+
+
+{% block col2_order %}order-2{% endblock col2_order %}
+
+{% block col2_title %}Contents{% endblock col2_title %}
+
+{% block col2_tools %}
+    {% include "campaign/snippets/col2_tools_ca.html" with campaign=campaign %}
+{% endblock col2_tools %}
+
+{% block col2_contents %}
+    {% include "campaign/snippets/col2_contents_ch_se.html" with campaign=campaign chapters=chapters sections=sections %}
+    {% include "campaign/snippets/col2_contents_party.html" with campaign=campaign %}
+    {% include "posts/party_feed.html" with posts=posts %}
+{% endblock col2_contents %}
+
+
+{% block col3_order %}order-lg-3 order-4{% endblock col3_order %}
+
+{% block col3_title %}
+    {% if chapter %}
+        Edit chapter
+    {% else %}
+        New chapter
+    {% endif %}
+{% endblock col3_title %}
+
+{% block col3_tools %}
+    <p>
+        <a href="{% url 'campaign:chapter_create' campaign_pk=campaign.pk %}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create chapter</span></a>
+    </p>
+{% endblock col3_tools %}
+
+{% block col3_contents %}
     <form method="POST" action="">
         {% csrf_token %}
     
@@ -47,6 +78,8 @@
             {% endif %}
         </div>
     
+        {% include "snippets/tag_info.html" %}
+
         <div class="form-group">
             {% render_field form.content class+="form-control mb-3" %}
             {% if form.content.errors %}
@@ -106,4 +139,15 @@
             </div>
         </div>
     </form>
-{% endblock %}
+{% endblock col3_contents %}
+
+
+{% block col4_order %}order-lg-4 order-3{% endblock col4_order %}
+
+{% block col4_title %}Tags{% endblock col4_title %}
+
+{% block col4_tools %}
+    {% include "campaign/snippets/col4_tools_tags.html" %}
+{% endblock col4_tools %}
+
+{% block col4_contents %}{% endblock col4_contents %}

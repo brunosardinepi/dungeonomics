@@ -117,11 +117,12 @@ class ChapterCreate(View):
                 chapter_pk=None,
                 section_pk=None,
             )
+            data['chapter'] = None
             data['assets'] = at_tagging(request)
             data['action'] = "chapter_create"
             data['form'] = forms.ChapterForm()
             data['order_number'] = utils.get_next_order(data['campaign'])
-            return render(request, 'campaign/cs_form.html', data)
+            return render(request, 'campaign/ch_form.html', data)
         raise Http404
 
     def post(self, request, *args, **kwargs):
@@ -137,9 +138,6 @@ class ChapterCreate(View):
                 return HttpResponseRedirect(chapter.get_absolute_url())
         raise Http404
 
-def chapter_create_null(request):
-    pass
-
 class SectionCreate(View):
     def get(self, request, *args, **kwargs):
         campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
@@ -151,11 +149,12 @@ class SectionCreate(View):
                 chapter_pk=kwargs['chapter_pk'],
                 section_pk=None,
             )
+            data['section'] = None
             data['assets'] = at_tagging(request)
             data['action'] = "section_create"
             data['form'] = forms.SectionForm()
             data['order_number'] = utils.get_next_order(data['chapter'])
-            return render(request, 'campaign/cs_form.html', data)
+            return render(request, 'campaign/se_form.html', data)
         raise Http404
 
     def post(self, request, *args, **kwargs):
@@ -235,7 +234,7 @@ def chapter_update(request, campaign_pk, chapter_pk):
         raise Http404
     data['form'] = form
     data['formset'] = section_forms
-    return render(request, 'campaign/cs_form.html', data)
+    return render(request, 'campaign/ch_form.html', data)
 
 @login_required
 def section_update(request, campaign_pk, chapter_pk, section_pk):
@@ -260,7 +259,7 @@ def section_update(request, campaign_pk, chapter_pk, section_pk):
     else:
         raise Http404
     data['form'] = form
-    return render(request, 'campaign/cs_form.html', data)
+    return render(request, 'campaign/se_form.html', data)
 
 @login_required
 def campaign_print(request, campaign_pk):
