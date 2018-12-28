@@ -17,7 +17,7 @@ Release date: 12/28/2018
 
 ### Fixes
 
-* None
+* #130 -- urllib vulnerability
 
 
 ## Version 3.3.2
