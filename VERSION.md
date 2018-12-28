@@ -3,6 +3,23 @@
 This is the version history for Dungeonomics development.
 
 
+## Version 4.0.0
+
+Release date: 12/28/2018
+
+### Additions
+
+* None
+
+### Changes
+
+* #131 -- Removed Facebook authentication
+
+### Fixes
+
+* None
+
+
 ## Version 3.3.2
 
 Release date: 12/11/2018
