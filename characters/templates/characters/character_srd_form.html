@@ -1,50 +1,91 @@
-{% extends 'layout.html' %}
+{% extends "_cols.html" %}
+
+{% load static %}
 
 
 {% block title %}SRD characters | {{ block.super }}{% endblock %}
 
-{% block body_content %}
-    <div class="row justify-content-center mt-3 pb-3">
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="px-1 mb-0">SRD characters</h5>
-                </div>
-                <div class="card-body">
-                    <form method="POST" action="">
-                        {% csrf_token %}
-                        <p>Select the characters from the SRD that you'd like to import to your account:</p>
-                        <input type="checkbox" onClick="toggle(this)" style="margin-right: 8px;" />Select all
-                        <hr>
-                        {% for character in characters %}
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="character" value="{{ character.pk }}"> {{ character.name }}
-                                </label>
-                            </div>
-                        {% endfor %}
-                        
-                        <hr>
-    
-                        <p>These characters are provided by the <a href="http://dnd.wizards.com/articles/features/systems-reference-document-srd" target="_blank">SRD</a> and used in accordance with the <a href="http://www.opengamingfoundation.org/ogl.html" target="_blank">Open Gaming License</a>.<p>
-                </div>
-                <div class="card-footer">
-                    <div class="row justify-content-between">
-                        <div class="col-auto">
-                            <a href="{% url 'characters:character_detail' %}" class="btn btn-secondary">Cancel</a>
-                        </div>
-                        <div class="col-auto">
-                            <input type="submit" class="btn btn-primary" value="Continue">
-                        </div>
-                    </div>
-                    </form>
-                </div>
+
+{% block col1_order %}order-1{% endblock col1_order %}
+
+{% block col1_title %}SRD asset types{% endblock col1_title %}
+
+{% block col1_tools %}
+    <p>
+        <a href="#" class="text-success"><i class="fas fa-fw fa-lg fa-check-square"></i><span>Select all</span></a>
+    </p>
+{% endblock col1_tools %}
+
+{% block col1_contents %}
+    <ul class="contents_list">
+        {% for asset_type, list in assets.items %}
+            <li>
+                <a href="#" class="asset-type{% if active_asset_type == asset_type %} font-weight-bold{% endif %}">{{ asset_type }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+    <p>These characters are provided by the <a href="http://dnd.wizards.com/articles/features/systems-reference-document-srd" target="_blank">SRD</a> and used in accordance with the <a href="http://www.opengamingfoundation.org/ogl.html" target="_blank">Open Gaming License</a>.<p>
+{% endblock col1_contents %}
+
+
+{% block col2_order %}order-2{% endblock col2_order %}
+
+{% block col2_title %}SRD assets{% endblock col2_title %}
+
+{% block col2_tools %}
+    <p>
+        <a href="#" class="text-success"><i class="fas fa-fw fa-lg fa-check-square"></i><span>Select all</span></a>
+    </p>
+{% endblock col2_tools %}
+
+{% block col2_contents %}
+    <div id="col2-contents">
+        {% include "characters/srd_assets.html" with assets=active_assets %}
+    </div>
+{% endblock col2_contents %}
+
+
+{% block col3_order %}order-lg-3 order-4{% endblock col3_order %}
+
+{% block col3_title %}{% endblock col3_title %}
+
+{% block col3_tools %}
+    <p>
+        <a href="#" class="text-success"><i class="fas fa-fw fa-lg fa-plus-square"></i><span>Add to import list</span></a>
+    </p>
+{% endblock col3_tools %}
+
+{% block col3_contents %}{% endblock col3_contents %}
+
+
+{% block col4_order %}order-lg-4 order-3{% endblock col4_order %}
+
+{% block col4_title %}Import list{% endblock col4_title %}
+
+{% block col4_tools %}
+    <p>
+        <a href="#" class="text-success"><i class="fas fa-fw fa-lg fa-times-square"></i><span>Remove all</span></a>
+    </p>
+{% endblock col4_tools %}
+
+{% block col4_contents %}
+    <form method="POST" action="">
+        {% csrf_token %}
+        <input type="checkbox" onClick="toggle(this)" style="margin-right: 8px;" />Select all
+        <hr>
+        <div class="row justify-content-between">
+            <div class="col-auto">
+                <input type="submit" class="btn btn-primary" value="Continue">
             </div>
         </div>
-    </div>
-{% endblock %}
+    </form>
+{% endblock col4_contents %}
+
 
 {% block body_extra %}
+    {{ block.super }}
     <script>
     function toggle(source) {
       checkboxes = document.getElementsByName('character');
@@ -53,4 +94,6 @@
       }
     }
     </script>
+
+    <script src="{% static 'js/srd_type_assets.js' %}"></script>
 {% endblock %}

@@ -23,6 +23,7 @@ urlpatterns = [
     path('delete/',
         login_required(views.CharactersDelete.as_view()),
         name='characters_delete'),
+    path('srd/assets/', views.character_srd_assets, name='character_srd_assets'),
     path('srd/', views.character_srd, name='character_srd'),
 
     path('player/<int:pk>/campaigns/',
