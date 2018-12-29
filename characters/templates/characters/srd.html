@@ -26,7 +26,7 @@
     </ul>
 
     <hr>
-    <p>These characters are provided by the <a href="http://dnd.wizards.com/articles/features/systems-reference-document-srd" target="_blank">SRD</a> and used in accordance with the <a href="http://www.opengamingfoundation.org/ogl.html" target="_blank">Open Gaming License</a>.<p>
+    <p>These assets are provided by the <a href="http://dnd.wizards.com/articles/features/systems-reference-document-srd" target="_blank">SRD</a> and used in accordance with the <a href="http://www.opengamingfoundation.org/ogl.html" target="_blank">Open Gaming License</a>.<p>
 {% endblock col1_contents %}
 
 
@@ -71,6 +71,8 @@
 {% endblock col4_tools %}
 
 {% block col4_contents %}
+    <ul id="col4-contents-ul" class="contents_list"></ul>
+
     <form method="POST" action="">
         {% csrf_token %}
         <input type="checkbox" onClick="toggle(this)" style="margin-right: 8px;" />Select all
@@ -95,5 +97,5 @@
     }
     </script>
 
-    <script src="{% static 'js/srd_type_assets.js' %}"></script>
+    <script src="{% static 'js/srd.js' %}"></script>
 {% endblock %}

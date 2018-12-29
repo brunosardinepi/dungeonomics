@@ -241,7 +241,7 @@ def character_srd(request):
         'active_assets': active_assets,
         'characters': characters,
     }
-    return render(request, 'characters/character_srd_form.html', data)
+    return render(request, 'characters/srd.html', data)
 
 @login_required
 def character_srd_assets(request):

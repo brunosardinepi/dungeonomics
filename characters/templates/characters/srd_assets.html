@@ -1,6 +1,6 @@
-<ul class="contents_list">
+<ul id="col2-contents-ul" class="contents_list">
     {% for asset in assets %}
-        <li><a href="#"><i class="fas fa-fw fa-lg fa-plus-square"></i></a><a href="#"><span>{{ asset }}</span></a></li>
+        <li id="add-asset-{{ asset.pk }}" class="asset"><a href="#" class="add-asset"><i class="fas fa-fw fa-lg fa-plus-square"></i></a><a href="#"><span>{{ asset }}</span></a></li>
     {% endfor %}
 </ul>
 
