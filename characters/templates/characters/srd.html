@@ -71,15 +71,15 @@
 {% endblock col4_tools %}
 
 {% block col4_contents %}
-    <ul id="col4-contents-ul" class="contents_list"></ul>
-
     <form method="POST" action="">
         {% csrf_token %}
-        <input type="checkbox" onClick="toggle(this)" style="margin-right: 8px;" />Select all
+
+        <ul id="col4-contents-ul" class="contents_list"></ul>
+
         <hr>
         <div class="row justify-content-between">
             <div class="col-auto">
-                <input type="submit" class="btn btn-primary" value="Continue">
+                <input type="submit" class="btn btn-primary" value="Import">
             </div>
         </div>
     </form>
@@ -88,14 +88,5 @@
 
 {% block body_extra %}
     {{ block.super }}
-    <script>
-    function toggle(source) {
-      checkboxes = document.getElementsByName('character');
-      for(var i=0, n=checkboxes.length;i<n;i++) {
-        checkboxes[i].checked = source.checked;
-      }
-    }
-    </script>
-
     <script src="{% static 'js/srd.js' %}"></script>
 {% endblock %}

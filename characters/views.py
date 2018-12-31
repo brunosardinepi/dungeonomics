@@ -226,6 +226,7 @@ def character_srd(request):
 
     if request.method == 'POST':
         for pk in request.POST.getlist('character'):
+            print("pk = {}".format(pk))
             character = GeneralCharacter.objects.get(pk=pk)
             create_character_copy(character, request.user)
         return redirect('characters:character_detail')
