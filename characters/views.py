@@ -216,47 +216,6 @@ class CharacterCopy(View):
             return redirect(character.get_absolute_url())
         raise Http404
 
-@login_required
-def character_srd(request):
-    characters = get_characters(3029)
-
-    assets = {
-        'Characters': characters,
-    }
-
-    if request.method == 'POST':
-        for pk in request.POST.getlist('character'):
-            print("pk = {}".format(pk))
-            character = GeneralCharacter.objects.get(pk=pk)
-            create_character_copy(character, request.user)
-        return redirect('characters:character_detail')
-
-    active_asset_type = next(iter(assets))
-
-    if active_asset_type == "Characters":
-        active_assets = GeneralCharacter.objects.filter(user=3029).order_by('name')
-
-    data = {
-        'assets': assets,
-        'active_asset_type': active_asset_type,
-        'active_assets': active_assets,
-        'characters': characters,
-    }
-    return render(request, 'characters/srd.html', data)
-
-@login_required
-def character_srd_assets(request):
-    # get the url parameters
-    asset_type = request.GET.get("asset_type")
-
-    # get the asset type's assets
-    if asset_type == "Characters":
-        assets = GeneralCharacter.objects.filter(user=3029).order_by('name')
-
-    # render the html and pass it back to ajax
-    html = render(request, "characters/srd_assets.html", {'assets': assets})
-    return HttpResponse(html)
-
 class CharactersDelete(View):
     def get(self, request, *args, **kwargs):
         characters = GeneralCharacter.objects.filter(

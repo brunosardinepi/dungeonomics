@@ -81,15 +81,15 @@ class CharacterTest(TestCase):
 
     def test_character_srd(self):
         # unauthenticated user
-        response = self.client.get('/characters/srd/')
-        self.assertRedirects(response, '/accounts/login/?next=/characters/srd/', 302, 200)
+        response = self.client.get('/srd/')
+        self.assertRedirects(response, '/accounts/login/?next=/srd/', 302, 200)
 
         # authenticated user
         self.client.force_login(self.users[0])
-        response = self.client.get('/characters/srd/')
+        response = self.client.get('/srd/')
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post('/characters/srd/', {})
+        response = self.client.post('/srd/', {})
         self.assertRedirects(response, '/characters/', 302, 200)
 
     def test_character_publish(self):

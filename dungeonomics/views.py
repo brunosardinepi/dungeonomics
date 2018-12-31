@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Count
 from django.http import HttpResponseRedirect, Http404
-from django.shortcuts import get_object_or_404, render, render_to_response
+from django.shortcuts import get_object_or_404, redirect, render, render_to_response
 from django.template import RequestContext
 from django.views.generic import TemplateView
 
@@ -12,6 +12,7 @@ from . import forms
 from allauth.account import models as allauth_models
 from campaign.models import Campaign
 from characters.models import GeneralCharacter
+from characters.utils import create_character_copy, get_characters
 from votes.models import Feature, Vote
 
 
@@ -37,6 +38,46 @@ def home_view(request):
 def profile_detail(request):
     user = get_object_or_404(User, pk=request.user.pk)
     return render(request, 'profile.html', {'user': user })
+
+@login_required
+def srd(request):
+    characters = get_characters(3029)
+
+    assets = {
+        'Characters': characters,
+    }
+
+    if request.method == 'POST':
+        for pk in request.POST.getlist('character'):
+            character = GeneralCharacter.objects.get(pk=pk)
+            create_character_copy(character, request.user)
+        return redirect('characters:character_detail')
+
+    active_asset_type = next(iter(assets))
+
+    if active_asset_type == "Characters":
+        active_assets = GeneralCharacter.objects.filter(user=3029).order_by('name')
+
+    data = {
+        'assets': assets,
+        'active_asset_type': active_asset_type,
+        'active_assets': active_assets,
+        'characters': characters,
+    }
+    return render(request, 'characters/srd.html', data)
+
+@login_required
+def srd_assets(request):
+    # get the url parameters
+    asset_type = request.GET.get("asset_type")
+
+    # get the asset type's assets
+    if asset_type == "Characters":
+        assets = GeneralCharacter.objects.filter(user=3029).order_by('name')
+
+    # render the html and pass it back to ajax
+    html = render(request, "characters/srd_assets.html", {'assets': assets})
+    return HttpResponse(html)
 
 class LoginView(views.LoginView):
     template_name = 'login.html'
