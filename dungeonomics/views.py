@@ -64,7 +64,7 @@ def srd(request):
         'active_assets': active_assets,
         'characters': characters,
     }
-    return render(request, 'characters/srd.html', data)
+    return render(request, 'srd.html', data)
 
 @login_required
 def srd_assets(request):
@@ -76,7 +76,7 @@ def srd_assets(request):
         assets = GeneralCharacter.objects.filter(user=3029).order_by('name')
 
     # render the html and pass it back to ajax
-    html = render(request, "characters/srd_assets.html", {'assets': assets})
+    html = render(request, "srd_assets.html", {'assets': assets})
     return HttpResponse(html)
 
 class LoginView(views.LoginView):
