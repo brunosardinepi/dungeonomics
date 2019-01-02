@@ -68,7 +68,6 @@ $(document).on("click", ".add-asset-from-tools > span", function (event) {
 });
 
 function removeAsset(asset, asset_pk) {
-    console.log("hello");
     // remove the asset from col4
     asset.remove();
 
@@ -98,7 +97,6 @@ $(document).on("click", ".remove-asset", function (event) {
 });
 
 $(document).on("click", ".remove-asset-from-tools > span", function (event) {
-    console.log("hello");
     event.preventDefault();
 
     var asset_pk = $(this).parents("a").attr("id").split("col3-tools-asset-")[1];
@@ -128,5 +126,31 @@ $(document).on("click", ".asset", function (event) {
             // show the character stats
             $("#col3-contents").html(data);
         }
+    });
+});
+
+$(document).on("click", "#select-all > span", function (event) {
+    event.preventDefault();
+
+    // find all the li in #col2-contents-ul
+    $.each($("#col2-contents-ul").find("li"), function(key, value) {
+        var asset = $(value);
+        var asset_pk = asset.attr("id").split("add-asset-")[1];
+
+        // add them to import list
+        addAsset(asset, asset_pk);
+    });
+});
+
+$(document).on("click", "#remove-all > span", function (event) {
+    event.preventDefault();
+
+    // find all the li in #col4-contents-ul
+    $.each($("#col4-contents-ul").find("li"), function(key, value) {
+        var asset = $(value);
+        var asset_pk = asset.attr("id").split("remove-asset-")[1];
+
+        // remove them from import list
+        removeAsset(asset, asset_pk);
     });
 });
