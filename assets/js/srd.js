@@ -13,12 +13,7 @@ $(document).on("click", ".asset-type", function (event) {
     });
 });
 
-$(document).on("click", ".add-asset", function (event) {
-    event.preventDefault();
-
-    var asset = $(this).parent();
-    var asset_pk = asset.attr("id").split("add-asset-")[1];
-
+function addAsset(asset, asset_pk) {
     // clone the asset for use in col4
     var new_asset = asset.clone();
 
@@ -40,6 +35,24 @@ $(document).on("click", ".add-asset", function (event) {
 
     // add the asset to col4
     $("#col4-contents-ul").append(new_asset);
+}
+
+$(document).on("click", ".add-asset", function (event) {
+    event.preventDefault();
+
+    var asset = $(this).parent();
+    var asset_pk = asset.attr("id").split("add-asset-")[1];
+
+    addAsset(asset, asset_pk);
+});
+
+$(document).on("click", ".add-asset-from-tools > span", function (event) {
+    event.preventDefault();
+
+    var asset_pk = $(this).parents("a").attr("id").split("col3-tools-asset-")[1];
+    var asset = $("#col2-contents-ul").find("#add-asset-" + asset_pk);
+
+    addAsset(asset, asset_pk);
 });
 
 $(document).on("click", ".remove-asset", function (event) {
@@ -71,7 +84,13 @@ $(document).on("click", ".asset", function (event) {
         url: '/srd/asset?asset_type=' + asset_type + '&pk=' + asset_pk,
         data: {},
         success: function (data) {
+            // update col3-tools with the asset pk
+            $("#col3-tools").find("a").attr("id", "col3-tools-asset-" + asset_pk);
+
+            // add the asset name to the character stats
             $("#col3-tools-dropdown").prev("span").text(asset_name);
+
+            // show the character stats
             $("#col3-contents").html(data);
         }
     });
