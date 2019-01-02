@@ -38,8 +38,10 @@ urlpatterns = [
     path('votes/', include('votes.urls', namespace='votes')),
     path('tables/', include('tables.urls', namespace='tables')),
     path('wiki/', include('wiki.urls', namespace='wiki')),
+
     path('srd/assets/', views.srd_assets, name='srd_assets'),
     path('srd/asset/', views.srd_asset, name='srd_asset'),
+    path('srd/tools-update/', views.srd_tools_update, name='srd_tools_update'),
     path('srd/', views.srd, name='srd'),
 
     path('error/image-size/', TemplateView.as_view(template_name="error_image_size.html")),

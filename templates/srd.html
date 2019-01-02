@@ -52,9 +52,7 @@
 {% block col3_title %}{% endblock col3_title %}
 
 {% block col3_tools %}
-    <p>
-        <a href="#" class="add-asset-from-tools text-success"><i class="fas fa-fw fa-lg fa-plus-square"></i><span>Add to import list</span></a>
-    </p>
+    {% include "srd_col3_tools_add.html" %}
 {% endblock col3_tools %}
 
 {% block col3_contents %}

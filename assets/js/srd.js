@@ -35,6 +35,18 @@ function addAsset(asset, asset_pk) {
 
     // add the asset to col4
     $("#col4-contents-ul").append(new_asset);
+
+    // update the tools link
+    $.ajax({
+        url: '/srd/tools-update?col=3&action=add',
+        data: {},
+        success: function (data) {
+            $("#col3-tools").html(data);
+
+            // update col3-tools with the asset pk
+            $("#col3-tools").find("a").attr("id", "col3-tools-asset-" + asset_pk);
+        }
+    });
 }
 
 $(document).on("click", ".add-asset", function (event) {
@@ -55,21 +67,44 @@ $(document).on("click", ".add-asset-from-tools > span", function (event) {
     addAsset(asset, asset_pk);
 });
 
-$(document).on("click", ".remove-asset", function (event) {
-    // prevent the click
-    event.preventDefault();
-
-    // get the asset
-    var asset = $(this).parent();
-
-    // store the asset's pk
-    var asset_pk = asset.attr("id").split("remove-asset-")[1];
-
+function removeAsset(asset, asset_pk) {
+    console.log("hello");
     // remove the asset from col4
     asset.remove();
 
     // show the asset in col2
     $("#add-asset-" + asset_pk).show();
+
+    // update the tools link
+    $.ajax({
+        url: '/srd/tools-update?col=3&action=remove',
+        data: {},
+        success: function (data) {
+            $("#col3-tools").html(data);
+
+            // update col3-tools with the asset pk
+            $("#col3-tools").find("a").attr("id", "col3-tools-asset-" + asset_pk);
+        }
+    });
+}
+
+$(document).on("click", ".remove-asset", function (event) {
+    event.preventDefault();
+
+    var asset = $(this).parent();
+    var asset_pk = asset.attr("id").split("remove-asset-")[1];
+
+    removeAsset(asset, asset_pk);
+});
+
+$(document).on("click", ".remove-asset-from-tools > span", function (event) {
+    console.log("hello");
+    event.preventDefault();
+
+    var asset_pk = $(this).parents("a").attr("id").split("col3-tools-asset-")[1];
+    var asset = $("#col4-contents-ul").find("#remove-asset-" + asset_pk);
+
+    removeAsset(asset, asset_pk);
 });
 
 $(document).on("click", ".asset", function (event) {

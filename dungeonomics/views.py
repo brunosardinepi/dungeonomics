@@ -98,6 +98,21 @@ def srd_asset(request):
 
     return HttpResponse(html)
 
+@login_required
+def srd_tools_update(request):
+    """Update col tools when an asset is added/removed"""
+
+    col = request.GET.get("col")
+    action = request.GET.get("action")
+
+    if col == "3":
+        if action == "remove":
+            html = render(request, "srd_col3_tools_add.html")
+        elif action == "add":
+            html = render(request, "srd_col3_tools_remove.html")
+
+    return HttpResponse(html)
+
 class LoginView(views.LoginView):
     template_name = 'login.html'
 
