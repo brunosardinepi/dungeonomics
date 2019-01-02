@@ -1,7 +1,7 @@
 <ul id="col2-contents-ul" class="contents_list">
     {% for asset in assets %}
-        <li id="add-asset-{{ asset.pk }}" class="asset">
-            <a href="#" class="add-asset"><i class="fas fa-fw fa-lg fa-plus-square"></i></a><a href="#"><span>{{ asset }}</span></a><input type="hidden" name="character" value="{{ asset.pk }}" />
+        <li id="add-asset-{{ asset.pk }}">
+            <a href="#" class="add-asset"><i class="fas fa-fw fa-lg fa-plus-square"></i></a><a href="#" id="{{ asset_type }}-{{ asset.pk }}" class="asset"><span>{{ asset }}</span></a><input type="hidden" name="character" value="{{ asset.pk }}" />
         </li>
     {% endfor %}
 </ul>

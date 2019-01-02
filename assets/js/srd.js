@@ -1,13 +1,11 @@
 $(document).on("click", ".asset-type", function (event) {
-    // prevent the click
     event.preventDefault();
 
-    // get the asset type
     var asset_type = $(this).text();
 
     // get the assets with this type
     $.ajax({
-        url: '/characters/srd/assets?asset_type=' + asset_type,
+        url: '/srd/assets?asset_type=' + asset_type,
         data: {},
         success: function (data) {
             $("#col2-contents").html(data);
@@ -16,13 +14,9 @@ $(document).on("click", ".asset-type", function (event) {
 });
 
 $(document).on("click", ".add-asset", function (event) {
-    // prevent the click
     event.preventDefault();
 
-    // get the asset
     var asset = $(this).parent();
-
-    // store the asset's pk
     var asset_pk = asset.attr("id").split("add-asset-")[1];
 
     // clone the asset for use in col4
@@ -63,4 +57,22 @@ $(document).on("click", ".remove-asset", function (event) {
 
     // show the asset in col2
     $("#add-asset-" + asset_pk).show();
+});
+
+$(document).on("click", ".asset", function (event) {
+    event.preventDefault();
+
+    var id = $(this).attr("id");
+    var asset_type = id.split("-")[0];
+    var asset_pk = id.split("-")[1];
+    var asset_name = $(this).find("span").text();
+
+    $.ajax({
+        url: '/srd/asset?asset_type=' + asset_type + '&pk=' + asset_pk,
+        data: {},
+        success: function (data) {
+            $("#col3-tools-dropdown").prev("span").text(asset_name);
+            $("#col3-contents").html(data);
+        }
+    });
 });

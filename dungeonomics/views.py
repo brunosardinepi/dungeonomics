@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Count
-from django.http import HttpResponseRedirect, Http404
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render, render_to_response
 from django.template import RequestContext
 from django.views.generic import TemplateView
@@ -12,7 +12,7 @@ from . import forms
 from allauth.account import models as allauth_models
 from campaign.models import Campaign
 from characters.models import GeneralCharacter
-from characters.utils import create_character_copy, get_characters
+from characters.utils import create_character_copy, get_character_stats, get_characters
 from votes.models import Feature, Vote
 
 
@@ -68,15 +68,34 @@ def srd(request):
 
 @login_required
 def srd_assets(request):
-    # get the url parameters
+    """Get a list of assets based on an asset type"""
+
     asset_type = request.GET.get("asset_type")
 
-    # get the asset type's assets
     if asset_type == "Characters":
         assets = GeneralCharacter.objects.filter(user=3029).order_by('name')
 
-    # render the html and pass it back to ajax
-    html = render(request, "srd_assets.html", {'assets': assets})
+    html = render(request, "srd_assets.html", {
+        'assets': assets,
+        'asset_type': asset_type,
+    })
+    return HttpResponse(html)
+
+@login_required
+def srd_asset(request):
+    """Get an individual asset's stats"""
+
+    asset_type = request.GET.get("asset_type")
+    asset_pk = request.GET.get("pk")
+
+    if asset_type == "Characters":
+        asset = get_object_or_404(GeneralCharacter, pk=asset_pk)
+
+        html = render(request, "characters/character_stats.html", {
+            'character': asset,
+            'stats': get_character_stats(asset),
+        })
+
     return HttpResponse(html)
 
 class LoginView(views.LoginView):

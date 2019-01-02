@@ -42,7 +42,7 @@
 
 {% block col2_contents %}
     <div id="col2-contents">
-        {% include "srd_assets.html" with assets=active_assets %}
+        {% include "srd_assets.html" with assets=active_assets asset_type=active_asset_type %}
     </div>
 {% endblock col2_contents %}
 
@@ -57,7 +57,9 @@
     </p>
 {% endblock col3_tools %}
 
-{% block col3_contents %}{% endblock col3_contents %}
+{% block col3_contents %}
+    <div id="col3-contents"></div>
+{% endblock col3_contents %}
 
 
 {% block col4_order %}order-lg-4 order-3{% endblock col4_order %}
