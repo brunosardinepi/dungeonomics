@@ -3,12 +3,45 @@ $(document).on("click", ".asset-type", function (event) {
 
     var asset_type = $(this).text();
 
+    // empty col2
+    $("#col2-contents-ul").html("");
+
+    // remove bold font from asset types
+    $("#col1-contents").find("a").removeClass("font-weight-bold");
+
+    // set the bold font for the active asset type
+    $(this).addClass("font-weight-bold");
+
     // get the assets with this type
     $.ajax({
         url: '/srd/assets?asset_type=' + asset_type,
         data: {},
         success: function (data) {
-            $("#col2-contents").html(data);
+
+// not sure if i'll need this when there are hundreds of srd assets...
+            // empty the col2 ul if it's a new asset type
+//            if (!$("#col2-contents-ul").hasClass(asset_type)) {
+//                console.log("new class");
+//                $("#col2-contents-ul").removeClass();
+//                $("#col2-contents-ul").addClass("contents_list " + asset_type);
+//                $("#col2-contents-ul").html("");
+//            } else {
+//                console.log("already has this class");
+//            }
+
+            // check each li in the returned data/html
+            $.each($(data).find("li"), function(key, value) {
+                // get the li id and replace "add" with "remove"
+                var id = $(value).attr("id").replace("add", "remove");
+                // check if "remove-asset-pk" exists
+                if ($("#" + id).length > 0) {
+                    // this must be in col4's import list, so hide when adding to col2
+                    $(value).hide();
+                }
+
+                // add the li to col2
+                $("#col2-contents-ul").append(value);
+            });
         }
     });
 });
@@ -120,10 +153,10 @@ $(document).on("click", ".asset", function (event) {
             // update col3-tools with the asset pk
             $("#col3-tools").find("a").attr("id", "col3-tools-asset-" + asset_pk);
 
-            // add the asset name to the character stats
+            // add the asset name to col3
             $("#col3-tools-dropdown").prev("span").text(asset_name);
 
-            // show the character stats
+            // show the asset stats
             $("#col3-contents").html(data);
         }
     });

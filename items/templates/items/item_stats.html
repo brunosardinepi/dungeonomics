@@ -1,0 +1,15 @@
+{% if item %}
+    {% if item.item_type %}
+        <p><span class="font-weight-bold">Type</span> {{ item.item_type }}</p>
+    {% endif %}
+
+    {% if item.rarity %}
+        <p><span class="font-weight-bold">Rarity</span> {{ item.rarity }}</p>
+    {% endif %}
+
+    {% if item.item_type or item.rarity %}<hr>{% endif %}
+    {{ item.content|safe }}
+{% else %}
+    <p>You haven't created any items yet</p>
+{% endif %}
+

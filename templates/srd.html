@@ -15,13 +15,15 @@
 {% endblock col1_tools %}
 
 {% block col1_contents %}
-    <ul class="contents_list">
-        {% for asset_type, list in assets.items %}
-            <li>
-                <a href="#" class="asset-type{% if active_asset_type == asset_type %} font-weight-bold{% endif %}">{{ asset_type }}</a>
-            </li>
-        {% endfor %}
-    </ul>
+    <div id="col1-contents">
+        <ul class="contents_list">
+            {% for asset_type, list in assets.items %}
+                <li>
+                    <a href="#" class="asset-type{% if active_asset_type == asset_type %} font-weight-bold{% endif %}">{{ asset_type }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock col1_contents %}
 
 

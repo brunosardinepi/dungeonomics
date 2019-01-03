@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Count
@@ -13,6 +15,7 @@ from allauth.account import models as allauth_models
 from campaign.models import Campaign
 from characters.models import GeneralCharacter
 from characters.utils import create_character_copy, get_character_stats, get_characters
+from items.models import Item
 from votes.models import Feature, Vote
 
 
@@ -42,10 +45,12 @@ def profile_detail(request):
 @login_required
 def srd(request):
     characters = get_characters(3029)
+    items = Item.objects.filter(user=3029)
 
-    assets = {
-        'Characters': characters,
-    }
+    assets = OrderedDict([
+        ('Characters', characters),
+        ('Items', items),
+    ])
 
     if request.method == 'POST':
         for pk in request.POST.getlist('character'):
@@ -57,6 +62,8 @@ def srd(request):
 
     if active_asset_type == "Characters":
         active_assets = GeneralCharacter.objects.filter(user=3029).order_by('name')
+    elif active_asset_type == "Items":
+        active_assets = items
 
     data = {
         'assets': assets,
@@ -74,6 +81,8 @@ def srd_assets(request):
 
     if asset_type == "Characters":
         assets = GeneralCharacter.objects.filter(user=3029).order_by('name')
+    elif asset_type == "Items":
+        assets = Item.objects.filter(user=3029).order_by('name')
 
     html = render(request, "srd_assets.html", {
         'assets': assets,
@@ -90,11 +99,13 @@ def srd_asset(request):
 
     if asset_type == "Characters":
         asset = get_object_or_404(GeneralCharacter, pk=asset_pk)
-
         html = render(request, "characters/character_stats.html", {
             'character': asset,
             'stats': get_character_stats(asset),
         })
+    elif asset_type == "Items":
+        asset = get_object_or_404(Item, pk=asset_pk)
+        html = render(request, "items/item_stats.html", {'item': asset})
 
     return HttpResponse(html)
 
