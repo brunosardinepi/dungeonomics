@@ -14,7 +14,7 @@ $(document).on("click", ".asset-type", function (event) {
 
     // get the assets with this type
     $.ajax({
-        url: '/srd/assets?asset_type=' + asset_type,
+        url: '/srd/ajax/assets?asset_type=' + asset_type,
         data: {},
         success: function (data) {
 
@@ -71,7 +71,7 @@ function addAsset(asset, asset_pk) {
 
     // update the tools link
     $.ajax({
-        url: '/srd/tools-update?col=3&action=add',
+        url: '/srd/ajax/tools-update?col=3&action=add',
         data: {},
         success: function (data) {
             $("#col3-tools").html(data);
@@ -109,7 +109,7 @@ function removeAsset(asset, asset_pk) {
 
     // update the tools link
     $.ajax({
-        url: '/srd/tools-update?col=3&action=remove',
+        url: '/srd/ajax/tools-update?col=3&action=remove',
         data: {},
         success: function (data) {
             $("#col3-tools").html(data);
@@ -147,7 +147,7 @@ $(document).on("click", ".asset", function (event) {
     var asset_name = $(this).find("span").text();
 
     $.ajax({
-        url: '/srd/asset?asset_type=' + asset_type + '&pk=' + asset_pk,
+        url: '/srd/ajax/asset?asset_type=' + asset_type + '&pk=' + asset_pk,
         data: {},
         success: function (data) {
             // update col3-tools with the asset pk

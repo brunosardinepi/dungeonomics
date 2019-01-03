@@ -43,7 +43,7 @@ def profile_detail(request):
     return render(request, 'profile.html', {'user': user })
 
 @login_required
-def srd(request):
+def srd(request, active_asset_type=None):
     characters = get_characters(3029)
     items = Item.objects.filter(user=3029)
 
@@ -64,7 +64,10 @@ def srd(request):
 
         return redirect('characters:character_detail')
 
-    active_asset_type = next(iter(assets))
+    if not active_asset_type:
+        active_asset_type = next(iter(assets))
+    else:
+        active_asset_type = active_asset_type.capitalize()
 
     if active_asset_type == "Characters":
         active_assets = GeneralCharacter.objects.filter(user=3029).order_by('name')
