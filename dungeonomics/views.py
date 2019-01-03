@@ -56,6 +56,12 @@ def srd(request):
         for pk in request.POST.getlist('character'):
             character = GeneralCharacter.objects.get(pk=pk)
             create_character_copy(character, request.user)
+        for pk in request.POST.getlist('item'):
+            item = Item.objects.get(pk=pk)
+            item.pk = None
+            item.user = request.user
+            item.save()
+
         return redirect('characters:character_detail')
 
     active_asset_type = next(iter(assets))
