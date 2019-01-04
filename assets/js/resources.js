@@ -94,6 +94,9 @@ $(document).on("click", ".asset-type", function (event) {
     // set the bold font for the active asset type
     $(this).addClass("font-weight-bold");
 
+    // update the col2 header
+    $("#col2-tools-dropdown").prev("span").text(asset_type);
+
     // get the assets with this type
     $.ajax({
         url: '/resources/ajax/assets?asset_type=' + asset_type,
