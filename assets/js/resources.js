@@ -65,6 +65,10 @@ $(document).on("click", ".asset", function (event) {
     var asset_pk = id.split("-")[1];
     var asset_name = $(this).find("span").text();
 
+    // set to bold
+    $("#col2-contents").find("*").removeClass("font-weight-bold");
+    $(this).addClass("font-weight-bold");
+
     $.ajax({
         url: '/srd/ajax/asset?asset_type=' + asset_type + '&pk=' + asset_pk,
         data: {},
