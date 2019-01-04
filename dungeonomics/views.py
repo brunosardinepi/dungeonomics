@@ -130,9 +130,9 @@ def srd_tools_update(request):
     action = request.GET.get("action")
 
     if col == "3":
-        if action == "remove":
+        if action == "add":
             html = render(request, "srd_col3_tools_add.html")
-        elif action == "add":
+        elif action == "remove":
             html = render(request, "srd_col3_tools_remove.html")
 
     return HttpResponse(html)
