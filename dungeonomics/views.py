@@ -215,8 +215,11 @@ def resources_tools_update(request):
     col = request.GET.get("col")
     resource_type = request.GET.get("resource_type")
 
-    if col == "1":
-        html = render(request, "resources_col1_tools_{}.html".format(resource_type.lower()))
+    print("resources_col{}_tools_{}.html".format(col, resource_type.lower()))
+    html = render(request, "resources_col{}_tools_{}.html".format(
+        col,
+        resource_type.lower(),
+    ))
 
     return HttpResponse(html)
 
