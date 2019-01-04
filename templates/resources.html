@@ -3,15 +3,14 @@
 {% load static %}
 
 
-{% block title %}SRD | {{ block.super }}{% endblock %}
+{% block title %}Resources | {{ block.super }}{% endblock %}
 
 
 {% block col1_order %}order-1{% endblock col1_order %}
 
-{% block col1_title %}SRD asset types{% endblock col1_title %}
+{% block col1_title %}Resource types{% endblock col1_title %}
 
 {% block col1_tools %}
-    <p>These assets are provided by the <a href="http://dnd.wizards.com/articles/features/systems-reference-document-srd" class="inline" target="_blank">SRD</a> and used in accordance with the <a href="http://www.opengamingfoundation.org/ogl.html" class="inline" target="_blank">Open Gaming License</a>.</p>
 {% endblock col1_tools %}
 
 {% block col1_contents %}
@@ -29,7 +28,7 @@
 
 {% block col2_order %}order-2{% endblock col2_order %}
 
-{% block col2_title %}SRD assets{% endblock col2_title %}
+{% block col2_title %}Resource assets{% endblock col2_title %}
 
 {% block col2_tools %}
     <p>
@@ -39,7 +38,7 @@
 
 {% block col2_contents %}
     <div id="col2-contents">
-        {% include "srd_assets.html" with assets=active_assets asset_type=active_asset_type %}
+        {% include "resources_assets.html" with assets=active_assets asset_type=active_asset_type %}
     </div>
 {% endblock col2_contents %}
 
@@ -59,31 +58,16 @@
 
 {% block col4_order %}order-lg-4 order-3{% endblock col4_order %}
 
-{% block col4_title %}Import list{% endblock col4_title %}
+{% block col4_title %}Tags{% endblock col4_title %}
 
 {% block col4_tools %}
-    <p>
-        <a href="#" id="remove-all" class="text-danger"><i class="fas fa-fw fa-lg fa-times-square"></i><span>Remove all</span></a>
-    </p>
 {% endblock col4_tools %}
 
 {% block col4_contents %}
-    <form method="POST" action="">
-        {% csrf_token %}
-
-        <ul id="col4-contents-ul" class="contents_list"></ul>
-
-        <hr>
-        <div class="row justify-content-between pb-3">
-            <div class="col-auto">
-                <input type="submit" class="btn btn-primary" value="Import">
-            </div>
-        </div>
-    </form>
 {% endblock col4_contents %}
 
 
 {% block body_extra %}
     {{ block.super }}
-    <script src="{% static 'js/srd.js' %}"></script>
+    <script src="{% static 'js/resources.js' %}"></script>
 {% endblock %}

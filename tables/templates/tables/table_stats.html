@@ -1,0 +1,7 @@
+<p>{{ table.content|safe }}</p>
+<ul class="list-group mb-3">
+    {% for option in table.options %}
+        <li class="option-{{ option.pk }} list-group-item">{{ option.content }}</li>
+    {% endfor %}
+</ul>
+<a id="roll-button" class="btn btn-primary btn-block" href="">Roll</a>

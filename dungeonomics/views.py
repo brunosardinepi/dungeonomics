@@ -16,6 +16,8 @@ from campaign.models import Campaign
 from characters.models import GeneralCharacter
 from characters.utils import create_character_copy, get_character_stats, get_characters
 from items.models import Item
+from locations.models import Location, World
+from tables.models import Table
 from votes.models import Feature, Vote
 
 
@@ -82,7 +84,6 @@ def srd(request, active_asset_type=None):
         'assets': assets,
         'active_asset_type': active_asset_type,
         'active_assets': active_assets,
-        'characters': characters,
     }
     return render(request, 'srd.html', data)
 
@@ -119,6 +120,15 @@ def srd_asset(request):
     elif asset_type == "Items":
         asset = get_object_or_404(Item, pk=asset_pk)
         html = render(request, "items/item_stats.html", {'item': asset})
+    elif asset_type == "Worlds":
+        asset = get_object_or_404(World, pk=asset_pk)
+        html = render(request, "locations/location_stats.html", {'location': asset})
+    elif asset_type == "Locations":
+        asset = get_object_or_404(Location, pk=asset_pk)
+        html = render(request, "locations/location_stats.html", {'location': asset})
+    elif asset_type == "Tables":
+        asset = get_object_or_404(Table, pk=asset_pk)
+        html = render(request, "tables/table_stats.html", {'table': asset})
 
     return HttpResponse(html)
 
@@ -134,6 +144,67 @@ def srd_tools_update(request):
             html = render(request, "srd_col3_tools_add.html")
         elif action == "remove":
             html = render(request, "srd_col3_tools_remove.html")
+
+    return HttpResponse(html)
+
+@login_required
+def resources(request, active_asset_type=None):
+    items = Item.objects.filter(user=request.user)
+    worlds = World.objects.filter(user=request.user)
+    tables = Table.objects.filter(user=request.user)
+
+    assets = OrderedDict([
+        ('Items', items),
+        ('Worlds', worlds),
+        ('Tables', tables),
+    ])
+
+    if not active_asset_type:
+        active_asset_type = next(iter(assets))
+    else:
+        active_asset_type = active_asset_type.capitalize()
+
+    if active_asset_type == "Items":
+        active_assets = items
+    elif active_asset_type == "Worlds":
+        active_assets = worlds
+    elif active_asset_type == "Tables":
+        active_asset_type = tables
+
+    data = {
+        'assets': assets,
+        'active_asset_type': active_asset_type,
+        'active_assets': active_assets,
+    }
+    return render(request, 'resources.html', data)
+
+@login_required
+def resources_assets(request):
+    """Get a list of assets based on an asset type"""
+
+    asset_type = request.GET.get("asset_type")
+
+    if asset_type == "Items":
+        assets = Item.objects.filter(user=request.user).order_by('name')
+    elif asset_type == "Worlds":
+        assets = OrderedDict()
+        worlds = World.objects.filter(user=request.user).order_by('name')
+        for world in worlds:
+            locations = Location.objects.filter(world=world).order_by('name')
+            assets[world] = locations
+    elif asset_type == "Tables":
+        assets = Table.objects.filter(user=request.user).order_by('name')
+
+    if asset_type == "Worlds":
+        html = render(request, "resources_assets_worlds.html", {
+            'assets': assets,
+            'asset_type': asset_type,
+        })
+    else:
+        html = render(request, "resources_assets.html", {
+            'assets': assets,
+            'asset_type': asset_type,
+        })
 
     return HttpResponse(html)
 

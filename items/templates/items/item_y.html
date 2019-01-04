@@ -1,0 +1,67 @@
+{% extends "_cols.html" %}
+
+
+{% block col1_order %}order-1{% endblock col1_order %}
+
+{% block col1_title %}Items{% endblock col1_title %}
+
+{% block col1_tools %}
+    {% include "characters/snippets/col1_tools_ch.html" %}
+    <a href="{% url 'items:item_create' %}" class="dropdown-item text-success"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> Create item/spell</a>
+    <a href="{% url 'items:items_delete' %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete items</a>
+    <a href="{% url 'items:item_export' %}" class="dropdown-item"><i class="fal fa-fw fa-cloud-download" aria-hidden="true"></i> Export items</a>
+    <a href="{% url 'items:item_import' %}" class="dropdown-item"><i class="fal fa-fw fa-cloud-upload" aria-hidden="true"></i> Import items</a>
+{% endblock col1_tools %}
+
+{% block col1_contents %}
+    <div id="col1-contents">
+        <ul class="contents_list">
+            {% for asset_type, list in assets.items %}
+                <li>
+                    <a href="#" class="asset-type{% if active_asset_type == asset_type %} font-weight-bold{% endif %}">{{ asset_type }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock col1_contents %}
+
+
+{% block col2_order %}order-2{% endblock col2_order %}
+
+{% block col2_title %}Contents{% endblock col2_title %}
+
+{% block col2_tools %}
+{% endblock col2_tools %}
+
+{% block col2_contents %}
+{% endblock col2_contents %}
+
+
+{% block col3_order %}order-lg-3 order-4{% endblock col3_order %}
+
+{% block col3_title %}{{ character.name }}{% endblock col3_title %}
+
+{% block col3_tools %}
+    {% include "characters/snippets/col3_tools_ch.html" with character=character %}
+{% endblock col3_tools %}
+
+{% block col3_contents %}
+    {% include "characters/character_stats.html" with character=character stats=stats %}
+{% endblock col3_contents %}
+
+
+{% block col4_order %}order-lg-4 order-3{% endblock col4_order %}
+
+{% block col4_title %}Tags{% endblock col4_title %}
+
+{% block col4_tools %}
+    {% include "campaign/snippets/col4_tools_tags.html" %}
+{% endblock col4_tools %}
+
+{% block col4_contents %}
+{% endblock col4_contents %}
+
+
+{% block body_extra %}
+    <script src="{% static 'js/item_delete.js' %}"></script>
+{% endblock %}

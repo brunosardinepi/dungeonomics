@@ -1,0 +1,6 @@
+{% if location.image %}
+    <a href="{{ location.image.url }}" target="_blank">
+        <img class="location-image mb-5" src="{{ location.image.url }}" />
+    </a>
+{% endif %}
+{{ location.content|safe }}

@@ -1,0 +1,17 @@
+<ul id="col2-contents-ul" class="contents_list">
+    {% for world, location_list in assets.items %}
+        <li>
+            <a href="#" id="{{ asset_type }}-{{ world.pk }}" class="asset"><span>{{ world.name }}</span></a>
+            {% if location_list %}
+                <ul class="pl-4">
+                    {% for location in location_list %}
+                        <li>
+                            <a href="#" id="Locations-{{ location.pk }}" class="asset"><span>{{ location.name }}</span></a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+
