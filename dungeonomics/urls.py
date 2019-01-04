@@ -48,6 +48,7 @@ urlpatterns = [
     path('resources/<str:active_asset_type>/', views.resources, name='resources'),
     path('resources/', views.resources, name='resources'),
     path('resources/ajax/assets/', views.resources_assets, name='resources_assets'),
+    path('resources/ajax/tools-update/', views.resources_tools_update, name='resources_tools_update'),
 
     path('error/image-size/', TemplateView.as_view(template_name="error_image_size.html")),
     path('error/image-type/', TemplateView.as_view(template_name="error_image_type.html")),

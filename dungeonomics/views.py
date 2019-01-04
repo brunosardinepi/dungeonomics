@@ -208,6 +208,18 @@ def resources_assets(request):
 
     return HttpResponse(html)
 
+@login_required
+def resources_tools_update(request):
+    """Update col tools when a resource type is selected"""
+
+    col = request.GET.get("col")
+    resource_type = request.GET.get("resource_type")
+
+    if col == "1":
+        html = render(request, "resources_col1_tools_{}.html".format(resource_type.lower()))
+
+    return HttpResponse(html)
+
 class LoginView(views.LoginView):
     template_name = 'login.html'
 

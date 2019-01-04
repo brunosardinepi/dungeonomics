@@ -106,6 +106,15 @@ $(document).on("click", ".asset-type", function (event) {
             $("#col2-contents-ul").append(data);
         }
     });
+
+    // update col1 tools
+    $.ajax({
+        url: '/resources/ajax/tools-update?col=1&resource_type=' + asset_type,
+        data: {},
+        success: function (data) {
+            $("#col1-tools").html(data);
+        }
+    });
 });
 
 $(document).on("click", ".add-asset", function (event) {
