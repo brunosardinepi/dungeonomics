@@ -218,15 +218,16 @@ class CharacterCopy(View):
 
 class CharactersDelete(View):
     def get(self, request, *args, **kwargs):
-        characters = GeneralCharacter.objects.filter(
-            user=request.user).order_by('name')
+        characters = GeneralCharacter.objects.filter(user=request.user).order_by('name')
         return render(request, 'characters/characters_delete.html', {
             'characters': characters,
         })
 
     def post(self, request, *args, **kwargs):
         for character_pk in request.POST.getlist('character'):
-            GeneralCharacter.objects.get(pk=character_pk).delete()
+            character = get_object_or_404(GeneralCharacter, pk=character_pk)
+            if character.user == request.user:
+                character.delete()
         return redirect('characters:character_detail')
 
 class PlayerCampaigns(View):
