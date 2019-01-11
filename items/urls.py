@@ -7,8 +7,8 @@ from . import views
 app_name = 'items'
 urlpatterns = [
     path('<int:pk>/', views.item_detail, name='item_detail'),
-    path('create/', views.item_create, name='item_create'),
-    path('<int:pk>/edit/', views.item_update, name='item_update'),
+    path('create/', views.ItemCreateView.as_view(), name='item_create'),
+    path('<int:pk>/edit/', views.ItemUpdateView.as_view(), name='item_update'),
     path('<int:pk>/delete/', views.item_delete, name='item_delete'),
     path('<int:pk>/copy/', views.item_copy, name='item_copy'),
     path('delete/', login_required(views.ItemsDelete.as_view()), name='items_delete'),

@@ -1,17 +1,9 @@
-{% extends 'layout.html' %}
+{% extends '_cols.html' %}
 
 {% load static %}
+{% load lib_extras %}
 {% load widget_tweaks %}
 
-
-{% block title %}
-    {% if item.pk %}
-        Update item/spell 
-    {% else %}
-        New item/spell 
-    {% endif %}
-    | {{ block.super }}
-{% endblock %}
 
 {% block head_extra %}
     {{ form.media.css }}
@@ -21,99 +13,91 @@
     <script src="{% static 'js/tags.js' %}"></script>
 {% endblock %}
 
-{% block body_content %}
-    <div class="row mt-3 pb-5">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="px-1 mb-0">
-                        {% if item.pk %}
-                            <span class="font-weight-bold">Update item/spell:</span> {{ item.name }}
-                        {% else %}
-                            <span class="font-weight-bold">New item/spell</span>
-                        {% endif %}
-                    </h4>
-                </div>
-                <div class="card-body">
-                    <form method="POST" action="">
-                        {% csrf_token %}
+{% block col1_order %}order-1{% endblock col1_order %}
 
-                        {% if form.non_field_errors %}
+{% block col1_title %}Items{% endblock col1_title %}
+
+{% block col1_tools %}
+    {% include "items/snippets/col1_tools.html" %}
+{% endblock col1_tools %}
+
+{% block col1_contents %}
+    {% include "items/snippets/col1_contents.html" with items=items %}
+{% endblock col1_contents %}
+
+
+{% block col2_order %}order-2{% endblock col2_order %}
+
+{% block col2_title %}Contents{% endblock col2_title %}
+
+{% block col2_tools %}
+{% endblock col2_tools %}
+
+{% block col2_contents %}
+{% endblock col2_contents %}
+
+
+{% block col3_order %}order-lg-3 order-4{% endblock col3_order %}
+
+{% block col3_title %}
+    {% if item %}
+        Edit item
+    {% else %}
+        New item
+    {% endif %}
+{% endblock col3_title %}
+
+{% block col3_tools %}
+{% endblock col3_tools %}
+
+{% block col3_contents %}
+    <form method="POST" action="">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        {% for field in form %}
+            <div class="form-row">
+                <div class="form-group col-12">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {% render_field field class+="form-control" %}
+                    {% if field.errors %}
+                        {% for error in field.errors %}
                             <div class="alert alert-danger" role="alert">
-                                {{ form.non_field_errors }}
+                                {{ error|escape }}
                             </div>
-                        {% endif %}
-
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="{{ form.name.id_for_label }}">Name</label>
-                                {% render_field form.name class+="form-control" %}
-                                {% if form.name.errors %}
-                                    {% for error in form.name.errors %}
-                                        <div class="alert alert-danger" role="alert">
-                                            {{ error|escape }}
-                                        </div>
-                                    {% endfor %}
-                                {% endif %}
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="{{ form.item_type.id_for_label }}">Type</label>
-                                {% render_field form.item_type class+="form-control" %}
-                                {% if form.item_type.errors %}
-                                    {% for error in form.item_type.errors %}
-                                        <div class="alert alert-danger" role="alert">
-                                            {{ error|escape }}
-                                        </div>
-                                    {% endfor %}
-                                {% endif %}
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="{{ form.rarity.id_for_label }}">Rarity</label>
-                                {% render_field form.rarity class+="form-control" %}
-                                {% if form.rarity.errors %}
-                                    {% for error in form.rarity.errors %}
-                                        <div class="alert alert-danger" role="alert">
-                                            {{ error|escape }}
-                                        </div>
-                                    {% endfor %}
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="{{ form.content.id_for_label }}">Description</label>
-                            {% render_field form.content class+="form-control" %}
-                            {% if form.content.errors %}
-                                {% for error in form.content.errors %}
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ error|escape }}
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-
-                </div>
-                <div class="card-footer">
-                    <div class="row justify-content-between">
-                        {% if item.pk %}
-                            <div class="col-auto">
-                                <a href="{% url 'items:item_detail' item_pk=item.pk %}" class="btn btn-secondary">Cancel</a>
-                            </div>
-                            <div class="col-auto">
-                                <input type="submit" class="btn btn-primary" value="Update item/spell">
-                            </div>
-                        {% else %}
-                            <div class="col-auto">
-                                <a href="{% url 'items:item_detail' %}" class="btn btn-secondary">Cancel</a>
-                            </div>
-                            <div class="col-auto">
-                                <input type="submit" class="btn btn-primary" value="Create item/spell">
-                            </div>
-                        {% endif %}
-                    </div>
-                    </form>
+                        {% endfor %}
+                    {% endif %}
                 </div>
             </div>
+        {% endfor %}
+
+        <div class="row justify-content-between">
+            <div class="col-auto">
+                {% if item %}
+                    <a href="{% url 'items:item_detail' pk=item.pk %}" class="btn btn-secondary">Cancel</a>
+                {% else %}
+                    <a href="{% url 'items:item_detail' %}" class="btn btn-secondary">Cancel</a>
+                {% endif %}
+            </div>
+            <div class="col-auto">
+                <input type="submit" class="btn btn-primary" value="Save">
+            </div>
         </div>
-    </div>
-{% endblock %}
+{% endblock col3_contents %}
+
+
+{% block col4_order %}order-lg-4 order-3{% endblock col4_order %}
+
+{% block col4_title %}Tags{% endblock col4_title %}
+
+{% block col4_tools %}
+    {% include "campaign/snippets/col4_tools_tags.html" %}
+{% endblock col4_tools %}
+
+{% block col4_contents %}
+{% endblock col4_contents %}

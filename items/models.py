@@ -18,10 +18,10 @@ class Item(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('items:item_detail', kwargs={'item_pk': self.pk})
+        return reverse('items:item_detail', kwargs={'pk': self.pk})
 
     def get_full_url(self):
         protocol = config.settings['protocol']
         domain = Site.objects.get_current().domain
-        path = reverse('items:item_detail', kwargs={'item_pk': self.pk})
+        path = reverse('items:item_detail', kwargs={'pk': self.pk})
         return "{}://{}{}".format(protocol, domain, path)

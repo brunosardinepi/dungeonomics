@@ -4,10 +4,10 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core import serializers
-from django.urls import reverse
 from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import get_object_or_404, render
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
+from django.utils.decorators import method_decorator
 from django.views import View
 
 from . import forms
@@ -35,10 +35,19 @@ def item_detail(request, pk=None):
         return render(request, 'items/item_y.html', {'item': item, 'items': items})
     raise Http404
 
-@login_required
-def item_create(request):
-    form = forms.ItemForm()
-    if request.method == 'POST':
+@method_decorator(login_required, name='dispatch')
+class ItemCreateView(View):
+    def get(self, request, *args, **kwargs):
+        assets = at_tagging(request)
+        items = Item.objects.filter(user=request.user).order_by('name')
+        form = forms.ItemForm()
+        return render(request, 'items/item_form.html', {
+            'assets': assets,
+            'items': items,
+            'form': form,
+        })
+
+    def post(self, request, *args, **kwargs):
         form = forms.ItemForm(request.POST)
         if form.is_valid():
             item = form.save(commit=False)
@@ -46,29 +55,31 @@ def item_create(request):
             item.save()
             messages.add_message(request, messages.SUCCESS, "Item/spell created!")
             return HttpResponseRedirect(item.get_absolute_url())
-    return render(request, 'items/item_form.html', {
-        'assets': at_tagging(request),
-        'form': form,
-    })
 
-@login_required
-def item_update(request, pk):
-    item = get_object_or_404(Item, pk=pk)
-    if item.user == request.user:
-        form = forms.ItemForm(instance=item)
-        if request.method == 'POST':
+@method_decorator(login_required, name='dispatch')
+class ItemUpdateView(View):
+    def get(self, request, *args, **kwargs):
+        item = get_object_or_404(Item, pk=kwargs['pk'])
+        if item.user == request.user:
+            items = Item.objects.filter(user=request.user).order_by('name')
+            form = forms.ItemForm(instance=item)
+            return render(request, 'items/item_form.html', {
+                'assets': at_tagging(request),
+                'item': item,
+                'items': items,
+                'form': form,
+            })
+        raise Http404
+
+    def post(self, request, *args, **kwargs):
+        item = get_object_or_404(Item, pk=kwargs['pk'])
+        if item.user == request.user:
             form = forms.ItemForm(instance=item, data=request.POST)
             if form.is_valid():
                 form.save()
                 messages.add_message(request, messages.SUCCESS, "Updated item/spell: {}".format(form.cleaned_data['name']))
                 return HttpResponseRedirect(item.get_absolute_url())
-    else:
         raise Http404
-    return render(request, 'items/item_form.html', {
-        'assets': at_tagging(request),
-        'item': item,
-        'form': form,
-    })
 
 @login_required
 def item_delete(request, pk):
