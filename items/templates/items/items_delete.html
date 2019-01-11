@@ -1,51 +1,79 @@
-{% extends 'layout.html' %}
+{% extends "_cols.html" %}
+
+{% load static %}
+
 
 {% block title %}Delete items | {{ block.super }}{% endblock %}
 
-{% block body_content %}
-    <div class="row justify-content-center mt-3 pb-3">
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="px-1 mb-0">Delete items</h5>
-                </div>
-                <div class="card-body">
-                    <form method="POST" action="">
-                        {% csrf_token %}
-                        <p>Select the items that you'd like to delete:</p>
-                        <input type="checkbox" onClick="toggle(this)" style="margin-right: 8px;" />Select all
-                        <hr>
-                        {% for item in items %}
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="item" value="{{ item.pk }}"> {{ item.name }}
-                            </label>
-                        </div>
-                        {% endfor %}
-                </div>
-                <div class="card-footer">
-                    <div class="row justify-content-between">
-                        <div class="col-auto">
-                            <a href="{% url 'items:item_detail' %}" class="btn btn-secondary">Cancel</a>
-                        </div>
-                        <div class="col-auto">
-                            <input type="submit" class="btn btn-primary" value="Delete">
-                        </div>
-                    </div>
-                    </form>
-                </div>
+
+{% block col1_order %}order-1{% endblock col1_order %}
+
+{% block col1_title %}Items{% endblock col1_title %}
+
+{% block col1_tools %}
+    <p>
+        <a href="#" id="select-all" class="text-success"><i class="fas fa-fw fa-lg fa-check-square"></i><span>Select all</span></a>
+    </p>
+{% endblock col1_tools %}
+
+{% block col1_contents %}
+    <div id="col2-contents">
+        {% include "srd_assets.html" with assets=items asset_type="Items" %}
+    </div>
+{% endblock col1_contents %}
+
+
+{% block col2_order %}order-2{% endblock col2_order %}
+
+{% block col2_title %}{% endblock col2_title %}
+
+{% block col2_tools %}
+{% endblock col2_tools %}
+
+{% block col2_contents %}
+{% endblock col2_contents %}
+
+
+{% block col3_order %}order-lg-3 order-4{% endblock col3_order %}
+
+{% block col3_title %}{% endblock col3_title %}
+
+{% block col3_tools %}
+    <p>Please select an item to view its information.</p>
+{% endblock col3_tools %}
+
+{% block col3_contents %}
+    <div id="col3-contents"></div>
+{% endblock col3_contents %}
+
+
+{% block col4_order %}order-lg-4 order-3{% endblock col4_order %}
+
+{% block col4_title %}Delete list{% endblock col4_title %}
+
+{% block col4_tools %}
+    <p>
+        <a href="#" id="remove-all" class="text-danger"><i class="fas fa-fw fa-lg fa-times-square"></i><span>Remove all</span></a>
+    </p>
+{% endblock col4_tools %}
+
+{% block col4_contents %}
+    <form method="POST" action="">
+        {% csrf_token %}
+
+        <ul id="col4-contents-ul" class="contents_list"></ul>
+
+        <hr>
+        <div class="row justify-content-between pb-3">
+            <div class="col-auto">
+                <input type="submit" class="btn btn-primary" value="Delete">
             </div>
         </div>
-    </div>
-{% endblock %}
+    </form>
+{% endblock col4_contents %}
+
 
 {% block body_extra %}
-<script>
-function toggle(source) {
-  checkboxes = document.getElementsByName('item');
-  for(var i=0, n=checkboxes.length;i<n;i++) {
-    checkboxes[i].checked = source.checked;
-  }
-}
-</script>
+    {{ block.super }}
+    <script src="{% static 'js/srd.js' %}"></script>
 {% endblock %}

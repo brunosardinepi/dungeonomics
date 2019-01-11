@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core import serializers
 from django.http import HttpResponseRedirect, Http404
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
@@ -115,8 +115,10 @@ class ItemsDelete(View):
 
     def post(self, request, *args, **kwargs):
         for pk in request.POST.getlist('item'):
-            Item.objects.get(pk=pk).delete()
-        return HttpResponseRedirect(reverse('items:item_detail'))
+            item = Item.objects.get(pk=pk)
+            if item.user == request.user:
+                item.delete()
+        return redirect('items:item_detail')
 
 class ItemExport(View):
     def get(self, request, *args, **kwargs):
