@@ -10,7 +10,7 @@ from django.urls import reverse_lazy
 from django.views import View
 
 from . import forms
-from . import models
+from .models import Table
 
 from characters.models import Monster, NPC, Player
 from dungeonomics.utils import at_tagging
@@ -19,38 +19,19 @@ from locations.models import Location, World
 
 
 @login_required
-def table_detail(request, table_pk=None):
-    user = None
-    if request.user.is_authenticated:
-        user = request.user.pk
-    tables = sorted(
-        models.Table.objects.filter(user=user),
-        key=lambda table: table.name.lower()
-    )
-    if table_pk:
-        table = get_object_or_404(models.Table, pk=table_pk)
-        if table.user == request.user:
-            return render(request,
-                'tables/table_detail.html',
-                {'table': table, 'tables': tables}
-            )
-        else:
-            raise Http404
+def table_detail(request, pk=None):
+    tables = Table.objects.filter(user=request.user).order_by('name')
+
+    if pk:
+        table = get_object_or_404(Table, pk=pk)
     elif len(tables) > 0:
         table = tables[0]
-        if table.user == request.user:
-            return render(request,
-                'tables/table_detail.html',
-                {'table': table, 'tables': tables}
-            )
-        else:
-            raise Http404
     else:
         table = None
-    return render(request,
-        'tables/table_detail.html',
-        {'table': table, 'tables': tables}
-    )
+
+    if table.user == request.user:
+        return render(request, 'tables/table_y.html', {'table': table, 'tables': tables})
+    raise Http404
 
 @login_required
 def table_create(request):
@@ -78,8 +59,8 @@ def table_create(request):
     })
 
 @login_required
-def table_update(request, table_pk):
-    table = get_object_or_404(models.Table, pk=table_pk)
+def table_update(request, pk):
+    table = get_object_or_404(Table, pk=pk)
     if table.user == request.user:
         form = forms.TableForm(instance=table)
         formset = forms.TableOptionFormSet(instance=table)
@@ -109,8 +90,8 @@ def table_update(request, table_pk):
     })
 
 @login_required
-def table_delete(request, table_pk):
-    table = get_object_or_404(models.Table, pk=table_pk)
+def table_delete(request, pk):
+    table = get_object_or_404(Table, pk=pk)
     if table.user == request.user:
         table.delete()
         messages.success(request, 'Table deleted', fail_silently=True)
@@ -121,8 +102,8 @@ def table_delete(request, table_pk):
 @login_required
 def table_roll(request):
     # get the table based on the pk ajax sends here
-    table_pk = request.GET.get('pk', None)
-    table = get_object_or_404(models.Table, pk=table_pk)
+    pk = request.GET.get('pk', None)
+    table = get_object_or_404(Table, pk=pk)
 
     # get the table options and put them into a list
     table_options = list(table.options())
@@ -135,10 +116,10 @@ def table_roll(request):
 
 class TablesDelete(View):
     def get(self, request, *args, **kwargs):
-        tables = models.Table.objects.filter(user=request.user).order_by('name')
+        tables = Table.objects.filter(user=request.user).order_by('name')
         return render(request, 'tables/tables_delete.html', {'tables': tables})
 
     def post(self, request, *args, **kwargs):
-        for table_pk in request.POST.getlist('table'):
-            models.Table.objects.get(pk=table_pk).delete()
+        for pk in request.POST.getlist('table'):
+            Table.objects.get(pk=pk).delete()
         return HttpResponseRedirect(reverse('tables:table_detail'))

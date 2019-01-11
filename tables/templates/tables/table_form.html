@@ -92,7 +92,7 @@
                     <div class="row justify-content-between">
                         {% if table.pk %}
                             <div class="col-auto">
-                                <a href="{% url 'tables:table_detail' table_pk=table.pk %}" class="btn btn-secondary">Cancel</a>
+                                <a href="{% url 'tables:table_detail' pk=table.pk %}" class="btn btn-secondary">Cancel</a>
                             </div>
                             <div class="col-auto">
                                 <input type="submit" class="btn btn-primary" value="Update table">

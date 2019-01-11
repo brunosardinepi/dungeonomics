@@ -1,0 +1,20 @@
+<p>
+    <a href="{% url 'tables:table_update' pk=table.pk %}" class="text-teal"><i class="fas fa-fw fa-lg fa-pen-square"></i><span>Edit table</span></a>
+</p>
+
+{% if table.is_published == True %}
+    <p>
+        <a href="{% url 'tavern:tavern_item_detail' pk=table.pk %}" class="text-purple"><i class="fas fa-fw fa-lg fa-cloud-upload"></i><span>View on The Tavern</span></a>
+    </p>
+{% else %}
+    <p>
+        <a href="{% url 'characters:character_publish' pk=table.pk %}" class="text-purple"><i class="fas fa-fw fa-lg fa-cloud-upload"></i><span>Publish table</span></a>
+    </p>
+{% endif %}
+<p>
+    <a href="{% url 'items:item_copy' pk=table.pk %}" class="text-orange"><i class="fas fa-fw fa-lg fa-copy"></i><span>Copy table</span></a>
+</p>
+<p>
+    <a id="table-delete" href="{% url 'tables:table_delete' pk=table.pk %}" class="text-danger"><i class="fas fa-fw fa-lg fa-trash-alt"></i><span>Delete table</span></a>
+</p>
+

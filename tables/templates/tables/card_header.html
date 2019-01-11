@@ -14,8 +14,8 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="contents-dropdown">
                     {% if obj %}
-                        <a href="{% url 'tables:table_update' table_pk=table.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit table</a>
-                        <a id="table-delete" href="{% url 'tables:table_delete' table_pk=table.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete table</a>
+                        <a href="{% url 'tables:table_update' pk=table.pk %}" class="dropdown-item"><i class="fal fa-fw fa-edit" aria-hidden="true"></i> Edit table</a>
+                        <a id="table-delete" href="{% url 'tables:table_delete' pk=table.pk %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete table</a>
                     {% else %}
                         <a href="{% url 'tables:table_create' %}" class="dropdown-item text-success"><i class="fal fa-fw fa-plus" aria-hidden="true"></i> Create table</a>
                     {% endif %}

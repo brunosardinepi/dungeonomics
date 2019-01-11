@@ -1,0 +1,9 @@
+<ul class="contents_list">
+    {% for t in tables %}
+        <li>
+            <a {% if t == table %}class="font-weight-bold" {% endif %}href="{% url 'tables:table_detail' pk=t.pk %}">
+                {{ t.name }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>

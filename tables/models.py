@@ -15,12 +15,12 @@ class Table(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('tables:table_detail', kwargs={'table_pk': self.pk})
+        return reverse('tables:table_detail', kwargs={'pk': self.pk})
 
     def get_full_url(self):
         protocol = config.settings['protocol']
         domain = Site.objects.get_current().domain
-        path = reverse('tables:table_detail', kwargs={'table_pk': self.pk})
+        path = reverse('tables:table_detail', kwargs={'pk': self.pk})
         return "{}://{}{}".format(protocol, domain, path)
 
     def options(self):
