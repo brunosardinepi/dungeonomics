@@ -1,0 +1,9 @@
+<ul class="contents_list">
+    {% for i in items %}
+        <li>
+            <a {% if i == item %}class="font-weight-bold" {% endif %}href="{% url 'items:item_detail' pk=i.pk %}">
+                {{ i.name }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>

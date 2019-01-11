@@ -1,0 +1,20 @@
+<p>
+    <a href="{% url 'items:item_update' pk=item.pk %}" class="text-teal"><i class="fas fa-fw fa-lg fa-pen-square"></i><span>Edit item</span></a>
+</p>
+
+{% if item.is_published == True %}
+    <p>
+        <a href="{% url 'tavern:tavern_item_detail' pk=item.pk %}" class="text-purple"><i class="fas fa-fw fa-lg fa-cloud-upload"></i><span>View on The Tavern</span></a>
+    </p>
+{% else %}
+    <p>
+        <a href="{% url 'characters:character_publish' pk=item.pk %}" class="text-purple"><i class="fas fa-fw fa-lg fa-cloud-upload"></i><span>Publish item</span></a>
+    </p>
+{% endif %}
+<p>
+    <a href="{% url 'items:item_copy' pk=item.pk %}" class="text-orange"><i class="fas fa-fw fa-lg fa-copy"></i><span>Copy item</span></a>
+</p>
+<p>
+    <a id="item-delete" href="{% url 'items:item_delete' pk=item.pk %}" class="text-danger"><i class="fas fa-fw fa-lg fa-trash-alt"></i><span>Delete item</span></a>
+</p>
+

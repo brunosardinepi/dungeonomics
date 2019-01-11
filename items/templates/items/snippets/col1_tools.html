@@ -1,0 +1,10 @@
+<input type="text" class="form-control form-control-sm" placeholder="Search for items">
+<p>
+    <a href="{% url 'items:item_create' %}" class="text-success"><i class="fas fa-fw fa-lg fa-plus-circle"></i><span>Create item</span></a>
+</p>
+<p>
+    <a href="{% url 'srd' active_asset_type='items' %}" class="text-primary"><i class="fas fa-fw fa-lg fa-book"></i><span>SRD items</span></a>
+</p>
+<p>
+    <a href="{% url 'items:items_delete' %}" class="text-danger"><i class="fas fa-fw fa-lg fa-trash-alt" aria-hidden="true"></i><span>Delete items</span></a>
+</p>

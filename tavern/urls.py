@@ -26,6 +26,10 @@ urlpatterns = [
         login_required(views.TavernCharacterImport.as_view()),
         name='tavern_character_import'),
 
+    path('items/<int:pk>/',
+        login_required(views.TavernItemDetailView.as_view()),
+        name='tavern_item_detail'),
+
     path('search/<str:type>/',
         login_required(views.TavernSearch.as_view()),
         name='tavern_search'),

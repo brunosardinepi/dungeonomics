@@ -280,6 +280,21 @@ class TavernCharacterReview(View):
                 'obj': obj,
             })
 
+class TavernItemDetailView(View):
+    def get(self, request, *args, **kwargs):
+        pass
+
+class TavernItemImport(View):
+    def get(self, request, *args, **kwargs):
+        pass
+
+class TavernItemReview(View):
+    def get(self, request, *args, **kwargs):
+        pass
+
+    def post(self, request, *args, **kwargs):
+        pass
+
 class TavernSearch(View):
     def get(self, request, *args, **kwargs):
         type = kwargs['type']

@@ -1,28 +1,18 @@
 {% extends "_cols.html" %}
 
+{% load static %}
+
 
 {% block col1_order %}order-1{% endblock col1_order %}
 
 {% block col1_title %}Items{% endblock col1_title %}
 
 {% block col1_tools %}
-    {% include "characters/snippets/col1_tools_ch.html" %}
-    <a href="{% url 'items:item_create' %}" class="dropdown-item text-success"><i class="mr-1 fal fa-fw fa-plus" aria-hidden="true"></i> Create item/spell</a>
-    <a href="{% url 'items:items_delete' %}" class="dropdown-item text-danger"><i class="fal fa-fw fa-trash-alt" aria-hidden="true"></i> Delete items</a>
-    <a href="{% url 'items:item_export' %}" class="dropdown-item"><i class="fal fa-fw fa-cloud-download" aria-hidden="true"></i> Export items</a>
-    <a href="{% url 'items:item_import' %}" class="dropdown-item"><i class="fal fa-fw fa-cloud-upload" aria-hidden="true"></i> Import items</a>
+    {% include "items/snippets/col1_tools.html" %}
 {% endblock col1_tools %}
 
 {% block col1_contents %}
-    <div id="col1-contents">
-        <ul class="contents_list">
-            {% for asset_type, list in assets.items %}
-                <li>
-                    <a href="#" class="asset-type{% if active_asset_type == asset_type %} font-weight-bold{% endif %}">{{ asset_type }}</a>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
+    {% include "items/snippets/col1_contents.html" %}
 {% endblock col1_contents %}
 
 
@@ -39,14 +29,14 @@
 
 {% block col3_order %}order-lg-3 order-4{% endblock col3_order %}
 
-{% block col3_title %}{{ character.name }}{% endblock col3_title %}
+{% block col3_title %}{{ item.name }}{% endblock col3_title %}
 
 {% block col3_tools %}
-    {% include "characters/snippets/col3_tools_ch.html" with character=character %}
+    {% include "items/snippets/col3_tools_item.html" with item=item %}
 {% endblock col3_tools %}
 
 {% block col3_contents %}
-    {% include "characters/character_stats.html" with character=character stats=stats %}
+    {% include "items/item_stats.html" with item=item %}
 {% endblock col3_contents %}
 
 
@@ -63,5 +53,6 @@
 
 
 {% block body_extra %}
+    {{ block.super }}
     <script src="{% static 'js/item_delete.js' %}"></script>
 {% endblock %}
