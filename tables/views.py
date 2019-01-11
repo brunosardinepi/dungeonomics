@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.http import HttpResponseRedirect, Http404, JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views import View
 
@@ -121,5 +121,7 @@ class TablesDelete(View):
 
     def post(self, request, *args, **kwargs):
         for pk in request.POST.getlist('table'):
-            Table.objects.get(pk=pk).delete()
-        return HttpResponseRedirect(reverse('tables:table_detail'))
+            table = Table.objects.get(pk=pk)
+            if table.user == request.user:
+                table.delete()
+        return redirect('tables:table_detail')

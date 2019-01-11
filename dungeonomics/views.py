@@ -64,7 +64,7 @@ def srd(request, active_asset_type=None):
             item.user = request.user
             item.save()
 
-        # find the most imported assets and redirec to that detail page
+        # find the most imported assets and redirect to that detail page
         if len(request.POST.getlist('character')) >= len(request.POST.getlist('item')):
             return redirect('characters:character_detail')
         else:
