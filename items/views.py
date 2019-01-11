@@ -12,6 +12,7 @@ from django.views import View
 
 from . import forms
 from .models import Item
+from .utils import create_item_copy
 
 from characters import models as character_models
 from dungeonomics.utils import at_tagging
@@ -91,22 +92,16 @@ def item_delete(request, pk):
     else:
         raise Http404
 
-@login_required
-def item_copy(request, pk):
-    item = get_object_or_404(Item, pk=pk)
-    if item.user == request.user:
-        form = forms.CopyItemForm(instance=item)
-        if request.method == 'POST':
-            form = forms.CopyItemForm(request.POST, instance=item)
-            if item.user.pk == request.user.pk:
-                item.pk = None
-                item.name = item.name + "_Copy"
-                item.save()
-                messages.add_message(request, messages.SUCCESS, "Item/spell copied!")
-                return HttpResponseRedirect(item.get_absolute_url())
-    else:
+class ItemCopyView(View):
+    def get(self, request, *args, **kwargs):
+        item = get_object_or_404(Item, pk=kwargs['pk'])
+        if item.user == request.user:
+            create_item_copy(item, request.user)
+            item.name += "_copy"
+            item.save()
+            messages.add_message(request, messages.SUCCESS, "Item copied")
+            return redirect(item.get_absolute_url())
         raise Http404
-    return render(request, 'items/item_copy.html', {'form': form, 'item': item})
 
 class ItemsDelete(View):
     def get(self, request, *args, **kwargs):
