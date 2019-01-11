@@ -169,12 +169,15 @@ def resources(request, active_asset_type=None):
     elif active_asset_type == "Worlds":
         active_assets = worlds
     elif active_asset_type == "Tables":
-        active_asset_type = tables
+        active_assets = tables
+
+    active_asset = active_assets.first()
 
     data = {
         'assets': assets,
         'active_asset_type': active_asset_type,
         'active_assets': active_assets,
+        'active_asset': active_asset,
     }
     return render(request, 'resources.html', data)
 

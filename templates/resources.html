@@ -37,21 +37,27 @@
 
 {% block col2_contents %}
     <div id="col2-contents">
-        {% include "resources_assets.html" with assets=active_assets asset_type=active_asset_type %}
+        {% include "resources_assets.html" with assets=active_assets asset_type=active_asset_type active_asset=active_asset %}
     </div>
 {% endblock col2_contents %}
 
 
 {% block col3_order %}order-lg-3 order-4{% endblock col3_order %}
 
-{% block col3_title %}{% endblock col3_title %}
+{% block col3_title %}
+    {% if active_asset %}{{ active_asset.name }}{% endif %}
+{% endblock col3_title %}
 
 {% block col3_tools %}
     <p>Please select an asset to view its information.</p>
 {% endblock col3_tools %}
 
 {% block col3_contents %}
-    <div id="col3-contents"></div>
+    <div id="col3-contents">
+        {% if active_asset %}
+            {% include "items/item_stats.html" with item=active_asset %}
+        {% endif %}
+    </div>
 {% endblock col3_contents %}
 
 
