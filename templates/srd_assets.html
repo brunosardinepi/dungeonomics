@@ -4,7 +4,7 @@
 <ul id="col2-contents-ul" class="contents_list">
     {% for asset in assets %}
         <li id="add-asset-{{ asset.pk }}">
-            <a href="#" class="add-asset"><i class="fas fa-fw fa-lg fa-plus-square"></i></a><a href="#" id="{{ asset_type }}-{{ asset.pk }}" class="asset"><span>{{ asset }}</span></a><input type="hidden" name="{% if asset|model_name == 'generalcharacter' %}character{% elif asset|model_name == 'item' %}item{% elif asset|model_name == 'table' %}table{% endif %}" value="{{ asset.pk }}" />
+            <a href="#" class="add-asset"><i class="fas fa-fw fa-lg fa-plus-square"></i></a><a href="#" id="{{ asset_type }}-{{ asset.pk }}" class="asset"><span>{{ asset }}</span></a><input type="hidden" name="asset" value="{{ asset.pk }}" />
         </li>
     {% endfor %}
 </ul>

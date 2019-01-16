@@ -86,17 +86,6 @@ class ItemTest(TestCase):
         items = models.Item.objects.all()
         self.assertEqual(items.count(), 1)
 
-    def test_items_delete(self):
-        response = self.client.get('/items/delete/')
-        self.assertRedirects(response, '/accounts/login/?next=/items/delete/', 302, 200)
-
-        self.client.force_login(self.users[0])
-        response = self.client.get('/items/delete/')
-        self.assertEqual(response.status_code, 200)
-
-        response = self.client.post('/items/delete/')
-        self.assertRedirects(response, '/items/', 302, 200)
-
     def test_item_export(self):
         response = self.client.get('/items/export/')
         self.assertRedirects(response,

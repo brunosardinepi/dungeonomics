@@ -198,16 +198,6 @@ def location_delete(request, location_pk):
     else:
         raise Http404
 
-class WorldsDelete(View):
-    def get(self, request, *args, **kwargs):
-        worlds = models.World.objects.filter(user=request.user).order_by('name')
-        return render(request, 'locations/worlds_delete.html', {'worlds': worlds})
-
-    def post(self, request, *args, **kwargs):
-        for world_pk in request.POST.getlist('world'):
-            models.World.objects.get(pk=world_pk).delete()
-        return HttpResponseRedirect(reverse('locations:location_detail'))
-
 class WorldExport(View):
     def get(self, request, *args, **kwargs):
         worlds = models.World.objects.filter(user=request.user).order_by('name')

@@ -216,20 +216,6 @@ class CharacterCopy(View):
             return redirect(character.get_absolute_url())
         raise Http404
 
-class CharactersDelete(View):
-    def get(self, request, *args, **kwargs):
-        characters = GeneralCharacter.objects.filter(user=request.user).order_by('name')
-        return render(request, 'characters/characters_delete.html', {
-            'characters': characters,
-        })
-
-    def post(self, request, *args, **kwargs):
-        for character_pk in request.POST.getlist('character'):
-            character = get_object_or_404(GeneralCharacter, pk=character_pk)
-            if character.user == request.user:
-                character.delete()
-        return redirect('characters:character_detail')
-
 class PlayerCampaigns(View):
     def get(self, request, player_pk):
         player = get_object_or_404(Player, pk=player_pk)

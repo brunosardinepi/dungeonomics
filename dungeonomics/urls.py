@@ -39,16 +39,13 @@ urlpatterns = [
     path('tables/', include('tables.urls', namespace='tables')),
     path('wiki/', include('wiki.urls', namespace='wiki')),
 
+    path('<str:type>/delete/', views.DeleteMultipleView.as_view(), name='delete_multiple'),
+
     path('srd/<str:active_asset_type>/', views.srd, name='srd'),
     path('srd/', views.srd, name='srd'),
     path('srd/ajax/assets/', views.srd_assets, name='srd_assets'),
     path('srd/ajax/asset/', views.srd_asset, name='srd_asset'),
     path('srd/ajax/tools-update/', views.srd_tools_update, name='srd_tools_update'),
-
-    path('resources/<str:active_asset_type>/', views.resources, name='resources'),
-    path('resources/', views.resources, name='resources'),
-    path('resources/ajax/assets/', views.resources_assets, name='resources_assets'),
-    path('resources/ajax/tools-update/', views.resources_tools_update, name='resources_tools_update'),
 
     path('error/image-size/', TemplateView.as_view(template_name="error_image_size.html")),
     path('error/image-type/', TemplateView.as_view(template_name="error_image_type.html")),

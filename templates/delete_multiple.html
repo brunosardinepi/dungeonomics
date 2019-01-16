@@ -1,0 +1,80 @@
+{% extends "_cols.html" %}
+
+{% load static %}
+
+
+{% block title %}Delete {{ type }} | {{ block.super }}{% endblock %}
+
+
+{% block col1_order %}order-1{% endblock col1_order %}
+
+{% block col1_title %}{{ type|capfirst }}{% endblock col1_title %}
+
+{% block col1_tools %}
+    <p>
+        <a href="#" id="select-all" class="text-success"><i class="fas fa-fw fa-lg fa-check-square"></i><span>Select all</span></a>
+    </p>
+{% endblock col1_tools %}
+
+{% block col1_contents %}
+    <div id="col2-contents">
+        {% include "srd_assets.html" with assets=assets asset_type=type|capfirst %}
+    </div>
+{% endblock col1_contents %}
+
+
+{% block col2_order %}order-2{% endblock col2_order %}
+
+{% block col2_title %}{% endblock col2_title %}
+
+{% block col2_tools %}
+{% endblock col2_tools %}
+
+{% block col2_contents %}
+{% endblock col2_contents %}
+
+
+{% block col3_order %}order-lg-3 order-4{% endblock col3_order %}
+
+{% block col3_title %}{% endblock col3_title %}
+
+{% block col3_tools %}
+    <p>Please select an asset to view its information.</p>
+{% endblock col3_tools %}
+
+{% block col3_contents %}
+    <div id="col3-contents"></div>
+{% endblock col3_contents %}
+
+
+{% block col4_order %}order-lg-4 order-3{% endblock col4_order %}
+
+{% block col4_title %}Delete list{% endblock col4_title %}
+
+{% block col4_tools %}
+    <p>
+        <a href="#" id="remove-all" class="text-danger"><i class="fas fa-fw fa-lg fa-times-square"></i><span>Remove all</span></a>
+    </p>
+{% endblock col4_tools %}
+
+{% block col4_contents %}
+    <form method="POST" action="">
+        {% csrf_token %}
+
+        <ul id="col4-contents-ul" class="contents_list"></ul>
+
+        <hr>
+        <div class="row justify-content-between pb-3">
+            <div class="col-auto">
+                <input type="submit" class="btn btn-primary" value="Delete">
+            </div>
+        </div>
+    </form>
+{% endblock col4_contents %}
+
+
+{% block body_extra %}
+    {{ block.super }}
+    <script src="{% static 'js/srd.js' %}"></script>
+    <script src="{% static 'js/table_roll.js' %}"></script>
+{% endblock %}

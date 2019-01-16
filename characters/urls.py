@@ -20,9 +20,6 @@ urlpatterns = [
     path('<int:pk>/unpublish/',
         login_required(views.CharacterUnpublish.as_view()),
         name='character_unpublish'),
-    path('delete/',
-        login_required(views.CharactersDelete.as_view()),
-        name='characters_delete'),
 
     path('player/<int:pk>/campaigns/',
         login_required(views.PlayerCampaigns.as_view()),

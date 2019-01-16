@@ -7,6 +7,7 @@ from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render, render_to_response
 from django.template import RequestContext
 from django.views.generic import TemplateView
+from django.views import View
 
 from allauth.account import views
 
@@ -147,83 +148,45 @@ def srd_tools_update(request):
 
     return HttpResponse(html)
 
-@login_required
-def resources(request, active_asset_type=None):
-    items = Item.objects.filter(user=request.user)
-    worlds = World.objects.filter(user=request.user)
-    tables = Table.objects.filter(user=request.user)
+class DeleteMultipleView(View):
+    def get(self, request, *args, **kwargs):
+        type = kwargs['type']
 
-    assets = OrderedDict([
-        ('Items', items),
-        ('Worlds', worlds),
-        ('Tables', tables),
-    ])
+        if type == "characters":
+            model = GeneralCharacter
+        elif type == "items":
+            model = Item
+        elif type == "worlds":
+            model = World
+        elif type == "tables":
+            model = Table
 
-    if not active_asset_type:
-        active_asset_type = next(iter(assets))
-    else:
-        active_asset_type = active_asset_type.capitalize()
+        assets = model.objects.filter(user=request.user).order_by('name')
 
-    if active_asset_type == "Items":
-        active_assets = items
-    elif active_asset_type == "Worlds":
-        active_assets = worlds
-    elif active_asset_type == "Tables":
-        active_assets = tables
+        return render(request, 'delete_multiple.html', {'assets': assets, 'type': type})
 
-    active_asset = active_assets.first()
+    def post(self, request, *args, **kwargs):
+        type = kwargs['type']
 
-    data = {
-        'assets': assets,
-        'active_asset_type': active_asset_type,
-        'active_assets': active_assets,
-        'active_asset': active_asset,
-    }
-    return render(request, 'resources.html', data)
+        if type == "characters":
+            model = GeneralCharacter
+            redirect_path = redirect('characters:character_detail')
+        elif type == "items":
+            model = Item
+            redirect_path = redirect('items:item_detail')
+        elif type == "worlds":
+            model = World
+            redirect_path = redirect('locations:location_detail')
+        elif type == "tables":
+            model = Table
+            redirect_path = redirect('tables:table_detail')
 
-@login_required
-def resources_assets(request):
-    """Get a list of assets based on an asset type"""
+        for pk in request.POST.getlist('asset'):
+            asset = get_object_or_404(model, pk=pk)
+            if asset.user == request.user:
+                asset.delete()
 
-    asset_type = request.GET.get("asset_type")
-
-    if asset_type == "Items":
-        assets = Item.objects.filter(user=request.user).order_by('name')
-    elif asset_type == "Worlds":
-        assets = OrderedDict()
-        worlds = World.objects.filter(user=request.user).order_by('name')
-        for world in worlds:
-            locations = Location.objects.filter(world=world).order_by('name')
-            assets[world] = locations
-    elif asset_type == "Tables":
-        assets = Table.objects.filter(user=request.user).order_by('name')
-
-    if asset_type == "Worlds":
-        html = render(request, "resources_assets_worlds.html", {
-            'assets': assets,
-            'asset_type': asset_type,
-        })
-    else:
-        html = render(request, "resources_assets.html", {
-            'assets': assets,
-            'asset_type': asset_type,
-        })
-
-    return HttpResponse(html)
-
-@login_required
-def resources_tools_update(request):
-    """Update col tools when a resource type is selected"""
-
-    col = request.GET.get("col")
-    resource_type = request.GET.get("resource_type")
-
-    html = render(request, "resources_col{}_tools_{}.html".format(
-        col,
-        resource_type.lower(),
-    ))
-
-    return HttpResponse(html)
+        return redirect_path
 
 class LoginView(views.LoginView):
     template_name = 'login.html'

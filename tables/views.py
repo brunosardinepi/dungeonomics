@@ -29,8 +29,11 @@ def table_detail(request, pk=None):
     else:
         table = None
 
-    if table.user == request.user:
-        return render(request, 'tables/table_y.html', {'table': table, 'tables': tables})
+    if table:
+        if table.user == request.user:
+            return render(request, 'tables/table_y.html', {'table': table, 'tables': tables})
+    else:
+        return render(request, 'tables/table_n.html')
     raise Http404
 
 @login_required
@@ -113,15 +116,3 @@ def table_roll(request):
     data = {'pk': random_option}
 
     return JsonResponse(data)
-
-class TablesDelete(View):
-    def get(self, request, *args, **kwargs):
-        tables = Table.objects.filter(user=request.user).order_by('name')
-        return render(request, 'tables/tables_delete.html', {'tables': tables})
-
-    def post(self, request, *args, **kwargs):
-        for pk in request.POST.getlist('table'):
-            table = Table.objects.get(pk=pk)
-            if table.user == request.user:
-                table.delete()
-        return redirect('tables:table_detail')

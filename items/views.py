@@ -103,18 +103,6 @@ class ItemCopyView(View):
             return redirect(item.get_absolute_url())
         raise Http404
 
-class ItemsDelete(View):
-    def get(self, request, *args, **kwargs):
-        items = Item.objects.filter(user=request.user).order_by('name')
-        return render(request, 'items/items_delete.html', {'items': items})
-
-    def post(self, request, *args, **kwargs):
-        for pk in request.POST.getlist('item'):
-            item = Item.objects.get(pk=pk)
-            if item.user == request.user:
-                item.delete()
-        return redirect('items:item_detail')
-
 class ItemExport(View):
     def get(self, request, *args, **kwargs):
         queryset = Item.objects.filter(user=request.user).order_by('name')
