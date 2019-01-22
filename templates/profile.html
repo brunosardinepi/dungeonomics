@@ -1,6 +1,5 @@
 {% extends 'layout.html' %}
 
-{% load socialaccount %}
 {% load static from staticfiles %}
 
 
@@ -8,7 +7,7 @@
 
 {% block body_content %}
     <div class="row mt-3 pb-3">
-        <div class="col-lg-4 mb-3">
+        <div class="col-md-6 mb-3">
             <div class="card">
                 <div class="card-header">
                     <h5 class="px-1 mb-0">Profile</h5>
@@ -20,29 +19,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 mb-3">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="px-1 mb-0">Social Accounts</h5>
-                </div>
-                <div class="card-body">
-                    <p>You currently have the following social accounts connected to Dungeonomics:</p>
-                    <ul>
-                        {% get_social_accounts user as accounts %}
-                        {% if accounts %}
-                            {% for account in accounts %}
-                                <li><span class="font-weight-bold">{{ account|capfirst }}</span></li>
-                            {% endfor %}
-                        {% else %}
-                            <li><span class="font-weight-bold">None</span></li>
-                        {% endif %}
-                    </ul>
-                    <hr>
-                    <a href="{% url 'socialaccount_connections' %}" class="btn btn-success btn-block">Manage Accounts</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
                     <h5 class="px-1 mb-0">Delete Account</h5>

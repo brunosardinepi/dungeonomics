@@ -1,7 +1,7 @@
 {% extends "_cover.html" %}
 
-{% load account socialaccount %}
-{% load static from staticfiles %}
+{% load account %}
+{% load static %}
 {% load widget_tweaks %}
 
 {% block head_extra %}
@@ -63,19 +63,9 @@
                         {% if redirect_field_value %}
                             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                         {% endif %}
-                        <button type="submit" class="btn btn-success btn-block mb-5">Sign up</button>
+                        <button type="submit" class="btn btn-success btn-block mb-3">Sign up</button>
                     </form>
-                    {% get_providers as socialaccount_providers %}
-    
-                    {% if socialaccount_providers %}
-                        {% for socialaccount_provider in socialaccount_providers %}
-                            {% if socialaccount_provider.name|lower == 'google' %}
-                                <a class="btn btn-block google"href="http://dungeonomics.com/accounts/google/login/?process=login"><i class="fab fa-fw fa-google mr-2"></i> Sign up with Google</a>
-                            {% endif %}
-                        {% endfor %}
-                        {% include "socialaccount/snippets/login_extra.html" %}
-                    {% endif %}
-                    <p class="text-center small mt-2">Already have an account? <a href="{{ login_url }}">Sign in!</a></p>
+                    <p class="text-center small">Already have an account? <a href="{{ login_url }}">Login</a></p>
                 </div>
             </div>
         </div>

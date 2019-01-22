@@ -19,8 +19,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
     'widget_tweaks',
     'campaign',
     'characters',
