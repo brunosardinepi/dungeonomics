@@ -124,7 +124,7 @@ LOGIN_REDIRECT_URL = "home"
 # email
 EMAIL_BACKEND = config.settings['email_backend']
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'email-smtp.us-east-1.amazonaws.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = config.settings['email_user']
 EMAIL_HOST_PASSWORD = config.settings['email_password']
