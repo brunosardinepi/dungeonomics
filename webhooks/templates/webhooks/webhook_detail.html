@@ -1,0 +1,6 @@
+<p>provider: {{ webhook.provider }}</p>
+<p>pk: {{ webhook.pk }}</p>
+
+{% for attribute in webhook_attributes %}
+    <p>{{ attribute.key }}: {{ attribute.value }}</p>
+{% endfor %}

@@ -38,6 +38,7 @@ urlpatterns = [
     path('votes/', include('votes.urls', namespace='votes')),
     path('tables/', include('tables.urls', namespace='tables')),
     path('wiki/', include('wiki.urls', namespace='wiki')),
+    path('webhooks/', include('webhooks.urls', namespace='webhooks')),
 
     path('error/image-size/', TemplateView.as_view(template_name="error_image_size.html")),
     path('error/image-type/', TemplateView.as_view(template_name="error_image_type.html")),

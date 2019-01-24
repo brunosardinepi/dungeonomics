@@ -1,0 +1,7 @@
+{% if webhooks %}
+    {% for webhook in webhooks %}
+        <p><a href="{% url 'webhooks:webhook_detail' pk=webhook.pk %}">{{ webhook }}</a></p>
+    {% endfor %}
+{% else %}
+    <p>No webhooks</p>
+{% endif %}

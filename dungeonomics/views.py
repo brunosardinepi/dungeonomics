@@ -1,10 +1,15 @@
+import json
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Count
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import get_object_or_404, render, render_to_response
 from django.template import RequestContext
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
+from django.views import View
 
 from allauth.account import views
 
@@ -15,9 +20,11 @@ from characters import models as character_models
 from votes.models import Feature, Vote
 
 
+sns_decorators = [csrf_exempt]
+
+
 class HomeView(TemplateView):
     template_name = 'home.html'
-
 
 def home_view(request):
     if request.user.is_authenticated:
@@ -38,6 +45,16 @@ def profile_detail(request):
     monsters = character_models.Monster.objects.filter(user=user).count()
     npcs = character_models.NPC.objects.filter(user=user).count()
     return render(request, 'profile.html', {'user': user, 'campaigns': campaigns, 'monsters': monsters, 'npcs': npcs})
+
+@method_decorator(sns_decorators, name='dispatch')
+class SNSBounce(View):
+    def post(self, request, *args, **kwargs):
+        print("got the post request")
+        message = json.loads(request.body.decode('utf-8'))
+        for key, value in message.items():
+            print("key = {}".format(key))
+            print("value = {}".format(value))
+        return HttpResponse(status=200)
 
 class LoginView(views.LoginView):
     template_name = 'login.html'

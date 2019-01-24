@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'tables',
     'tavern',
     'wiki',
+    'webhooks',
 ]
 
 MIDDLEWARE = [
