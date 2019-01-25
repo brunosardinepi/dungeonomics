@@ -39,6 +39,9 @@ def profile_detail(request):
     npcs = character_models.NPC.objects.filter(user=user).count()
     return render(request, 'profile.html', {'user': user, 'campaigns': campaigns, 'monsters': monsters, 'npcs': npcs})
 
+class SocialAuthView(TemplateView):
+    template_name = "social_auth.html"
+
 class LoginView(views.LoginView):
     template_name = 'login.html'
 

@@ -1,0 +1,34 @@
+{% extends "_cover.html" %}
+
+{% load static %}
+
+
+{% block head_extra %}
+    <link rel="stylesheet" href="{% static 'css/login.css' %}"/>
+{% endblock %}
+
+{% block title %}Social authentication | {{ block.super }}{% endblock %}
+
+{% block body_content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="logo">
+                <a href="{% url 'home' %}" title="Dungeonomics">
+                    <img src="/static/img/logo_login.png" alt="Dungeonomics">
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-body">
+                    <p>We had a large amount of users affected when Facebook authentication crashed in December 2018 and people couldn't login to Dungeonomics via Facebook authentication. Not all users were online at the time but enough reached out to us that we realized we needed to get rid of Facebook authentication in case they had more issues in the future.</p>
+                    <p>All of our worries about Facebook authentication extends over to Google authentication, too. Once we removed Facebook and Google authentication, we no longer had any dependencies on external apps and the only reason for not being able to login to Dungeonomics will be that Dungeonomics is down. We want to be responsible for all our tech and not rely on someone else and worry about them being online in order for people to use our site.</p>
+                    <p><span class="font-weight-bold">If you had social authentication and can't login to your account:</span> your account is still active and nothing has been removed. You need to click the reset password button below to create a local password with Dungeonomics, and then you'll be able to access your account again.</p>
+                    <a href="{% url 'password_reset' %}" class="btn btn-success btn-block">Reset password</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

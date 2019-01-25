@@ -38,6 +38,7 @@ urlpatterns = [
     path('votes/', include('votes.urls', namespace='votes')),
     path('tables/', include('tables.urls', namespace='tables')),
     path('wiki/', include('wiki.urls', namespace='wiki')),
+    path('social-auth/', views.SocialAuthView.as_view(), name='social_auth'),
 
     path('error/image-size/', TemplateView.as_view(template_name="error_image_size.html")),
     path('error/image-type/', TemplateView.as_view(template_name="error_image_type.html")),

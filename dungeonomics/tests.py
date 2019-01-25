@@ -18,7 +18,6 @@ class HomeTest(TestCase):
     def test_home_logged_out(self):
         response = self.client.get('/')
 
-        self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Streamlined Roleplaying")
         self.assertContains(response, "Login")
         self.assertContains(response, "Sign up")
@@ -31,6 +30,14 @@ class HomeTest(TestCase):
     def test_home_logged_in(self):
         self.client.login(username='testuser', password='testpassword')
         response = self.client.get('/')
-
-        self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "Streamlined Roleplaying")
+
+    def test_page_200(self):
+        pages = [
+            '/',
+            '/social-auth/',
+        ]
+
+        for page in pages:
+            response = self.client.get(page)
+            self.assertEqual(response.status_code, 200)
