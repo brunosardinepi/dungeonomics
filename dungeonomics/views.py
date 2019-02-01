@@ -56,29 +56,26 @@ class SNSBounce(View):
             print("value = {}".format(value))
         return HttpResponse(status=200)
 
+class SocialAuthView(TemplateView):
+    template_name = "social_auth.html"
+
 class LoginView(views.LoginView):
     template_name = 'login.html'
-
 
 class SignupView(views.SignupView):
     template_name = 'signup.html'
 
-
 class ConfirmEmailView(views.ConfirmEmailView):
     template_name = 'confirm_email.html'
-
 
 class EmailVerificationSentView(views.EmailVerificationSentView):
     template_name = 'verification_sent.html'
 
-
 class EmailView(views.EmailView):
     template_name = 'email.html'
 
-
 class PasswordResetView(views.PasswordResetView):
     template_name = 'password_reset.html'
-
 
 @login_required
 def account_delete(request):
@@ -119,10 +116,8 @@ def handler500(request):
     response.status_code = 500
     return response
 
-
 class DonateView(TemplateView):
     template_name = 'donate.html'
-
 
 class PrivacyView(TemplateView):
     template_name = 'privacy.html'

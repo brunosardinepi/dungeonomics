@@ -3,6 +3,23 @@
 This is the version history for Dungeonomics development.
 
 
+## Version 4.1.0
+
+Release date: 02/01/2019
+
+### Additions
+
+* None
+
+### Changes
+
+* #136 -- Removed Google authentication
+
+### Fixes
+
+* None
+
+
 ## Version 4.0.0
 
 Release date: 12/28/2018
