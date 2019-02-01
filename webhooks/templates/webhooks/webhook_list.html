@@ -1,7 +1,51 @@
+{% load webhook_extras %}
+
+<!doctype html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
 {% if webhooks %}
-    {% for webhook in webhooks %}
-        <p><a href="{% url 'webhooks:webhook_detail' pk=webhook.pk %}">{{ webhook }}</a></p>
-    {% endfor %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Webhook</th>
+                <th scope="col">Message Type</th>
+                <th scope="col">Notification Type</th>
+                <th scope="col">Date</th>
+                <th scope="col">Recipient</th>
+            </tr>
+        </thead>
+
+        {% for webhook in webhooks %}
+            <tr>
+                <td><a href="{% url 'webhooks:webhook_detail' pk=webhook.pk %}">{{ webhook }}</a></td>
+    
+                {% get_webhook_attribute webhook=webhook key="Type" as webhook_type %}
+                {% if webhook_type %}
+                    <td>{{ webhook_type.value }}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+        
+                {% get_webhook_sns_message webhook=webhook as webhook_message %}
+                {% if webhook_message %}
+                    <td>{{ webhook_message.notificationType }}</td>
+                    <td>{{ webhook_message.mail.timestamp }}</td>
+                    <td>{{ webhook_message.mail.destination.0 }}</td>
+                {% else %}
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </table>
 {% else %}
     <p>No webhooks</p>
 {% endif %}
+</body>
+</html>
