@@ -17,7 +17,7 @@ Release date: 02/01/2019
 
 ### Fixes
 
-* None
+* #135 -- Django patch
 
 
 ## Version 4.0.0
