@@ -14,7 +14,7 @@ from .models import Webhook, WebhookAttribute
 class WebhookList(View):
     def get(self, request, *args, **kwargs):
         if request.user.email == 'gn9012@gmail.com':
-            webhooks = Webhook.objects.all()
+            webhooks = Webhook.objects.all().order_by('-pk')
             return render(request, 'webhooks/webhook_list.html', {
                 'webhooks': webhooks,
             })

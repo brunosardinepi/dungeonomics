@@ -14,6 +14,7 @@ Release date: 02/01/2019
 ### Changes
 
 * #136 -- Removed Google authentication
+* Webhook admin
 
 ### Fixes
 
