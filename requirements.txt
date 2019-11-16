@@ -2,7 +2,7 @@ beautifulsoup4==4.6.3
 certifi==2018.1.18
 chardet==3.0.4
 defusedxml==0.5.0
-Django==2.0.10
+Django==2.2.7
 django-allauth==0.38.0
 django-tinymce==2.4.0
 django-widget-tweaks==1.4.3
@@ -11,11 +11,12 @@ gunicorn==19.6.0
 idna==2.6
 model-mommy==1.6.0
 oauthlib==2.0.6
-Pillow==5.0.0
-psycopg2==2.6.2
+Pillow>=6.2.0
+psycopg2==2.8.2
+psycopg2-binary==2.7.7
 python3-openid==3.1.0
 pytz==2018.3
 requests==2.20.0
 requests-oauthlib==1.0.0
 six==1.10.0
-urllib3==1.24.1
+urllib3>=1.24.2
