@@ -38,7 +38,8 @@
                 </div>
 
                 <div class="card-body">
-                    <ul class="contents_list">
+                    <input type="text" class="form-control form-control-sm mb-3" data-type="item" id="item-search" placeholder="Search" />
+                    <ul class="contents_list" id="item-list">
                         {% if items %}
                             {% for i in items %}
                                 <li class="li-content">
@@ -78,4 +79,5 @@
 
 {% block body_extra %}
     <script src="{% static 'js/item_delete.js' %}"></script>
+    <script src="{% static 'js/filter.js' %}"></script>
 {% endblock %}
