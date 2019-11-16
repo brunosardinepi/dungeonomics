@@ -7,6 +7,7 @@ html{position:relative;min-height:100%}body{padding-top:56px;background:url(../i
 a[class^="world-dropdown"]{margin-right:5px;}
 div[class^="world-locations"]{display:none;}
 .location-image{max-width:100%}
+.hidden{display:none}
 
 @media (max-width:991.99px){body{margin-bottom:180px}.footer{height:180px;text-align:center!important}}
 @media (max-width:575.98px){body{margin-bottom:180px}.footer{height:180px}#footer-social li{padding:0 0.25rem}.back-to-party{text-align:left}}

@@ -25,7 +25,8 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <ul class="contents_list">
+                    <input type="text" class="form-control form-control-sm mb-3" data-type="character" id="character-search" placeholder="Search" />
+                    <ul class="contents_list" id="character-list">
                         {% block character_list %}{% endblock %}
                     </ul>
                 </div>
@@ -61,4 +62,5 @@
 
 {% block body_extra %}
     <script src="{% static 'js/character_delete.js' %}"></script>
+    <script src="{% static 'js/filter.js' %}"></script>
 {% endblock %}
