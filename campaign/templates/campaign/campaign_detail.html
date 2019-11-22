@@ -41,7 +41,8 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <ul class="contents_list">
+                    <input type="text" class="form-control form-control-sm mb-3" data-type="campaign" id="campaign-search" placeholder="Search" />
+                    <ul class="contents_list" id="campaign-list">
                         {% if chapters %}
                             {% for c in chapters %}
                                 <li class="li-content">
@@ -123,4 +124,5 @@
 
 {% block body_extra %}
     <script src="{% static 'js/campaign_delete.js' %}"></script>
+    <script src="{% static 'js/filter.js' %}"></script>
 {% endblock %}

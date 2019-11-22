@@ -36,7 +36,8 @@
                 </div>
 
                 <div class="card-body">
-                    <ul class="contents_list">
+                    <input type="text" class="form-control form-control-sm mb-3" data-type="table" id="table-search" placeholder="Search" />
+                    <ul class="contents_list" id="table-list">
                         {% if tables %}
                             {% for t in tables %}
                                 <li class="li-content">
@@ -80,6 +81,7 @@
 
 {% block body_extra %}
     <script src="{% static 'js/table_delete.js' %}"></script>
+    <script src="{% static 'js/filter.js' %}"></script>
     <script>
         // look for user to click the roll button
         $(document).on('click', '#roll-button', function(event) {
