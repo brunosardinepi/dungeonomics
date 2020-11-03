@@ -40,6 +40,7 @@ urlpatterns = [
     path('wiki/', include('wiki.urls', namespace='wiki')),
     path('social-auth/', views.SocialAuthView.as_view(), name='social_auth'),
     path('webhooks/', include('webhooks.urls', namespace='webhooks')),
+    path('notes/', include('notes.urls', namespace='notes')),
 
     path('error/image-size/', TemplateView.as_view(template_name="error_image_size.html")),
     path('error/image-type/', TemplateView.as_view(template_name="error_image_type.html")),

@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'items',
     'lib',
     'locations',
+    'notes',
     'posts',
     'votes',
     'tables',
