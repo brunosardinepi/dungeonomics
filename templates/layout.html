@@ -9,169 +9,134 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<title>{% block title %}Dungeonomics{% endblock %}</title>
 
-        <link rel="apple-touch-icon" sizes="57x57" href="{% static 'img/apple-icon-57x57.png' %}">
-        <link rel="apple-touch-icon" sizes="60x60" href="{% static 'img/apple-icon-60x60.png' %}">
-        <link rel="apple-touch-icon" sizes="72x72" href="{% static 'img/apple-icon-72x72.png' %}">
-        <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/apple-icon-76x76.png' %}">
-        <link rel="apple-touch-icon" sizes="114x114" href="{% static 'img/apple-icon-114x114.png' %}">
-        <link rel="apple-touch-icon" sizes="120x120" href="{% static 'img/apple-icon-120x120.png' %}">
-        <link rel="apple-touch-icon" sizes="144x144" href="{% static 'img/apple-icon-144x144.png' %}">
-        <link rel="apple-touch-icon" sizes="152x152" href="{% static 'img/apple-icon-152x152.png' %}">
-        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-icon-180x180.png' %}">
-        <link rel="icon" type="image/png" sizes="192x192"  href="{% static 'img/android-icon-192x192.png' %}">
-        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
-        <link rel="icon" type="image/png" sizes="96x96" href="{% static 'img/favicon-96x96.png' %}">
-        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
-        <link rel="manifest" href="{% static 'js/manifest.json' %}">
-        <meta name="msapplication-TileColor" content="#ffffff">
-        <meta name="msapplication-TileImage" content="{% static 'img/ms-icon-144x144.png' %}">
-        <meta name="theme-color" content="#ffffff">
+    <link rel="apple-touch-icon" sizes="57x57" href="{% static 'img/apple-icon-57x57.png' %}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{% static 'img/apple-icon-60x60.png' %}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{% static 'img/apple-icon-72x72.png' %}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/apple-icon-76x76.png' %}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{% static 'img/apple-icon-114x114.png' %}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{% static 'img/apple-icon-120x120.png' %}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{% static 'img/apple-icon-144x144.png' %}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{% static 'img/apple-icon-152x152.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/apple-icon-180x180.png' %}">
+    <link rel="icon" type="image/png" sizes="192x192"  href="{% static 'img/android-icon-192x192.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{% static 'img/favicon-96x96.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'js/manifest.json' %}">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="{% static 'img/ms-icon-144x144.png' %}">
+    <meta name="theme-color" content="#ffffff">
 
-        {% include "structured_data.html" %}
-        {% include "twitter_metadata.html" %}
-        {% include "og.html" %}
+    {% include "structured_data.html" %}
+    {% include "twitter_metadata.html" %}
+    {% include "og.html" %}
 
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
 
 		<link rel="stylesheet" href="{% static 'css/layout.css' %}?{% now 'U' %}">
 
-        <script defer src="{% static 'js/fontawesome-all.min.js' %}"></script>
+    <script defer src="{% static 'js/fontawesome-all.min.js' %}"></script>
 
-        <!--[if lt IE 9]>
-            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <![endif]-->
-
-        {% block head_extra %}{% endblock %}
-        {% block static %}{% endblock %}
+    {% block head_extra %}{% endblock %}
+    {% block static %}{% endblock %}
 	</head>
 
-    <body>
-        {% use_ga as use_ga %}
-        {% if use_ga == True %}
-            <script>
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  <body>
+    {% use_ga as use_ga %}
+    {% if use_ga == True %}
+      <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
     
-            ga('create', 'UA-89671203-1', 'auto');
-            ga('send', 'pageview');
-            </script>
-        {% endif %}
+        ga('create', 'UA-89671203-1', 'auto');
+        ga('send', 'pageview');
+      </script>
+    {% endif %}
 
-        <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-            <div class="container">
-                <a class="navbar-brand d-flex align-items-center h100" href="{% url 'home' %}">
-                    <img src="{% static 'img/logo_nav.svg' %}" alt="Dungeonomics logo">
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+    <main>
+      <nav class="flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
+        <a href="{% url 'home' %}" class="d-flex align-items-center pb-3 mb-3">
+          <img class="me-2" src="{% static 'img/logo_nav.svg' %}" alt="Dungeonomics logo">
+        </a>
+        <ul class="list-unstyled ps-0">
+          {% for section in sections %}
+            <li class="mb-1">
+              {% if section.type == "dropdown" %}
+                <button
+                    class="btn btn-toggle align-items-center collapsed"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#{{ section.name|lower }}-collapse"
+                    aria-expanded="false">
+                  <i class="fas fa-fw {{ section.icon }} me-2"></i>
+                  {{ section.name }}
                 </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <ul class="navbar-nav mr-auto">
-                        {% if user.is_authenticated %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="dropdownCampaigns"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Campaigns
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownCampaigns">
-                                    {% include "campaign_nav.html" with request=request %}
-                                    <a class="dropdown-item text-success" href="{% url 'campaign:campaign_create' %}">
-                                        <i class="fal mr-1 fa-fw fa-plus"></i> Create campaign
-                                    </a>
-                                    <a class="dropdown-item text-primary" href="{% url 'campaign:campaign_import' %}">
-                                        <i class="fal mr-1 fa-fw fa-cloud-upload"></i> Import campaign
-                                    </a>
-                                </div>
-                            </li>
-            
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="dropdownCharacters"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Characters
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownCharacters">
-                                    <a class="dropdown-item" href="{% url 'characters:player_detail' %}">Players</a>
-                                    <a class="dropdown-item" href="{% url 'characters:monster_detail' %}">Monsters</a>
-                                    <a class="dropdown-item" href="{% url 'characters:npc_detail' %}">NPCs</a>
-                                </div>
-                            </li>
-            
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="dropdownResources"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Resources
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownResources">
-                                    <a class="dropdown-item" href="{% url 'items:item_detail' %}">Items/spells</a>
-                                    <a class="dropdown-item" href="{% url 'locations:location_detail' %}">Locations</a>
-                                    <a class="dropdown-item" href="{% url 'tables:table_detail' %}">Tables</a>
-                                </div>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'tavern:tavern' %}">Tavern</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'wiki:article_detail' %}">Wiki</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-            
-                    <ul class="navbar-nav">
-                        {% if user.is_authenticated %}
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="dropdownAccount"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Account
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownAccount">
-                                    <h6 class="dropdown-header">{{ user.email }}</h6>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="{% url 'profile' %}">
-                                        <i class="fal mr-1 fa-fw fa-user-alt"></i> Profile
-                                    </a>
-                                    <a class="dropdown-item" href="{% url 'donate' %}">
-                                        <i class="fal mr-1 fa-fw fa-credit-card"></i> Donate
-                                    </a>
-                                    <a class="dropdown-item" href="{% url 'account_logout' %}">
-                                        <i class="fal mr-1 fa-fw fa-power-off"></i> Logout
-                                    </a>
-                                </div>
-                            </li>
-                        {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'signup' %}">Signup</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'login' %}">Login</a>
-                            </li>
-                        {% endif %}
-                    </ul>
+                <div class="collapse" id="{{ section.name|lower }}-collapse" style="">
+                  <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    {% for object in section.queryset %}
+                      <li>
+                        <a href="{{ object.get_absolute_url }}" class="link-light">
+                          {{ object }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                    {% if section.queryset and section.links %}
+                      <li class="ps-1 pe-2 ms-4"><hr class="mt-2 mb-1"></li>
+                    {% endif %}
+                    {% for link in section.links %}
+                      <li>
+                        <a href="{{ link.url }}" class="link-light">
+                          {{ link.name }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
                 </div>
-            </div>
-        </nav>
+              {% else %}
+                <a href="{{ section.links.0.url }}">
+                  <button
+                      class="btn btn-toggle align-items-center collapsed"
+                      aria-expanded="false">
+                    <i class="fas fa-fw {{ section.icon }} me-2"></i>
+                    {{ section.name }}
+                  </button>
+                </a>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+        <footer class="footer small mb-3">
+          <span class="copyright">&copy; {% now "Y" %} Dungeonomics</div>
+          <ul class="list-unstyled">
+            <li><a href="{% url 'donate' %}">Donate</a></li>
+            <li><a href="mailto:dungeonomics@gmail.com">Contact</a></li>
+            <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
+          </ul>
+          <ul id="footer-social" class="list-inline">
+            <li class="list-inline-item"><a href="https://twitter.com/dungeonomics" target="_blank"><i class="fab fa-twitter fa-lg"></i><span class="sr-only">Dungeonomics Twitter</span></a></li>
+            <li class="list-inline-item"><a href="https://reddit.com/r/dungeonomics" target="_blank"><i class="fab fa-reddit-alien fa-lg"></i><span class="sr-only">Dungeonomics Reddit</span></a></li>
+            <li class="list-inline-item"><a href="https://github.com/brunosardinepi/dungeonomics" target="_blank"><i class="fab fa-github fa-lg"></i><span class="sr-only">Dungeonomics GitHub</span></a></li>
+          </ul>
+        </footer>
+      </nav>
 
-        {% block breadcrumbs %}{% endblock %}
+      {% block breadcrumbs %}{% endblock %}
 
-        {% block header_title %}{% endblock %}
+      {% block header_title %}{% endblock %}
 
-        {% if request.resolver_match.url_name != 'home' or request.user.is_authenticated %}
-            <div class="container">
-        {% endif %}
-                {% include "messages.html" %}
-                {% block body_content %}{% endblock %}
-        {% if request.resolver_match.url_name != 'home' or request.user.is_authenticated %}
-            </div>
-        {% endif %}
+      {% if request.resolver_match.url_name != 'home' or request.user.is_authenticated %}
+        <div class="container">
+      {% endif %}
+      {% include "messages.html" %}
+      {% block body_content %}{% endblock %}
+      {% if request.resolver_match.url_name != 'home' or request.user.is_authenticated %}
+        </div>
+      {% endif %}
         
-        {% include "footer.html" %}
-
-    {% block body_extra %}{% endblock %}
-
+      {% block body_extra %}{% endblock %}
+    </main>
 	</body>
 </html>

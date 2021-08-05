@@ -10,6 +10,8 @@ from . import config
 from . import views
 
 
+admin.site.enable_nav_sidebar = False
+
 urlpatterns = [
     path('{}/'.format(config.settings['admin']), admin.site.urls),
     path('accounts/password/reset/done/', views.PasswordResetDoneView.as_view(), name='account_reset_password_done'),
