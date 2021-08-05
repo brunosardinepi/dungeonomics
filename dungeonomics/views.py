@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Count
 from django.http import HttpResponseRedirect, HttpResponse, Http404
-from django.shortcuts import get_object_or_404, render, render_to_response
+from django.shortcuts import get_object_or_404, render
 from django.template import RequestContext
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -99,22 +99,13 @@ class PasswordResetFromKeyDoneView(TemplateView):
 
 
 def handler400(request):
-    response = render_to_response('400.html', {},
-                                  context_instance=RequestContext(request))
-    response.status_code = 400
-    return response
+    pass
 
 def handler404(request):
-    response = render_to_response('404.html', {},
-                                  context_instance=RequestContext(request))
-    response.status_code = 404
-    return response
+    pass
 
 def handler500(request):
-    response = render_to_response('500.html', {},
-                                  context_instance=RequestContext(request))
-    response.status_code = 500
-    return response
+    pass
 
 class DonateView(TemplateView):
     template_name = 'donate.html'
