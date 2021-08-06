@@ -44,19 +44,6 @@
 	</head>
 
   <body>
-    {% use_ga as use_ga %}
-    {% if use_ga == True %}
-      <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-    
-        ga('create', 'UA-89671203-1', 'auto');
-        ga('send', 'pageview');
-      </script>
-    {% endif %}
-
     <main>
       <nav class="flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
         <a href="{% url 'home' %}" class="d-flex align-items-center pb-3 mb-3">

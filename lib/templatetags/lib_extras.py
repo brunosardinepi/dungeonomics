@@ -65,7 +65,3 @@ def asset_title(obj):
         return obj.upper()
     else:
         return obj.capitalize()
-
-@register.simple_tag
-def use_ga():
-    return settings.USE_GA

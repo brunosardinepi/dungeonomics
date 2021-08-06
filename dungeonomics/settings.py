@@ -100,9 +100,6 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-# google analytics
-USE_GA = config.settings['ga']
-
 # allauth
 SITE_ID = 1
 ACCOUNT_LOGOUT_ON_GET = True
