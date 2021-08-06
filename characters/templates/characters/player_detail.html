@@ -15,7 +15,7 @@
     {% if players %}
         {% for p in players %}
             <li>
-                <a {% if p == player %}class="font-weight-bold" {% endif %}href="{% url 'characters:player_detail' player_pk=p.pk %}">
+                <a {% if p == player %}class="fw-bold" {% endif %}href="{% url 'characters:player_detail' player_pk=p.pk %}">
                     {{ p.character_name }}{% if p.player_name %} ({{ p.player_name }}){% endif %}
                 </a>
             </li>

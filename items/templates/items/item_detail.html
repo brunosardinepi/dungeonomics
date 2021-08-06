@@ -43,7 +43,7 @@
                         {% if items %}
                             {% for i in items %}
                                 <li class="li-content">
-                                    <a {% if i == item %}class="font-weight-bold" {% endif %}href="{% url 'items:item_detail' item_pk=i.pk %}">
+                                    <a {% if i == item %}class="fw-bold" {% endif %}href="{% url 'items:item_detail' item_pk=i.pk %}">
                                         {{ i.name }}
                                     </a>
                                 </li>

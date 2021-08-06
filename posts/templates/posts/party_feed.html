@@ -6,7 +6,7 @@
 {% if posts %}
     {% for post in posts %}
         <div class="row">
-            <div class="col font-weight-bold">
+            <div class="col fw-bold">
                 <a href="{% url 'campaign:post_detail' campaign_pk=campaign.pk post_pk=post.pk %}">{{ post.title }}</a>
             </div>
         </div>

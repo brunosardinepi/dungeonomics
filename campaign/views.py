@@ -34,6 +34,100 @@ from tavern.models import Review
 def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None):
     if campaign_pk:
         campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+
+        campaign_toolbar = [
+            {
+                'tooltip': 'Create chapter',
+                'url': reverse(
+                    'campaign:chapter_create',
+                    kwargs={'campaign_pk': campaign.pk},
+                ),
+                'icon': 'fa-file-plus',
+            },
+            {
+                'tooltip': 'Edit campaign',
+                'url': reverse(
+                    'campaign:campaign_update',
+                    kwargs={'campaign_pk': campaign.pk},
+                ),
+                'icon': 'fa-edit',
+            },
+            {
+                'tooltip': 'Export campaign',
+                'url': reverse(
+                    'campaign:campaign_export',
+                    kwargs={'campaign_pk': campaign.pk},
+                ),
+                'icon': 'fa-cloud-download-alt',
+            },
+            {
+                'tooltip': 'Print campaign',
+                'url': reverse(
+                    'campaign:campaign_print',
+                    kwargs={'campaign_pk': campaign.pk},
+                ),
+                'icon': 'fa-print',
+            },
+            {
+                'tooltip': 'Delete campaign',
+                'url': reverse(
+                    'campaign:campaign_delete',
+                    kwargs={'campaign_pk': campaign.pk},
+                ),
+                'icon': 'fa-trash-alt',
+            },
+        ]
+
+        if campaign.is_published == True:
+            campaign_toolbar.append(
+                {
+                    'tooltip': 'View campaign on the Tavern',
+                    'url': reverse(
+                        'tavern:tavern_campaign_detail',
+                        kwargs={'campaign_pk': campaign.pk},
+                    ),
+                    'icon': 'fa-beer',
+                },
+            )
+        else:
+            campaign_toolbar.append(
+                {
+                    'tooltip': 'Publish campaign to the Tavern',
+                    'url': reverse(
+                        'campaign:campaign_publish',
+                        kwargs={'campaign_pk': campaign.pk},
+                    ),
+                    'icon': 'fa-cloud-upload-alt',
+                },
+            )
+
+        party_toolbar = [
+            {
+                'tooltip': 'View campaign party',
+                'url': reverse(
+                    'campaign:campaign_party',
+                    kwargs={'campaign_pk': campaign.pk},
+                ),
+                'icon': 'fa-users',
+            },
+            {
+                'tooltip': 'Create new post',
+                'url': reverse(
+                    'campaign:post_create',
+                    kwargs={'campaign_pk': campaign.pk},
+                ),
+                'icon': 'fa-comments-alt',
+            },
+            {
+                'tooltip': 'Invite new member to party',
+                'url': reverse(
+                    'campaign:campaign_party_invite',
+                    kwargs={'campaign_pk': campaign.pk},
+                ),
+                'icon': 'fa-paper-plane',
+            },
+        ]
+
         posts = Post.objects.filter(campaign=campaign).order_by('-date')[:5]
         if campaign.user == request.user:
             chapters = sorted(models.Chapter.objects.filter(campaign=campaign),
@@ -62,8 +156,39 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
 
             if chapter:
                 if section:
+                    # Set the content toolbar.
+                    content_toolbar = [
+                        {
+                            'tooltip': 'Edit section',
+                            'url': reverse(
+                                'campaign:section_update',
+                                kwargs={
+                                    'campaign_pk': campaign.pk,
+                                    'chapter_pk': chapter.pk,
+                                    'section_pk': section.pk,
+                                },
+                            ),
+                            'icon': 'fa-edit',
+                        },
+                        {
+                            'tooltip': 'Delete section',
+                            'url': reverse(
+                                'campaign:section_delete',
+                                kwargs={
+                                    'campaign_pk': campaign.pk,
+                                    'chapter_pk': chapter.pk,
+                                    'section_pk': section.pk,
+                                },
+                            ),
+                            'icon': 'fa-trash-alt',
+                        },
+                    ]
+
                     return render(request, 'campaign/campaign_detail.html', {
                         'campaign': campaign,
+                        'campaign_toolbar': campaign_toolbar,
+                        'party_toolbar': party_toolbar,
+                        'content_toolbar': content_toolbar,
                         'chapter': chapter,
                         'section': section,
                         'chapters': chapters,
@@ -71,8 +196,47 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
                         'posts': posts,
                     })
                 else:
+                    # Set the content toolbar.
+                    content_toolbar = [
+                        {
+                            'tooltip': 'Create section',
+                            'url': reverse(
+                                'campaign:section_create',
+                                kwargs={
+                                    'campaign_pk': campaign.pk,
+                                    'chapter_pk': chapter.pk,
+                                },
+                            ),
+                            'icon': 'fa-file-plus',
+                        },
+                        {
+                            'tooltip': 'Edit chapter',
+                            'url': reverse(
+                                'campaign:chapter_update',
+                                kwargs={
+                                    'campaign_pk': campaign.pk,
+                                    'chapter_pk': chapter.pk,
+                                },
+                            ),
+                            'icon': 'fa-edit',
+                        },
+                        {
+                            'tooltip': 'Delete chapter',
+                            'url': reverse(
+                                'campaign:chapter_delete',
+                                kwargs={
+                                    'campaign_pk': campaign.pk,
+                                    'chapter_pk': chapter.pk,
+                                },
+                            ),
+                            'icon': 'fa-trash-alt',
+                        },
+                    ]
                     return render(request, 'campaign/campaign_detail.html', {
                         'campaign': campaign,
+                        'campaign_toolbar': campaign_toolbar,
+                        'party_toolbar': party_toolbar,
+                        'content_toolbar': content_toolbar,
                         'chapter': chapter,
                         'chapters': chapters,
                         'sections': sections,
@@ -81,12 +245,23 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
             else:
                 return render(request, 'campaign/campaign_detail.html', {
                     'campaign': campaign,
+                    'campaign_toolbar': campaign_toolbar,
+                    'party_toolbar': party_toolbar,
                     'posts': posts,
                 })
         else:
             raise Http404
     else:
         campaign = None
+
+        campaign_toolbar = [
+            {
+                'tooltip': 'Create campaign',
+                'url': reverse('campaign:campaign_create'),
+                'icon': 'fa-plus',
+            },
+        ]
+
         user = None
         if request.user.is_authenticated:
             user = request.user.pk
@@ -112,6 +287,7 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
 
             return render(request, 'campaign/campaign_detail.html', {
                 'campaign': campaign,
+                'campaign_toolbar': campaign_toolbar,
                 'chapter': chapter,
                 'chapters': chapters,
                 'sections': sections,
@@ -119,6 +295,7 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
             })
         return render(request, 'campaign/campaign_detail.html', {
             'campaign': campaign,
+            'campaign_toolbar': campaign_toolbar,
         })
 
 

@@ -63,7 +63,7 @@
           <img class="me-2" src="{% static 'img/logo_nav.svg' %}" alt="Dungeonomics logo">
         </a>
         <ul class="list-unstyled ps-0">
-          {% for section in sections %}
+          {% for section in navbar %}
             <li class="mb-1">
               {% if section.type == "dropdown" %}
                 <button
@@ -127,14 +127,8 @@
 
       {% block header_title %}{% endblock %}
 
-      {% if request.resolver_match.url_name != 'home' or request.user.is_authenticated %}
-        <div class="container">
-      {% endif %}
       {% include "messages.html" %}
       {% block body_content %}{% endblock %}
-      {% if request.resolver_match.url_name != 'home' or request.user.is_authenticated %}
-        </div>
-      {% endif %}
         
       {% block body_extra %}{% endblock %}
     </main>

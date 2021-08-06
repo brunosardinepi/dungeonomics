@@ -41,7 +41,7 @@
                         {% if worlds %}
                             {% for w in worlds %}
                                 <li class="li-content">
-                                    <a href="" class="world-dropdown-{{ w.pk }}"><i class="fas fa-caret-right"></i></a> <a {% if w == world and not location %}class="font-weight-bold" {% endif %}href="{% url 'locations:location_detail' world_pk=w.pk %}">
+                                    <a href="" class="world-dropdown-{{ w.pk }}"><i class="fas fa-caret-right"></i></a> <a {% if w == world and not location %}class="fw-bold" {% endif %}href="{% url 'locations:location_detail' world_pk=w.pk %}">
                                         {{ w.name }}
                                     </a>
                                 </li>

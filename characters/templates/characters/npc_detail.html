@@ -15,7 +15,7 @@
     {% if npcs %}
         {% for n in npcs %}
             <li>
-                <a {% if n == npc %}class="font-weight-bold" {% endif %}href="{% url 'characters:npc_detail' npc_pk=n.id %}">
+                <a {% if n == npc %}class="fw-bold" {% endif %}href="{% url 'characters:npc_detail' npc_pk=n.id %}">
                     {{ n.name }}
                 </a>
             </li>

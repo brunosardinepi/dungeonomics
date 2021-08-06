@@ -9,7 +9,7 @@ from tables.models import Table
 def navbar(request):
     if request.user.is_authenticated:
         return {
-            'sections': [
+            'navbar': [
                 {
                     'name': 'Home',
                     'type': 'single',

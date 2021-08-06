@@ -25,7 +25,7 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col">
-                            <span class="font-weight-bold">{{ post.title }}</span>
+                            <span class="fw-bold">{{ post.title }}</span>
                             {% if request.user == campaign.user %}
                                 <a class="post-delete text-danger" href="{% url 'campaign:post_delete' campaign_pk=campaign.pk post_pk=post.pk %}"><i class="fal fa-trash-alt ml-1"></i></a>
                             {% endif %}
@@ -71,7 +71,7 @@
 
         <div class="col-12">
             <div class="card">
-                <div class="card-header font-weight-bold">
+                <div class="card-header fw-bold">
                     New comment
                 </div>
                 <div class="card-body">

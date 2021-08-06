@@ -1,7 +1,7 @@
 {% load locations_extras %}
 
 <li class="li-content">
-    <a {% if world_location == location %}class="font-weight-bold" {% endif %}href="{% url 'locations:location_detail' location_pk=world_location.pk %}">
+    <a {% if world_location == location %}class="fw-bold" {% endif %}href="{% url 'locations:location_detail' location_pk=world_location.pk %}">
         {{ world_location.name }}
     </a>
 </li>

@@ -9,12 +9,12 @@
 
     <div class="row">
         <div class="col-md-12">
-            {% if player.xp %}<p><span class="font-weight-bold">XP</span> {{ player.xp }}</p>{% endif %}
-            {% if player.proficiency_bonus %}<p><span class="font-weight-bold">Proficiency Bonus</span> {{ player.proficiency_bonus }}</p>{% endif %}
-            {% if player.armor_class %}<p><span class="font-weight-bold">Armor Class</span> {{ player.armor_class }}</p>{% endif %}
-            {% if player.hit_points %}<p><span class="font-weight-bold">Hit Points</span> {{ player.hit_points }}</p>{% endif %}
-            {% if player.initiative %}<p><span class="font-weight-bold">Initiative</span> {{ player.initiative }}</p>{% endif %}
-            {% if player.speed %}<p><span class="font-weight-bold">Speed</span> {{ player.speed }}</p>{% endif %}
+            {% if player.xp %}<p><span class="fw-bold">XP</span> {{ player.xp }}</p>{% endif %}
+            {% if player.proficiency_bonus %}<p><span class="fw-bold">Proficiency Bonus</span> {{ player.proficiency_bonus }}</p>{% endif %}
+            {% if player.armor_class %}<p><span class="fw-bold">Armor Class</span> {{ player.armor_class }}</p>{% endif %}
+            {% if player.hit_points %}<p><span class="fw-bold">Hit Points</span> {{ player.hit_points }}</p>{% endif %}
+            {% if player.initiative %}<p><span class="fw-bold">Initiative</span> {{ player.initiative }}</p>{% endif %}
+            {% if player.speed %}<p><span class="fw-bold">Speed</span> {{ player.speed }}</p>{% endif %}
         </div>
     </div>
 
@@ -75,10 +75,10 @@
 
     <div class="row">
         <div class="col-md-12">
-            {% if player.saving_throws %}<p><span class="font-weight-bold">Saving Throws</span> {{ player.saving_throws }}</p>{% endif %}
-            {% if player.skills %}<p><span class="font-weight-bold">Skills</span> {{ player.skills }}</p>{% endif %}
-            {% if player.senses %}<p><span class="font-weight-bold">Senses</span> {{ player.senses }}</p>{% endif %}
-            {% if player.languages %}<p><span class="font-weight-bold">Languages</span> {{ player.languages }}</p>{% endif %}
+            {% if player.saving_throws %}<p><span class="fw-bold">Saving Throws</span> {{ player.saving_throws }}</p>{% endif %}
+            {% if player.skills %}<p><span class="fw-bold">Skills</span> {{ player.skills }}</p>{% endif %}
+            {% if player.senses %}<p><span class="fw-bold">Senses</span> {{ player.senses }}</p>{% endif %}
+            {% if player.languages %}<p><span class="fw-bold">Languages</span> {{ player.languages }}</p>{% endif %}
         </div>
     </div>
 
@@ -86,13 +86,13 @@
 
     <div class="row">
         <div class="col-md-12">
-            {% if player.age %}<p><span class="font-weight-bold">Age</span> {{ player.age }}</p>{% endif %}
-            {% if player.height %}<p><span class="font-weight-bold">Height</span> {{ player.height }}</p>{% endif %}
-            {% if player.weight %}<p><span class="font-weight-bold">Weight</span> {{ player.weight }}</p>{% endif %}
-            {% if player.personality %}<p><span class="font-weight-bold">Personality Traits</span> {{ player.personality|safe }}</p>{% endif %}
-            {% if player.ideals %}<p><span class="font-weight-bold">Ideals</span> {{ player.ideals|safe }}</p>{% endif %}
-            {% if player.bonds %}<p><span class="font-weight-bold">Bonds</span> {{ player.bonds|safe }}</p>{% endif %}
-            {% if player.flaws %}<p><span class="font-weight-bold">Flaws</span> {{ player.flaws|safe }}</p>{% endif %}
+            {% if player.age %}<p><span class="fw-bold">Age</span> {{ player.age }}</p>{% endif %}
+            {% if player.height %}<p><span class="fw-bold">Height</span> {{ player.height }}</p>{% endif %}
+            {% if player.weight %}<p><span class="fw-bold">Weight</span> {{ player.weight }}</p>{% endif %}
+            {% if player.personality %}<p><span class="fw-bold">Personality Traits</span> {{ player.personality|safe }}</p>{% endif %}
+            {% if player.ideals %}<p><span class="fw-bold">Ideals</span> {{ player.ideals|safe }}</p>{% endif %}
+            {% if player.bonds %}<p><span class="fw-bold">Bonds</span> {{ player.bonds|safe }}</p>{% endif %}
+            {% if player.flaws %}<p><span class="fw-bold">Flaws</span> {{ player.flaws|safe }}</p>{% endif %}
         </div>
     </div>
 

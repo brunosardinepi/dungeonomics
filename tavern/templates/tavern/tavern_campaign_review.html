@@ -14,9 +14,9 @@
                 <div class="card-body">
                     <form method="POST" action="">
                         {% csrf_token %}
-                        <p>Give this campaign a rating <span class="font-weight-bold">from 1 to 5 stars</span>. An example of a 1-star campaign would be something you ran with your group and nobody had fun, the content was poorly organized to the point of confusion, it was a complete waste of your time to even attempt to run this campaign, and the rest of your day was completely ruined because of it. An example of a 5-star campaign would be something you ran with your group and thoroughly enjoyed, everything was planned well and was a cohesive story, and everyone you were with had a great time participating in it.</p>
+                        <p>Give this campaign a rating <span class="fw-bold">from 1 to 5 stars</span>. An example of a 1-star campaign would be something you ran with your group and nobody had fun, the content was poorly organized to the point of confusion, it was a complete waste of your time to even attempt to run this campaign, and the rest of your day was completely ruined because of it. An example of a 5-star campaign would be something you ran with your group and thoroughly enjoyed, everything was planned well and was a cohesive story, and everyone you were with had a great time participating in it.</p>
                         <p>Additionally, you can leave a comment to help explain your rating, provide criticism for the campaign writer, or let other users know if you'd recommend this campaign.</p>
-                        <p><span class="font-weight-bold">Note:</span> Remember, people spend a lot of their time working on these campaigns. Just because you don't like someone's ideas doesn't mean they're bad ideas. Be mindful of the differences. You can be constructively critical without being a jerk.</p>
+                        <p><span class="fw-bold">Note:</span> Remember, people spend a lot of their time working on these campaigns. Just because you don't like someone's ideas doesn't mean they're bad ideas. Be mindful of the differences. You can be constructively critical without being a jerk.</p>
                         {% if form.non_field_errors %}
                             <div class="alert alert-danger" role="alert">
                                 {{ form.non_field_errors }}
@@ -24,7 +24,7 @@
                         {% endif %}
 
                         <div class="form-group">
-                            <label for="{{ form.score.id_for_label }}" class="font-weight-bold">Rating (1 to 5)</label>
+                            <label for="{{ form.score.id_for_label }}" class="fw-bold">Rating (1 to 5)</label>
                             {% if form.score.errors %}
                                 {% for error in form.score.errors %}
                                     <span class="text-danger ml-3">
@@ -36,7 +36,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="{{ form.comment.id_for_label }}" class="font-weight-bold">Comment</label>
+                            <label for="{{ form.comment.id_for_label }}" class="fw-bold">Comment</label>
                             {% render_field form.comment class+="form-control mb-3" %}
                             {% if form.comment.errors %}
                                 {% for error in form.comment.errors %}

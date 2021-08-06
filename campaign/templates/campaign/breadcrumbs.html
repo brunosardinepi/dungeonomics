@@ -3,7 +3,7 @@
         {% if request.user == campaign.user %}
             <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk %}">{{ campaign.title }}</a>
         {% else %}
-            <span class="font-weight-bold">{{ campaign.title }}</span>
+            <span class="fw-bold">{{ campaign.title }}</span>
         {% endif %}
         {% if chapter %}
             <span class="breadcrumbs_separator"> / </span>

@@ -41,7 +41,7 @@
                         {% if tables %}
                             {% for t in tables %}
                                 <li class="li-content">
-                                    <a {% if t == table %}class="font-weight-bold" {% endif %}href="{% url 'tables:table_detail' table_pk=t.pk %}">
+                                    <a {% if t == table %}class="fw-bold" {% endif %}href="{% url 'tables:table_detail' table_pk=t.pk %}">
                                         {{ t.name }}
                                     </a>
                                 </li>
