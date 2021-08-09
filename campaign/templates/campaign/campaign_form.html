@@ -1,5 +1,6 @@
 {% extends 'campaign/layout.html' %}
 
+{% load static %}
 {% load widget_tweaks %}
 
 
@@ -39,7 +40,17 @@
     {% if campaign.pk %}
       {{ formset.management_form }}
       <div class="row g-3 mt-3 mb-2 fw-bold">
-        <div class="col-3 col-md-2">Chapter</div>
+        <div class="col-3 col-md-2">
+          Chapter
+          <a
+              href=""
+              id="autonumber-chapters"
+              data-bs-toggle="tooltip"
+              data-bs-placement="bottom"
+              title="Automatically number the chapters based on their current order">
+            <i class="fas fa-fw fa-list-ol"></i>
+          </a>
+        </div>
         <div class="col-7 col-md-9">Title</div>
         <div class="col-2 col-md-1 text-center">Delete</div>
       </div>
@@ -48,7 +59,7 @@
         <div class="row g-3 mb-1">
           <div class="col-3 col-md-2">
             {{ form.id }}
-            {% render_field form.order class+="form-control form-control-dark" %}
+            {% render_field form.order class+="form-control form-control-dark chapter-order" %}
           </div>
           <div class="col-7 col-md-9">
             {% render_field form.title class+="form-control form-control-dark" %}
@@ -84,4 +95,8 @@
       {% endif %}
     </div>
   </form>
+{% endblock %}
+
+{% block body_extra %}
+  <script src="{% static 'js/autonumberChapters.js' %}"></script>
 {% endblock %}
