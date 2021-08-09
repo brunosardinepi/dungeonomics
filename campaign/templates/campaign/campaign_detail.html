@@ -1,111 +1,30 @@
-{% extends 'layout.html' %}
-
-{% load static %}
-{% load campaign_extras %}
-
+{% extends 'campaign/layout.html' %}
 
 {% block title %}{{ campaign.title }} | {{ block.super }}{% endblock %}
 
-{% block body_content %}
-    <div class="row mt-3">
-      <div class="col-lg-3">
-        <p class="mb-1 fw-bold">{{ campaign }}</p>
-        <div class="row mb-2">
-          <div class="col">
-            {% for section in campaign_toolbar %}
-              <a
-                  href="{{ section.url }}"
-                  class="me-2"
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="bottom"
-                  title="{{ section.tooltip }}">
-                <i class="fas fa-fw {{ section.icon }}" aria-hidden="true"></i>
-              </a>
-            {% endfor %}
-            <input type="text" class="form-control form-control-sm form-control-dark my-3" data-type="campaign" id="campaign-search" placeholder="Search" />
-            <ul class="contents_list" id="campaign-list">
-              {% if chapters %}
-                {% for c in chapters %}
-                  <li>
-                    {{ c.order }}. 
-                    <a {% if c == chapter and not section %}class="fw-bold" {% endif %}href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=c.pk %}">
-                      {{ c.title }}
-                    </a>
-                  </li>
-                  <ul style="padding-left: 30px;">
-                    {% for s in sections %}
-                      {% if s.chapter.pk == c.pk %}
-                        <li>
-                          {{ s.order }}. 
-                          <a {% if s == section %}class="fw-bold" {% endif %}href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=c.pk section_pk=s.pk %}">
-                            {{ s.title }}
-                          </a>
-                        </li>
-                      {% endif %}
-                    {% endfor %}
-                  </ul>
-                {% endfor %}
-              {% else %}
-                <li>You haven't created any content yet!</li>
-              {% endif %}
-            </ul>
-          </div>
-        </div>
-        <div class="row mt-5 mb-1">
-          <div class="col">
-            <span class="fw-bold">Party</span>
-          </div>
-          <div class="col-auto">
-            {% for section in party_toolbar %}
-              <a
-                  href="{{ section.url }}"
-                  class="me-2"
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="bottom"
-                  title="{{ section.tooltip }}">
-                <i class="fas fa-fw {{ section.icon }}" aria-hidden="true"></i>
-              </a>
-            {% endfor %}
-          </div>
-          {% include "posts/party_feed.html" with posts=posts%}
+{% block campaign_content %}
+  {% if chapter %}
+    {% if not section %}
+      {% include "campaign/card_header.html" with obj=chapter %}
+      <div class="row">
+        <div class="col">
+          {{ chapter.content|safe }}
         </div>
       </div>
-      <div class="col-lg-9 mt-5 mt-sm-0">
-        {% if chapter %}
-          {% if not section %}
-            {% include "campaign/card_header.html" with obj=chapter %}
-            <div class="row">
-              <div class="col">
-                {{ chapter.content|safe }}
-              </div>
-            </div>
-          {% elif section %}
-            {% include "campaign/card_header.html" with obj=section %}
-            <div class="row">
-              <div class="col">
-                {{ section.content|safe }}
-              </div>
-            </div>
-          {% endif %}
-        {% else %}
-          {% include "campaign/card_header.html" with obj=campaign %}
-          <div class="row">
-            <div class="col">
-              <p>You haven't created any content yet!</p>
-            </div>
-          </div>
-        {% endif %}
+    {% elif section %}
+      {% include "campaign/card_header.html" with obj=section %}
+      <div class="row">
+        <div class="col">
+          {{ section.content|safe }}
+        </div>
+      </div>
+    {% endif %}
+  {% else %}
+    {% include "campaign/card_header.html" with obj=campaign %}
+    <div class="row">
+      <div class="col">
+        <p>You haven't created any content yet!</p>
       </div>
     </div>
-{% endblock %}
-
-{% block body_extra %}
-  <script src="{% static 'js/campaign_delete.js' %}"></script>
-  <script src="{% static 'js/filter.js' %}"></script>
-  <script>
-    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl)
-    });
-  </script>
+  {% endif %}
 {% endblock %}

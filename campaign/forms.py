@@ -24,6 +24,9 @@ class CampaignForm(forms.ModelForm):
         fields = [
             'title',
         ]
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': 'Campaign title'}),
+        }
 
 class ChapterForm(TinyMCEForm):
     class Meta:

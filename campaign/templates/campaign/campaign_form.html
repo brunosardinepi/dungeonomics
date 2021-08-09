@@ -1,102 +1,87 @@
-{% extends 'layout.html' %}
+{% extends 'campaign/layout.html' %}
 
 {% load widget_tweaks %}
 
 
 {% block title %}
-    {% if campaign.pk %}
-        Update campaign 
-    {% else %}
-        New campaign 
-    {% endif %}
-    | {{ block.super }}
+  {% if campaign.pk %}
+    Update campaign 
+  {% else %}
+    New campaign 
+  {% endif %}
+  | {{ block.super }}
 {% endblock %}
 
-{% block body_content %}
-    <div class="row mt-3 pb-5 justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="px-1 mb-0">
-                        {% if campaign.pk %}
-                            <span class="fw-bold">Update:</span> {{ campaign }}
-                        {% else %}
-                            <span class="fw-bold">New campaign</span>
-                        {% endif %}
-                    </h4>
-                </div>
-                <div class="card-body">
-                    <form method="POST" action="">
-                        {% csrf_token %}
-    
-                        {% if form.non_field_errors %}
-                            <div class="alert alert-danger" role="alert">
-                                {{ form.non_field_errors }}
-                            </div>
-                        {% endif %}
-
-                        <div class="form-group">
-                            <label for="{{ form.title.id_for_label }}">Title</label>
-                            {% render_field form.title class+="form-control mb-3" %}
-                            {% if form.title.errors %}
-                                {% for error in form.title.errors %}
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ error|escape }}
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-
-                        {% if campaign.pk %}
-    
-                            {{ formset.management_form }}
-    
-                            <table class="table table-striped table-hover mt-5">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" class="text-center width-ten">Chapter</th>
-                                        <th scope="col" class="text-center width-eighty">Title</th>
-                                        <th scope="col" class="text-center width-ten">Delete</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for form in formset %}
-                                        <tr>
-                                            <td class="width-ten">{{ form.id }}{{ form.order }}</td>
-                                            <td class="width-eighty">{{ form.title }}</td>
-                                            {% if form.instance.pk %}
-                                                <td class="text-center width-ten">{{ form.DELETE }}</td>
-                                            {% else %}
-                                                <td class="text-center width-ten"></td>
-                                            {% endif %}
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        {% endif %}
-    
-                </div>
-                <div class="card-footer">
-                    <div class="row justify-content-between">
-                        {% if campaign.pk %}
-                            <div class="col-auto">
-                                <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk %}" class="btn btn-secondary">Cancel</a>
-                            </div>
-                            <div class="col-auto">
-                                <input type="submit" class="btn btn-primary" value="Update campaign">
-                            </div>
-                        {% else %}
-                            <div class="col-auto">
-                                <a href="{% url 'home' %}" class="btn btn-secondary">Cancel</a>
-                            </div>
-                            <div class="col-auto">
-                                <input type="submit" class="btn btn-primary" value="Create campaign">
-                            </div>
-                        {% endif %}
-                    </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+{% block campaign_content %}
+  {% if campaign.pk %}
+    <p class="mb-3 fw-bold">Update campaign: campaign01</p>
+  {% else %}
+    <p class="mb-3 fw-bold">Create new campaign</p>
+  {% endif %}
+  <form method="POST" action="">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger" role="alert">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
+    <div class="form-group">
+      {% render_field form.title class+="form-control form-control-dark mb-3" %}
+      {% if form.title.errors %}
+        {% for error in form.title.errors %}
+          <div class="alert alert-danger" role="alert">
+            {{ error|escape }}
+          </div>
+        {% endfor %}
+      {% endif %}
     </div>
+
+    {% if campaign.pk %}
+      {{ formset.management_form }}
+      <div class="row g-3 mt-3 mb-2 fw-bold">
+        <div class="col-3 col-md-2">Chapter</div>
+        <div class="col-7 col-md-9">Title</div>
+        <div class="col-2 col-md-1 text-center">Delete</div>
+      </div>
+
+      {% for form in formset %}
+        <div class="row g-3 mb-1">
+          <div class="col-3 col-md-2">
+            {{ form.id }}
+            {% render_field form.order class+="form-control form-control-dark" %}
+          </div>
+          <div class="col-7 col-md-9">
+            {% render_field form.title class+="form-control form-control-dark" %}
+          </div>
+          <div class="col-2 col-md-1 text-center">
+            {% if form.instance.pk %}
+              {% render_field form.DELETE class+="form-check-input form-control-dark" %}
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <div class="row justify-content-between mt-4">
+      {% if campaign.pk %}
+        <div class="col-auto">
+          <a
+              href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk %}"
+              class="btn btn-sm btn-secondary">
+            Cancel
+          </a>
+        </div>
+        <div class="col-auto">
+          <input type="submit" class="btn btn-sm btn-primary" value="Update campaign">
+        </div>
+      {% else %}
+        <div class="col-auto">
+          <a href="{% url 'home' %}" class="btn btn-sm btn-secondary">Cancel</a>
+        </div>
+        <div class="col-auto">
+          <input type="submit" class="btn btn-sm btn-primary" value="Create campaign">
+        </div>
+      {% endif %}
+    </div>
+  </form>
 {% endblock %}

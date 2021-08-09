@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+from collections import OrderedDict
 from itertools import chain
 from shutil import copyfile
 import json
@@ -34,99 +35,6 @@ from tavern.models import Review
 def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None):
     if campaign_pk:
         campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-
-        campaign_toolbar = [
-            {
-                'tooltip': 'Create chapter',
-                'url': reverse(
-                    'campaign:chapter_create',
-                    kwargs={'campaign_pk': campaign.pk},
-                ),
-                'icon': 'fa-file-plus',
-            },
-            {
-                'tooltip': 'Edit campaign',
-                'url': reverse(
-                    'campaign:campaign_update',
-                    kwargs={'campaign_pk': campaign.pk},
-                ),
-                'icon': 'fa-edit',
-            },
-            {
-                'tooltip': 'Export campaign',
-                'url': reverse(
-                    'campaign:campaign_export',
-                    kwargs={'campaign_pk': campaign.pk},
-                ),
-                'icon': 'fa-cloud-download-alt',
-            },
-            {
-                'tooltip': 'Print campaign',
-                'url': reverse(
-                    'campaign:campaign_print',
-                    kwargs={'campaign_pk': campaign.pk},
-                ),
-                'icon': 'fa-print',
-            },
-            {
-                'tooltip': 'Delete campaign',
-                'url': reverse(
-                    'campaign:campaign_delete',
-                    kwargs={'campaign_pk': campaign.pk},
-                ),
-                'icon': 'fa-trash-alt',
-            },
-        ]
-
-        if campaign.is_published == True:
-            campaign_toolbar.append(
-                {
-                    'tooltip': 'View campaign on the Tavern',
-                    'url': reverse(
-                        'tavern:tavern_campaign_detail',
-                        kwargs={'campaign_pk': campaign.pk},
-                    ),
-                    'icon': 'fa-beer',
-                },
-            )
-        else:
-            campaign_toolbar.append(
-                {
-                    'tooltip': 'Publish campaign to the Tavern',
-                    'url': reverse(
-                        'campaign:campaign_publish',
-                        kwargs={'campaign_pk': campaign.pk},
-                    ),
-                    'icon': 'fa-cloud-upload-alt',
-                },
-            )
-
-        party_toolbar = [
-            {
-                'tooltip': 'View campaign party',
-                'url': reverse(
-                    'campaign:campaign_party',
-                    kwargs={'campaign_pk': campaign.pk},
-                ),
-                'icon': 'fa-users',
-            },
-            {
-                'tooltip': 'Create new post',
-                'url': reverse(
-                    'campaign:post_create',
-                    kwargs={'campaign_pk': campaign.pk},
-                ),
-                'icon': 'fa-comments-alt',
-            },
-            {
-                'tooltip': 'Invite new member to party',
-                'url': reverse(
-                    'campaign:campaign_party_invite',
-                    kwargs={'campaign_pk': campaign.pk},
-                ),
-                'icon': 'fa-paper-plane',
-            },
-        ]
 
         posts = Post.objects.filter(campaign=campaign).order_by('-date')[:5]
         if campaign.user == request.user:
@@ -186,8 +94,6 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
 
                     return render(request, 'campaign/campaign_detail.html', {
                         'campaign': campaign,
-                        'campaign_toolbar': campaign_toolbar,
-                        'party_toolbar': party_toolbar,
                         'content_toolbar': content_toolbar,
                         'chapter': chapter,
                         'section': section,
@@ -234,8 +140,6 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
                     ]
                     return render(request, 'campaign/campaign_detail.html', {
                         'campaign': campaign,
-                        'campaign_toolbar': campaign_toolbar,
-                        'party_toolbar': party_toolbar,
                         'content_toolbar': content_toolbar,
                         'chapter': chapter,
                         'chapters': chapters,
@@ -245,8 +149,6 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
             else:
                 return render(request, 'campaign/campaign_detail.html', {
                     'campaign': campaign,
-                    'campaign_toolbar': campaign_toolbar,
-                    'party_toolbar': party_toolbar,
                     'posts': posts,
                 })
         else:
@@ -287,7 +189,6 @@ def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None)
 
             return render(request, 'campaign/campaign_detail.html', {
                 'campaign': campaign,
-                'campaign_toolbar': campaign_toolbar,
                 'chapter': chapter,
                 'chapters': chapters,
                 'sections': sections,
@@ -367,15 +268,28 @@ class SectionCreate(View):
         raise Http404
 
 
-@login_required
-def campaign_update(request, campaign_pk):
-    campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
-    if campaign.user == request.user:
-        form = forms.CampaignForm(instance=campaign)
-        chapter_forms = forms.ChapterInlineFormSet(queryset=form.instance.chapter_set.all())
-        if request.method == 'POST':
+class CampaignUpdate(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
+        if campaign.user == request.user:
+            form = forms.CampaignForm(instance=campaign)
+            chapter_forms = forms.ChapterInlineFormSet(
+                queryset=form.instance.chapter_set.all(),
+            )
+            return render(request, 'campaign/campaign_form.html', {
+                'form': form,
+                'formset': chapter_forms,
+                'campaign': campaign,
+            })
+
+    def post(self, request, *args, **kwargs):
+        campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
+        if campaign.user == request.user:
             form = forms.CampaignForm(request.POST, instance=campaign)
-            chapter_forms = forms.ChapterInlineFormSet(request.POST, queryset=form.instance.chapter_set.all())
+            chapter_forms = forms.ChapterInlineFormSet(
+                request.POST,
+                queryset=form.instance.chapter_set.all(),
+            )
             if form.is_valid() and chapter_forms.is_valid():
                 form.save()
                 chapters = chapter_forms.save(commit=False)
@@ -385,14 +299,20 @@ def campaign_update(request, campaign_pk):
                     chapter.save()
                 for chapter in chapter_forms.deleted_objects:
                     chapter.delete()
-                messages.add_message(request, messages.SUCCESS, "Updated campaign: {}".format(form.cleaned_data['title']))
+                messages.add_message(
+                    request,
+                    messages.SUCCESS,
+                    f"Updated campaign: {form.cleaned_data['title']}",
+                )
                 return HttpResponseRedirect(campaign.get_absolute_url())
             else:
                 print(form.errors)
                 print(chapter_forms.errors)
-    else:
-        raise Http404
-    return render(request, 'campaign/campaign_form.html', {'form': form, 'formset': chapter_forms, 'campaign': campaign})
+            return render(request, 'campaign/campaign_form.html', {
+                'form': form,
+                'formset': chapter_forms,
+                'campaign': campaign,
+            })
 
 @login_required
 def chapter_update(request, campaign_pk, chapter_pk):
