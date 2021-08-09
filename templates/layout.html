@@ -37,6 +37,7 @@
 
 		<link rel="stylesheet" href="{% static 'css/layout.css' %}?{% now 'U' %}">
 
+    <script defer src="{% static 'js/navbar.js' %}"></script>
     <script defer src="{% static 'js/fontawesome-all.min.js' %}"></script>
 
     {% block head_extra %}{% endblock %}
@@ -44,80 +45,92 @@
 	</head>
 
   <body>
-    <main>
-      <nav class="flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
-        <a href="{% url 'home' %}" class="d-flex align-items-center pb-3 mb-3">
-          <img class="me-2" src="{% static 'img/logo_nav.svg' %}" alt="Dungeonomics logo">
-        </a>
-        <ul class="list-unstyled ps-0">
-          {% for section in navbar %}
-            <li class="mb-1">
-              {% if section.type == "dropdown" %}
-                <button
-                    class="btn btn-toggle align-items-center collapsed"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#{{ section.name|lower }}-collapse"
-                    aria-expanded="false">
-                  <i class="fas fa-fw {{ section.icon }} me-2"></i>
-                  {{ section.name }}
-                </button>
-                <div class="collapse" id="{{ section.name|lower }}-collapse" style="">
-                  <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                    {% for object in section.queryset %}
-                      <li>
-                        <a href="{{ object.get_absolute_url }}" class="link-light">
-                          {{ object }}
-                        </a>
-                      </li>
-                    {% endfor %}
-                    {% if section.queryset and section.links %}
-                      <li class="ps-1 pe-2 ms-4"><hr class="mt-2 mb-1"></li>
-                    {% endif %}
-                    {% for link in section.links %}
-                      <li>
-                        <a href="{{ link.url }}" class="link-light">
-                          {{ link.name }}
-                        </a>
-                      </li>
-                    {% endfor %}
-                  </ul>
-                </div>
-              {% else %}
-                <a href="{{ section.links.0.url }}">
-                  <button
-                      class="btn btn-toggle align-items-center collapsed"
-                      aria-expanded="false">
-                    <i class="fas fa-fw {{ section.icon }} me-2"></i>
-                    {{ section.name }}
-                  </button>
+    <div class="container-fluid">
+      <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-dark">
+          <div class="sidebar-sticky pt-3">
+            <div class="row mb-3">
+              <div class="col">
+                <a href="{% url 'home' %}" class="d-flex align-items-center">
+                  <img class="me-2" src="{% static 'img/logo_nav.svg' %}" alt="Dungeonomics logo">
                 </a>
-              {% endif %}
-            </li>
-          {% endfor %}
-        </ul>
-        <footer class="footer small mb-3">
-          <span class="copyright">&copy; {% now "Y" %} Dungeonomics</div>
-          <ul class="list-unstyled">
-            <li><a href="{% url 'donate' %}">Donate</a></li>
-            <li><a href="mailto:dungeonomics@gmail.com">Contact</a></li>
-            <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
-          </ul>
-          <ul id="footer-social" class="list-inline">
-            <li class="list-inline-item"><a href="https://twitter.com/dungeonomics" target="_blank"><i class="fab fa-twitter fa-lg"></i><span class="sr-only">Dungeonomics Twitter</span></a></li>
-            <li class="list-inline-item"><a href="https://reddit.com/r/dungeonomics" target="_blank"><i class="fab fa-reddit-alien fa-lg"></i><span class="sr-only">Dungeonomics Reddit</span></a></li>
-            <li class="list-inline-item"><a href="https://github.com/brunosardinepi/dungeonomics" target="_blank"><i class="fab fa-github fa-lg"></i><span class="sr-only">Dungeonomics GitHub</span></a></li>
-          </ul>
-        </footer>
-      </nav>
+              </div>
+              <div class="col-auto d-block d-md-none">
+                <a href="" id="sidebar-collapse-button">
+                  <i class="fas fa-bars"></i>
+                </a>
+              </div>
+            </div>
+            <div id="sidebar-collapse" class="d-none d-md-block">
+              <ul class="nav flex-column">
+                {% for section in navbar %}
+                  <li class="mb-1">
+                    {% if section.type == "dropdown" %}
+                      <button
+                          class="btn btn-toggle align-items-center collapsed"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#{{ section.name|lower }}-collapse"
+                          aria-expanded="false">
+                        <i class="fas fa-fw {{ section.icon }} me-2"></i>
+                        {{ section.name }}
+                      </button>
+                      <div class="collapse" id="{{ section.name|lower }}-collapse" style="">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                          {% for object in section.queryset %}
+                            <li>
+                              <a href="{{ object.get_absolute_url }}" class="link-light">
+                                {{ object }}
+                              </a>
+                            </li>
+                          {% endfor %}
+                          {% if section.queryset and section.links %}
+                            <li class="ps-1 pe-2 ms-4"><hr class="mt-2 mb-1"></li>
+                          {% endif %}
+                          {% for link in section.links %}
+                            <li>
+                              <a href="{{ link.url }}" class="link-light">
+                                {{ link.name }}
+                              </a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    {% else %}
+                      <a href="{{ section.links.0.url }}">
+                        <button
+                            class="btn btn-toggle align-items-center collapsed"
+                            aria-expanded="false">
+                          <i class="fas fa-fw {{ section.icon }} me-2"></i>
+                          {{ section.name }}
+                        </button>
+                      </a>
+                    {% endif %}
+                  </li>
+                {% endfor %}
+              </ul>
+              <footer class="footer small mb-3">
+                <span class="copyright">&copy; {% now "Y" %} Dungeonomics</span>
+                <ul class="list-unstyled">
+                  <li><a href="{% url 'donate' %}">Donate</a></li>
+                  <li><a href="mailto:dungeonomics@gmail.com">Contact</a></li>
+                  <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
+                </ul>
+                <ul id="footer-social" class="list-inline">
+                  <li class="list-inline-item"><a href="https://twitter.com/dungeonomics" target="_blank"><i class="fab fa-twitter fa-lg"></i><span class="sr-only">Dungeonomics Twitter</span></a></li>
+                  <li class="list-inline-item"><a href="https://reddit.com/r/dungeonomics" target="_blank"><i class="fab fa-reddit-alien fa-lg"></i><span class="sr-only">Dungeonomics Reddit</span></a></li>
+                  <li class="list-inline-item"><a href="https://github.com/brunosardinepi/dungeonomics" target="_blank"><i class="fab fa-github fa-lg"></i><span class="sr-only">Dungeonomics GitHub</span></a></li>
+                </ul>
+              </footer>
+            </div>
+          </div>
+        </nav>
 
-      {% block breadcrumbs %}{% endblock %}
-
-      {% block header_title %}{% endblock %}
-
-      {% include "messages.html" %}
-      {% block body_content %}{% endblock %}
-        
-      {% block body_extra %}{% endblock %}
-    </main>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+          {% block body %}{% endblock %}
+          {% block body_content %}{% endblock %}
+        </main>
+      </div>
+    </div>
+    {% block body_extra %}{% endblock %}
 	</body>
 </html>
