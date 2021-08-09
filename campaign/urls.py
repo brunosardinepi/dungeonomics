@@ -7,11 +7,11 @@ from posts import views as post_views
 
 app_name = 'campaign'
 urlpatterns = [
-    path('<int:campaign_pk>/', views.campaign_detail, name='campaign_detail'),
+    path('<int:campaign_pk>/', views.CampaignDetail.as_view(), name='campaign_detail'),
     path('<int:campaign_pk>/chapter/<int:chapter_pk>/',
-        views.campaign_detail, name='campaign_detail'),
+        views.CampaignDetail.as_view(), name='campaign_detail'),
     path('<int:campaign_pk>/chapter/<int:chapter_pk>/section/<int:section_pk>/',
-        views.campaign_detail, name='campaign_detail'),
+        views.CampaignDetail.as_view(), name='campaign_detail'),
 
     path('create/', views.CampaignCreate.as_view(), name='campaign_create'),
     path('<int:campaign_pk>/chapter/create/',
@@ -73,5 +73,5 @@ urlpatterns = [
         login_required(views.CampaignUnpublish.as_view()),
         name='campaign_unpublish'),
 
-    path('', views.campaign_detail, name='campaign_detail'),
+    path('', views.CampaignDetail.as_view(), name='campaign_detail'),
 ]

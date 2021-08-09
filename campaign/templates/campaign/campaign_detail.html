@@ -3,28 +3,30 @@
 {% block title %}{{ campaign.title }} | {{ block.super }}{% endblock %}
 
 {% block campaign_content %}
-  {% if chapter %}
-    {% if not section %}
-      {% include "campaign/card_header.html" with obj=chapter %}
-      <div class="row">
-        <div class="col">
-          {{ chapter.content|safe }}
-        </div>
-      </div>
-    {% elif section %}
-      {% include "campaign/card_header.html" with obj=section %}
-      <div class="row">
-        <div class="col">
-          {{ section.content|safe }}
-        </div>
-      </div>
-    {% endif %}
-  {% else %}
-    {% include "campaign/card_header.html" with obj=campaign %}
-    <div class="row">
-      <div class="col">
-        <p>You haven't created any content yet!</p>
-      </div>
+  <div class="row mb-3 justify-content-between align-items-center">
+    <div class="col-auto">
+      <span class="fw-bold">{{ content.0 }}</span>
     </div>
-  {% endif %}
+    <div class="col-auto">
+      {% for section in content.1 %}
+        <a
+            href="{{ section.url }}"
+            class="me-2"
+            data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
+            title="{{ section.tooltip }}">
+          <i class="fas fa-fw {{ section.icon }}" aria-hidden="true"></i>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      {% if content.0 %}
+        {{ content.0.content|safe }}          
+      {% else %}
+        <p>You haven't created any content yet!</p>
+      {% endif %}
+    </div>
+  </div>
 {% endblock %}

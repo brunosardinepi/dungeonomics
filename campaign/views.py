@@ -31,6 +31,61 @@ from tables.models import Table, TableOption
 from tavern.models import Review
 
 
+class CampaignDetail(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        if 'campaign_pk' in kwargs:
+            campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
+
+            # Check if this campaign belongs to the user requesting it.
+            if campaign.user != request.user:
+                return
+
+            # Get the campaign's party posts.
+            posts = campaign.post_set.all().order_by('-date')[:5]
+
+            if 'chapter_pk' in kwargs:
+                # Get the requested chapter.
+                chapter = get_object_or_404(models.Chapter, pk=kwargs['chapter_pk'])
+            else:
+                # If no chapter was specified, get the first chapter in the campaign.
+                chapters = campaign.chapter_set.all()
+                if chapters:
+                    chapter = chapters.first()
+                else:
+                    # This campaign has no chapters.
+                    chapter = None
+
+            if 'section_pk' in kwargs:
+                # Get the requested section.
+                section = get_object_or_404(models.Section, pk=kwargs['section_pk'])
+            else:
+                section = None
+
+            # Set the content toolbar.
+            if section:
+                content = (section, section.section_toolbar)
+            elif chapter:
+                content = (chapter, chapter.chapter_toolbar)
+            elif campaign:
+                content = (campaign, campaign.campaign_toolbar)
+            else:
+                content = (None, None)
+        else:
+            # No campaign was specified. Check if the user has any campaigns and
+            # get the first one. If there aren't any, show them the campaign creation page.
+            campaign = None
+            content = (None, None)
+            posts = {}
+
+        return render(request, 'campaign/campaign_detail.html', {
+            'campaign': campaign,
+            'content': content,
+            'posts': posts,
+        })
+
+    def post(self, request, *args, **kwargs):
+        pass
+
 @login_required
 def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None):
     if campaign_pk:

@@ -46,6 +46,7 @@ class Campaign(CampaignTemplate):
             'campaign_pk': self.pk
             })
 
+    @property
     def campaign_toolbar(self):
         toolbar = [
             {
@@ -115,6 +116,7 @@ class Campaign(CampaignTemplate):
 
         return toolbar
 
+    @property
     def party_toolbar(self):
         toolbar = [
             {
@@ -179,6 +181,45 @@ class Chapter(CampaignTemplate):
             'chapter_pk': self.pk
             })
 
+    @property
+    def chapter_toolbar(self):
+        toolbar = [
+            {
+                'tooltip': 'Create section',
+                'url': reverse(
+                    'campaign:section_create',
+                    kwargs={
+                        'campaign_pk': self.campaign.pk,
+                        'chapter_pk': self.pk,
+                    },
+                ),
+                'icon': 'fa-file-plus',
+            },
+            {
+                'tooltip': 'Edit chapter',
+                'url': reverse(
+                    'campaign:chapter_update',
+                    kwargs={
+                        'campaign_pk': self.campaign.pk,
+                        'chapter_pk': self.pk,
+                    },
+                ),
+                'icon': 'fa-edit',
+            },
+            {
+                'tooltip': 'Delete chapter',
+                'url': reverse(
+                    'campaign:chapter_delete',
+                    kwargs={
+                        'campaign_pk': self.campaign.pk,
+                        'chapter_pk': self.pk,
+                    },
+                ),
+                'icon': 'fa-trash-alt',
+            },
+        ]
+
+        return toolbar
 
 class Section(CampaignTemplate):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -196,3 +237,34 @@ class Section(CampaignTemplate):
             'chapter_pk': self.chapter_id,
             'section_pk': self.pk
             })
+
+    @property
+    def section_toolbar(self):
+        toolbar = [
+            {
+                'tooltip': 'Edit section',
+                'url': reverse(
+                    'campaign:section_update',
+                    kwargs={
+                        'campaign_pk': self.campaign.pk,
+                        'chapter_pk': self.chapter.pk,
+                        'section_pk': self.pk,
+                    },
+                ),
+                'icon': 'fa-edit',
+            },
+            {
+                'tooltip': 'Delete section',
+                'url': reverse(
+                    'campaign:section_delete',
+                    kwargs={
+                        'campaign_pk': self.campaign.pk,
+                        'chapter_pk': self.chapter.pk,
+                        'section_pk': self.pk,
+                    },
+                ),
+                'icon': 'fa-trash-alt',
+            },
+        ]
+
+        return toolbar

@@ -18,7 +18,12 @@
               <i class="fas fa-fw {{ section.icon }}" aria-hidden="true"></i>
             </a>
           {% endfor %}
-          <input type="text" class="form-control form-control-sm form-control-dark my-3" data-type="campaign" id="campaign-search" placeholder="Search" />
+          <input
+              type="text"
+              class="form-control form-control-sm form-control-dark my-3"
+              data-type="campaign"
+              id="campaign-search"
+              placeholder="Search" />
           <ul class="contents_list" id="campaign-list">
             {% for chapter, sections in campaign.children.items %}
               <li>
