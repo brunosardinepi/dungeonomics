@@ -41,6 +41,9 @@ class Campaign(CampaignTemplate):
     tavern_description = models.TextField(blank=True)
     importers = models.ManyToManyField(User, related_name='importers')
 
+    class Meta:
+        ordering = ['title']
+
     def get_absolute_url(self):
         return reverse('campaign:campaign_detail', kwargs={
             'campaign_pk': self.pk

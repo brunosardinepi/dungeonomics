@@ -71,11 +71,7 @@ class CampaignDetail(LoginRequiredMixin, View):
             else:
                 content = (None, None)
         else:
-            # No campaign was specified. Check if the user has any campaigns and
-            # get the first one. If there aren't any, show them the campaign creation page.
-            campaign = None
-            content = (None, None)
-            posts = {}
+            return redirect('campaign:campaign_create')
 
         return render(request, 'campaign/campaign_detail.html', {
             'campaign': campaign,
@@ -86,188 +82,19 @@ class CampaignDetail(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         pass
 
-@login_required
-def campaign_detail(request, campaign_pk=None, chapter_pk=None, section_pk=None):
-    if campaign_pk:
-        campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
+class CampaignCreate(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        form = forms.CampaignForm()
+        return render(request, 'campaign/campaign_form.html', {'form': form})
 
-        posts = Post.objects.filter(campaign=campaign).order_by('-date')[:5]
-        if campaign.user == request.user:
-            chapters = sorted(models.Chapter.objects.filter(campaign=campaign),
-            key=lambda chapter: chapter.order)
-
-            if chapter_pk:
-                chapter = get_object_or_404(models.Chapter, pk=chapter_pk)
-            else:
-                if len(chapters) > 0:
-                    chapter = chapters[0]
-                else:
-                    chapter = None
-
-            sections = []
-            for c in chapters:
-                sections.append(sorted(
-                    models.Section.objects.filter(chapter=c),
-                    key=lambda section: section.order
-                    ))
-            sections = [item for sublist in sections for item in sublist]
-
-            if section_pk:
-                section = get_object_or_404(models.Section, pk=section_pk)
-            else:
-                section = None
-
-            if chapter:
-                if section:
-                    # Set the content toolbar.
-                    content_toolbar = [
-                        {
-                            'tooltip': 'Edit section',
-                            'url': reverse(
-                                'campaign:section_update',
-                                kwargs={
-                                    'campaign_pk': campaign.pk,
-                                    'chapter_pk': chapter.pk,
-                                    'section_pk': section.pk,
-                                },
-                            ),
-                            'icon': 'fa-edit',
-                        },
-                        {
-                            'tooltip': 'Delete section',
-                            'url': reverse(
-                                'campaign:section_delete',
-                                kwargs={
-                                    'campaign_pk': campaign.pk,
-                                    'chapter_pk': chapter.pk,
-                                    'section_pk': section.pk,
-                                },
-                            ),
-                            'icon': 'fa-trash-alt',
-                        },
-                    ]
-
-                    return render(request, 'campaign/campaign_detail.html', {
-                        'campaign': campaign,
-                        'content_toolbar': content_toolbar,
-                        'chapter': chapter,
-                        'section': section,
-                        'chapters': chapters,
-                        'sections': sections,
-                        'posts': posts,
-                    })
-                else:
-                    # Set the content toolbar.
-                    content_toolbar = [
-                        {
-                            'tooltip': 'Create section',
-                            'url': reverse(
-                                'campaign:section_create',
-                                kwargs={
-                                    'campaign_pk': campaign.pk,
-                                    'chapter_pk': chapter.pk,
-                                },
-                            ),
-                            'icon': 'fa-file-plus',
-                        },
-                        {
-                            'tooltip': 'Edit chapter',
-                            'url': reverse(
-                                'campaign:chapter_update',
-                                kwargs={
-                                    'campaign_pk': campaign.pk,
-                                    'chapter_pk': chapter.pk,
-                                },
-                            ),
-                            'icon': 'fa-edit',
-                        },
-                        {
-                            'tooltip': 'Delete chapter',
-                            'url': reverse(
-                                'campaign:chapter_delete',
-                                kwargs={
-                                    'campaign_pk': campaign.pk,
-                                    'chapter_pk': chapter.pk,
-                                },
-                            ),
-                            'icon': 'fa-trash-alt',
-                        },
-                    ]
-                    return render(request, 'campaign/campaign_detail.html', {
-                        'campaign': campaign,
-                        'content_toolbar': content_toolbar,
-                        'chapter': chapter,
-                        'chapters': chapters,
-                        'sections': sections,
-                        'posts': posts,
-                    })
-            else:
-                return render(request, 'campaign/campaign_detail.html', {
-                    'campaign': campaign,
-                    'posts': posts,
-                })
-        else:
-            raise Http404
-    else:
-        campaign = None
-
-        campaign_toolbar = [
-            {
-                'tooltip': 'Create campaign',
-                'url': reverse('campaign:campaign_create'),
-                'icon': 'fa-plus',
-            },
-        ]
-
-        user = None
-        if request.user.is_authenticated:
-            user = request.user.pk
-        campaigns = sorted(models.Campaign.objects.filter(user=user),
-            key=lambda campaign: campaign.title)
-        if len(campaigns) > 0:
-            campaign = campaigns[0]
-            posts = Post.objects.filter(campaign=campaign).order_by('-date')[:5]
-
-            chapters = sorted(models.Chapter.objects.filter(campaign=campaign), key=lambda chapter: chapter.order)
-            if len(chapters) > 0:
-                chapter = chapters[0]
-            else:
-                chapter = None
-
-            sections = []
-            for c in chapters:
-                sections.append(sorted(
-                    models.Section.objects.filter(chapter=c),
-                    key=lambda section: section.order
-                    ))
-            sections = [item for sublist in sections for item in sublist]
-
-            return render(request, 'campaign/campaign_detail.html', {
-                'campaign': campaign,
-                'chapter': chapter,
-                'chapters': chapters,
-                'sections': sections,
-                'posts': posts,
-            })
-        return render(request, 'campaign/campaign_detail.html', {
-            'campaign': campaign,
-            'campaign_toolbar': campaign_toolbar,
-        })
-
-
-class CampaignCreate(LoginRequiredMixin, CreateView):
-    model = models.Campaign
-    fields = [
-        'title',
-    ]
-
-    def form_valid(self, form):
-        campaign = form.save(commit=False)
-        campaign.user = self.request.user
-        campaign.save()
-        messages.add_message(self.request, messages.SUCCESS, "Campaign created")
-        return HttpResponseRedirect(campaign.get_absolute_url())
-
+    def post(self, request, *args, **kwargs):
+        form = forms.CampaignForm(request.POST)
+        if form.is_valid():
+            campaign = form.save(commit=False)
+            campaign.user = self.request.user
+            campaign.save()
+            return redirect(campaign.get_absolute_url())
+        return render(request, 'campaign/campaign_form.html', {'form': form})
 
 class ChapterCreate(View):
     def get(self, request, *args, **kwargs):
