@@ -5,31 +5,6 @@
 
 
 {% block head_extra %}
-    {{ form.media.css }}
-    {{ form.media.js }}
-
-    <script>
-        function test(event, contents) {
-          // Split the editor content into an array of strings.
-          var words = contents.split(" ");
-          // Get the last word in the content.
-          var lastWord = words[words.length - 1]
-          // Convert the word into HTML, then get the text. This strips the HTML.
-          let doc = new DOMParser().parseFromString(lastWord, 'text/html');
-          lastWord = doc.body.textContent || "";
-          // Check if the last word has '@' in it.
-          if (lastWord.includes("@")) {
-            // Remove the '@' to get the mentioned word.
-            lastWord = lastWord.replace("@", "");
-            console.log(`found @ plus ${lastWord}`);
-          };
-          if (event.which == 50) {
-            console.log("MENTION");
-            console.log(event.target.selectionStart);
-            console.log(event.target.selectionEnd);
-          };
-        };
-    </script>
 {% endblock %}
 
 {% block campaign_content %}
@@ -139,9 +114,4 @@
 {% block body_extra %}
   {{ block.super }}
   <script src="{% static 'js/autonumberOrder.js' %}"></script>
-  <script>
-    $('.martor-preview pre').each(function(i, block){
-        hljs.highlightBlock(block);
-    });
-  </script>
 {% endblock %}

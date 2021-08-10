@@ -1,10 +1,9 @@
+from campaign import models
 from django import template
 from django.utils.safestring import mark_safe
 from django.core import serializers
-
 import json
 
-from campaign import models
 
 register = template.Library()
 

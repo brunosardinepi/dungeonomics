@@ -1,9 +1,8 @@
 from django import forms
-from dungeonomics.forms import FormTemplate
 from items import models
 
 
-class ItemForm(FormTemplate):
+class ItemForm(forms.ModelForm):
     class Meta:
         model = models.Item
         fields = [

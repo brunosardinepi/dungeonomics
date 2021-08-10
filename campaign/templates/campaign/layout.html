@@ -89,6 +89,7 @@
 {% endblock %}
 
 {% block body_extra %}
+  {{ block.super }}
   <script src="{% static 'js/campaign_delete.js' %}"></script>
   <script src="{% static 'js/filter.js' %}"></script>
   <script>

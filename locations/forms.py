@@ -1,10 +1,9 @@
 from django import forms
 from django.contrib.auth.models import User
-from dungeonomics.forms import FormTemplate
 from locations import models
 
 
-class WorldForm(FormTemplate):
+class WorldForm(forms.ModelForm):
     class Meta:
         model = models.World
         fields = [
@@ -13,7 +12,7 @@ class WorldForm(FormTemplate):
             'content',
         ]
 
-class LocationForm(FormTemplate):
+class LocationForm(forms.ModelForm):
     class Meta:
         model = models.Location
         fields = [

@@ -1,5 +1,7 @@
 {% extends 'campaign/layout.html' %}
 
+{% load markdownify %}
+
 {% block title %}{{ campaign.title }} | {{ block.super }}{% endblock %}
 
 {% block campaign_content %}
@@ -23,7 +25,7 @@
   <div class="row">
     <div class="col">
       {% if content.0 %}
-        {{ content.0.content|safe }}          
+        {{ content.0.content|markdownify }}
       {% else %}
         <p>You haven't created any content yet!</p>
       {% endif %}

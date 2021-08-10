@@ -1,9 +1,8 @@
 from characters import models
 from django import forms
-from dungeonomics.forms import FormTemplate
 
 
-class MonsterForm(FormTemplate):
+class MonsterForm(forms.ModelForm):
     class Meta:
         model = models.Monster
         fields = [
@@ -33,7 +32,7 @@ class MonsterForm(FormTemplate):
         ]
 
 
-class NPCForm(FormTemplate):
+class NPCForm(forms.ModelForm):
     class Meta:
         model = models.NPC
         fields = [
@@ -67,7 +66,7 @@ class NPCForm(FormTemplate):
             'content',
         ]
 
-class PlayerForm(FormTemplate):
+class PlayerForm(forms.ModelForm):
     class Meta:
         model = models.Player
         fields = [
@@ -159,21 +158,21 @@ NPCFormSet = forms.modelformset_factory(
     extra=0,
 )
 
-class MonsterPublishForm(FormTemplate):
+class MonsterPublishForm(forms.ModelForm):
     class Meta:
         model = models.Monster
         fields = [
             'tavern_description',
         ]
 
-class NPCPublishForm(FormTemplate):
+class NPCPublishForm(forms.ModelForm):
     class Meta:
         model = models.NPC
         fields = [
             'tavern_description',
         ]
 
-class PlayerPublishForm(FormTemplate):
+class PlayerPublishForm(forms.ModelForm):
     class Meta:
         model = models.Player
         fields = [

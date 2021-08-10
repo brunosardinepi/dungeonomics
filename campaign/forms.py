@@ -1,9 +1,6 @@
 from campaign import models
 from django import forms
 from django.contrib.auth.models import User
-from dungeonomics.forms import FormTemplate
-from martor.fields import MartorFormField
-
 
 class CampaignForm(forms.ModelForm):
     class Meta:
@@ -15,9 +12,7 @@ class CampaignForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'placeholder': 'Campaign title'}),
         }
 
-class ChapterForm(FormTemplate):
-    content = MartorFormField()
-
+class ChapterForm(forms.ModelForm):
     class Meta:
         model = models.Chapter
         fields = [
@@ -29,7 +24,7 @@ class ChapterForm(FormTemplate):
             'title': forms.TextInput(attrs={'placeholder': 'Chapter title'}),
         }
 
-class SectionForm(FormTemplate):
+class SectionForm(forms.ModelForm):
     class Meta:
         model = models.Section
         fields = [
@@ -76,7 +71,7 @@ SectionInlineFormSet = forms.inlineformset_factory(
     formset=SectionFormSet,
 )
 
-class CampaignPublishForm(FormTemplate):
+class CampaignPublishForm(forms.ModelForm):
     class Meta:
         model = models.Campaign
         fields = [
