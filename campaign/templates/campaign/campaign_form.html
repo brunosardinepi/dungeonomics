@@ -44,7 +44,7 @@
           Chapter
           <a
               href=""
-              id="autonumber-chapters"
+              id="autonumber"
               data-bs-toggle="tooltip"
               data-bs-placement="bottom"
               title="Automatically number the chapters based on their current order">
@@ -98,6 +98,6 @@
 {% endblock %}
 
 {% block body_extra %}
-  <script src="{% static 'js/autonumberChapters.js' %}"></script>
+  <script src="{% static 'js/autonumberOrder.js' %}"></script>
   {{ block.super }}
 {% endblock %}

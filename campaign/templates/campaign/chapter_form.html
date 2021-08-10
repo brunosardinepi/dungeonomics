@@ -1,20 +1,12 @@
-{% extends 'layout.html' %}
+{% extends 'campaign/layout.html' %}
 
+{% load static %}
 {% load widget_tweaks %}
 
 
-{% block title %}
-    {% if chapter.pk %}
-        Update chapter 
-    {% else %}
-        New chapter 
-    {% endif %}
-    | {{ block.super }}
-{% endblock %}
-
 {% block head_extra %}
-    {{ form.media.css }}
     {{ form.media.js }}
+    {{ form.media.css }}
     
     <script type="text/javascript">
         var taggable = [];
@@ -116,129 +108,111 @@
     </script>
 {% endblock %}
 
-{% block breadcrumbs %}
-    {% include "campaign/breadcrumbs.html" with action="New chapter" %}
+{% block campaign_content %}
+  <p class="mb-3 fw-bold">
+    {% if chapter.pk %}
+      <span class="fw-bold">Update:</span> {{ campaign }} / {{ chapter }}
+    {% else %}
+      <span class="fw-bold">New chapter for:</span> {{ campaign }}
+    {% endif %}
+  </p>
+  <form method="POST" action="">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>
+    {% endif %}
+    <div class="form-group">
+      {% render_field form.title class+="form-control form-control-dark mb-3" %}
+      {% if form.title.errors %}
+        {% for error in form.title.errors %}
+          <div class="alert alert-danger" role="alert">{{ error|escape }}</div>
+        {% endfor %}
+      {% endif %}
+    </div>
+    <div class="form-group">
+      {% render_field form.content class+="form-control form-control-dark mb-3" %}
+      {% if form.content.errors %}
+        {% for error in form.content.errors %}
+          <div class="alert alert-danger" role="alert">{{ error|escape }}</div>
+        {% endfor %}
+      {% endif %}
+    </div>
+    <div class="form-group mt-2">
+      <label for="{{ form.order.id_for_label }}" class="mb-1">Order</label>
+      {% if chapter %}
+        {% render_field form.order class+="form-control form-control-dark mb-3" %}
+      {% else %}
+        <input type="number" name="{{ form.order.name }}" value="{{ chapter_number }}" id="{{ form.order.id_for_label }}" class="form-control form-control-dark mb-3" required>
+      {% endif %}
+      {% if form.order.errors %}
+        {% for error in form.order.errors %}
+          <div class="alert alert-danger" role="alert">{{ error|escape }}</div>
+        {% endfor %}
+      {% endif %}
+    </div>
+    {% if sections %}
+      {{ formset.management_form }}
+      <div class="row g-3 mt-3 mb-2 fw-bold">
+        <div class="col-3 col-md-2">
+          Section
+          <a
+              href=""
+              id="autonumber"
+              data-bs-toggle="tooltip"
+              data-bs-placement="bottom"
+              title="Automatically number the sections based on their current order">
+            <i class="fas fa-fw fa-list-ol"></i>
+          </a>
+        </div>
+        <div class="col-7 col-md-9">Title</div>
+        <div class="col-2 col-md-1 text-center">Delete</div>
+      </div>
+
+      {% for form in formset %}
+        <div class="row g-3 mb-1">
+          <div class="col-3 col-md-2">
+            {{ form.id }}
+            {% render_field form.order class+="form-control form-control-dark autonumber-order" %}
+          </div>
+          <div class="col-7 col-md-9">
+            {% render_field form.title class+="form-control form-control-dark" %}
+          </div>
+          <div class="col-2 col-md-1 text-center">
+            {% if form.instance.pk %}
+              {% render_field form.DELETE class+="form-check-input form-control-dark" %}
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      {{ formset.management_form }}
+    {% endif %}
+
+    <div class="row justify-content-between mt-4">
+      {% if chapter.pk %}
+        <div class="col-auto">
+          <a
+              href="{{ chapter.get_absolute_url }}"
+              class="btn btn-sm btn-secondary">
+            Cancel
+          </a>
+        </div>
+        <div class="col-auto">
+          <input type="submit" class="btn btn-sm btn-primary" value="Update chapter">
+        </div>
+      {% else %}
+        <div class="col-auto">
+          <a href="{{ campaign.get_absolute_url }}" class="btn btn-sm btn-secondary">Cancel</a>
+        </div>
+        <div class="col-auto">
+          <input type="submit" class="btn btn-sm btn-primary" value="Create chapter">
+        </div>
+      {% endif %}
+    </div>
+  </form>
 {% endblock %}
 
-{% block body_content %}
-    {% include "snippets/tag_info.html" %}
-
-    <div class="row mt-3 pb-5">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="px-1 mb-0">
-                        {% if chapter.pk %}
-                            <span class="fw-bold">Update:</span> {{ campaign }} / {{ chapter }}
-                        {% else %}
-                            <span class="fw-bold">New chapter for:</span> {{ campaign }}
-                        {% endif %}
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <form method="POST" action="">
-                        {% csrf_token %}
-
-                        {% if form.non_field_errors %}
-                            <div class="alert alert-danger" role="alert">
-                                {{ form.non_field_errors }}
-                            </div>
-                        {% endif %}
-
-                        <div class="form-group">
-                            <label for="{{ form.title.id_for_label }}">Title</label>
-                            {% render_field form.title class+="form-control mb-3" %}
-                            {% if form.title.errors %}
-                                {% for error in form.title.errors %}
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ error|escape }}
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-
-                        <div class="form-group">
-                            <label for="{{ form.content.id_for_label }}">Content</label>
-                            {% render_field form.content class+="form-control mb-3" %}
-                            {% if form.content.errors %}
-                                {% for error in form.content.errors %}
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ error|escape }}
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-
-                        <div class="form-group">
-                            <label for="{{ form.order.id_for_label }}">Order</label>
-                            {% if chapter %}
-                                {% render_field form.order class+="form-control mb-3" %}
-                            {% else %}
-                                <input type="number" name="{{ form.order.name }}" value="{{ chapter_number }}" id="{{ form.order.id_for_label }}" class="form-control mb-3" required>
-                            {% endif %}
-
-                            {% if form.order.errors %}
-                                {% for error in form.order.errors %}
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ error|escape }}
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-
-                        {% if sections %}
-
-                            {{ formset.management_form }}
-
-                            <table class="table table-striped table-hover mt-5">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" class="text-center width-ten">Section</th>
-                                        <th scope="col" class="text-center width-eighty">Title</th>
-                                        <th scope="col" class="text-center width-ten">Delete</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for form in formset %}
-                                        <tr>
-                                            <td class="width-ten">{{ form.id }}{{ form.order }}</td>
-                                            <td class="width-eighty">{{ form.title }}</td>
-                                            {% if form.instance.pk %}
-                                                <td class="text-center width-ten">{{ form.DELETE }}</td>
-                                            {% else %}
-                                                <td class="text-center width-ten"></td>
-                                            {% endif %}
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-
-                        {% else %}
-                            {{ formset.management_form }}
-                        {% endif %}
-                        
-                </div>
-                <div class="card-footer">
-                    <div class="row justify-content-between">
-                        {% if chapter.pk %}
-                            <div class="col-auto">
-                                <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="btn btn-secondary">Cancel</a>
-                            </div>
-                            <div class="col-auto">
-                                <input type="submit" class="btn btn-primary" value="Update chapter">
-                            </div>
-                        {% else %}
-                            <div class="col-auto">
-                                <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk %}" class="btn btn-secondary">Cancel</a>
-                            </div>
-                            <div class="col-auto">
-                                <input type="submit" class="btn btn-primary" value="Create chapter">
-                            </div>
-                        {% endif %}
-                    </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+{% block body_extra %}
+  <script src="{% static 'js/autonumberOrder.js' %}"></script>
+  {{ block.super }}
 {% endblock %}

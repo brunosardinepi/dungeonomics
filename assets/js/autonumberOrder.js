@@ -1,8 +1,7 @@
-$("#autonumber-chapters").on('click', function(event) {
+$("#autonumber").on('click', function(event) {
   event.preventDefault();
-  console.log("hello");
   var count = 1;
-  $(".chapter-order").each(function() {
+  $(".autonumber-order").each(function() {
     console.log($(this).val());
     $(this).val(count);
     count++;

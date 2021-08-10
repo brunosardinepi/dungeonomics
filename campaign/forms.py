@@ -36,6 +36,9 @@ class ChapterForm(TinyMCEForm):
             'content',
             'order',
         ]
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': 'Chapter title'}),
+        }
 
 class SectionForm(TinyMCEForm):
     class Meta:
@@ -45,6 +48,9 @@ class SectionForm(TinyMCEForm):
             'content',
             'order',
         ]
+        widgets = {
+            'title': forms.TextInput(attrs={'placeholder': 'Section title'}),
+        }
 
 class ImportCampaignForm(forms.ModelForm):
     class Meta:
