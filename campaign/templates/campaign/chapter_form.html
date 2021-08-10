@@ -5,9 +5,9 @@
 
 
 {% block head_extra %}
-    {{ form.media.js }}
     {{ form.media.css }}
-    
+    {{ form.media.js }}
+
     <script>
         function test(event, contents) {
           // Split the editor content into an array of strings.
@@ -137,7 +137,11 @@
 {% endblock %}
 
 {% block body_extra %}
-  <script src="{% static 'js/autonumberOrder.js' %}"></script>
-  <script src="{% static 'js/mention.js' %}"></script>
   {{ block.super }}
+  <script src="{% static 'js/autonumberOrder.js' %}"></script>
+  <script>
+    $('.martor-preview pre').each(function(i, block){
+        hljs.highlightBlock(block);
+    });
+  </script>
 {% endblock %}

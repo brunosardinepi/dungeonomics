@@ -2,6 +2,7 @@ from campaign import models
 from django import forms
 from django.contrib.auth.models import User
 from dungeonomics.forms import FormTemplate
+from martor.fields import MartorFormField
 
 
 class CampaignForm(forms.ModelForm):
@@ -15,6 +16,8 @@ class CampaignForm(forms.ModelForm):
         }
 
 class ChapterForm(FormTemplate):
+    content = MartorFormField()
+
     class Meta:
         model = models.Chapter
         fields = [

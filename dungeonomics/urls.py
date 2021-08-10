@@ -46,6 +46,7 @@ urlpatterns = [
     path('error/image-size/', TemplateView.as_view(template_name="error_image_size.html")),
     path('error/image-type/', TemplateView.as_view(template_name="error_image_type.html")),
 
+    path('martor/', include('martor.urls')),
     path('robots.txt', TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
     path('sitemap.xml', TemplateView.as_view(template_name="sitemap.xml", content_type="application/xml")),
     path('google35fe4699b1e0423b.html', TemplateView.as_view(template_name="google35fe4699b1e0423b.html")),
