@@ -1,23 +1,9 @@
+from characters import models
 from django import forms
+from dungeonomics.forms import FormTemplate
 
-from . import models
 
-
-class TinyMCEForm(forms.ModelForm):
-    class Media:
-        css = {
-            'all': (
-                '/static/css/autocomplete.css',
-                'https://cdnjs.cloudflare.com/ajax/libs/at.js/1.5.2/css/jquery.atwho.min.css',
-                )
-            }
-        js = (
-            'https://cdnjs.cloudflare.com/ajax/libs/at.js/1.5.2/js/jquery.atwho.min.js',
-            'https://cdnjs.cloudflare.com/ajax/libs/Caret.js/0.3.1/jquery.caret.min.js',
-            '/static/js/tinymce/tinymce.min.js',
-            )
-
-class MonsterForm(TinyMCEForm):
+class MonsterForm(FormTemplate):
     class Meta:
         model = models.Monster
         fields = [
@@ -47,7 +33,7 @@ class MonsterForm(TinyMCEForm):
         ]
 
 
-class NPCForm(TinyMCEForm):
+class NPCForm(FormTemplate):
     class Meta:
         model = models.NPC
         fields = [
@@ -81,7 +67,7 @@ class NPCForm(TinyMCEForm):
             'content',
         ]
 
-class PlayerForm(TinyMCEForm):
+class PlayerForm(FormTemplate):
     class Meta:
         model = models.Player
         fields = [
@@ -173,21 +159,21 @@ NPCFormSet = forms.modelformset_factory(
     extra=0,
 )
 
-class MonsterPublishForm(TinyMCEForm):
+class MonsterPublishForm(FormTemplate):
     class Meta:
         model = models.Monster
         fields = [
             'tavern_description',
         ]
 
-class NPCPublishForm(TinyMCEForm):
+class NPCPublishForm(FormTemplate):
     class Meta:
         model = models.NPC
         fields = [
             'tavern_description',
         ]
 
-class PlayerPublishForm(TinyMCEForm):
+class PlayerPublishForm(FormTemplate):
     class Meta:
         model = models.Player
         fields = [

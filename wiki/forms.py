@@ -1,15 +1,9 @@
 from django import forms
+from dungeonomics.forms import FormTemplate
+from wiki import models
 
-from . import models
 
-
-class TinyMCEForm(forms.ModelForm):
-    class Media:
-        js = (
-            '/static/js/tinymce/tinymce.min.js',
-            )
-
-class ArticleForm(TinyMCEForm):
+class ArticleForm(FormTemplate):
     class Meta:
         model = models.Article
         fields = [

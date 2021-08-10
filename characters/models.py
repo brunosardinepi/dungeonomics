@@ -1,11 +1,9 @@
-from math import floor
-
 from django.contrib.auth.models import User
 from django.db.models import Avg
 from django.urls import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-
+from math import floor
 from tavern.models import Review
 
 
