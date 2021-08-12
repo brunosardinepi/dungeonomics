@@ -167,6 +167,11 @@ dropdownItems = [
 var dropdown = document.createElement('div');
 dropdown.id = 'mention-dropdown';
 dropdown.classList.add('list-group', 'd-none');
+dropdown.style.position = 'absolute';
+dropdown.style.maxHeight = '200px';
+dropdown.style.minWidth = '200px';
+dropdown.style.maxWidth = '300px';
+dropdown.style.overflowY = 'auto';
 document.body.appendChild(dropdown);
 
 $("#id_content").on('keyup', function(event) {
@@ -248,6 +253,12 @@ $("#id_content").on('keyup', function(event) {
 
   // Show a list of objects that have the lastWord in them.
   var caret = getCaretCoordinates(textarea, nearestMention.position);
+  // Bug if textarea is scrolled past initial height.
+  var textareaHeight = parseInt(textarea.style.height.replace('px', ''));
+  if (textarea.scrollHeight > textareaHeight) {
+      let scrollDifference = textarea.scrollHeight - textareaHeight;
+      caret.top -= textarea.scrollTop;
+  }
 
   mentionItems.forEach(function(obj) {
     var dropdownItem = document.createElement('a');
@@ -256,12 +267,6 @@ $("#id_content").on('keyup', function(event) {
     dropdownItem.innerHTML = obj.name;
     dropdown.appendChild(dropdownItem);
   });
-
-  dropdown.style.position = 'absolute';
-  dropdown.style.maxHeight = '200px';
-  dropdown.style.minWidth = '200px';
-  dropdown.style.maxWidth = '300px';
-  dropdown.style.overflowY = 'auto';
 
   // Place it at the textarea's offset plus the caret position.
   dropdown.style.top = textarea.offsetTop + caret.top + 16 + 4 + 'px';
