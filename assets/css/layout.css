@@ -155,3 +155,11 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+a.list-group-item {
+  font-weight: normal;
+}
+#mention-dropdown a.list-group-item:hover {
+  background-color: #eee;
+}

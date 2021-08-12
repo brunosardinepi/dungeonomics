@@ -156,41 +156,138 @@ if (typeof module != 'undefined' && typeof module.exports != 'undefined') {
 
 }());
 
+// Define the dropdown items.
+dropdownItems = [
+  {'name': 'a', 'url': '1'},
+  {'name': 'b', 'url': '2'},
+  {'name': 'c', 'url': '3'},
+];
+
+// Create a dropdown.
+var dropdown = document.createElement('div');
+dropdown.id = 'mention-dropdown';
+dropdown.classList.add('list-group', 'd-none');
+document.body.appendChild(dropdown);
 
 $("#id_content").on('keyup', function(event) {
-  // Split the editor content into an array of strings.
-  var words = $(this).val().split(" ");
-  // Get the last word in the content.
-  var lastWord = words[words.length - 1];
-  // Check if the last word has '@' in it.
-  if (lastWord.includes("@")) {
-    // Remove the '@' to get the mentioned word.
-    lastWord = lastWord.replace("@", "");
-  };
-  if (event.which == 50) {
-    // Show a list of objects that have the lastWord in them.
-    var caret = getCaretCoordinates(this, this.selectionEnd);
-    console.log('(top, left, height) = (%s, %s, %s)', caret.top, caret.left, caret.height);
-    console.log($(this));
-    console.log($(this).offset());
+  var textarea = document.getElementById('id_content');
 
-    // Create a dropdown.
-    var dropdown = document.createElement('div');
-    document.body.appendChild(dropdown);
-    dropdown.style.position = 'absolute';
-    dropdown.style.backgroundColor = 'red';
-    dropdown.style.height = '100px';
-    dropdown.style.width = '100px';
-    // Place it at the textarea's offset plus the caret position.
-    dropdown.style.top = $(this).offset().top + caret.top + 16 + 4 + 'px';
-    dropdown.style.left = $(this).offset().left + caret.left + 'px';
-
-
-    // Add values to the dropdown.
-    dropdown.appendChild(document.createTextNode("test"));
-
-
-    $(this).val($(this).val() + "test");
+  // Exit if there are no mentions.
+  if (!textarea.value.includes('@')) {
+    // Hide the dropdown.
+    dropdown.classList.remove('d-block');
+    dropdown.classList.add('d-none');
+    return;
   };
 
+  // Get the cursor position.
+  var cursorPosition = textarea.selectionEnd;
+
+  // Replace newlines with spaces.
+  var textareaWords = textarea.value.replaceAll("\n", " ");
+  // Split the textarea contents into an array and get the words that contain '@'.
+  // Get the textarea words into an array.
+  textareaWords = textareaWords.split(" ");
+  var textareaMentions = [];
+
+  textareaWords.forEach(function(word) {
+    if (word.includes('@')) {
+      // Get this word's position in the textarea.
+      // Add '@' in case it comes at the end of the word.
+      let position = textarea.value.indexOf(word) + word.indexOf('@');
+      textareaMentions.push({'word': word, 'position': position});
+    };
+  });
+
+  var nearestMention = {};
+  // Check the position of each mention and find which one is nearest to the cursor.
+  textareaMentions.forEach(function(mention) {
+    let distanceFromCursor = Math.abs(mention.position - cursorPosition);
+    // If nearestMention is empty, then this is automatically the nearest mention.
+    // Or, if this mention is less distance from the cursor than the previous one,
+    // this is the new nearest mention.
+    if (
+      Object.keys(nearestMention).length === 0 ||
+      distanceFromCursor < nearestMention.distance
+    ) {
+      nearestMention = {
+        'word': mention.word,
+        'position': mention.position,
+        'distance': distanceFromCursor
+      };
+    };
+  });
+
+  mentionItems = [];
+  // Populate the dropdown with the first 10 results since we have no search word.
+  var search = nearestMention.word.split('@')[1];
+  if (search != '') {
+    search = search.replace('@', '');
+  };
+  if (search.length === 0) {
+    mentionItems = dropdownItems.slice(0, 10);
+  } else {
+    // Get similar items from the dictionary and add them to the dropdown.
+    dropdownItems.forEach(function(obj) {
+      if (obj.name.includes(search)) {
+        mentionItems.push(obj);
+      };
+    });
+  };
+
+  // Check if there are any matching dropdown items. Exit if there aren't any matches.
+  if (mentionItems.length === 0) {
+    // Hide the dropdown.
+    dropdown.classList.remove('d-block');
+    dropdown.classList.add('d-none');
+    return;
+  };
+
+  // Empty the dropdown so we can add new items.
+  dropdown.innerHTML = '';
+
+  // Show a list of objects that have the lastWord in them.
+  var caret = getCaretCoordinates(textarea, nearestMention.position);
+
+  mentionItems.forEach(function(obj) {
+    var dropdownItem = document.createElement('a');
+    dropdownItem.classList.add('list-group-item', 'list-group-item-action', 'py-1', 'small');
+    dropdownItem.href = obj.url;
+    dropdownItem.innerHTML = obj.name;
+    dropdown.appendChild(dropdownItem);
+  });
+
+  dropdown.style.position = 'absolute';
+  dropdown.style.maxHeight = '200px';
+  dropdown.style.minWidth = '200px';
+  dropdown.style.maxWidth = '300px';
+  dropdown.style.overflowY = 'auto';
+
+  // Place it at the textarea's offset plus the caret position.
+  dropdown.style.top = textarea.offsetTop + caret.top + 16 + 4 + 'px';
+  dropdown.style.left = textarea.offsetLeft + caret.left + 'px';
+
+  // Show the dropdown.
+  dropdown.classList.remove('d-none');
+  dropdown.classList.add('d-block');
+
+  document.querySelectorAll('.list-group-item').forEach(function(obj) {
+    obj.addEventListener('click', function(event) {
+      event.preventDefault();
+
+      // Remove the '@' and insert the mention, plus a space at the end.
+      const url = `[${this.innerHTML}](${this.href})`;
+      // To replace the word, find the @word and replace it with the url.
+      textarea.value = textarea.value.replace(`@${search}`, url + ' ');
+
+      // Hide the dropdown.
+      dropdown.classList.remove('d-block');
+      dropdown.classList.add('d-none');
+
+      // Set the cursor to the end of the textarea.
+      cursorPosition += url.length;
+      textarea.focus();
+      textarea.setSelectionRange(cursorPosition, cursorPosition);
+    });
+  });
 });
