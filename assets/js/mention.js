@@ -272,13 +272,17 @@ $("#id_content").on('keyup', function(event) {
   dropdown.classList.add('d-block');
 
   document.querySelectorAll('.list-group-item').forEach(function(obj) {
-    obj.addEventListener('click', function(event) {
-      event.preventDefault();
+    obj.addEventListener('click', function(e) {
+      e.preventDefault();
 
       // Remove the '@' and insert the mention, plus a space at the end.
       const url = `[${this.innerHTML}](${this.href})`;
       // To replace the word, find the @word and replace it with the url.
-      textarea.value = textarea.value.replace(`@${search}`, url + ' ');
+      textarea.value = textarea.value.replace(`@${search}`, url);
+      // Check if the user pressed Spacebar to select the first option.
+      if (event.keyCode != 32) {
+        textarea.value += ' ';
+      };
 
       // Hide the dropdown.
       dropdown.classList.remove('d-block');
@@ -290,4 +294,10 @@ $("#id_content").on('keyup', function(event) {
       textarea.setSelectionRange(cursorPosition, cursorPosition);
     });
   });
+
+  // Select the first focus item by pressing Spacebar.
+  if (event.keyCode == 32) {
+    dropdown.firstElementChild.focus();
+    dropdown.firstElementChild.click();
+  };
 });
