@@ -31,6 +31,187 @@ from tables.models import Table, TableOption
 from tavern.models import Review
 
 
+class CreateTemplate(LoginRequiredMixin, CreateView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Get the objects to be used in mentions.
+        context['data'] = at_tagging(self.request)
+
+        # Check if we have a campaign PK.
+        if 'campaign_pk' in self.kwargs:
+            context['campaign'] = models.Campaign.objects.get(
+                user=self.request.user,
+                pk=self.kwargs['campaign_pk'],
+            )
+            # Set the QoL next order value.
+            context['next_order'] = utils.get_next_order(context['campaign'])
+
+        # Check if we have a chapter PK.
+        if 'chapter_pk' in self.kwargs:
+            context['chapter'] = models.Chapter.objects.get(
+                pk=self.kwargs['chapter_pk'],
+            )
+            # Set the QoL next order value.
+            context['next_order'] = utils.get_next_order(context['chapter'])
+
+        return context
+
+    def get_form_kwargs(self, **kwargs):
+        kwargs = super().get_form_kwargs(**kwargs)
+
+        # Send the request object to the form.
+        kwargs['request'] = self.request
+
+        return kwargs
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            self.object = form.save(commit=False)
+
+            # Set the object's user.
+            self.object.user = request.user
+
+            # Set the campaign if we're creating anything other than a new campaign.
+            if not self.model == models.Campaign:
+                self.object.campaign = self.get_context_data()['campaign']
+
+            # Set the chapter if we're creating a new section.
+            if self.model == models.Section:
+                self.object.chapter = self.get_context_data()['chapter']
+
+            return self.form_valid(form)
+
+        else:
+            return self.form_invalid(form)
+
+class CampaignCreate(CreateTemplate):
+    model = models.Campaign
+    form_class = forms.CampaignForm
+
+class ChapterCreate(CreateTemplate):
+    model = models.Chapter
+    form_class = forms.ChapterForm
+
+class SectionCreate(CreateTemplate):
+    model = models.Section
+    form_class = forms.SectionForm
+
+class UpdateTemplate(LoginRequiredMixin, UpdateView):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Get the objects to be used in mentions.
+        context['data'] = at_tagging(self.request)
+
+        # Check if we have a campaign PK.
+        if 'campaign_pk' in self.kwargs:
+            context['campaign'] = models.Campaign.objects.get(
+                user=self.request.user,
+                pk=self.kwargs['campaign_pk'],
+            )
+            # Set the QoL next order value.
+            context['next_order'] = utils.get_next_order(context['campaign'])
+
+        # Check if we have a chapter PK.
+        if 'chapter_pk' in self.kwargs:
+            context['chapter'] = models.Chapter.objects.get(
+                pk=self.kwargs['chapter_pk'],
+            )
+            # Set the QoL next order value.
+            context['next_order'] = utils.get_next_order(context['chapter'])
+
+        # Check if we have a section PK.
+        if 'section_pk' in self.kwargs:
+            context['section'] = models.Section.objects.get(
+                pk=self.kwargs['section_pk'],
+            )
+
+        # Set the formset based on which model we're updating.
+        if 'chapter_pk' in self.kwargs:
+            context['formset'] = forms.SectionInlineFormSet(
+                queryset=context['chapter'].section_set.all(),
+            )
+        elif 'campaign_pk' in self.kwargs:
+            context['formset'] = forms.ChapterInlineFormSet(
+                queryset=context['campaign'].chapter_set.all(),
+            )
+
+        return context
+
+    def get_form_kwargs(self, **kwargs):
+        kwargs = super().get_form_kwargs(**kwargs)
+
+        # Send the request object to the form.
+        kwargs['request'] = self.request
+
+        return kwargs
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+
+        form = self.get_form()
+
+        # Set the formset based on which model we're updating.
+        formset = None
+        if self.model == models.Chapter:
+            formset = forms.SectionInlineFormSet(
+                request.POST,
+                queryset=self.object.section_set.all(),
+            )
+        elif self.model == models.Campaign:
+            formset = forms.ChapterInlineFormSet(
+                request.POST,
+                queryset=self.object.chapter_set.all(),
+            )
+
+        if form.is_valid():
+            if formset:
+                if formset.is_valid():
+                    self.objects = formset.save(commit=False)
+
+                    for object in self.objects:
+
+                        # Set the object's user.
+                        object.user = request.user
+
+                        # Set the campaign if we're updating anything other than a campaign.
+                        if not self.model == models.Campaign:
+                            object.campaign = self.get_context_data()['campaign']
+
+                        # Set the chapter if we're updating a section.
+                        if self.model == models.Section:
+                            object.chapter = self.get_context_data()['chapter']
+
+                        object.save()
+
+                    for object in formset.deleted_objects:
+                        object.delete()
+
+                else:
+                    return self.form_invalid(formset)
+
+            return self.form_valid(form)
+
+        else:
+            return self.form_invalid(form)
+
+class CampaignUpdate(UpdateTemplate):
+    model = models.Campaign
+    form_class = forms.CampaignForm
+    pk_url_kwarg = 'campaign_pk'
+
+class ChapterUpdate(UpdateTemplate):
+    model = models.Chapter
+    form_class = forms.ChapterForm
+    pk_url_kwarg = 'chapter_pk'
+
+class SectionUpdate(UpdateTemplate):
+    model = models.Section
+    form_class = forms.SectionForm
+    pk_url_kwarg = 'section_pk'
+
 class CampaignDetail(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         if 'campaign_pk' in kwargs:
@@ -81,208 +262,6 @@ class CampaignDetail(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
         pass
-
-class CampaignCreate(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        form = forms.CampaignForm()
-        return render(request, 'campaign/campaign_form.html', {'form': form})
-
-    def post(self, request, *args, **kwargs):
-        form = forms.CampaignForm(request.POST)
-        if form.is_valid():
-            campaign = form.save(commit=False)
-            campaign.user = self.request.user
-            campaign.save()
-            return redirect(campaign.get_absolute_url())
-        return render(request, 'campaign/campaign_form.html', {'form': form})
-
-class ChapterCreate(View):
-    def get(self, request, *args, **kwargs):
-        campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
-        if campaign.user == request.user:
-            data = at_tagging(request)
-            data['campaign'] = campaign
-            data['form'] = forms.ChapterForm()
-            data['chapter_number'] = utils.get_next_order(campaign)
-            return render(request, 'campaign/chapter_form.html', data)
-        raise Http404
-
-    def post(self, request, *args, **kwargs):
-        campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
-        if campaign.user == request.user:
-            form = forms.ChapterForm(request.POST)
-            if form.is_valid():
-                chapter = form.save(commit=False)
-                chapter.user = request.user
-                chapter.campaign = campaign
-                chapter.save()
-                messages.add_message(request, messages.SUCCESS, "Chapter created")
-                return HttpResponseRedirect(chapter.get_absolute_url())
-        raise Http404
-
-
-class SectionCreate(View):
-    def get(self, request, *args, **kwargs):
-        campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
-        if campaign.user == request.user:
-            data = at_tagging(request)
-            chapter = get_object_or_404(models.Chapter, pk=kwargs['chapter_pk'])
-            data['campaign'] = campaign
-            data['chapter'] = chapter
-            data['form'] = forms.SectionForm()
-            data['section_number'] = utils.get_next_order(chapter)
-            return render(request, 'campaign/section_form.html', data)
-        raise Http404
-
-    def post(self, request, *args, **kwargs):
-        campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
-        if campaign.user == request.user:
-            form = forms.SectionForm(request.POST)
-            if form.is_valid():
-                section = form.save(commit=False)
-                section.user = request.user
-                section.campaign = campaign
-                section.chapter = get_object_or_404(models.Chapter,
-                    pk=kwargs['chapter_pk'])
-                section.save()
-                messages.add_message(request, messages.SUCCESS, "Section created")
-                return HttpResponseRedirect(section.get_absolute_url())
-        raise Http404
-
-
-class CampaignUpdate(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
-        if campaign.user == request.user:
-            form = forms.CampaignForm(instance=campaign)
-            chapter_forms = forms.ChapterInlineFormSet(
-                queryset=form.instance.chapter_set.all(),
-            )
-            return render(request, 'campaign/campaign_form.html', {
-                'form': form,
-                'formset': chapter_forms,
-                'campaign': campaign,
-            })
-
-    def post(self, request, *args, **kwargs):
-        campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
-        if campaign.user == request.user:
-            form = forms.CampaignForm(request.POST, instance=campaign)
-            chapter_forms = forms.ChapterInlineFormSet(
-                request.POST,
-                queryset=form.instance.chapter_set.all(),
-            )
-            if form.is_valid() and chapter_forms.is_valid():
-                form.save()
-                chapters = chapter_forms.save(commit=False)
-                for chapter in chapters:
-                    chapter.campaign = campaign
-                    chapter.user = request.user
-                    chapter.save()
-                for chapter in chapter_forms.deleted_objects:
-                    chapter.delete()
-                messages.add_message(
-                    request,
-                    messages.SUCCESS,
-                    f"Updated campaign: {form.cleaned_data['title']}",
-                )
-                return HttpResponseRedirect(campaign.get_absolute_url())
-            else:
-                print(form.errors)
-                print(chapter_forms.errors)
-            return render(request, 'campaign/campaign_form.html', {
-                'form': form,
-                'formset': chapter_forms,
-                'campaign': campaign,
-            })
-
-class ChapterUpdate(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        chapter = get_object_or_404(
-            models.Chapter,
-            pk=kwargs['chapter_pk'],
-            campaign_id=kwargs['campaign_pk'],
-        )
-        if chapter.user == request.user:
-            data = at_tagging(request)
-            form = forms.ChapterForm(instance=chapter)
-            section_forms = forms.SectionInlineFormSet(queryset=chapter.section_set.all())
-            return render(request, 'campaign/chapter_form.html', {
-                'campaign': chapter.campaign,
-                'data': data,
-                'chapter': chapter,
-                'form': form,
-                'formset': section_forms,
-            })
-
-    def post(self, request, *args, **kwargs):
-        chapter = get_object_or_404(
-            models.Chapter,
-            pk=kwargs['chapter_pk'],
-            campaign_id=kwargs['campaign_pk'],
-        )
-        if chapter.user == request.user:
-            form = forms.ChapterForm(request.POST, instance=chapter)
-            section_forms = forms.SectionInlineFormSet(
-                request.POST,
-                queryset=chapter.section_set.all(),
-            )
-            if form.is_valid() and section_forms.is_valid():
-                form.save()
-                sections = section_forms.save(commit=False)
-                for section in sections:
-                    section.chapter = chapter
-                    section.user = request.user
-                    section.save()
-                for section in section_forms.deleted_objects:
-                    section.delete()
-                return redirect(chapter.get_absolute_url())
-
-            return render(request, 'campaign/chapter_form.html', {
-                'campaign': chapter.campaign,
-                'data': data,
-                'chapter': chapter,
-                'form': form,
-                'formset': section_forms,
-            })
-
-class SectionUpdate(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        section = get_object_or_404(
-            models.Section,
-            pk=kwargs['section_pk'],
-            chapter_id=kwargs['chapter_pk'],
-            campaign_id=kwargs['campaign_pk'],
-        )
-        if section.user == request.user:
-            data = at_tagging(request)
-            form = forms.SectionForm(instance=section)
-            return render(request, 'campaign/section_form.html', {
-                'data': data,
-                'campaign': section.campaign,
-                'section': section,
-                'form': form,
-            })
-
-    def post(self, request, *args, **kwargs):
-        section = get_object_or_404(
-            models.Section,
-            pk=kwargs['section_pk'],
-            chapter_id=kwargs['chapter_pk'],
-            campaign_id=kwargs['campaign_pk'],
-        )
-        if section.user == request.user:
-            data = at_tagging(request)
-            form = forms.SectionForm(instance=section, data=request.POST)
-            if form.is_valid():
-                form.save()
-                return redirect(section.get_absolute_url())
-            return render(request, 'campaign/section_form.html', {
-                'data': data,
-                'campaign': section.campaign,
-                'section': section,
-                'form': form,
-            })
 
 @login_required
 def campaign_print(request, campaign_pk):
