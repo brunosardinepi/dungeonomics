@@ -156,13 +156,6 @@ if (typeof module != 'undefined' && typeof module.exports != 'undefined') {
 
 }());
 
-// Define the dropdown items.
-dropdownItems = [
-  {'name': 'a', 'url': '1'},
-  {'name': 'b', 'url': '2'},
-  {'name': 'c', 'url': '3'},
-];
-
 // Create a dropdown.
 var dropdown = document.createElement('div');
 dropdown.id = 'mention-dropdown';

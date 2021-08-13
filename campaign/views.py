@@ -196,17 +196,37 @@ class CampaignUpdate(LoginRequiredMixin, View):
                 'campaign': campaign,
             })
 
-@login_required
-def chapter_update(request, campaign_pk, chapter_pk):
-    chapter = get_object_or_404(models.Chapter, pk=chapter_pk, campaign_id=campaign_pk)
-    if chapter.user == request.user:
-        data = at_tagging(request)
-        sections = models.Section.objects.filter(chapter=chapter)
-        form = forms.ChapterForm(instance=chapter)
-        section_forms = forms.SectionInlineFormSet(queryset=form.instance.section_set.all())
-        if request.method == 'POST':
+class ChapterUpdate(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        chapter = get_object_or_404(
+            models.Chapter,
+            pk=kwargs['chapter_pk'],
+            campaign_id=kwargs['campaign_pk'],
+        )
+        if chapter.user == request.user:
+            data = at_tagging(request)
+            form = forms.ChapterForm(instance=chapter)
+            section_forms = forms.SectionInlineFormSet(queryset=chapter.section_set.all())
+            return render(request, 'campaign/chapter_form.html', {
+                'campaign': chapter.campaign,
+                'data': data,
+                'chapter': chapter,
+                'form': form,
+                'formset': section_forms,
+            })
+
+    def post(self, request, *args, **kwargs):
+        chapter = get_object_or_404(
+            models.Chapter,
+            pk=kwargs['chapter_pk'],
+            campaign_id=kwargs['campaign_pk'],
+        )
+        if chapter.user == request.user:
             form = forms.ChapterForm(request.POST, instance=chapter)
-            section_forms = forms.SectionInlineFormSet(request.POST, queryset=form.instance.section_set.all())
+            section_forms = forms.SectionInlineFormSet(
+                request.POST,
+                queryset=chapter.section_set.all(),
+            )
             if form.is_valid() and section_forms.is_valid():
                 form.save()
                 sections = section_forms.save(commit=False)
@@ -216,16 +236,15 @@ def chapter_update(request, campaign_pk, chapter_pk):
                     section.save()
                 for section in section_forms.deleted_objects:
                     section.delete()
-                messages.add_message(request, messages.SUCCESS, "Updated chapter: {}".format(form.cleaned_data['title']))
-                return HttpResponseRedirect(chapter.get_absolute_url())
-    else:
-        raise Http404
-    data['campaign'] = chapter.campaign
-    data['chapter'] = chapter
-    data['sections'] = sections
-    data['form'] = form
-    data['formset'] = section_forms
-    return render(request, 'campaign/chapter_form.html', data)
+                return redirect(chapter.get_absolute_url())
+
+            return render(request, 'campaign/chapter_form.html', {
+                'campaign': chapter.campaign,
+                'data': data,
+                'chapter': chapter,
+                'form': form,
+                'formset': section_forms,
+            })
 
 @login_required
 def section_update(request, campaign_pk, chapter_pk, section_pk):

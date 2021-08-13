@@ -10,9 +10,9 @@
 {% block campaign_content %}
   <p class="mb-3 fw-bold">
     {% if chapter.pk %}
-      <span class="fw-bold">Update:</span> {{ campaign }} / {{ chapter }}
+      <span class="fw-bold">Update:</span> {{ chapter.campaign }} / {{ chapter }}
     {% else %}
-      <span class="fw-bold">New chapter for:</span> {{ campaign }}
+      <span class="fw-bold">New chapter for:</span> {{ chapter.campaign }}
     {% endif %}
   </p>
   <form method="POST" action="">
@@ -49,7 +49,7 @@
         {% endfor %}
       {% endif %}
     </div>
-    {% if sections %}
+    {% if chapter.section_set.all %}
       {{ formset.management_form }}
       <div class="row g-3 mt-3 mb-2 fw-bold">
         <div class="col-3 col-md-2">
@@ -101,7 +101,7 @@
         </div>
       {% else %}
         <div class="col-auto">
-          <a href="{{ campaign.get_absolute_url }}" class="btn btn-sm btn-secondary">Cancel</a>
+          <a href="{{ chapter.campaign.get_absolute_url }}" class="btn btn-sm btn-secondary">Cancel</a>
         </div>
         <div class="col-auto">
           <input type="submit" class="btn btn-sm btn-primary" value="Create chapter">
@@ -114,5 +114,6 @@
 {% block body_extra %}
   {{ block.super }}
   <script src="{% static 'js/autonumberOrder.js' %}"></script>
+  <script>dropdownItems = {{ data|safe }};</script>
   <script src="{% static 'js/mention.js' %}"></script>
 {% endblock %}

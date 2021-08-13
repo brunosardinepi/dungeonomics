@@ -185,6 +185,10 @@ class Player(Character):
     def __str__(self):
         return self.character_name
 
+    @property
+    def name(self):
+        return self.character_name
+
     def rating(self):
         # find the average rating
         return Review.objects.filter(

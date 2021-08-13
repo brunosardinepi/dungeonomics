@@ -23,7 +23,7 @@ urlpatterns = [
 
     path('<int:campaign_pk>/edit/', views.CampaignUpdate.as_view(), name='campaign_update'),
     path('<int:campaign_pk>/chapter/<int:chapter_pk>/edit/',
-        views.chapter_update, name='chapter_update'),
+        views.ChapterUpdate.as_view(), name='chapter_update'),
     path('<int:campaign_pk>/chapter/<int:chapter_pk>/section/<int:section_pk>/edit/',
         views.section_update, name='section_update'),
 
