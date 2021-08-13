@@ -1,113 +1,78 @@
-{% extends 'layout.html' %}
+{% extends 'campaign/layout.html' %}
 
+{% load static %}
 {% load widget_tweaks %}
 
-
-{% block title %}
+{% block campaign_content %}
+  <p class="mb-3 fw-bold">
     {% if section.pk %}
-        Update section 
+      <span class="fw-bold">Update:</span> {{ campaign }} / {{ section.chapter }} / {{ section }}
     {% else %}
-        New section 
+      <span class="fw-bold">New section for:</span> {{ campaign }} / {{ section.chapter }}
     {% endif %}
-    | {{ block.super }}
-{% endblock %}
+  </p>
 
-{% block head_extra %}
-    {{ form.media.js }}
-{% endblock %}
-
-{% block breadcrumbs %}
-    {% include "campaign/breadcrumbs.html" with action="New section" %}
-{% endblock %}
-
-{% block body_content %}
-    {% include "snippets/tag_info.html" %}
-
-    <div class="row mt-3 pb-5">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="px-1 mb-0">
-                        {% if section.pk %}
-                            <span class="fw-bold">Update:</span> {{ campaign }} / {{ chapter }} / {{ section }}
-                        {% else %}
-                            <span class="fw-bold">New section for:</span> {{ campaign }} / {{ chapter }}
-                        {% endif %}
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <form method="POST" action="">
-                        {% csrf_token %}
-
-                        {% if form.non_field_errors %}
-                            <div class="alert alert-danger" role="alert">
-                                {{ form.non_field_errors }}
-                            </div>
-                        {% endif %}
-
-                        <div class="form-group">
-                            <label for="{{ form.title.id_for_label }}">Title</label>
-                            {% render_field form.title class+="form-control mb-3" %}
-                            {% if form.title.errors %}
-                                {% for error in form.title.errors %}
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ error|escape }}
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-
-                        <div class="form-group">
-                            <label for="{{ form.content.id_for_label }}">Content</label>
-                            {% render_field form.content class+="form-control mb-3" %}
-                            {% if form.content.errors %}
-                                {% for error in form.content.errors %}
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ error|escape }}
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-
-                        <div class="form-group">
-                            <label for="{{ form.order.id_for_label }}">Order</label>
-                            {% if section %}
-                                {% render_field form.order class+="form-control mb-3" %}
-                            {% else %}
-                                <input type="number" name="{{ form.order.name }}" value="{{ section_number }}" id="{{ form.order.id_for_label }}" class="form-control mb-3" required>
-                            {% endif %}
-
-                            {% if form.order.errors %}
-                                {% for error in form.order.errors %}
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ error|escape }}
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-                </div>
-
-                <div class="card-footer">
-                    <div class="row justify-content-between">
-                        {% if section.pk %}
-                            <div class="col-auto">
-                                <a href ="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk section_pk=section.pk %}" class="btn btn-secondary">Cancel</a>
-                            </div>
-                            <div class="col-auto">
-                                <input type="submit" class="btn btn-primary" value="Update section">
-                            </div>
-                        {% else %}
-                            <div class="col-auto">
-                                <a href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}" class="btn btn-secondary">Cancel</a>
-                            </div>
-                            <div class="col-auto">
-                                <input type="submit" class="btn btn-primary" value="Create section">
-                            </div>
-                        {% endif %}
-                    </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+  <form method="POST" action="">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>
+    {% endif %}
+    <div class="form-group">
+      {% render_field form.title class+="form-control form-control-dark mb-3" %}
+      {% if form.title.errors %}
+        {% for error in form.title.errors %}
+          <div class="alert alert-danger" role="alert">{{ error|escape }}</div>
+        {% endfor %}
+      {% endif %}
     </div>
+    <div class="form-group">
+      {% render_field form.content class+="form-control form-control-dark mb-3" style+="height:300px;" %}
+      {% if form.content.errors %}
+        {% for error in form.content.errors %}
+          <div class="alert alert-danger" role="alert">{{ error|escape }}</div>
+        {% endfor %}
+      {% endif %}
+    </div>
+    <div class="form-group mt-2">
+      <label for="{{ form.order.id_for_label }}" class="mb-1">Order</label>
+      {% if section %}
+        {% render_field form.order class+="form-control form-control-dark mb-3" %}
+      {% else %}
+        <input type="number" name="{{ form.order.name }}" value="{{ section_number }}" id="{{ form.order.id_for_label }}" class="form-control form-control-dark mb-3" required>
+      {% endif %}
+      {% if form.order.errors %}
+        {% for error in form.order.errors %}
+          <div class="alert alert-danger" role="alert">{{ error|escape }}</div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <div class="row justify-content-between mt-4">
+      {% if section.pk %}
+        <div class="col-auto">
+          <a
+              href="{{ section.get_absolute_url }}"
+              class="btn btn-sm btn-secondary">
+            Cancel
+          </a>
+        </div>
+        <div class="col-auto">
+          <input type="submit" class="btn btn-sm btn-primary" value="Update section">
+        </div>
+      {% else %}
+        <div class="col-auto">
+          <a href="{{ section.campaign.get_absolute_url }}" class="btn btn-sm btn-secondary">Cancel</a>
+        </div>
+        <div class="col-auto">
+          <input type="submit" class="btn btn-sm btn-primary" value="Create section">
+        </div>
+      {% endif %}
+    </div>
+  </form>
+{% endblock %}
+
+{% block body_extra %}
+  {{ block.super }}
+  <script>dropdownItems = {{ data|safe }};</script>
+  <script src="{% static 'js/mention.js' %}"></script>
 {% endblock %}

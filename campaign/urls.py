@@ -25,7 +25,7 @@ urlpatterns = [
     path('<int:campaign_pk>/chapter/<int:chapter_pk>/edit/',
         views.ChapterUpdate.as_view(), name='chapter_update'),
     path('<int:campaign_pk>/chapter/<int:chapter_pk>/section/<int:section_pk>/edit/',
-        views.section_update, name='section_update'),
+        views.SectionUpdate.as_view(), name='section_update'),
 
     path('<int:campaign_pk>/print/', views.campaign_print, name='campaign_print'),
     path('import/',

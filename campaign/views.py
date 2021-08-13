@@ -246,25 +246,43 @@ class ChapterUpdate(LoginRequiredMixin, View):
                 'formset': section_forms,
             })
 
-@login_required
-def section_update(request, campaign_pk, chapter_pk, section_pk):
-    section = get_object_or_404(models.Section, pk=section_pk, chapter_id=chapter_pk, campaign_id=campaign_pk)
-    if section.user == request.user:
-        data = at_tagging(request)
-        form = forms.SectionForm(instance=section)
-        if request.method == 'POST':
+class SectionUpdate(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        section = get_object_or_404(
+            models.Section,
+            pk=kwargs['section_pk'],
+            chapter_id=kwargs['chapter_pk'],
+            campaign_id=kwargs['campaign_pk'],
+        )
+        if section.user == request.user:
+            data = at_tagging(request)
+            form = forms.SectionForm(instance=section)
+            return render(request, 'campaign/section_form.html', {
+                'data': data,
+                'campaign': section.campaign,
+                'section': section,
+                'form': form,
+            })
+
+    def post(self, request, *args, **kwargs):
+        section = get_object_or_404(
+            models.Section,
+            pk=kwargs['section_pk'],
+            chapter_id=kwargs['chapter_pk'],
+            campaign_id=kwargs['campaign_pk'],
+        )
+        if section.user == request.user:
+            data = at_tagging(request)
             form = forms.SectionForm(instance=section, data=request.POST)
             if form.is_valid():
                 form.save()
-                messages.add_message(request, messages.SUCCESS, "Updated section: {}".format(form.cleaned_data['title']))
-                return HttpResponseRedirect(section.get_absolute_url())
-    else:
-        raise Http404
-    data['form'] = form
-    data['campaign'] = section.chapter.campaign
-    data['chapter'] = section.chapter
-    data['section'] = section
-    return render(request, 'campaign/section_form.html', data)
+                return redirect(section.get_absolute_url())
+            return render(request, 'campaign/section_form.html', {
+                'data': data,
+                'campaign': section.campaign,
+                'section': section,
+                'form': form,
+            })
 
 @login_required
 def campaign_print(request, campaign_pk):
