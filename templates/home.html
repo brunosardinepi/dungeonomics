@@ -8,135 +8,82 @@
 {% block title %} Home | {{ block.super }}{% endblock %}
 
 {% block static %}
-    <link href="{% static 'lightbox/css/lightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'lightbox/css/lightbox.min.css' %}" rel="stylesheet">
 
-    <style>
-        .jumbotron{border-radius:0}
-    </style>
+  <style>
+    .jumbotron{border-radius:0}
+  </style>
 {% endblock %}
 
 {% block body_content %}
-    {% if user.is_authenticated %}
-        <div class="row mt-4 pb-3">
-            <div class="col-lg-8 mb-3">
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h2>November 22, 2019</h2>
-                        <p>Our main developer had a baby and life has been crazy. Some people have asked so just to be clear: even though we aren't updating Dungeonomics as much as in the past, we're still leaving the site up and it will remain free to use.</p>
-                        <p>Today's updates include a ton of back-end security updates. We also added a search bar above the left-hand contents list on most assets so that you can search for items instead of scrolling through a long list of things.</p>
-                        <p>Always feel free to send us an email at <a href="mailto:dungeonomics@gmail.com" class="fw-bold">dungeonomics@gmail.com</a> or come talk to us on <a href="https://twitter.com/dungeonomics" target="_blank" class="fw-bold">Twitter</a> or <a href="https://www.reddit.com/r/dungeonomics/" target="_blank" class="fw-bold">Reddit</a>.</p>
-                    </div>
-                </div>
-                <div class="list-group">
-                    <li class="list-group-item list-group-item-info">
-                        <h2>Feature voting</h2>
-                        <p>Click on the features that you want to see added to the site. You can vote once on each feature, and can vote for as many features as you want. The total votes for each feature are to the right in the blue circle. Click again to remove your vote.</p>
-                        <p class="mb-0">These are all the requests you've sent us to be added. If you want to see your request on here, email us at <a class="alert-link" href="mailto:dungeonomics@gmail.com">dungeonomics@gmail.com</a> and we'll add it. Every week, we'll take the top requests and work on adding them to the site.</p>
-                    </li>
-                    {% for feature in features %}
-                        <a href="{% url 'votes:vote_view' feature_pk=feature.pk %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center{% user_voted user=request.user feature_pk=feature.pk as voted %}{% if voted == True %} list-group-item-success{% endif %}">
-                            <span>
-                            {% if feature.new == True %}<span class="badge badge-success mr-1">New</span>{% endif %}
-                            {{ feature.description|safe }}
-                            </span>
-                            <span class="badge badge-primary badge-pill ml-3">{{ feature.votes }}</span>
-                        </a>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="col-lg-4">
-                <a class="twitter-timeline" data-tweet-limit="5" href="https://twitter.com/dungeonomics?ref_src=twsrc%5Etfw">Tweets by dungeonomics</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-            </div>
-        </div>
-    {% else %}
-        <div id="jumbotron-home" class="jumbotron">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <h1>Streamlined Roleplaying</h1>
-                        <p>Dungeonomics is a place where DMs can manage their campaigns without the hassle of sifting through a mountain of paper. DMs control all aspects of their campaign from plot creation and setting up encounters to looking up/creating monsters or NPCs.</p>
-                        <p>Just so we're clear, we believe that there's no substitute for the real thing. Getting together with other adventurers in person will always be the best way to play D&D. Our goal is to enhance that and make it easier for you to immerse yourself in the game by eliminating the need to flip through a bunch of papers, which can sometimes pull you out of the experience.</p>
-                        <p>Now, go forth and create! Also, please come check us out on <a href="https://twitter.com/dungeonomics" target="_blank" class="fw-bold">Twitter</a>, <a href="https://www.reddit.com/r/dungeonomics/" target="_blank" class="fw-bold">Reddit</a>, or email us at <a href="mailto:dungeonomics@gmail.com" class="fw-bold">dungeonomics@gmail.com</a> to give us feedback and to receive updates.</p>
-                    </div>
-                </div>
-                <div class="row justify-content-center mt-3">
-                    <div class="col-md-3 mb-3">
-                        <a class="btn btn-block btn-success btn-lg" href="{% url 'signup' %}" role="button">Sign up</a>
-                    </div>
-                    <div class="col-md-3">
-                        <a class="btn btn-block btn-primary btn-lg" href="{% url 'login' %}" role="button">Login</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+  {% if user.is_authenticated %}
+    <div class="row mt-3">
+      <div class="col-lg-8 mb-3 mb-lg-0">
+        <h2>November 22, 2019</h2>
+        <p>Our main developer had a baby and life has been crazy. Some people have asked so just to be clear: even though we aren't updating Dungeonomics as much as in the past, we're still leaving the site up and it will remain free to use.</p>
+        <p>Today's updates include a ton of back-end security updates. We also added a search bar above the left-hand contents list on most assets so that you can search for items instead of scrolling through a long list of things.</p>
+        <p>Always feel free to send us an email at <a href="mailto:dungeonomics@gmail.com" class="fw-bold">dungeonomics@gmail.com</a> or come talk to us on <a href="https://twitter.com/dungeonomics" target="_blank" class="fw-bold">Twitter</a> or <a href="https://www.reddit.com/r/dungeonomics/" target="_blank" class="fw-bold">Reddit</a>.</p>
 
-        <div id="jumbotron-features" class="jumbotron text-center">
-            <div class="container">
-                <h1 class="text-center">Features</h1>
-                <div class="row justify-content-between">
-                    <div class="col-md-auto mb-3">
-                        <a href="{% static 'img/screenshot_01_full.png' %}"
-                            data-lightbox="features"
-                            data-title="Here, you can enter your notes and create chapters as your party progresses through the plot, allowing for a seamless progression.">
-                            <img src="{% static 'img/screenshot_01_thumb.png' %}" class="img-thumbnail">
-                        </a>
-                    </div>
-                    <div class="col-md-auto mb-3">
-                        <a href="{% static 'img/screenshot_04_full.png' %}"
-                            data-lightbox="features"
-                            data-title="Using our monster and NPC tools, you can create your own characters to use in your campaigns. We have created a way for you to input all the information you'll need for any monster or NPC in any RPG system, not just D&D.">
-                            <img src="{% static 'img/screenshot_04_thumb.png' %}" class="img-thumbnail">
-                        </a>
-                    </div>
-                    <div class="col-md-auto mb-3">
-                        <a href="{% static 'img/screenshot_02_full.png' %}"
-                            data-lightbox="features"
-                            data-title="When you create monsters and NPCs, quickly pull up their stats by tagging them in your campaign.">
-                            <img src="{% static 'img/screenshot_02_thumb.png' %}" class="img-thumbnail">
-                        </a>
-                    </div>
-                    <div class="col-md-auto mb-3">
-                        <a href="{% static 'img/screenshot_03_full.png' %}"
-                            data-lightbox="features"
-                            data-title="When you've tagged a monster or NPC, it will automatically create a link to that character in your campaign. All you have to do is click that generated link and it will take you to your monster or NPC statblock.">
-                            <img src="{% static 'img/screenshot_03_thumb.png' %}" class="img-thumbnail">
-                        </a>
-                    </div>
-                    <div class="col-md-auto mb-3">
-                        <a href="{% static 'img/screenshot_05_full.png' %}"
-                            data-lightbox="features"
-                            data-title="We have a wiki that is constantly being updated to help with any questions you have. We also have thousands of registered users and the generous support of the reddit community.">
-                            <img src="{% static 'img/screenshot_05_thumb.png' %}" class="img-thumbnail">
-                        </a>
-                    </div>
-                </div>
-            </div>
+        <h2 class="mt-5">Feature voting</h2>
+        <p>Click on the features that you want to see added to the site. You can vote once on each feature, and can vote for as many features as you want. The total votes for each feature are to the right in the blue circle. Click again to remove your vote.</p>
+        <p>These are all the requests you've sent us to be added. If you want to see your request on here, email us at <a class="alert-link" href="mailto:dungeonomics@gmail.com">dungeonomics@gmail.com</a> and we'll add it. Every week, we'll take the top requests and work on adding them to the site.</p>
+        <div class="list-group">
+          {% for feature in features %}
+            <a href="{% url 'votes:vote_view' feature_pk=feature.pk %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center{% user_voted user=request.user feature_pk=feature.pk as voted %}{% if voted == True %} list-group-item-success{% else %} list-group-item-dark{% endif %}">
+              <span>
+                {% if feature.new == True %}<span class="badge bg-danger mr-1">New</span>{% endif %}
+                {{ feature.description|safe }}
+              </span>
+              <span class="badge bg-dark rounded-pill ml-3">{{ feature.votes }}</span>
+            </a>
+          {% endfor %}
         </div>
-
-        <div id="jumbotron-footer" class="jumbotron">
-            <div class="container">
-                <div class="row justify-content-center" style="color:#fff;">
-                    <div class="col-md-4 text-center">
-                        <p><i class="fas fa-users fa-5x" aria-hidden="true"></i></p>
-                        <h2>Users</h2>
-                        <h2>{{ users|intcomma }}</h2>
-                    </div>
-                    <div class="col-md-4 text-center">
-                        <p><i class="fas fa-book fa-5x" aria-hidden="true"></i></p>
-                        <h2>Campaigns</h2>
-                        <h2>{{ campaigns|intcomma }}</h2>
-                    </div>
-                    <div class="col-md-4 text-center">
-                        <p><i class="fas fa-paw fa-5x" aria-hidden="true"></i></p>
-                        <h2>Creatures</h2>
-                        <h2>{{ characters|intcomma }}</h2>
-                    </div>
-                </div>
-            </div>
+      </div>
+      <div class="col-lg-4">
+        <a class="twitter-timeline" data-dnt="true" data-theme="dark" data-tweet-limit="5" href="https://twitter.com/dungeonomics?ref_src=twsrc%5Etfw">Tweets by dungeonomics</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      </div>
+    </div>
+  {% else %}
+    <div id="jumbotron-home" class="jumbotron">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <h1>Streamlined Roleplaying</h1>
+            <p>Dungeonomics is a place where DMs can manage their campaigns without the hassle of sifting through a mountain of paper. DMs control all aspects of their campaign from plot creation and setting up encounters to looking up/creating monsters or NPCs.</p>
+            <p>Just so we're clear, we believe that there's no substitute for the real thing. Getting together with other adventurers in person will always be the best way to play D&D. Our goal is to enhance that and make it easier for you to immerse yourself in the game by eliminating the need to flip through a bunch of papers, which can sometimes pull you out of the experience.</p>
+            <p>Now, go forth and create! Also, please come check us out on <a href="https://twitter.com/dungeonomics" target="_blank" class="fw-bold">Twitter</a>, <a href="https://www.reddit.com/r/dungeonomics/" target="_blank" class="fw-bold">Reddit</a>, or email us at <a href="mailto:dungeonomics@gmail.com" class="fw-bold">dungeonomics@gmail.com</a> to give us feedback and to receive updates.</p>
+          </div>
         </div>
-    {% endif %}
-{% endblock %}
-
-{% block body_extra %}
-    <script src="{% static 'lightbox/js/lightbox.min.js' %}"></script>
+        <div class="row justify-content-center mt-3">
+          <div class="col-md-3 mb-3">
+            <a class="btn btn-block btn-success btn-lg" href="{% url 'signup' %}" role="button">Sign up</a>
+          </div>
+          <div class="col-md-3">
+            <a class="btn btn-block btn-primary btn-lg" href="{% url 'login' %}" role="button">Login</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="jumbotron-footer" class="jumbotron">
+      <div class="container">
+        <div class="row justify-content-center" style="color:#fff;">
+          <div class="col-md-4 text-center">
+            <p><i class="fas fa-users fa-5x" aria-hidden="true"></i></p>
+            <h2>Users</h2>
+            <h2>{{ users|intcomma }}</h2>
+          </div>
+          <div class="col-md-4 text-center">
+            <p><i class="fas fa-book fa-5x" aria-hidden="true"></i></p>
+            <h2>Campaigns</h2>
+            <h2>{{ campaigns|intcomma }}</h2>
+          </div>
+          <div class="col-md-4 text-center">
+            <p><i class="fas fa-paw fa-5x" aria-hidden="true"></i></p>
+            <h2>Creatures</h2>
+            <h2>{{ characters|intcomma }}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endif %}
 {% endblock %}
