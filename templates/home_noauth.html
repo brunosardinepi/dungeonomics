@@ -1,23 +1,9 @@
 {% extends "_cover.html" %}
 
 {% load humanize %}
-{% load static %}
-
-{% block head_extra %}
-  <link rel="stylesheet" href="{% static 'css/login.css' %}"/>
-{% endblock %}
 
 {% block body_content %}
-  <div class="row">
-    <div class="col">
-      <div class="logo">
-        <a href="{% url 'home' %}" title="Dungeonomics">
-          <img src="/static/img/logo_login.png" alt="Dungeonomics">
-        </a>
-      </div>
-    </div>
-  </div>
-  <div id="jumbotron-home" class="jumbotron p-5 mb-3 mb-lg-0">
+  <div id="jumbotron-home" class="jumbotron p-5 mb-3 mb-lg-0 black-transparent-blackground">
     <div class="container">
       <div class="row">
         <div id="welcome" class="col">

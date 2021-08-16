@@ -42,15 +42,38 @@ form.login {
     margin-top: 46px;
 }
 
-#jumbotron-home {
+.black-transparent-blackground {
   background: rgba(0, 0, 0, 0.6);
   color: #fff;
 }
-#welcome a {
+.black-transparent-blackground a:not(.btn) {
   color: rgb(255, 255, 255);
   text-decoration: none;
   font-weight: bold;
 }
-#welcome a:hover {
+.black-transparent-blackground a:hover:not(.btn) {
   color: #ed1c24;
 }
+
+.form-control-dark{
+  color: #fff;
+  background-color: #212529;
+  border: 1px solid #000;
+}
+.form-control-dark:focus{
+  color: #fff;
+  background-color: #212529;
+  border-color: #000;
+  box-shadow: 0 0 0 .25rem rgba(248, 27, 39, .25);
+}
+.form-control-dark[type="checkbox"]:checked{
+  background-color: #0d6efd;
+  border-color: ##86b7fe;
+  box-shadow: 0 0 0 .25rem rgba(13,110,253,.25);
+}
+.form-control-dark[type="checkbox"]::after{
+  background-color: #0d6efd;
+  border-color: ##86b7fe;
+  box-shadow: 0 0 0 .25rem rgba(13,110,253,.25);
+}
+
