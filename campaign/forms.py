@@ -7,7 +7,7 @@ class FormTemplate(forms.ModelForm):
     class Meta:
         fields = ['title']
         widgets = {
-            'title': forms.TextInput(attrs={'placeholder': 'Campaign title'}),
+            'title': forms.TextInput(attrs={'placeholder': 'Title'}),
         }
 
     def __init__(self, *args, **kwargs):
@@ -15,12 +15,12 @@ class FormTemplate(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
 class CampaignForm(FormTemplate):
-    class Meta:
+    class Meta(FormTemplate.Meta):
         model = models.Campaign
         fields = FormTemplate.Meta.fields
 
 class ChapterForm(FormTemplate):
-    class Meta:
+    class Meta(FormTemplate.Meta):
         model = models.Chapter
         fields = FormTemplate.Meta.fields + [
             'content',
@@ -28,7 +28,7 @@ class ChapterForm(FormTemplate):
         ]
 
 class SectionForm(FormTemplate):
-    class Meta:
+    class Meta(FormTemplate.Meta):
         model = models.Section
         fields = FormTemplate.Meta.fields + [
             'content',

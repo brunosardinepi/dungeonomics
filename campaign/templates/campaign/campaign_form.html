@@ -22,17 +22,13 @@
   <form method="POST" action="">
     {% csrf_token %}
     {% if form.non_field_errors %}
-      <div class="alert alert-danger" role="alert">
-        {{ form.non_field_errors }}
-      </div>
+      <div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>
     {% endif %}
     <div class="form-group">
       {% render_field form.title class+="form-control form-control-dark mb-3" %}
       {% if form.title.errors %}
         {% for error in form.title.errors %}
-          <div class="alert alert-danger" role="alert">
-            {{ error|escape }}
-          </div>
+          <div class="alert alert-danger" role="alert">{{ error|escape }}</div>
         {% endfor %}
       {% endif %}
     </div>
