@@ -1,10 +1,7 @@
 from bs4 import BeautifulSoup
+from campaign import forms, models, utils
+from characters.models import Monster, NPC, Player
 from collections import OrderedDict
-from itertools import chain
-from shutil import copyfile
-import json
-import uuid
-
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -17,18 +14,17 @@ from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views import View
-
-from . import forms
-from . import models
-from . import utils
-from characters.models import Monster, NPC, Player
 from dungeonomics.utils import at_tagging, rating_monster
 from dungeonomics import settings
 from items.models import Item
+from itertools import chain
+import json
 from locations.models import Location, World
 from posts.models import Post
+from shutil import copyfile
 from tables.models import Table, TableOption
 from tavern.models import Review
+import uuid
 
 
 class CreateTemplate(LoginRequiredMixin, CreateView):
