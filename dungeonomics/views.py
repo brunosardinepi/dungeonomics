@@ -1,5 +1,7 @@
-import json
-
+from allauth.account import models as allauth_models
+from allauth.account import views
+from campaign import models as campaign_models
+from characters import models as character_models
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Count
@@ -10,33 +12,29 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from django.views import View
-
-from allauth.account import views
-
-from . import forms
-from allauth.account import models as allauth_models
-from campaign import models as campaign_models
-from characters import models as character_models
+from dungeonomics import forms
+import json
 from votes.models import Feature, Vote
 
 
 sns_decorators = [csrf_exempt]
 
-
-class HomeView(TemplateView):
-    template_name = 'home.html'
-
-def home_view(request):
-    if request.user.is_authenticated:
-        features = Feature.objects.all().annotate(votes=Count('vote')).order_by('-votes')
-        return render(request, 'home.html', {'features': features})
-    else:
-        users = allauth_models.EmailAddress.objects.count()
-        campaigns = campaign_models.Campaign.objects.count()
-        monsters = character_models.Monster.objects.count()
-        npcs = character_models.NPC.objects.count()
-        characters = monsters + npcs
-        return render(request, 'home.html', {'users': users, 'campaigns': campaigns, 'characters': characters})
+class Home(View):
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            features = Feature.objects.all().annotate(votes=Count('vote')).order_by('-votes')
+            return render(request, 'home.html', {'features': features})
+        else:
+            users = allauth_models.EmailAddress.objects.count()
+            campaigns = campaign_models.Campaign.objects.count()
+            monsters = character_models.Monster.objects.count()
+            npcs = character_models.NPC.objects.count()
+            characters = monsters + npcs
+            return render(request, 'home_noauth.html', {
+                'users': users,
+                'campaigns': campaigns,
+                'characters': characters,
+            })
 
 @login_required
 def profile_detail(request):

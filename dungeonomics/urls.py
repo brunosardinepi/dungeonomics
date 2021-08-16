@@ -50,7 +50,7 @@ urlpatterns = [
     path('sitemap.xml', TemplateView.as_view(template_name="sitemap.xml", content_type="application/xml")),
     path('google35fe4699b1e0423b.html', TemplateView.as_view(template_name="google35fe4699b1e0423b.html")),
 
-    path('', views.home_view, name='home'),
+    path('', views.Home.as_view(), name='home'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

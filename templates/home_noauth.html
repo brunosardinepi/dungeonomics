@@ -1,0 +1,57 @@
+{% extends "_cover.html" %}
+
+{% load humanize %}
+{% load static %}
+
+{% block head_extra %}
+  <link rel="stylesheet" href="{% static 'css/login.css' %}"/>
+{% endblock %}
+
+{% block body_content %}
+  <div class="row">
+    <div class="col">
+      <div class="logo">
+        <a href="{% url 'home' %}" title="Dungeonomics">
+          <img src="/static/img/logo_login.png" alt="Dungeonomics">
+        </a>
+      </div>
+    </div>
+  </div>
+  <div id="jumbotron-home" class="jumbotron p-5 mb-3 mb-lg-0">
+    <div class="container">
+      <div class="row">
+        <div id="welcome" class="col">
+          <h1>Streamlined Roleplaying</h1>
+          <p>Dungeonomics is a place where DMs can manage their campaigns without the hassle of sifting through a mountain of paper. DMs control all aspects of their campaign from plot creation and setting up encounters to looking up/creating monsters or NPCs.</p>
+          <p>Just so we're clear, we believe that there's no substitute for the real thing. Getting together with other adventurers in person will always be the best way to play D&D. Our goal is to enhance that and make it easier for you to immerse yourself in the game by eliminating the need to flip through a bunch of papers, which can sometimes pull you out of the experience.</p>
+          <p>Now, go forth and create! Also, please come check us out on <a href="https://twitter.com/dungeonomics" target="_blank" class="fw-bold">Twitter</a>, <a href="https://www.reddit.com/r/dungeonomics/" target="_blank" class="fw-bold">Reddit</a>, or email us at <a href="mailto:dungeonomics@gmail.com" class="fw-bold">dungeonomics@gmail.com</a> to give us feedback and to receive updates.</p>
+        </div>
+      </div>
+      <div class="row justify-content-center mt-3">
+        <div class="col-md-3 mb-3">
+          <a class="btn d-block btn-success btn-lg" href="{% url 'signup' %}" role="button">Sign up</a>
+        </div>
+        <div class="col-md-3">
+          <a class="btn d-block btn-primary btn-lg" href="{% url 'login' %}" role="button">Login</a>
+        </div>
+      </div>
+      <div class="row justify-content-center mt-5 pt-5">
+        <div class="col-md-4 text-center">
+          <p><i class="fas fa-users fa-5x" aria-hidden="true"></i></p>
+          <h2>Users</h2>
+          <h2>{{ users|intcomma }}</h2>
+        </div>
+        <div class="col-md-4 text-center">
+          <p><i class="fas fa-book fa-5x" aria-hidden="true"></i></p>
+          <h2>Campaigns</h2>
+          <h2>{{ campaigns|intcomma }}</h2>
+        </div>
+        <div class="col-md-4 text-center">
+          <p><i class="fas fa-paw fa-5x" aria-hidden="true"></i></p>
+          <h2>Creatures</h2>
+          <h2>{{ characters|intcomma }}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
