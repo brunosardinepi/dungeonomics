@@ -1,11 +1,11 @@
-from characters.models import Monster, NPC, Player
 from collections import OrderedDict
+from django.apps import apps
 from django.contrib.auth.models import User
-from django.core.validators import MinValueValidator, MaxValueValidator
 from django.urls import reverse
 from django.db import models
 from django.db.models import Avg
 from django.utils.translation import ugettext_lazy as _
+import re
 from tavern.models import Review
 import uuid
 
@@ -150,6 +150,7 @@ class Campaign(CampaignTemplate):
 
         return toolbar
 
+    @property
     def children(self):
         contents = OrderedDict()
         chapters = self.chapter_set.all().order_by('order')
@@ -158,6 +159,46 @@ class Campaign(CampaignTemplate):
             contents[chapter] = sections
 
         return contents
+
+    @property
+    def mentions(self):
+        app_labels = ['characters']
+        results = {}
+        for app_label in app_labels:
+            for chapter, sections in self.children.items():
+                # Look for the dungeonomics URL in the content.
+                children = [chapter]
+                children += [i for i in sections]
+                for child in children:
+                    matches = re.findall(
+                        r'\(http(?:s)?:\/\/(?:garrett)?\.?dungeonomics\.com(?::8000)?(?:\/characters\/)?(?:monster\/\d\/)?(?:player\/\d\/)?(?:npc\/\d\/)?\)',
+                        child.content,
+                        flags=re.IGNORECASE,
+                    )
+                    if matches:
+                        matches = [i.lstrip("(").rstrip(")") for i in matches]
+                        matches = [i.split(f"/{app_label}/")[1] for i in matches]
+                        for match in matches:
+                            # Get the object.
+                            model_name = match.split("/")[0].replace("/", "").strip()
+                            pk = match.split("/")[1].replace("/", "").strip()
+
+                            model = apps.get_model(
+                                app_label=app_label,
+                                model_name=model_name,
+                            )
+
+                            try:
+                                obj = model.objects.get(user=self.user, pk=pk)
+                            except model.DoesNotExist:
+                                continue
+
+                            # Check if this object already exists in our results.
+                            if obj not in results:
+                                results[obj] = []
+                            results[obj].append(child)
+
+        return results
 
     def players(self):
         return self.player_set.all().order_by('character_name')
