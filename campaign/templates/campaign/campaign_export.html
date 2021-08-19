@@ -1,47 +1,39 @@
-{% extends 'layout.html' %}
-
-{% load campaign_extras %}
-
+{% extends 'campaign/layout.html' %}
 
 {% block title %}Export campaign | {{ block.super }}{% endblock %}
 
-{% block head_extra %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+{% block static %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
 {% endblock %}
 
-{% block body_content %}
-    <div class="alert alert-info mt-3" role="alert">
-        Copy the following code and then share it with friends! They will need to <a href="{% url 'campaign:campaign_import' %}" class="alert-link">import</a> it in order to view it.
+{% block campaign_content %}
+  <p class="mb-3 fw-bold">Export campaign: {{ campaign }}</p>
+  <p>This export includes all campaign content, plus monsters, NPCs, items/spells, locations, and tables. Anything tagged/mentioned in your campaign will be included.</p>
+  <p>Copy the following ID and then share it with friends! They will need to <a href="{% url 'campaign:campaign_import' %}" class="alert-link">import</a> it in order to view it.</p>
+  <div class="row">
+    <div class="col">
+      <input
+          type="text"
+          id="exportCode"
+          class="form-control form-control-sm form-control-dark"
+          value="{{ campaign.public_url }}" />
     </div>
-
-    <div class="row mt-3 pb-5">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="px-1 mb-0">
-                        Export campaign (<span class="fw-bold">does not include</span> monsters, NPCs, and items)
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <div class="pre-scrollable" style="max-height: 400px;">
-                        <pre id="code-long">{% autoescape on %}{{ campaign_items }}{% endautoescape %}</pre>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <div class="row justify-content-end">
-                        <div class="col-auto">
-                            <button class="btn btn-long btn-primary" data-clipboard-target="#code-long">Copy to clipboard</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="col-sm-auto mt-1 mt-sm-0">
+      <div class="d-grid gap-2">
+        <button
+            id="copyButton"
+            type="button"
+            class="btn btn-sm btn-primary"
+            data-clipboard-target="#exportCode">
+          Copy ID
+        </button>
+      </div>
     </div>
+  </div>
 {% endblock %}
 
 {% block body_extra %}
-    <script>
-        new ClipboardJS('.btn-long');
-        new ClipboardJS('.btn-short');
-    </script>
+  <script>
+    new ClipboardJS("#copyButton");
+  </script>
 {% endblock %}

@@ -323,38 +323,73 @@ def section_delete(request, campaign_pk, chapter_pk, section_pk):
         raise Http404
 
 
-class CampaignExport(View):
+class CampaignExport(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        if kwargs['campaign_pk']:
-            campaign = get_object_or_404(models.Campaign, pk=kwargs['campaign_pk'])
-            if campaign.user == request.user:
-                json_export = utils.campaign_export(campaign)
-                return render(request, 'campaign/campaign_export.html', {
-                    'campaign': campaign,
-                    'campaign_items': json_export,
-                })
-        raise Http404
+        campaign = get_object_or_404(
+            models.Campaign,
+            pk=kwargs['campaign_pk'],
+            user=request.user,
+        )
+        return render(request, 'campaign/campaign_export.html', {
+            'campaign': campaign,
+        })
 
-
-class CampaignImport(View):
+class CampaignImport(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        form = forms.ImportCampaignForm()
-        return render(request, 'campaign/campaign_import.html', {'form': form})
+        return render(request, 'campaign/campaign_import.html', {})
 
     def post(self, request, *args, **kwargs):
-        form = forms.ImportCampaignForm(request.POST)
-        if form.is_valid():
-            campaign = form.save(commit=False)
-            campaign.user = request.user
-            campaign.save()
-            if request.POST.get('user_import'):
-                json_export = request.POST.get('user_import')
-                utils.campaign_import(request.user, campaign, json_export)
-                return HttpResponseRedirect(campaign.get_absolute_url())
-        return Http404
+        # Get the campaign being imported.
+        imported_campaign = get_object_or_404(
+            models.Campaign,
+            public_url=request.POST['public_url'],
+        )
 
+        # Create a copy of the campaign.
+        campaign = models.Campaign.objects.create(
+            title=imported_campaign.title,
+            user=request.user,
+        )
 
-class CampaignParty(View):
+        # Create a copy of the campaign children.
+        for chapter, sections in imported_campaign.children.items():
+            new_chapter = models.Chapter.objects.create(
+                title=chapter.title,
+                user=request.user,
+                content=chapter.content,
+                order=chapter.order,
+                campaign=campaign,
+            )
+            for section in sections:
+                models.Section.objects.create(
+                    title=section.title,
+                    user=request.user,
+                    content=section.content,
+                    order=section.order,
+                    chapter=new_chapter,
+                    campaign=campaign,
+                )
+
+        # Create a copy of all the campaign mentions.
+        for obj, mentions in campaign.mentions.items():
+            # Get the original object's mention URL.
+            old_mention_url = obj.mention
+
+            # Create a copy of the object.
+            obj.pk = None
+            obj.campaign = campaign
+            obj.user = request.user
+            obj.save()
+
+            # Go through each child content and update the mention URL.
+            for child in mentions:
+                # Get the original mention URL.
+                child.content = child.content.replace(old_mention_url, obj.mention)
+                child.save()
+
+        return redirect(campaign.get_absolute_url())
+
+class CampaignParty(LoginRequiredMixin, View):
     def get(self, request, campaign_pk):
         campaign = get_object_or_404(models.Campaign, pk=campaign_pk)
         if utils.has_campaign_access(request.user, campaign_pk):

@@ -36,10 +36,10 @@ class SectionForm(FormTemplate):
         ]
 
 class ImportCampaignForm(forms.ModelForm):
-    class Meta:
+    class Meta(FormTemplate.Meta):
         model = models.Campaign
         fields = [
-            'title',
+            'public_url',
         ]
 
 ChapterFormSet = forms.modelformset_factory(

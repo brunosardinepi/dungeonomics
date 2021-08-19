@@ -3,6 +3,7 @@ from django.db.models import Avg
 from django.urls import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from dungeonomics.config import settings as secrets
 from math import floor
 from tavern.models import Review
 
@@ -88,6 +89,9 @@ class Character(models.Model):
     class Meta:
         abstract = True
 
+    @property
+    def mention(self):
+        return f"[{self.__str__()}]({secrets['site']}{self.get_absolute_url()})"
 
 class Monster(Character):
     creature_type = models.CharField(max_length=255, default='', blank=True)

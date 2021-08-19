@@ -165,3 +165,13 @@ a.list-group-item {
   border-color: #0d6efd;
   color: #fff;
 }
+.modal-content {
+  background: rgb(47, 50, 55);
+}
+.modal-header {
+  border-bottom: 1px solid #000;
+}
+
+.modal-footer {
+  border-top: 1px solid #000;
+}

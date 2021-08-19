@@ -1,10 +1,12 @@
 from collections import OrderedDict
 from django.apps import apps
 from django.contrib.auth.models import User
+from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.db import models
 from django.db.models import Avg
 from django.utils.translation import ugettext_lazy as _
+from dungeonomics.config import settings as secrets
 import re
 from tavern.models import Review
 import uuid
@@ -25,6 +27,9 @@ class CampaignTemplate(models.Model):
         return Review.objects.filter(
             campaign=self).aggregate(Avg('score'))['score__avg'] or 0
 
+    @property
+    def mention(self):
+        return f"[{self.__str__()}]({secrets['site']}{self.get_absolute_url()})"
 
 def create_random_string(length=30):
     if length <= 0:
@@ -189,7 +194,7 @@ class Campaign(CampaignTemplate):
                             )
 
                             try:
-                                obj = model.objects.get(user=self.user, pk=pk)
+                                obj = model.objects.get(pk=pk)
                             except model.DoesNotExist:
                                 continue
 
