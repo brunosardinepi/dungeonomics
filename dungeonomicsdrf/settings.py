@@ -108,4 +108,8 @@ REST_FRAMEWORK = {
 
 # CORS
 CORS_ALLOWED_ORIGINS = environ.secrets['cors_allowed_origins']
-ACCESS_TOKEN_LIFETIME = timedelta(days=7)
+
+# JWT
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
+}
