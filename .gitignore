@@ -1,0 +1,12 @@
+__pycache__/
+*env/
+db.sqlite3
+.DS_Store
+.vscode/
+config.py
+environ.py
+media/
+static/
+htmlcov/
+.coverage
+debug/*
