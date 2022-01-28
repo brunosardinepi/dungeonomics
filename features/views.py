@@ -4,7 +4,6 @@ from rest_framework.permissions import IsAuthenticated
 
 
 class FeatureList(generics.ListAPIView):
-#    queryset = models.Feature.objects.all().order_by('vote_count')
     serializer_class = serializers.FeatureSerializer
     permission_classes = [IsAuthenticated]
 
