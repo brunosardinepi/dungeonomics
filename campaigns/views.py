@@ -11,6 +11,11 @@ class CampaignCreate(generics.CreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+class CampaignDelete(generics.DestroyAPIView):
+    queryset = models.Campaign.objects.all()
+    serializer_class = serializers.CampaignSerializer
+    permission_classes = [IsAuthenticated]
+
 class CampaignDetail(generics.RetrieveAPIView):
     queryset = models.Campaign.objects.all()
     serializer_class = serializers.CampaignSerializer
