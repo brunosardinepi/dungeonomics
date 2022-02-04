@@ -27,3 +27,10 @@ class CampaignList(generics.ListAPIView):
 
     def get_queryset(self):
         return models.Campaign.objects.filter(user=self.request.user)
+
+class CampaignUpdate(generics.UpdateAPIView):
+    serializer_class = serializers.CampaignSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return models.Campaign.objects.filter(user=self.request.user)
