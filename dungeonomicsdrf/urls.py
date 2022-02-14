@@ -16,5 +16,6 @@ urlpatterns = [
 
     path('campaigns/', include('campaigns.urls')),
     path('features/', include('features.urls')),
+    path('resources/', include('resources.urls')),
     path('hello/', HelloWorldView.as_view()),
 ]
