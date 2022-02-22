@@ -7,9 +7,14 @@ class ResourceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Resource
-        fields = ['id', 'user', 'name', 'link']
+        fields = [
+            'id',
+#            'user',
+            'name',
+            'link',
+            'content',
+            'created_at',
+        ]
 
     def get_link(self, obj):
-        print(f"obj = {obj}")
-        print(f"obj.get_absolute_url() = {obj.get_absolute_url()}")
         return obj.get_absolute_url()
