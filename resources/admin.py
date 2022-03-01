@@ -4,4 +4,5 @@ from resources import models
 
 @admin.register(models.Resource)
 class ResourceAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('pk', 'created_at', 'name', 'user', 'parent')
+    ordering = list_display
