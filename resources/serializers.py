@@ -9,11 +9,11 @@ class ResourceSerializer(serializers.ModelSerializer):
         model = models.Resource
         fields = [
             'id',
-#            'user',
             'name',
             'link',
             'content',
             'created_at',
+            'parent',
         ]
 
     def get_link(self, obj):
