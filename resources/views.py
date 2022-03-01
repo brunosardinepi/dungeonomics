@@ -19,7 +19,7 @@ class ResourceCreate(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        if "parent" in self.request.data:
+        if "parent" in self.request.data and self.request.data['parent'] != "":
             parent = models.Resource.objects.get(pk=self.request.data['parent'])
         else:
             parent = None
