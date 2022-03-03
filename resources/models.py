@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.functions import Lower
 
 
 class Resource(models.Model):
@@ -10,7 +11,7 @@ class Resource(models.Model):
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
-        ordering = ['name']
+        ordering = [Lower('name')]
 
     def get_absolute_url(self):
         from django.urls import reverse
