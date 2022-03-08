@@ -3,6 +3,7 @@ import {
   Button,
   Col,
   Form,
+  Modal,
   OverlayTrigger,
   Row,
   Tooltip,
@@ -11,6 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faBars,
   faPlus,
+  faQuestionCircle,
   faTrashAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import apiRequest from "./apiRequest";
@@ -25,32 +27,38 @@ import '@draft-js-plugins/mention/lib/plugin.css';
 import Editor from '@draft-js-plugins/editor';
 import createMentionPlugin, { defaultSuggestionsFilter } from '@draft-js-plugins/mention';
 import mentionsStyles from './MentionsStyles.module.css';
-import CreateResourceModal from './CreateResourceModal';
-import CreateResourceAttributeModal from './CreateResourceAttributeModal';
+import { Typeahead } from 'react-bootstrap-typeahead';
+import 'react-bootstrap-typeahead/css/Typeahead.css';
+import 'react-bootstrap-typeahead/css/Typeahead.bs5.css';
+import { resourceNameSuggestionOptions } from './resourceNameSuggestionOptions.js';
 
 export default function Dashboard() {
-  const [showCreateResourceModal, setShowCreateResourceModal] = useState(false);
-  const handleCreateResourceModalClose = () => setShowCreateResourceModal(false);
-  const [showCreateResourceAttributeModal, setShowCreateResourceAttributeModal] = useState(false);
-  const handleCreateResourceAttributeModalClose = () => setShowCreateResourceAttributeModal(false);
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const [resources, setResources] = useState([]);
-  const [resource, setResource] = useState({});
-  const [resourceChildren, setResourceChildren] = useState([]);
-  const [filteredResources, setFilteredResources] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const handleModalClose = () => setShowModal(false);
+  const [modalAction, setModalAction] = useState(false);
+  const [showDeleteResourceButton, setShowDeleteResourceButton] = useState(false);
+  const [showResourceParentSelect, setShowResourceParentSelect] = useState(false);
+  const [showResourceValueInput, setShowResourceValueInput] = useState(false);
+  const [showResourceTagsInput, setShowResourceTagsInput] = useState(true);
+
   const editorRef = useRef(null);
-  const [mentionOpen, setMentionOpen] = useState(false);
-  const [suggestions, setSuggestions] = useState([]);
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [editorReadOnly, setEditorReadOnly] = useState(true);
   const [editButtonText, setEditButtonText] = useState('Edit');
-  const [resourceGroups, setResourceGroups] = useState([]);
-  const handleSetEditButtonText = (data) => setEditButtonText(data);
-  const handleSetEditorReadOnly = (data) => setEditorReadOnly(data);
-  const handleSetResource = (data) => setResource(data);
-  const handleSetResourceChildren = (data) => setResourceChildren(data);
-  const handleSetResources = (data) => setResources(data);
-  const handleSetFilteredResources = (data) => setFilteredResources(data);
 
+  const [resource, setResource] = useState({});
+  const [resources, setResources] = useState([]);
+  const [resourceName, setResourceName] = useState('');
+  const [resourceTags, setResourceTags] = useState('');
+  const [resourceGroups, setResourceGroups] = useState([]);
+  const [filteredResources, setFilteredResources] = useState([]);
+
+  const [resourceAttribute, setResourceAttribute] = useState({});
+  const [resourceAttributes, setResourceAttributes] = useState([]);
+  const [resourceAttributeValue, setResourceAttributeValue] = useState('');
+
+  const [mentionOpen, setMentionOpen] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
   const { MentionSuggestions, plugins } = useMemo(() => {
     const mentionPlugin = createMentionPlugin({
       entityMutability: 'IMMUTABLE',
@@ -140,7 +148,7 @@ export default function Dashboard() {
       setEditButtonText('Edit');
     } else {
       setEditButtonText('Done');
-      setTimeout(() => { editorRef.current.focus() }, 500);
+      focusEditor();
     }
   }
 
@@ -172,109 +180,150 @@ export default function Dashboard() {
     localStorage.setItem('dungeonomicsLastSaveTime', Date.now());
   }
 
-  function deleteResource() {
-    if (
-      window.confirm("Are you sure you want to delete this? It can't be undone.")
-    ) {
-      apiRequest(
-        'DELETE',
-        `http://garrett.dungeonomics.com:8000/resources/${resource.id}/delete/`,
-        {},
-      )
-        .then(() => {
-          // Remove the resource from our resource list.
-          const newResources = resources.filter((x) => x.id !== parseInt(resource.id));
-          setResources(newResources);
-          setFilteredResources(newResources);
-          // Set the new active resource to be the first in our list.
-          setResource(newResources[0]);
-          // Set localStorage resource.
-          localStorage.setItem('dungeonomicsLastResourceId', newResources[0].id);
-        });
-    };
+  function handleModalShowCreateResource(event) {
+    setModalAction("createResource");
+    setShowDeleteResourceButton(false);
+    setShowResourceParentSelect(false);
+    setShowResourceValueInput(false);
+    setShowResourceTagsInput(true);
+    setShowModal(true);
+    event.currentTarget.blur();
   }
 
-/*
-  function createResource() {
-    const name = document.getElementById('resourceName').value;
-    let parent = document.getElementById('resourceParent').value;
-    parent === "0" ? parent = '' : parent = parseInt(parent);
-    const content = document.getElementById('resourceChildContent').value;
-    const action = document.getElementById('modalSubmit').innerHTML;
-    const tags = document.getElementById('resourceTags').value;
+  function handleModalShowCreateResourceAttribute(event) {
+    setModalAction("createResourceAttribute");
+    setShowDeleteResourceButton(false);
+    setShowResourceParentSelect(true);
+    setShowResourceValueInput(true);
+    setShowResourceTagsInput(false);
+    setShowModal(true);
+    event.currentTarget.blur();
+  }
 
-    let requestMethod = "POST";
-    let requestUrl = "http://garrett.dungeonomics.com:8000/resources/create/";
-    if (action === 'Update') {
-      requestMethod = "PUT";
-      if (editResource === true) {
-        requestUrl = `http://garrett.dungeonomics.com:8000/resources/${resource.id}/update/`;
-      } else {
-        requestUrl = `http://garrett.dungeonomics.com:8000/resources/${resourceChild.id}/update/`;
-      }
+  function handleModalShowEditResource(event) {
+    setModalAction("editResource");
+    setShowDeleteResourceButton(false);
+    setResourceName(resource.name);
+    setResourceTags(resource.tags);
+    setShowResourceParentSelect(false);
+    setShowResourceValueInput(false);
+    setShowResourceTagsInput(true);
+    setShowModal(true);
+    event.currentTarget.blur();
+  }
+
+  function handleModalShowEditResourceAttribute(event) {
+    const resourceAttribute = getResourceAttributeFromId(event.target.getAttribute('data-id'));
+    setResourceAttribute(resourceAttribute);
+    setResourceName(resourceAttribute.name);
+
+    setModalAction("editResourceAttribute");
+    setShowDeleteResourceButton(true);
+    setShowResourceParentSelect(true);
+    setShowResourceValueInput(true);
+    setShowResourceTagsInput(false);
+    setShowModal(true);
+    event.currentTarget.blur();
+  }
+
+  function onModalEntered() {
+    let input;
+    if (modalAction === "editResourceAttribute") {
+      input = document.getElementById("resourceValue");
+    } else {
+      input = document.getElementById("resourceName");
     }
 
-    apiRequest(
-      requestMethod,
-      requestUrl,
-      {
-        'name': name,
-        'parent': parent,
-        'content': content,
-        'tags': tags
-      },
-    )
+    if (typeof input !== "undefined" && input !== null) {
+      input.focus();
+    }
+  }
+
+  function saveResource() {
+    let method, url, postData;
+    if (modalAction === "createResource") {
+      method = "POST";
+      url = "http://garrett.dungeonomics.com:8000/resources/create/";
+      postData = {
+        'name': resourceName,
+        'tags': resourceTags
+      };
+    } else if (modalAction === "createResourceAttribute") {
+      method = "POST";
+      url = "http://garrett.dungeonomics.com:8000/resources/create/";
+      postData = {
+        'name': resourceName,
+        'content': resourceAttributeValue,
+        'parent': resource.id
+      };
+    } else if (modalAction === "editResource") {
+      method = "PUT";
+      url = `http://garrett.dungeonomics.com:8000/resources/${resource.id}/update/`;
+      postData = {
+        'name': resourceName,
+        'tags': resourceTags
+      };
+    } else if (modalAction === "editResourceAttribute") {
+      method = "PUT";
+      url = `http://garrett.dungeonomics.com:8000/resources/${resourceAttribute.id}/update/`;
+      postData = {
+        'name': resourceName,
+        'content': resourceAttributeValue,
+        'parent': resource.id
+      };
+    }
+
+    apiRequest(method, url, postData)
       .then(data => {
-        if (parent === '') {
+        if (modalAction === "createResource") {
           // Set the current resource to the newly created one.
           setResource(data);
 
-          if (editResource === true) {
-            // Update the resources list with the newly updated object.
-            let newResources = resources.filter((x) => x.id !== parseInt(data.id));
-            newResources = [...newResources, data];
-            newResources.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1);
-            setResources(newResources);
-            setFilteredResources(newResources);
-          } else {
-            let newResources = [...resources, data];
-            newResources.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1);
+          // Add the new resource to the resources list in a non-mutative way.
+          let newResources = [...resources, data];
+          newResources.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1);
+          setResources(newResources);
+          setFilteredResources(newResources);
 
-            // Add the new resource to the resources list in a non-mutative way.
-            setResources(newResources);
+          // Update the editor for the new resource so we're ready to edit it.
+          updateEditorContent(data);
 
-            // Reset the filtered resources and use the newly created resources list.
-            setFilteredResources(newResources);
+          // Reset the resourceAttributes to blank.
+          setResourceAttributes([]);
 
-            // Update the editor for the new resource so we're ready to edit it.
-            updateEditorContent(data);
+          // Set the localStorage last resource ID to the newly created resource.
+          localStorage.setItem('dungeonomicsLastResourceId', data.id);
 
-            // Reset the resourceChildren to blank.
-            setResourceChildren([]);
+          // Set the editor to "edit" mode.
+          setEditorReadOnly(false);
+          setEditButtonText('Done');
 
-            // Set the localStorage last resource ID to the newly created resource.
-            localStorage.setItem('dungeonomicsLastResourceId', data.id);
-
-            // Set the editor to "edit" mode.
-            setEditorReadOnly(false);
-            setEditButtonText('Done');
-          }
-        } else if (requestMethod === "PUT") {
-          // Update the resourceChildren list with the newly updated object.
-          let newResourceChildren = resourceChildren.filter((x) => x.id !== parseInt(data.id));
-          newResourceChildren = [...newResourceChildren, data];
-          newResourceChildren.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1);
-          setResourceChildren(newResourceChildren);
-        } else {
-          const newResourceChildren = [...resourceChildren, data];
-          newResourceChildren.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1);
-          setResourceChildren(newResourceChildren);
+          // Move focus to the editor.
+          focusEditor();
+        } else if (modalAction === "createResourceAttribute") {
+          // Add the new resource attribute to the resource attributes list.
+          let newResourceAttributes = [...resourceAttributes, data];
+          newResourceAttributes.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1);
+          setResourceAttributes(newResourceAttributes);
+          setResourceAttribute(data);
+        } else if (modalAction === "editResource") {
+          // Remove the resource and then add its replacement.
+          let newResources = resources.filter((x) => x.id !== parseInt(data.id));
+          newResources = [...newResources, data];
+          newResources.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1);
+          setResource(data);
+          setResources(newResources);
+          setFilteredResources(newResources);
+        } else if (modalAction === "editResourceAttribute") {
+          // Remove the resource attribute and then add its replacement.
+          let newResourceAttributes = resourceAttributes.filter((x) => x.id !== parseInt(data.id));
+          newResourceAttributes = [...newResourceAttributes, data];
+          newResourceAttributes.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1);
+          setResourceAttributes(newResourceAttributes);
         }
-        // Hide the modal.
-        setShowCreateResourceModal(false);
 
-        // After the resource is created, set the focus to the editor.
-        setTimeout(() => { editorRef.current.focus() }, 500);
+        // Hide the modal.
+        setShowModal(false);
       })
       .then(() => {
         apiRequest('GET', 'http://garrett.dungeonomics.com:8000/resources/groups/', {})
@@ -283,35 +332,55 @@ export default function Dashboard() {
           })
       });
   }
-*/
 
-  function showResourceChildContentRow(show) {
-    const resourceChildContentRow = document.getElementById('resourceChildContentRow');
-    if (show === true) {
-      resourceChildContentRow.classList.remove('d-none');
-    } else {
-      resourceChildContentRow.classList.add('d-none');
+  function deleteResource() {
+    if (window.confirm("Are you sure you want to delete this? It can't be undone.")) {
+      apiRequest(
+        'DELETE',
+        `http://garrett.dungeonomics.com:8000/resources/${resource.id}/delete/`,
+        {}
+      )
+        .then(() => {
+          // Remove the resource from our resource list.
+          const newResources = resources.filter((x) => x.id !== parseInt(resource.id));
+          setResources(newResources);
+          setFilteredResources(newResources);
+          getResourceAttributes(newResources[0]);
+          // Set the new active resource to be the first in our list.
+          setResource(newResources[0]);
+          // Set localStorage resource.
+          localStorage.setItem('dungeonomicsLastResourceId', newResources[0].id);
+
+          // Hide the modal.
+          setShowModal(false);
+        });
     }
   }
 
-  function handleCreateResourceModalShow(event) {
-    setShowCreateResourceModal(true);
-    event.currentTarget.blur();
-  }
+  function deleteResourceAttribute() {
+    if (window.confirm("Are you sure you want to delete this? It can't be undone.")) {
+      apiRequest(
+        'DELETE',
+        `http://garrett.dungeonomics.com:8000/resources/${resourceAttribute.id}/delete/`,
+        {},
+      )
+        .then(() => {
+          // Remove the resource attribute from our resource attributes list.
+          const newResourceAttributes = resourceAttributes.filter((x) => x.id !== parseInt(resourceAttribute.id));
+          setResourceAttributes(newResourceAttributes);
 
-  function handleCreateResourceAttributeModalShow(event) {
-    setShowCreateResourceAttributeModal(true);
-    event.currentTarget.blur();
+          // Hide the modal.
+          setShowModal(false);
+        });
+    }
   }
 
   function getResourceFromId(id) {
     return resources.find((x) => x.id === parseInt(id));
   }
 
-  function getResourceTagNames(resource) {
-    const resourceTagNames = resource.groups.map(x => x.name);
-    console.log('resourceTagNames', resourceTagNames);
-    return resourceTagNames.join(', ');
+  function getResourceAttributeFromId(id) {
+    return resourceAttributes.find((x) => x.id === parseInt(id));
   }
 
   function updateEditorContent(resource) {
@@ -324,14 +393,14 @@ export default function Dashboard() {
     }
   }
 
-  function getResourceChildren(resource) {
+  function getResourceAttributes(resource) {
     apiRequest(
       'GET',
-      `http://garrett.dungeonomics.com:8000/resources/${resource.id}/children/`,
+      `http://garrett.dungeonomics.com:8000/resources/${resource.id}/attributes/`,
       {}
     )
       .then(data => {
-        setResourceChildren(data);
+        setResourceAttributes(data);
       })
   }
 
@@ -340,7 +409,7 @@ export default function Dashboard() {
     setResource(resource);
     localStorage.setItem('dungeonomicsLastResourceId', resource.id);
     updateEditorContent(resource);
-    getResourceChildren(resource);
+    getResourceAttributes(resource);
   }
 
   function toggleResources() {
@@ -349,6 +418,70 @@ export default function Dashboard() {
     resourceListRow.classList.toggle('d-none');
     resourceListParentContainer.classList.toggle('h-50');
     resourceListParentContainer.classList.toggle('h-lg-100');
+  }
+
+  function handleModalKeyPress(event) {
+    // Save/create the new resource when the user hits Enter.
+    if (event.charCode === 13) {
+      saveResource();
+    }
+  }
+
+  function ResourceNameInput() {
+    if (["createResourceAttribute", "editResourceAttribute"].includes(modalAction)) {
+      return (
+        <Form.Group as={Row} className="mb-3" controlId="resourceName">
+          <Form.Label column="sm" sm={2}>
+            Name
+          </Form.Label>
+          <Col sm={10}>
+            <Typeahead
+              defaultInputValue={modalAction === "editResourceAttribute" ? resourceAttribute.name : ''}
+              id="resource-name-suggestion-dropdown"
+              placeholder="Resource name (e.g., Strength)"
+              minLength={1}
+              highlightOnlyResult={true}
+              options={resourceNameSuggestionOptions}
+              size="sm"
+              onChange={(selected) => setResourceName(selected[0])}
+              onInputChange={(e) => setResourceName(e)}
+              inputProps={{
+                className: 'form-control form-control-dark',
+                id: 'resourceName',
+              }}
+            />
+          </Col>
+        </Form.Group>
+      );
+    } else {
+      function getDefaultValue() {
+        if (modalAction === "editResource") {
+          return resource.name;
+        } else if (modalAction === "editResourceAttribute") {
+          return resourceAttribute.name;
+        } else {
+          return '';
+        }
+      }
+      return (
+        <Form.Group as={Row} className="mb-3" controlId="resourceName">
+          <Form.Label column="sm" sm={2}>
+            Name
+          </Form.Label>
+          <Col sm={10}>
+            <Form.Control
+              className="form-control-dark"
+              defaultValue={getDefaultValue()}
+              onChange={e => setResourceName(e.target.value)}
+              onKeyPress={handleModalKeyPress}
+              placeholder="Resource name (e.g., My Epic Campaign)"
+              size="sm"
+              type="text"
+            />
+          </Col>
+        </Form.Group>
+      );
+    }
   }
 
   const resourceList = filteredResources.map((x) =>
@@ -363,14 +496,20 @@ export default function Dashboard() {
     </Button>
   );
 
-  const resourceChildrenList = resourceChildren.map((x) =>
+  const resourceParentList = resources.map((x) =>
+    <option value={x.id} key={x.id}>
+      {x.name}
+    </option>
+  );
+
+  const resourceAttributesList = resourceAttributes.map((x) =>
     <Row key={x.id}>
       <Col xs="auto">
         <Button
           className="p-0"
           variant="link"
-          onClick={handleCreateResourceModalShow}
-          data-child={x.id}
+          onClick={handleModalShowEditResourceAttribute}
+          data-id={x.id}
         >
           {x.name}
         </Button>
@@ -390,7 +529,7 @@ export default function Dashboard() {
     </Tooltip>
   );
 
-  const createResourceChildTooltip = (props) => (
+  const createResourceAttributeTooltip = (props) => (
     <Tooltip {...props}>
       <p>Create a new attribute for this resource.</p>
       <p className="mb-0">Resource attributes can be things like <span className="fw-bold">strength</span>, <span className="fw-bold">dexterity</span>, <span className="fw-bold">charisma</span>, <span className="fw-bold">height</span>, <span className="fw-bold">race</span>, <span className="fw-bold">damage vulnerabilities</span>, <span className="fw-bold">size</span>, or anything else related to this resource.</p>
@@ -429,6 +568,40 @@ export default function Dashboard() {
     </Tooltip>
   );
 
+  const resourceParentTooltip = (props) => (
+    <Tooltip {...props}>
+      <p>If this resource belongs by itself and is not related to a resource you've already created, leave the Resource Parent blank.</p>
+      <p className="mb-0">If this resource is an attribute or subset of an existing resource you've created, set that previously created resource as the Resource Parent.</p>
+    </Tooltip>
+  );
+
+  const resourceTagsTooltip = (props) => (
+    <Tooltip {...props}>
+      <p>Tags are used to group similar resources. You can search for tags in the resource list search bar by typing a hashtag and then the tag name. Example: #monsters</p>
+      <p className="mb-0">Enter the tag names without hashtags. If you have multiple tags to apply, separate them with a comma. New tags will be created, existing tags will have this resource added to them.</p>
+    </Tooltip>
+  );
+
+  const closeModalTooltip = (props) => (
+    <Tooltip {...props}>
+      <p className="mb-0">Close this modal without saving the resource.</p>
+    </Tooltip>
+  );
+
+  function ModalTitle() {
+    if (modalAction === "createResource") {
+      return "Create a new resource";
+    } else if (modalAction === "editResource") {
+      return "Edit resource";
+    } else if (modalAction === "createResourceAttribute") {
+      return "Create a new resource attribute";
+    } else if (modalAction === "editResourceAttribute") {
+      return "Edit resource attribute";
+    } else {
+      return null;
+    }
+  }
+
   useEffect(() => {
     apiRequest('GET', 'http://garrett.dungeonomics.com:8000/resources/', {})
       .then(data => {
@@ -446,7 +619,7 @@ export default function Dashboard() {
         }
         setResource(lastResource);
         updateEditorContent(lastResource);
-        getResourceChildren(lastResource);
+        getResourceAttributes(lastResource);
       })
 
     apiRequest('GET', 'http://garrett.dungeonomics.com:8000/resources/groups/', {})
@@ -479,7 +652,7 @@ export default function Dashboard() {
                   className="me-1"
                   size="sm"
                   variant="dark"
-                  onClick={handleCreateResourceModalShow}
+                  onClick={handleModalShowCreateResource}
                 >
                   <FontAwesomeIcon icon={faPlus} fixedWidth />
                 </Button>
@@ -515,7 +688,7 @@ export default function Dashboard() {
                 <Button
                   className="btn-h4"
                   variant="link"
-                  onClick={handleCreateResourceModalShow}
+                  onClick={handleModalShowEditResource}
                   data-resource={resource.id}
                 >
                   {resource.name}
@@ -525,13 +698,13 @@ export default function Dashboard() {
             <Col xs="auto">
               <OverlayTrigger
                 placement="bottom"
-                overlay={createResourceChildTooltip}
+                overlay={createResourceAttributeTooltip}
               >
                 <Button
                   size="sm"
                   variant="dark"
                   data-parent={resource.id}
-                  onClick={handleCreateResourceAttributeModalShow}
+                  onClick={handleModalShowCreateResourceAttribute}
                   className="me-1"
                 >
                   <FontAwesomeIcon icon={faPlus} fixedWidth />
@@ -555,7 +728,7 @@ export default function Dashboard() {
             <Col>
               <Row className="mb-3">
                 <Col>
-                  {resourceChildrenList}
+                  {resourceAttributesList}
                 </Col>
               </Row>
               <Row>
@@ -643,28 +816,122 @@ export default function Dashboard() {
                 </Col>
               </Row>
 
-              <CreateResourceModal
-                focusEditor={focusEditor}
-                handleClose={handleCreateResourceModalClose}
-                handleSetEditButtonText={handleSetEditButtonText}
-                handleSetEditorReadOnly={handleSetEditorReadOnly}
-                handleSetFilteredResources={handleSetFilteredResources}
-                handleSetResource={handleSetResource}
-                handleSetResourceChildren={handleSetResourceChildren}
-                handleSetResources={handleSetResources}
-                resources={resources}
-                show={showCreateResourceModal}
-                updateEditorContent={updateEditorContent}
-              />
-
-              <CreateResourceAttributeModal
-                handleClose={handleCreateResourceAttributeModalClose}
-                handleSetResourceChildren={handleSetResourceChildren}
-                resources={resources}
-                resourceChildren={resourceChildren}
-                parent={resource}
-                show={showCreateResourceAttributeModal}
-              />
+              <Modal
+                show={showModal}
+                onEntered={onModalEntered}
+                onHide={handleModalClose}
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title><ModalTitle /></Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <Form.Group
+                    as={Row}
+                    className={`mb-3 ${showResourceParentSelect === true ? '' : 'd-none'}`}
+                    controlId="resourceParent"
+                  >
+                    <Form.Label column="sm" sm={4}>
+                      <OverlayTrigger
+                        placement="bottom"
+                        overlay={resourceParentTooltip}
+                        className="me-1"
+                      >
+                        <Button variant="link" className="p-0 me-1">
+                          <FontAwesomeIcon icon={faQuestionCircle} fixedWidth />
+                        </Button>
+                      </OverlayTrigger>
+                      <span className="align-middle">Resource parent</span>
+                    </Form.Label>
+                    <Col sm={8}>
+                      <Form.Select
+                        className="form-control-dark"
+                        size="sm"
+                        defaultValue={resource.id}
+                      >
+                        <option value={0}>---</option>
+                        {resourceParentList}
+                      </Form.Select>
+                    </Col>
+                  </Form.Group>
+                  {ResourceNameInput()}
+                  <Form.Group
+                    as={Row}
+                    className={`mb-3 ${showResourceValueInput === true ? '' : 'd-none'}`}
+                    controlId="resourceValue"
+                  >
+                    <Form.Label column="sm" sm={2}>
+                      Value
+                    </Form.Label>
+                    <Col sm={10}>
+                      <Form.Control
+                        defaultValue={modalAction === "editResourceAttribute" ? resourceAttribute.content : ''}
+                        size="sm"
+                        type="text"
+                        placeholder="Resource value (e.g., 18)"
+                        className="form-control-dark"
+                        onChange={(e) => setResourceAttributeValue(e.target.value)}
+                        onKeyPress={handleModalKeyPress}
+                      />
+                    </Col>
+                  </Form.Group>
+                  <Form.Group
+                    as={Row}
+                    className={`mb-3 ${showResourceTagsInput === true ? '' : 'd-none'}`}
+                    controlId="resourceTags"
+                  >
+                    <Form.Label column="sm" sm={2}>
+                      <OverlayTrigger
+                        placement="bottom"
+                        overlay={resourceTagsTooltip}
+                        className="me-1"
+                      >
+                        <Button variant="link" className="p-0 me-1">
+                          <FontAwesomeIcon icon={faQuestionCircle} fixedWidth />
+                        </Button>
+                      </OverlayTrigger>
+                      <span className="align-middle">Tags</span>
+                    </Form.Label>
+                    <Col sm={10}>
+                      <Form.Control
+                        className="form-control-dark"
+                        defaultValue={modalAction === "editResource" ? resource.groups : ''}
+                        onChange={e => setResourceTags(e.target.value)}
+                        onKeyPress={handleModalKeyPress}
+                        placeholder="Tags, separated by commas (e.g., campaign, new)"
+                        size="sm"
+                        type="text"
+                      />
+                    </Col>
+                  </Form.Group>
+                </Modal.Body>
+                <Modal.Footer>
+                  <OverlayTrigger
+                    placement="bottom"
+                    overlay={closeModalTooltip}
+                  >
+                    <Button size="sm" variant="secondary" onClick={handleModalClose}>
+                      Close
+                    </Button>
+                  </OverlayTrigger>
+                  <Button
+                    onClick={deleteResourceAttribute}
+                    className={showDeleteResourceButton === true ? '' : 'd-none'}
+                    size="sm"
+                    variant="danger"
+                  >
+                    Delete
+                  </Button>
+                  <Button
+                    id="modalSubmit"
+                    className="ms-auto"
+                    size="sm"
+                    variant="primary"
+                    onClick={saveResource}
+                  >
+                    Create
+                  </Button>
+                </Modal.Footer>
+              </Modal>
 
             </Col>
           </Row>
