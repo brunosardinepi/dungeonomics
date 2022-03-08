@@ -86,7 +86,7 @@ export default function Dashboard() {
       // Look for items in resource groups whose name matches the query.
       // Get all resource groups whose name matches the current query.
       const filteredResourceGroups = resourceGroups.filter((x) => {
-        return x.name.toLowerCase().includes(query);
+        return x.name.toLowerCase().startsWith(query);
       });
       // For each filtered group, get the corresponding resources (once) and
       // add to the filtered resources list.
