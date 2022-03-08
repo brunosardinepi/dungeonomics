@@ -46,7 +46,7 @@ export default function Dashboard() {
   const [editorReadOnly, setEditorReadOnly] = useState(true);
   const [editButtonText, setEditButtonText] = useState('Edit');
 
-  const [resource, setResource] = useState({});
+  const [resource, setResource] = useState({'id': 0, 'name': ''});
   const [resources, setResources] = useState([]);
   const [resourceName, setResourceName] = useState('');
   const [resourceTags, setResourceTags] = useState('');
@@ -345,11 +345,17 @@ export default function Dashboard() {
           const newResources = resources.filter((x) => x.id !== parseInt(resource.id));
           setResources(newResources);
           setFilteredResources(newResources);
-          getResourceAttributes(newResources[0]);
-          // Set the new active resource to be the first in our list.
-          setResource(newResources[0]);
-          // Set localStorage resource.
-          localStorage.setItem('dungeonomicsLastResourceId', newResources[0].id);
+          if (newResources.length > 0) {
+            getResourceAttributes(newResources[0]);
+            // Set the new active resource to be the first in our list.
+            setResource(newResources[0]);
+            // Set localStorage resource.
+            localStorage.setItem('dungeonomicsLastResourceId', newResources[0].id);
+          } else {
+            setResourceAttributes([]);
+            setResource({});
+            localStorage.setItem('dungeonomicsLastResourceId', null);
+          }
 
           // Hide the modal.
           setShowModal(false);
@@ -367,7 +373,11 @@ export default function Dashboard() {
         .then(() => {
           // Remove the resource attribute from our resource attributes list.
           const newResourceAttributes = resourceAttributes.filter((x) => x.id !== parseInt(resourceAttribute.id));
-          setResourceAttributes(newResourceAttributes);
+          if (newResourceAttributes.length > 0) {
+            setResourceAttributes(newResourceAttributes);
+          } else {
+            setResourceAttributes([]);
+          }
 
           // Hide the modal.
           setShowModal(false);
@@ -545,19 +555,19 @@ export default function Dashboard() {
 
   const editResourceTooltip = (props) => (
     <Tooltip {...props}>
-      <p className="mb-0">Click to edit {resource.name}</p>
+      <p className="mb-0">Click to edit this resource.</p>
     </Tooltip>
   );
 
   const draftEditorEditButtonTooltip = (props) => (
     <Tooltip {...props}>
-      <p className="mb-0">Click to enable editing for {resource.name}'s content in the editor below.</p>
+      <p className="mb-0">Click to enable editing for this resource's content in the editor below.</p>
     </Tooltip>
   );
 
   const draftEditorSaveButtonTooltip = (props) => (
     <Tooltip {...props}>
-      <p className="mb-0">Click to save {resource.name}'s content in the editor below.</p>
+      <p className="mb-0">Click to save this resources's content in the editor below.</p>
     </Tooltip>
   );
 
@@ -605,21 +615,23 @@ export default function Dashboard() {
   useEffect(() => {
     apiRequest('GET', 'http://garrett.dungeonomics.com:8000/resources/', {})
       .then(data => {
-        setResources(data);
-        setFilteredResources(data);
+        if (data.length > 0) {
+          setResources(data);
+          setFilteredResources(data);
 
-        // Get the last object in localStorage.
-        const lastResourceId = localStorage.getItem('dungeonomicsLastResourceId');
-        let lastResource = null;
-        if (lastResourceId !== null) {
-          lastResource = data.find((x) => x.id === parseInt(lastResourceId));
+          // Get the last object in localStorage.
+          const lastResourceId = localStorage.getItem('dungeonomicsLastResourceId');
+          let lastResource = null;
+          if (lastResourceId !== null) {
+            lastResource = data.find((x) => x.id === parseInt(lastResourceId));
+          }
+          if (data.length > 0 && typeof lastResource === 'undefined') {
+            lastResource = data[0];
+          }
+          setResource(lastResource);
+          updateEditorContent(lastResource);
+          getResourceAttributes(lastResource);
         }
-        if (data.length > 0 && typeof lastResource === 'undefined') {
-          lastResource = data[0];
-        }
-        setResource(lastResource);
-        updateEditorContent(lastResource);
-        getResourceAttributes(lastResource);
       })
 
     apiRequest('GET', 'http://garrett.dungeonomics.com:8000/resources/groups/', {})
@@ -689,7 +701,6 @@ export default function Dashboard() {
                   className="btn-h4"
                   variant="link"
                   onClick={handleModalShowEditResource}
-                  data-resource={resource.id}
                 >
                   {resource.name}
                 </Button>
@@ -703,7 +714,6 @@ export default function Dashboard() {
                 <Button
                   size="sm"
                   variant="dark"
-                  data-parent={resource.id}
                   onClick={handleModalShowCreateResourceAttribute}
                   className="me-1"
                 >
