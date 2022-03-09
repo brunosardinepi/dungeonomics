@@ -1,0 +1,65 @@
+[
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$260000$AFYjgadoMGBMeGAnCOOL9k$sX16JAVbcgx+SxZhKQSVAzZygXiw7rSKz7kxqS1BLOI=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "example",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2022-03-08T21:16:49.750Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "resources.resource",
+  "pk": 1,
+  "fields": {
+    "content": "{\"blocks\":[{\"key\":\"asrl3\",\"text\":\"This is an example of a campaign in Dungeonomics. All Dungeonomics assets are called resources and can be anything from campaigns to monsters, NPCs, items, spells, and tables. Each resource has resource attributes that provide quick information about the resource. For resources like monsters or PCs, they may have attributes like Strength, Constitution, Size, Personality, or HP. For resources like spells, they may have attributes like Casting Time, Range, and Duration. There's no limit to what you can add as a resource and attributes.\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":85,\"length\":10,\"style\":\"BOLD\"}],\"entityRanges\":[],\"data\":{}},{\"key\":\"2ljl4\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}},{\"key\":\"21tph\",\"text\":\"All resources have a content section, which is the area that you're reading now. Content has functions like bold, italic, underline, and code, plus a system for mentioning other resources with the @ symbol. Resources that are mentioned in content are clickable and quickly take you to the mentioned resource.\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":108,\"length\":4,\"style\":\"BOLD\"},{\"offset\":197,\"length\":1,\"style\":\"BOLD\"},{\"offset\":114,\"length\":6,\"style\":\"ITALIC\"},{\"offset\":122,\"length\":9,\"style\":\"UNDERLINE\"},{\"offset\":137,\"length\":4,\"style\":\"CODE\"}],\"entityRanges\":[],\"data\":{}},{\"key\":\"5ign3\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}},{\"key\":\"6mgnk\",\"text\":\"If you want to save the content you've written, click the Save button in the top left corner of the content area. When you're done editing content, click the Done button in the top left to lock the editor. This will allow the mentioned resources to be clicked since they're no longer being edited.\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":58,\"length\":4,\"style\":\"BOLD\"},{\"offset\":158,\"length\":5,\"style\":\"BOLD\"}],\"entityRanges\":[],\"data\":{}},{\"key\":\"fimek\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}},{\"key\":\"1npie\",\"text\":\"You can search for resources in the left column by simply typing their name. You can also set tags on resources and then search for all resources with a specific tag by searching with the hashtag. For example, to search for all resources who have the monster tag, you would search for #monster.\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":251,\"length\":8,\"style\":\"BOLD\"},{\"offset\":285,\"length\":8,\"style\":\"BOLD\"}],\"entityRanges\":[],\"data\":{}},{\"key\":\"a7u99\",\"text\":\"\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}},{\"key\":\"3dn60\",\"text\":\"To get started, click the plus icon to the right of the search bar to create your first resource.\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[{\"offset\":0,\"length\":97,\"style\":\"BOLD\"},{\"offset\":0,\"length\":97,\"style\":\"UNDERLINE\"}],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
+    "created_at": "2022-03-08T21:18:49.151Z",
+    "name": "Example Campaign",
+    "user": 2,
+    "parent": null
+  }
+},
+{
+  "model": "resources.resource",
+  "pk": 2,
+  "fields": {
+    "content": "January 1, 2023 @ 8:00 PM",
+    "created_at": "2022-03-08T21:19:54.393Z",
+    "name": "Next session",
+    "user": 2,
+    "parent": 1
+  }
+},
+{
+  "model": "resources.resource",
+  "pk": 3,
+  "fields": {
+    "content": "Jim, Pam, Dwight",
+    "created_at": "2022-03-08T21:19:54.393Z",
+    "name": "Party members",
+    "user": 2,
+    "parent": 1
+  }
+},
+{
+  "model": "resources.resource",
+  "pk": 4,
+  "fields": {
+    "content": "Dwight ate the Beet of Power and defeated the goblin king singlehandedly.",
+    "created_at": "2022-03-08T21:19:54.393Z",
+    "name": "Last stopping point",
+    "user": 2,
+    "parent": 1
+  }
+}
+]
+

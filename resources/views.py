@@ -23,10 +23,17 @@ class ResourceAttributesList(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return models.Resource.objects.filter(
-            user=self.request.user,
-            parent__pk=self.kwargs['pk'],
-        )
+        if self.kwargs['pk'] == 1:
+            resources = models.Resource.objects.filter(
+                user__username="example",
+                parent__pk=self.kwargs['pk'],
+            )
+        else:
+            resources = models.Resource.objects.filter(
+                user=self.request.user,
+                parent__pk=self.kwargs['pk'],
+            )
+        return resources
 
 class ResourceCreate(generics.CreateAPIView):
     queryset = models.Resource.objects.all()
@@ -34,10 +41,14 @@ class ResourceCreate(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        print("self.request", self.request)
-        print("self.request.data", self.request.data)
         if "parent" in self.request.data and self.request.data['parent'] != "":
-            parent = models.Resource.objects.get(pk=self.request.data['parent'])
+            try:
+                parent = models.Resource.objects.get(
+                    user=self.request.user,
+                    pk=self.request.data['parent'],
+                )
+            except models.Resource.DoesNotExist:
+                return
         else:
             parent = None
 
@@ -47,19 +58,17 @@ class ResourceCreate(generics.CreateAPIView):
         )
 
         if "tags" in self.request.data:
-            print(self.request.data['tags'])
-            print(f"resource = {resource}")
             tags = self.request.data['tags'].split(",")
-            print(f"tags = {tags}")
             tags = [i.strip() for i in tags]
-            print(f"tags = {tags}")
             for tag in tags:
                 assign_resource_to_group(resource, tag)
 
 class ResourceDelete(generics.DestroyAPIView):
-    queryset = models.Resource.objects.all()
     serializer_class = serializers.ResourceSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return models.Resource.objects.filter(user=self.request.user)
 
 class ResourceDetail(generics.RetrieveAPIView):
     serializer_class = serializers.ResourceSerializer
@@ -80,10 +89,16 @@ class ResourceList(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return models.Resource.objects.filter(
+        resources = models.Resource.objects.filter(
             user=self.request.user,
             parent__isnull=True,
         )
+        if not resources:
+            resources = models.Resource.objects.filter(
+                user__username="example",
+                parent__isnull=True,
+            )
+        return resources
 
 class ResourceUpdate(generics.UpdateAPIView):
     serializer_class = serializers.ResourceSerializer
@@ -93,10 +108,14 @@ class ResourceUpdate(generics.UpdateAPIView):
         return models.Resource.objects.filter(user=self.request.user)
 
     def perform_update(self, serializer):
-        print("self.request", self.request)
-        print("self.request.data", self.request.data)
         if "parent" in self.request.data and self.request.data['parent'] != "":
-            parent = models.Resource.objects.get(pk=self.request.data['parent'])
+            try:
+                parent = models.Resource.objects.get(
+                    user=self.request.user,
+                    pk=self.request.data['parent'],
+                )
+            except models.Resource.DoesNotExist:
+                return
         else:
             parent = None
 
@@ -106,11 +125,7 @@ class ResourceUpdate(generics.UpdateAPIView):
         )
 
         if "tags" in self.request.data:
-            print(self.request.data['tags'])
-            print(f"resource = {resource}")
             tags = self.request.data['tags'].split(",")
-            print(f"tags = {tags}")
             tags = [i.strip() for i in tags]
-            print(f"tags = {tags}")
             for tag in tags:
                 assign_resource_to_group(resource, tag)
