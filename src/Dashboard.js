@@ -240,6 +240,7 @@ export default function Dashboard() {
   }
 
   function saveResource() {
+    if (resource.id === 1 && modalAction !== "createResource") { return; }
     let method, url, postData;
     if (modalAction === "createResource") {
       method = "POST";
@@ -282,6 +283,14 @@ export default function Dashboard() {
           // Add the new resource to the resources list in a non-mutative way.
           let newResources = [...resources, data];
           newResources.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1);
+
+          // If this is the user's first resource, remove the PK 1 resource example.
+          const exampleResourceCheck = newResources.filter((x) => x.id === 1);
+          if (exampleResourceCheck.length > 0) {
+            // Remove the PK 1 resource example.
+            newResources = newResources.filter((x) => x.id !== 1);
+          }
+
           setResources(newResources);
           setFilteredResources(newResources);
 
@@ -352,9 +361,16 @@ export default function Dashboard() {
             // Set localStorage resource.
             localStorage.setItem('dungeonomicsLastResourceId', newResources[0].id);
           } else {
-            setResourceAttributes([]);
-            setResource({});
-            localStorage.setItem('dungeonomicsLastResourceId', null);
+            // The user has no resources left, so get the example resource.
+            apiRequest('GET', 'http://garrett.dungeonomics.com:8000/resources/', {})
+              .then(data => {
+                setResources(data);
+                setFilteredResources(data);
+                setResource(data[0]);
+                updateEditorContent(data[0]);
+                getResourceAttributes(data[0]);
+                localStorage.setItem('dungeonomicsLastResourceId', data[0].id);
+              });
           }
 
           // Hide the modal.
@@ -615,23 +631,22 @@ export default function Dashboard() {
   useEffect(() => {
     apiRequest('GET', 'http://garrett.dungeonomics.com:8000/resources/', {})
       .then(data => {
-        if (data.length > 0) {
-          setResources(data);
-          setFilteredResources(data);
+        setResources(data);
+        setFilteredResources(data);
 
-          // Get the last object in localStorage.
-          const lastResourceId = localStorage.getItem('dungeonomicsLastResourceId');
-          let lastResource = null;
-          if (lastResourceId !== null) {
-            lastResource = data.find((x) => x.id === parseInt(lastResourceId));
-          }
-          if (data.length > 0 && typeof lastResource === 'undefined') {
-            lastResource = data[0];
-          }
-          setResource(lastResource);
-          updateEditorContent(lastResource);
-          getResourceAttributes(lastResource);
+        // Get the last object in localStorage.
+        const lastResourceId = localStorage.getItem('dungeonomicsLastResourceId');
+        let lastResource;
+        if (lastResourceId !== 'null') {
+          lastResource = data.find((x) => x.id === parseInt(lastResourceId));
+        } else if (data.length > 0) {
+          lastResource = data[0];
+        } else {
+          lastResource = null;
         }
+        setResource(lastResource);
+        updateEditorContent(lastResource);
+        getResourceAttributes(lastResource);
       })
 
     apiRequest('GET', 'http://garrett.dungeonomics.com:8000/resources/groups/', {})
