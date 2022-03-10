@@ -372,6 +372,7 @@ export default function Dashboard() {
             getResourceAttributes(newResources[0]);
             // Set the new active resource to be the first in our list.
             setResource(newResources[0]);
+            updateEditorContent(newResources[0]);
             // Set localStorage resource.
             localStorage.setItem('dungeonomicsLastResourceId', newResources[0].id);
           } else {
