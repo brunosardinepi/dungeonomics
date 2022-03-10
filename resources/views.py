@@ -60,6 +60,7 @@ class ResourceCreate(generics.CreateAPIView):
         if "tags" in self.request.data:
             tags = self.request.data['tags'].split(",")
             tags = [i.strip() for i in tags]
+            tags = [i for i in tags if i]
             for tag in tags:
                 assign_resource_to_group(resource, tag)
 
