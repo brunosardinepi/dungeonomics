@@ -116,6 +116,15 @@ export default function Dashboard() {
     setEditorState(editorState);
   }
 
+  function handleKeyCommand(command, editorState) {
+    const newState = RichUtils.handleKeyCommand(editorState, command);
+    if (newState) {
+      onEditorChange(newState);
+      return 'handled';
+    }
+    return 'not-handled';
+  }
+
   function _onBoldClick() {
     onEditorChange(RichUtils.toggleInlineStyle(editorState, 'BOLD'));
   };
@@ -794,25 +803,25 @@ export default function Dashboard() {
                       onClick={_onBoldClick}
                       variant="dark"
                     >
-                      <span className="fw-bold">B</span>old
+                      <span className="fw-bold text-decoration-underline">B</span>old
                     </Button>
                     <Button
                       onClick={_onItalicClick}
                       variant="dark"
                     >
-                      <span className="fw-bold">I</span>talic
+                      <span className="fw-bold text-decoration-underline">I</span>talic
                     </Button>
                     <Button
                       onClick={_onUnderlineClick}
                       variant="dark"
                     >
-                      <span className="fw-bold">U</span>nderline
+                      <span className="fw-bold text-decoration-underline">U</span>nderline
                     </Button>
                     <Button
                       onClick={_onCodeClick}
                       variant="dark"
                     >
-                      <span className="fw-bold">C</span>ode
+                      Code
                     </Button>
                   </div>
                 </Col>
@@ -828,6 +837,7 @@ export default function Dashboard() {
                     <Editor
                       editorKey={'editor'}
                       editorState={editorState}
+                      handleKeyCommand={handleKeyCommand}
                       onChange={setEditorState}
                       readOnly={editorReadOnly}
                       plugins={plugins}
