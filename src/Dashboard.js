@@ -35,6 +35,7 @@ import { resourceNameSuggestionOptions } from './resourceNameSuggestionOptions.j
 export default function Dashboard() {
   const [showModal, setShowModal] = useState(false);
   const handleModalClose = () => setShowModal(false);
+  const [modalButtonText, setModalButtonText] = useState("Create");
   const [modalAction, setModalAction] = useState(false);
   const [showDeleteResourceButton, setShowDeleteResourceButton] = useState(false);
   const [showResourceParentSelect, setShowResourceParentSelect] = useState(false);
@@ -186,6 +187,7 @@ export default function Dashboard() {
     setShowResourceParentSelect(false);
     setShowResourceValueInput(false);
     setShowResourceTagsInput(true);
+    setModalButtonText("Create");
     setShowModal(true);
     event.currentTarget.blur();
   }
@@ -196,6 +198,7 @@ export default function Dashboard() {
     setShowResourceParentSelect(true);
     setShowResourceValueInput(true);
     setShowResourceTagsInput(false);
+    setModalButtonText("Create");
     setShowModal(true);
     event.currentTarget.blur();
   }
@@ -208,6 +211,7 @@ export default function Dashboard() {
     setShowResourceParentSelect(false);
     setShowResourceValueInput(false);
     setShowResourceTagsInput(true);
+    setModalButtonText("Save");
     setShowModal(true);
     event.currentTarget.blur();
   }
@@ -222,6 +226,7 @@ export default function Dashboard() {
     setShowResourceParentSelect(true);
     setShowResourceValueInput(true);
     setShowResourceTagsInput(false);
+    setModalButtonText("Save");
     setShowModal(true);
     event.currentTarget.blur();
   }
@@ -953,7 +958,7 @@ export default function Dashboard() {
                     variant="primary"
                     onClick={saveResource}
                   >
-                    Create
+                    {modalButtonText}
                   </Button>
                 </Modal.Footer>
               </Modal>
