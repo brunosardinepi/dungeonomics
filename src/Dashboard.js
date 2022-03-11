@@ -42,6 +42,11 @@ export default function Dashboard() {
   const [showResourceValueInput, setShowResourceValueInput] = useState(false);
   const [showResourceTagsInput, setShowResourceTagsInput] = useState(true);
 
+  const [showMentionModal, setShowMentionModal] = useState(false);
+  const handleMentionModalClose = () => setShowMentionModal(false);
+  const [mentionResource, setMentionResource] = useState({'id': 0, 'name': ''});
+  const [mentionResourceAttributes, setMentionResourceAttributes] = useState([]);
+
   const editorRef = useRef(null);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [editorReadOnly, setEditorReadOnly] = useState(true);
@@ -62,6 +67,20 @@ export default function Dashboard() {
   const [suggestions, setSuggestions] = useState([]);
   const { MentionSuggestions, plugins } = useMemo(() => {
     const mentionPlugin = createMentionPlugin({
+      mentionComponent: mentionProps => {
+        return (
+          <span
+            className={mentionProps.className}
+            onClick={() => {
+              setMentionResource(mentionProps.children);
+              getMentionResourceAttributes(mentionProps.mention);
+              setShowMentionModal(true);
+            }}
+          >
+            {mentionProps.children}
+          </span>
+        );
+      },
       entityMutability: 'IMMUTABLE',
       theme: mentionsStyles,
       supportWhitespace: true,
@@ -445,6 +464,17 @@ export default function Dashboard() {
       })
   }
 
+  function getMentionResourceAttributes(resource) {
+    apiRequest(
+      'GET',
+      `http://garrett.dungeonomics.com:8000/resources/${resource.id}/attributes/`,
+      {}
+    )
+      .then(data => {
+        setMentionResourceAttributes(data);
+      })
+  }
+
   function onResourceClick(event) {
     const resource = getResourceFromId(event.target.getAttribute('data-id'));
     setResource(resource);
@@ -559,6 +589,19 @@ export default function Dashboard() {
         <span className="align-middle">
           {x.content}
         </span>
+      </Col>
+    </Row>
+  );
+
+  const mentionResourceAttributesList = mentionResourceAttributes.map((x) =>
+    <Row key={x.id}>
+      <Col xs="auto">
+        <span className="p-0 fw-bold text-white">
+          {x.name}
+        </span>
+      </Col>
+      <Col xs="auto">
+        {x.content}
       </Col>
     </Row>
   );
@@ -972,6 +1015,18 @@ export default function Dashboard() {
                     {modalButtonText}
                   </Button>
                 </Modal.Footer>
+              </Modal>
+
+              <Modal
+                show={showMentionModal}
+                onHide={handleMentionModalClose}
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title>{mentionResource}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  {mentionResourceAttributesList.length > 0 ? mentionResourceAttributesList : "This resource doesn't have any attributes yet."}
+                </Modal.Body>
               </Modal>
 
             </Col>

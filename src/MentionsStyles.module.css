@@ -17,6 +17,7 @@
   box-sizing: border-box;
   transform-origin: 50% 0%;
   transform: scaleY(0);
+  z-index: 1;
 }
 
 .mentionSuggestionsEntryContainer {
