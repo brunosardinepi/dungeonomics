@@ -9,6 +9,7 @@ import './index.css';
 import Dashboard from './Dashboard';
 import Home from './routes/Home';
 import Login from './Login';
+import Signup from './Signup';
 
 export default class App extends React.Component{
   constructor(props) {
@@ -20,7 +21,6 @@ export default class App extends React.Component{
 
   componentDidMount() {
     if (!this.state.logged_in) {
-//      return window.location.href = "/login";
       <Navigate to="/login" replace />
     }
   }
@@ -34,6 +34,7 @@ export default class App extends React.Component{
             <Route path="dashboard" element={<Dashboard />} />
           </Route>
           <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
         </Routes>
       </BrowserRouter>
     );

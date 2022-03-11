@@ -1,35 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
 
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
   const [shouldRedirect, setShouldRedirect] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertText, setAlertText] = useState('');
 
   const handleUsernameChange = (event) => setUsername(event.target.value);
   const handlePasswordChange = (event) => setPassword(event.target.value);
+  const handlePasswordConfirmChange = (event) => setPasswordConfirm(event.target.value);
 
   function handleSubmit() {
     try {
-      fetch('http://garrett.dungeonomics.com:8000/api/token/', {
+      fetch('http://garrett.dungeonomics.com:8000/signup/', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
           username: username,
-          password: password
+          password: password,
+          passwordConfirm: passwordConfirm
         }),
       })
-      .then(response => response.json())
-      .then(data => {
-        localStorage.setItem('dungeonomicsAccessToken', data.access);
-        localStorage.setItem('dungeonomicsRefreshToken', data.refresh);
-        localStorage.setItem('dungeonomicsLastResourceId', null);
-      })
-      .then(() => {
-        setShouldRedirect(true);
+      .then((response) => {
+        console.log(response);
+        if (response.status === 201) {
+          setShouldRedirect(true);
+        } else if (response.status === 499) {
+          setAlertText("A user with that name already exists!");
+          setShowAlert(true);
+        } else {
+          setAlertText("An unknown error has occurred. Please reach out to us if you need help.");
+          setShowAlert(true);
+        }
       });
     } catch (error) {
       throw error;
@@ -40,7 +46,7 @@ export default function Login() {
 
   useEffect(() => {
     if (shouldRedirect === true) {
-      navigate('/dashboard');
+      navigate('/login');
     }
   });
 
@@ -54,6 +60,9 @@ export default function Login() {
               className="mb-3"
               src="/logo_nav.svg"
             />
+            <Alert variant="danger" show={showAlert}>
+              {alertText}
+            </Alert>
             <Form>
               <Form.Control
                 className="form-control-dark mb-2"
@@ -64,17 +73,35 @@ export default function Login() {
                 type="text"
               />
               <Form.Control
-                className="form-control-dark"
+                className="form-control-dark mb-2"
                 name="password"
                 onChange={handlePasswordChange}
                 placeholder="Password"
                 size="sm"
-                type="Password"
+                type="password"
+              />
+              <Form.Control
+                className="form-control-dark"
+                name="passwordConfirm"
+                onChange={handlePasswordConfirmChange}
+                placeholder="Password (again)"
+                size="sm"
+                type="password"
               />
               <div className="d-grid mt-3">
                 <Button
                   className="fw-bold text-uppercase"
                   onClick={handleSubmit}
+                  size="sm"
+                  variant="success"
+                >
+                  Sign up
+                </Button>
+              </div>
+              <div className="d-grid mt-1">
+                <Button
+                  className="fw-bold text-uppercase"
+                  onClick={() => setShouldRedirect(true)}
                   size="sm"
                   variant="danger"
                 >
