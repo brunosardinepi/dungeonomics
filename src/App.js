@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import Dashboard from './Dashboard';
 import Home from './routes/Home';
-import Login from './routes/login';
+import Login from './Login';
 
 export default class App extends React.Component{
   constructor(props) {
