@@ -514,7 +514,11 @@ export default function Dashboard() {
               highlightOnlyResult={true}
               options={resourceNameSuggestionOptions}
               size="sm"
-              onChange={(selected) => setResourceName(selected[0])}
+              onChange={(selected) => {
+                setResourceName(selected[0]);
+                const resourceValueInput = document.getElementById("resourceValue");
+                resourceValueInput.focus();
+              }}
               onInputChange={(e) => setResourceName(e)}
               inputProps={{
                 className: 'form-control form-control-dark',
