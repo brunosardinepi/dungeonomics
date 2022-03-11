@@ -1,6 +1,6 @@
 import React from "react";
 import { Helmet } from "react-helmet";
-import { BrowserRouter, Link, NavLink, Outlet, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Link, Navigate, NavLink, Outlet, Route, Routes } from "react-router-dom";
 import { Button, Container, Navbar, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCogs, faDiceD20 } from '@fortawesome/free-solid-svg-icons';
@@ -14,13 +14,14 @@ export default class App extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
-      logged_in: localStorage.getItem('access_token') ? true : false
+      logged_in: localStorage.getItem('dungeonomicsAccessToken') ? true : false
     };
   }
 
   componentDidMount() {
     if (!this.state.logged_in) {
-      return window.location.href = "/login";
+//      return window.location.href = "/login";
+      <Navigate to="/login" replace />
     }
   }
 

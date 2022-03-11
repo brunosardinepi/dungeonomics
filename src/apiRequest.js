@@ -3,7 +3,7 @@ export default async function apiRequest (method = 'GET', url = '', body = {}) {
   const options = {
     method: method,
     headers: {
-      'Authorization': `Bearer ${localStorage.getItem("access_token")}`,
+      'Authorization': `Bearer ${localStorage.getItem("dungeonomicsAccessToken")}`,
       'Content-Type': 'application/json',
     },
   }

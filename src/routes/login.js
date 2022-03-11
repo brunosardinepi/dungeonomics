@@ -1,26 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button, Col, Form, Row } from 'react-bootstrap';
 
+export default function Login() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [shouldRedirect, setShouldRedirect] = useState(false);
 
-export default class Login extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: "",
-      password: "",
-    };
+  const handleUsernameChange = (event) => setUsername(event.target.value);
+  const handlePasswordChange = (event) => setPassword(event.target.value);
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleChange(event) {
-    this.setState({
-      [event.target.name]: event.target.value,
-    });
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
+  function handleSubmit() {
     try {
       fetch('http://garrett.dungeonomics.com:8000/api/token/', {
         method: 'POST',
@@ -28,41 +18,55 @@ export default class Login extends React.Component {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username: this.state.username,
-          password: this.state.password
+          username: username,
+          password: password
         }),
       })
       .then(response => response.json())
       .then(data => {
-        console.log(data);
-        localStorage.setItem('access_token', data.access);
-        localStorage.setItem('refresh_token', data.refresh);
+        localStorage.setItem('dungeonomicsAccessToken', data.access);
+        localStorage.setItem('dungeonomicsRefreshToken', data.refresh);
+      })
+      .then(() => {
+        setShouldRedirect(true);
       });
     } catch (error) {
       throw error;
     }
   }
 
-  render() {
-    return (
-      <div>
-        <h2>Login</h2>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            name="username"
-            type="text"
-            value={this.state.username}
-            onChange={this.handleChange}
-          />
-          <input
-            name="password"
-            type="password"
-            value={this.state.password}
-            onChange={this.handleChange}
-          />
-          <input type="submit" value="Login" />
-        </form>
-      </div>
-    );
-  }
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (shouldRedirect === true) {
+      navigate('/dashboard');
+    }
+  });
+
+  return (
+    <div>
+      <h2>Login</h2>
+      <Form>
+        <Form.Control
+          className="form-control-dark"
+          name="username"
+          onChange={handleUsernameChange}
+          placeholder="Username"
+          size="sm"
+          type="text"
+        />
+        <Form.Control
+          className="form-control-dark"
+          name="password"
+          onChange={handlePasswordChange}
+          placeholder="Password"
+          size="sm"
+          type="Password"
+        />
+        <Button onClick={handleSubmit}>
+          Login
+        </Button>
+      </Form>
+    </div>
+  );
 }
