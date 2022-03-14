@@ -36,6 +36,12 @@ export default function Login() {
     }
   }
 
+  function handleKeyPress(event) {
+    if (event.charCode === 13) {
+      handleSubmit();
+    }
+  }
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -65,6 +71,7 @@ export default function Login() {
                 id="username"
                 name="username"
                 onChange={handleUsernameChange}
+                onKeyPress={handleKeyPress}
                 placeholder="Username"
                 size="sm"
                 type="text"
@@ -73,6 +80,7 @@ export default function Login() {
                 className="form-control-dark"
                 name="password"
                 onChange={handlePasswordChange}
+                onKeyPress={handleKeyPress}
                 placeholder="Password"
                 size="sm"
                 type="Password"

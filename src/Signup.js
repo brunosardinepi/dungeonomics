@@ -26,7 +26,6 @@ export default function Login() {
         }),
       })
       .then((response) => {
-        console.log(response);
         if (response.status === 201) {
           setShouldRedirect(true);
         } else if (response.status === 499) {
@@ -39,6 +38,12 @@ export default function Login() {
       });
     } catch (error) {
       throw error;
+    }
+  }
+
+  function handleKeyPress(event) {
+    if (event.charCode === 13) {
+      handleSubmit();
     }
   }
 
@@ -74,6 +79,7 @@ export default function Login() {
                 id="username"
                 name="username"
                 onChange={handleUsernameChange}
+                onKeyPress={handleKeyPress}
                 placeholder="Username"
                 size="sm"
                 type="text"
@@ -82,6 +88,7 @@ export default function Login() {
                 className="form-control-dark mb-2"
                 name="password"
                 onChange={handlePasswordChange}
+                onKeyPress={handleKeyPress}
                 placeholder="Password"
                 size="sm"
                 type="password"
@@ -90,6 +97,7 @@ export default function Login() {
                 className="form-control-dark"
                 name="passwordConfirm"
                 onChange={handlePasswordConfirmChange}
+                onKeyPress={handleKeyPress}
                 placeholder="Password (again)"
                 size="sm"
                 type="password"
