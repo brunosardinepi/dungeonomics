@@ -7,7 +7,7 @@ import { faCogs, faDiceD20 } from '@fortawesome/free-solid-svg-icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import Dashboard from './Dashboard';
-import Home from './routes/Home';
+import Home from './Home';
 import Login from './Login';
 import Signup from './Signup';
 
