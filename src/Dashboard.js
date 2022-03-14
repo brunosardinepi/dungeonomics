@@ -202,7 +202,18 @@ export default function Dashboard() {
       {'content': content},
     )
       .then(data => {
-        parseInt(data) === 200 ? highlightEditor('success') : highlightEditor('danger');
+        if ("id" in data) {
+          highlightEditor('success');
+
+          let newResources = resources.filter((x) => x.id !== parseInt(data.id));
+          newResources = [...newResources, data];
+          newResources.sort((a, b) => (a.name.toLowerCase() > b.name.toLowerCase()) ? 1 : -1);
+          setResource(data);
+          setResources(newResources);
+          setFilteredResources(newResources);
+        } else {
+          highlightEditor('danger');
+        }
       });
 
     // Set the last save time.

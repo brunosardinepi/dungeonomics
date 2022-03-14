@@ -20,8 +20,6 @@ export default async function apiRequest (method = 'GET', url = '', body = {}) {
   } else if (response.status >= 200 && response.status < 300) {
     if (method === 'DELETE') {
       return;
-    } else if (method === 'PATCH') {
-      return response.status;
     } else {
       return response.json();
     };
