@@ -44,6 +44,11 @@ export default function Login() {
     }
   });
 
+  useEffect(() => {
+    const usernameInput = document.getElementById("username");
+    usernameInput.focus();
+  }, []);
+
   return (
     <>
       <Container className="h-100">
@@ -57,6 +62,7 @@ export default function Login() {
             <Form>
               <Form.Control
                 className="form-control-dark mb-2"
+                id="username"
                 name="username"
                 onChange={handleUsernameChange}
                 placeholder="Username"
