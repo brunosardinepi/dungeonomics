@@ -80,7 +80,7 @@ export default function Login() {
                 name="username"
                 onChange={handleUsernameChange}
                 onKeyPress={handleKeyPress}
-                placeholder="Username"
+                placeholder="Email"
                 size="sm"
                 type="text"
               />
