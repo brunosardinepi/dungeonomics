@@ -1,37 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Alert, Button, Col, Container, Form, Row } from 'react-bootstrap';
 
 export default function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [shouldRedirect, setShouldRedirect] = useState(false);
+  const [email, setEmail] = useState('');
   const [shouldRedirectToSignup, setShouldRedirectToSignup] = useState(false);
-  const [shouldRedirectToPasswordReset, setShouldRedirectToPasswordReset] = useState(false);
+  const [shouldRedirectToLogin, setShouldRedirectToLogin] = useState(false);
+  const [shouldRedirectToPasswordResetAction, setShouldRedirectToPasswordResetAction] = useState(false);
 
-  const handleUsernameChange = (event) => setUsername(event.target.value);
-  const handlePasswordChange = (event) => setPassword(event.target.value);
+  const handleEmailChange = (event) => setEmail(event.target.value);
 
   function handleSubmit() {
     try {
-      fetch('http://garrett.dungeonomics.com:8000/api/token/', {
+      fetch('http://garrett.dungeonomics.com:8000/app/password-reset/request/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username: username,
-          password: password
+          email: email
         }),
       })
       .then(response => response.json())
-      .then(data => {
-        localStorage.setItem('dungeonomicsAccessToken', data.access);
-        localStorage.setItem('dungeonomicsRefreshToken', data.refresh);
-        localStorage.setItem('dungeonomicsLastResourceId', null);
-      })
-      .then(() => {
-        setShouldRedirect(true);
+      .then((data) => {
+        setShouldRedirectToPasswordResetAction(true);
       });
     } catch (error) {
       throw error;
@@ -47,18 +39,18 @@ export default function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (shouldRedirect === true) {
-      navigate('/dashboard');
-    } else if (shouldRedirectToSignup === true) {
+    if (shouldRedirectToSignup === true) {
       navigate('/signup');
-    } else if (shouldRedirectToPasswordReset === true) {
-      navigate('/password-reset/request');
+    } else if (shouldRedirectToLogin === true) {
+      navigate('/login');
+    } else if (shouldRedirectToPasswordResetAction === true) {
+      navigate('/password-reset/action');
     }
   });
 
   useEffect(() => {
-    const usernameInput = document.getElementById("username");
-    usernameInput.focus();
+    const emailInput = document.getElementById("email");
+    emailInput.focus();
   }, []);
 
   return (
@@ -71,25 +63,25 @@ export default function Login() {
               className="mb-3"
               src="/logo_nav.svg"
             />
+            <Alert variant="info">
+              <p className="mb-0">
+                When you click "send password reset code," we'll email you a
+                password reset code and redirect you to the password reset form.
+                Paste your password reset code from your email into the form and
+                enter a new password. When finished, we'll redirect you to sign in
+                with your new password.
+              </p>
+            </Alert>
             <Form>
               <Form.Control
                 className="form-control-dark mb-2"
-                id="username"
-                name="username"
-                onChange={handleUsernameChange}
+                id="email"
+                name="email"
+                onChange={handleEmailChange}
                 onKeyPress={handleKeyPress}
                 placeholder="Email"
                 size="sm"
                 type="text"
-              />
-              <Form.Control
-                className="form-control-dark"
-                name="password"
-                onChange={handlePasswordChange}
-                onKeyPress={handleKeyPress}
-                placeholder="Password"
-                size="sm"
-                type="Password"
               />
               <div className="d-grid mt-3 mb-1">
                 <Button
@@ -98,7 +90,23 @@ export default function Login() {
                   size="sm"
                   variant="danger"
                 >
-                  Log in
+                  Send password reset code
+                </Button>
+              </div>
+              <div className="d-grid">
+                <Button
+                  onClick={() => setShouldRedirectToPasswordResetAction(true)}
+                  variant="link"
+                >
+                  I have a password reset code
+                </Button>
+              </div>
+              <div className="d-grid">
+                <Button
+                  onClick={() => setShouldRedirectToLogin(true)}
+                  variant="link"
+                >
+                  Go to login
                 </Button>
               </div>
               <div className="d-grid">
@@ -107,14 +115,6 @@ export default function Login() {
                   variant="link"
                 >
                   Go to signup
-                </Button>
-              </div>
-              <div className="d-grid">
-                <Button
-                  onClick={() => setShouldRedirectToPasswordReset(true)}
-                  variant="link"
-                >
-                  Reset my password
                 </Button>
               </div>
             </Form>

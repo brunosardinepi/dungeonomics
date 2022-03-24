@@ -9,6 +9,8 @@ import './index.css';
 import Dashboard from './Dashboard';
 import Home from './Home';
 import Login from './Login';
+import PasswordResetAction from './PasswordResetAction';
+import PasswordResetRequest from './PasswordResetRequest';
 import Signup from './Signup';
 
 export default class App extends React.Component{
@@ -34,6 +36,8 @@ export default class App extends React.Component{
             <Route path="dashboard" element={<Dashboard />} />
           </Route>
           <Route path="login" element={<Login />} />
+          <Route path="password-reset/action" element={<PasswordResetAction />} />
+          <Route path="password-reset/request" element={<PasswordResetRequest />} />
           <Route path="signup" element={<Signup />} />
         </Routes>
       </BrowserRouter>
