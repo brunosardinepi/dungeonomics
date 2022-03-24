@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'resources',
+    'app',
 ]
 
 MIDDLEWARE = [
@@ -109,3 +110,12 @@ CORS_ALLOWED_ORIGINS = environ.secrets['cors_allowed_origins']
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
 }
+
+# email
+EMAIL_BACKEND = environ.secrets['email_backend']
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'email-smtp.us-east-1.amazonaws.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = environ.secrets['email_user']
+EMAIL_HOST_PASSWORD = environ.secrets['email_password']
+DEFAULT_FROM_EMAIL = environ.secrets['email_from']
