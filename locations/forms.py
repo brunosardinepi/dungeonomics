@@ -12,6 +12,10 @@ class WorldForm(forms.ModelForm):
             'content',
         ]
 
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request')
+        super().__init__(*args, **kwargs)
+
 class LocationForm(forms.ModelForm):
     class Meta:
         model = models.Location
@@ -24,9 +28,11 @@ class LocationForm(forms.ModelForm):
         ]
 
     def __init__(self, user_pk, world_pk, location_pk, *args, **kwargs):
-        super (LocationForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields['world'].queryset = models.World.objects.filter(user=user_pk)
-        self.fields['parent_location'].queryset = models.Location.objects.filter(world=world_pk)
+        self.fields['parent_location'].queryset = models.Location.objects.filter(
+            world=world_pk,
+        )
 
 LocationFormSet = forms.modelformset_factory(
     models.Location,

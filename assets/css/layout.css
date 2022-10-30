@@ -142,7 +142,30 @@ nav a.link-light:hover  {
     position: sticky;
   }
 }
-
+.fs-sm-1 {
+  font-size: 2.5rem !important;
+}
+.fs-sm-2 {
+  font-size: 2rem !important;
+}
+.fs-sm-3 {
+  font-size: 1.75rem !important;
+}
+.fs-sm-4 {
+  font-size: 1.5rem !important;
+}
+.fs-sm-5 {
+  font-size: 1.25rem !important;
+}
+@media (min-width:768px){
+  .fs-sm-1,
+  .fs-sm-2,
+  .fs-sm-3,
+  .fs-sm-4,
+  .fs-sm-5 {
+    font-size: 1rem !important;
+  }
+}
 
 
  /* Chrome, Safari, Edge, Opera */

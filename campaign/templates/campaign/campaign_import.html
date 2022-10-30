@@ -1,11 +1,11 @@
-{% extends 'campaign/layout.html' %}
+{% extends 'layout.html' %}
 
 {% load widget_tweaks %}
 
 {% block title %}Import campaign | {{ block.super }}{% endblock %}
 
-{% block campaign_content %}
-  <p class="mb-3 fw-bold">Import campaign</p>
+{% block body_content %}
+  <p class="my-3 fw-bold">Import campaign</p>
   <p>Paste the ID you got from an <span class="fw-bold">exported campaign</span>, and then click "Import" to create a copy of that campaign in your account.</p>
   <form method="POST" action="">
     {% csrf_token %}
@@ -21,7 +21,11 @@
             type="text"
             class="form-control form-control-sm form-control-dark"
             placeholder="Campaign ID"
-            value="" />
+            {% if campaign %}
+              value="{{ campaign.public_url }}" />
+            {% else %}
+              value="" />
+            {% endif %}
       </div>
       <div class="col-sm-auto mt-1 mt-sm-0">
         <div class="d-grid gap-2">

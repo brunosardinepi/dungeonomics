@@ -4,126 +4,96 @@
 
 
 {% block title %}
-    {% if location.pk %}
-        Update location 
-    {% else %}
-        New location 
-    {% endif %}
-    | {{ block.super }}
-{% endblock %}
-
-{% block head_extra %}
-    {{ form.media.js }}
+  {% if location.pk %}
+    Update location 
+  {% else %}
+    New location 
+  {% endif %}
+  | {{ block.super }}
 {% endblock %}
 
 {% block body_content %}
-    {% include "snippets/tag_info.html" %}
+  <h5 class="px-1 mb-0">
+    {% if location.pk %}
+      <span class="fw-bold">Update:</span> {{ location }}
+    {% else %}
+      <span class="fw-bold">New location</span>
+    {% endif %}
+  </h5>
 
-    <div class="row mt-3 pb-5">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="px-1 mb-0">
-                        {% if location.pk %}
-                            <span class="fw-bold">Update:</span> {{ location }}
-                        {% else %}
-                            <span class="fw-bold">New location</span>
-                        {% endif %}
-                    </h5>
-                </div>
+  <form method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
 
-                <div class="card-body">
-                    <form method="POST" action="" enctype="multipart/form-data">
-                        {% csrf_token %}
+    {% if form.non_field_errors %}
+      <div class="alert alert-danger" role="alert">{{ form.non_field_errors }}</div>
+    {% endif %}
 
-                        {% if form.non_field_errors %}
-                            <div class="alert alert-danger" role="alert">
-                                {{ form.non_field_errors }}
-                            </div>
-                        {% endif %}
-
-                        <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <label for="{{ form.name.id_for_label }}">Name</label>
-                                {% render_field form.name class+="form-control" %}
-                                {% if form.name.errors %}
-                                    {% for error in form.name.errors %}
-                                        <div class="alert alert-danger" role="alert">
-                                            {{ error|escape }}
-                                        </div>
-                                    {% endfor %}
-                                {% endif %}
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="{{ form.world.id_for_label }}">World</label>
-                                {% render_field form.world class+="form-control" %}
-                                {% if form.world.errors %}
-                                    {% for error in form.world.errors %}
-                                        <div class="alert alert-danger" role="alert">
-                                            {{ error|escape }}
-                                        </div>
-                                    {% endfor %}
-                                {% endif %}
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="{{ form.parent_location.id_for_label }}">Parent location</label>
-                                {% render_field form.parent_location class+="form-control" %}
-                                {% if form.parent_location.errors %}
-                                    {% for error in form.parent_location.errors %}
-                                        <div class="alert alert-danger" role="alert">
-                                            {{ error|escape }}
-                                        </div>
-                                    {% endfor %}
-                                {% endif %}
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="{{ form.image.id_for_label }}">Map</label>
-                            {% render_field form.image class+="form-control mb-3" %}
-                            {% if form.image.errors %}
-                                {% for error in form.image.errors %}
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ error|escape }}
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-
-                        <div class="form-group">
-                            <label for="{{ form.content.id_for_label }}">Content</label>
-                            {% render_field form.content class+="form-control mb-3" %}
-                            {% if form.content.errors %}
-                                {% for error in form.content.errors %}
-                                    <div class="alert alert-danger" role="alert">
-                                        {{ error|escape }}
-                                    </div>
-                                {% endfor %}
-                            {% endif %}
-                        </div>
-                </div>
-
-                <div class="card-footer">
-                    <div class="row justify-content-between">
-                        {% if location.pk %}
-                            <div class="col-auto">
-                                <a href="{% url 'locations:location_detail' location_pk=location.pk %}" class="btn btn-secondary">Cancel</a>
-                            </div>
-                            <div class="col-auto">
-                                <input type="submit" class="btn btn-primary" value="Update location">
-                            </div>
-                        {% else %}
-                            <div class="col-auto">
-                                <a href="{% url 'locations:location_detail' world_pk=world.pk %}" class="btn btn-secondary">Cancel</a>
-                            </div>
-                            <div class="col-auto">
-                                <input type="submit" class="btn btn-primary" value="Create location">
-                            </div>
-                        {% endif %}
-                    </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+    <div class="form-row">
+      <div class="form-group col-md-4">
+        <label for="{{ form.name.id_for_label }}">Name</label>
+        {% render_field form.name class+="form-control" %}
+        {% if form.name.errors %}
+          {% for error in form.name.errors %}
+            <div class="alert alert-danger" role="alert">{{ error|escape }}</div>
+          {% endfor %}
+        {% endif %}
+      </div>
+      <div class="form-group col-md-4">
+        <label for="{{ form.world.id_for_label }}">World</label>
+        {% render_field form.world class+="form-control" %}
+        {% if form.world.errors %}
+          {% for error in form.world.errors %}
+            <div class="alert alert-danger" role="alert">{{ error|escape }}</div>
+          {% endfor %}
+        {% endif %}
+      </div>
+      <div class="form-group col-md-4">
+        <label for="{{ form.parent_location.id_for_label }}">Parent location</label>
+        {% render_field form.parent_location class+="form-control" %}
+        {% if form.parent_location.errors %}
+          {% for error in form.parent_location.errors %}
+            <div class="alert alert-danger" role="alert">{{ error|escape }}</div>
+          {% endfor %}
+        {% endif %}
+      </div>
     </div>
+
+    <div class="form-group">
+      <label for="{{ form.image.id_for_label }}">Map</label>
+      {% render_field form.image class+="form-control mb-3" %}
+      {% if form.image.errors %}
+        {% for error in form.image.errors %}
+          <div class="alert alert-danger" role="alert">{{ error|escape }}</div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label for="{{ form.content.id_for_label }}">Content</label>
+      {% render_field form.content class+="form-control mb-3" %}
+      {% if form.content.errors %}
+        {% for error in form.content.errors %}
+          <div class="alert alert-danger" role="alert">{{ error|escape }}</div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <div class="row justify-content-between">
+      {% if location.pk %}
+        <div class="col-auto">
+          <a href="{% url 'locations:location_detail' location_pk=location.pk %}" class="btn btn-secondary">Cancel</a>
+        </div>
+        <div class="col-auto">
+          <input type="submit" class="btn btn-primary" value="Update location">
+        </div>
+      {% else %}
+        <div class="col-auto">
+          <a href="{% url 'locations:location_detail' world_pk=world.pk %}" class="btn btn-secondary">Cancel</a>
+        </div>
+        <div class="col-auto">
+          <input type="submit" class="btn btn-primary" value="Create location">
+        </div>
+      {% endif %}
+    </div>
+  </form>
 {% endblock %}

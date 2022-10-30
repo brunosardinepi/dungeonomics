@@ -3,164 +3,82 @@
 {% load humanize %}
 {% load static %}
 
-{% load tavern_extras %}
+{% load lib_extras %}
 {% load locations_extras %}
+{% load tavern_extras %}
 
 {% block title %}Tavern - {{ campaign.title }} | {{ block.super }}{% endblock %}
 
 {% block body_content %}
-    <div class="row mt-3 pb-5">
-        <div class="col-lg-8">
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h3>{{ campaign.title }}</h3>
-                    <p>{{ rating|safe }} <span class="ml-1">{{ reviews.count }} <a href="#reviews">review{{ reviews.count|pluralize }}</a>, imported {{ importers }} time{{ importers|pluralize }}</span></p>
+  <p class="mt-3 mb-1 fw-bold">{{ campaign.title }}</p>
+  <p>{{ rating|safe }} <span class="ms-1">{{ reviews.count }} <a href="#reviews">review{{ reviews.count|pluralize }}</a>, imported {{ importers }} time{{ importers|pluralize }}</span></p>
 
-                    <h5>Description</h5>
-                    {% if campaign.tavern_description %}
-                        {{ campaign.tavern_description|safe }}
-                    {% else %}
-                        <p>None</p>
-                    {% endif %}
-                </div>
-            </div>
+  <p class="mt-4 mb-1 fw-bold">Description</p>
+  {% if campaign.tavern_description %}
+    {{ campaign.tavern_description|safe }}
+  {% else %}
+    <p>None</p>
+  {% endif %}
 
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5>Table of Contents</h5>
-                    <ul class="contents_list">
-                        {% if chapters %}
-                            {% for c in chapters %}
-                                <li class="li-content">{{ c.order }}. {{ c.title }}</li>
-                                <ul style="padding-left:30px;">
-                                    {% for s in sections %}
-                                        {% if s.chapter.pk == c.pk %}
-                                            <li class="li-content">{{ s.order }}. {{ s.title }}</li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                            {% endfor %}
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
+  <p class="mt-3">
+    {% if request.user == campaign.user %}
+      <a href="{% url 'campaign:campaign_unpublish' campaign_pk=campaign.pk %}" id="campaign-unpublish" class="btn btn-danger btn-sm">Unpublish campaign</a>
+    {% else %}
+      <a href="{% url 'campaign:campaign_import' campaign.public_url %}" class="btn btn-success btn-sm">Import campaign</a>
+      <a href="{% url 'tavern:tavern_campaign_review' campaign.public_url %}" class="btn btn-primary btn-sm">Review campaign</a>
+    {% endif %}
+  </p>
 
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5>Monsters</h5>
-                    {% if monsters %}
-                        <ul>
-                            {% for monster in monsters %}
-                                <li>{{ monster.name }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>None</p>
-                    {% endif %}
+  <hr class="my-4" />
 
-                    <h5>NPCs</h5>
-                    {% if npcs %}
-                        <ul>
-                            {% for npc in npcs %}
-                                <li>{{ npc.name }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>None</p>
-                    {% endif %}
+  <p class="mt-4 mb-1 fw-bold">Table of Contents</p>
+  <ul class="contents_list">
+    {% if campaign.children %}
+      {% for chapter, sections in campaign.children.items %}
+        <li class="li-content">{{ chapter.order }}. {{ chapter.title }}</li>
+        <ul style="padding-left:30px;">
+          {% for section in sections %}
+            <li class="li-content">{{ section.order }}. {{ section.title }}</li>
+          {% endfor %}
+        </ul>
+      {% endfor %}
+    {% endif %}
+  </ul>
 
-                    <h5>Items</h5>
-                    {% if items %}
-                        <ul>
-                            {% for item in items %}
-                                <li>{{ item.name }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>None</p>
-                    {% endif %}
+  {% for model, objects in characters.items %}
+    <p class="mt-3 mb-0 fw-bold">{% get_verbose_name_plural objects.0 %}</p>
+    {% for object in objects %}
+      {{ object }}<br />
+    {% endfor %}
+  {% endfor %}
 
-                    <h5>Worlds/Locations</h5>
-                    <ul>
-                        {% if worlds %}
-                            {% for w in worlds %}
-                                <li>{{ w.name }}</li>
-                                {% get_world_locations w.pk as world_locations %}
-                                {% if world_locations %}
-                                    <ul style="padding-left:30px;">
-                                        {% for world_location in world_locations %}
-                                            {% include "locations/tavern_tree_view_template.html" %}
-                                        {% endfor %}
-                                    </ul>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    </ul>
+  <hr class="my-4" />
 
-                    <h5>Tables</h5>
-                    {% if tables %}
-                        <ul>
-                            {% for table in tables %}
-                                <li>{{ table.name }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>None</p>
-                    {% endif %}
-                </div>
-            </div>
-
-            <div id="reviews" class="card mb-3">
-                <div class="card-body">
-                    <h5>Reviews</h5>
-                    {% if reviews %}
-                        {% for review in reviews %}
-                            <div class="row small mb-2 text-secondary">
-                                <div class="col">
-                                    <span class="mr-1">{% rating_stars_html_tag review.score as score %}{{ score|safe }}</span>
-                                    <i class="fas fa-clock mr-1"></i>{{ review.date|naturaltime }}
-                                </div>
-                            </div>
-                            {% if review.comment %}
-                                <div class="row">
-                                    <div class="col">
-                                        {{ review.comment|linebreaks }}
-                                    </div>
-                                </div>
-                            {% endif %}
-                            {% if not forloop.last %}<hr>{% endif %}
-                        {% endfor %}
-                    {% else %}
-                        <p>No comments!</p>
-                    {% endif %}
-                </div>
-            </div>
-
+  <div id="reviews" class="mb-3">
+    <p class="mb-1 fw-bold">Reviews</p>
+    {% if reviews %}
+      {% for review in reviews %}
+        <div class="row small mb-2 text-secondary">
+          <div class="col">
+            <span class="mr-1">{% rating_stars_html_tag review.score as score %}{{ score|safe }}</span>
+            <i class="fas fa-clock mr-1"></i>{{ review.date|naturaltime }}
+          </div>
         </div>
-        <div class="col-lg-4 mb-3">
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5>Summary</h5>
-                    <ul class="contents_list">
-                        <li>{{ chapters.count }} chapter{{ chapters|pluralize }}, {{ sections.count }} section{{ sections|pluralize }}</li>
-                        <li>{{ monsters|length }} monster{{ monsters|pluralize }}, {{ npcs|length }} NPC{{ npcs|pluralize }}</li>
-                        <li>{{ items|length }} item{{ items|pluralize }}</li>
-                        <li>{{ worlds|length }} world{{ worlds|pluralize }}, {{ locations|length }} location{{ locations|pluralize }}</li>
-                        <li>{{ tables|length }} table{{ tables|pluralize }}</li>
-                    </ul>
-                    {% if request.user == campaign.user %}
-                        <a href="{% url 'campaign:campaign_unpublish' campaign_pk=campaign.pk %}" id="campaign-unpublish" class="btn btn-danger btn-block mt-4">Unpublish campaign</a>
-                    {% else %}
-                        <a id="tavern-import" href="{% url 'tavern:tavern_campaign_import' campaign_pk=campaign.pk %}" class="btn btn-success btn-block mt-4">Import campaign</a>
-                        <a href="{% url 'tavern:tavern_campaign_review' campaign_pk=campaign.pk %}" class="btn btn-primary btn-block mt-3">Review campaign</a>
-                    {% endif %}
-                </div>
+        {% if review.comment %}
+          <div class="row">
+            <div class="col">
+              {{ review.comment|linebreaks }}
             </div>
-        </div>
-    </div>
+          </div>
+        {% endif %}
+        {% if not forloop.last %}<hr>{% endif %}
+      {% endfor %}
+    {% else %}
+      <p>No comments!</p>
+    {% endif %}
+  </div>
 {% endblock %}
 
 {% block body_extra %}
-    <script src="{% static 'js/campaign_unpublish.js' %}"></script>
-    <script src="{% static 'js/tavern_import.js' %}"></script>
+  <script src="{% static 'js/campaign_unpublish.js' %}"></script>
 {% endblock %}

@@ -336,7 +336,12 @@ class CampaignExport(LoginRequiredMixin, View):
 
 class CampaignImport(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'campaign/campaign_import.html', {})
+        campaign = None
+        if 'uuid' in kwargs:
+            campaign = get_object_or_404(models.Campaign, public_url=kwargs['uuid'])
+        return render(request, 'campaign/campaign_import.html', {
+            'campaign': campaign,
+        })
 
     def post(self, request, *args, **kwargs):
         # Get the campaign being imported.
@@ -372,6 +377,8 @@ class CampaignImport(LoginRequiredMixin, View):
 
         # Create a copy of all the campaign mentions.
         for obj, mentions in campaign.mentions.items():
+            print(f"obj = {obj}")
+            print(f"mentions = {mentions}")
             # Get the original object's mention URL.
             old_mention_url = obj.mention
 
@@ -379,6 +386,10 @@ class CampaignImport(LoginRequiredMixin, View):
             obj.pk = None
             obj.campaign = campaign
             obj.user = request.user
+
+            # TODO Create copies of a world's locations.
+            # TODO Create copies of a table's options.
+
             obj.save()
 
             # Go through each child content and update the mention URL.

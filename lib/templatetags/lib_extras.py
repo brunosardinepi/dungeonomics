@@ -65,3 +65,7 @@ def asset_title(obj):
         return obj.upper()
     else:
         return obj.capitalize()
+
+@register.simple_tag
+def get_verbose_name_plural(obj):
+    return obj._meta.verbose_name_plural.title()

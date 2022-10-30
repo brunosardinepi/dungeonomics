@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from dungeonomics.config import settings as secrets
 
 
 class Item(models.Model):
@@ -18,3 +19,7 @@ class Item(models.Model):
         return reverse('items:item_detail', kwargs={
             'item_pk': self.pk
             })
+
+    @property
+    def mention(self):
+        return f"[{self.__str__()}]({secrets['site']}{self.get_absolute_url()})"

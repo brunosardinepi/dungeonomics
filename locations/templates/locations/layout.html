@@ -1,0 +1,99 @@
+{% extends 'layout.html' %}
+
+{% load static %}
+
+{% block body_content %}
+  <div class="row mt-3">
+    <div class="col-lg-3">
+      <p class="mb-1 fw-bold">Locations</p>
+      <div class="row mb-2">
+        <div class="col">
+          {% for section in campaign.campaign_toolbar %}
+            <a
+                href="{{ section.url }}"
+                class="me-2"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                title="{{ section.tooltip }}">
+              <i class="fas fa-fw {{ section.icon }}" aria-hidden="true"></i>
+            </a>
+          {% endfor %}
+          <input
+              type="text"
+              class="form-control form-control-sm form-control-dark my-3"
+              data-type="campaign"
+              id="campaign-search"
+              placeholder="Search" />
+          <ul class="contents_list" id="campaign-list">
+            {% for chapter, sections in campaign.children.items %}
+              <li>
+                {{ chapter.order }}.
+                <a
+                    {% if chapter == selected_content and not section %}
+                      class="fw-bold"
+                    {% endif %}
+                    href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk %}">
+                  {{ chapter.title }}
+                </a>
+              </li>
+              <ul style="padding-left: 30px;">
+                {% for section in sections %}
+                  {% if section.chapter.pk == chapter.pk %}
+                    <li>
+                      {{ section.order }}.
+                      <a
+                          {% if section == selected_content %}
+                            class="fw-bold"
+                          {% endif %}
+                          href="{% url 'campaign:campaign_detail' campaign_pk=campaign.pk chapter_pk=chapter.pk section_pk=section.pk %}">
+                        {{ section.title }}
+                      </a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="row mt-5 mb-1">
+        <div class="col">
+          <span class="fw-bold">Party</span>
+        </div>
+        <div class="col-auto">
+          {% for section in campaign.party_toolbar %}
+            <a
+                href="{{ section.url }}"
+                class="me-2"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                title="{{ section.tooltip }}">
+              <i class="fas fa-fw {{ section.icon }}" aria-hidden="true"></i>
+            </a>
+          {% endfor %}
+        </div>
+        {% include "posts/party_feed.html" with posts=posts%}
+      </div>
+    </div>
+
+    {% if campaign %}
+      <div class="col-lg-9 mt-5 mt-sm-0">
+    {% else %}
+      <div class="col">
+    {% endif %}    
+      {% block campaign_content %}{% endblock %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block body_extra %}
+  {{ block.super }}
+  <script src="{% static 'js/campaign_delete.js' %}"></script>
+  <script src="{% static 'js/filter.js' %}"></script>
+  <script>
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+  </script>
+{% endblock %}

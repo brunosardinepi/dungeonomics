@@ -54,6 +54,11 @@ class Campaign(CampaignTemplate):
             'campaign_pk': self.pk
             })
 
+    def get_tavern_url(self):
+        return reverse('tavern:tavern_campaign_detail', kwargs={
+            'uuid': self.public_url,
+            })
+
     @property
     def campaign_toolbar(self):
         toolbar = [
@@ -103,10 +108,7 @@ class Campaign(CampaignTemplate):
             toolbar.append(
                 {
                     'tooltip': 'View campaign on the Tavern',
-                    'url': reverse(
-                        'tavern:tavern_campaign_detail',
-                        kwargs={'campaign_pk': self.pk},
-                    ),
+                    'url': self.get_tavern_url(),
                     'icon': 'fa-beer',
                 },
             )
@@ -167,26 +169,46 @@ class Campaign(CampaignTemplate):
 
     @property
     def mentions(self):
-        app_labels = ['characters']
+        app_labels = {
+            'characters': re.compile(
+                r'\(http(?:s)?:\/\/(?:garrett)?\.?dungeonomics\.com(?::8000)?(?:\/characters\/)?(?:monster\/\d\/)?(?:player\/\d\/)?(?:npc\/\d\/)?\)',
+                flags=re.IGNORECASE,
+            ),
+            'items': re.compile(
+                r'\(http(?:s)?:\/\/(?:garrett)?\.?dungeonomics\.com(?::8000)?(?:\/items\/\d\/)?\)',
+                flags=re.IGNORECASE,
+            ),
+            'locations': re.compile(
+                r'\(http(?:s)?:\/\/(?:garrett)?\.?dungeonomics\.com(?::8000)?(?:\/locations\/)?(?:world\/\d\/)?(?:location\/\d\/)?\)',
+                flags=re.IGNORECASE,
+            ),
+            'tables': re.compile(
+                r'\(http(?:s)?:\/\/(?:garrett)?\.?dungeonomics\.com(?::8000)?(?:\/tables\/\d\/)?\)',
+                flags=re.IGNORECASE,
+            ),
+        }
         results = {}
-        for app_label in app_labels:
+        for app_label, regex in app_labels.items():
             for chapter, sections in self.children.items():
                 # Look for the dungeonomics URL in the content.
                 children = [chapter]
                 children += [i for i in sections]
                 for child in children:
                     matches = re.findall(
-                        r'\(http(?:s)?:\/\/(?:garrett)?\.?dungeonomics\.com(?::8000)?(?:\/characters\/)?(?:monster\/\d\/)?(?:player\/\d\/)?(?:npc\/\d\/)?\)',
+                        regex,
                         child.content,
-                        flags=re.IGNORECASE,
                     )
                     if matches:
                         matches = [i.lstrip("(").rstrip(")") for i in matches]
-                        matches = [i.split(f"/{app_label}/")[1] for i in matches]
                         for match in matches:
                             # Get the object.
-                            model_name = match.split("/")[0].replace("/", "").strip()
-                            pk = match.split("/")[1].replace("/", "").strip()
+                            if app_label in ['characters', 'locations']:
+                                match = match.split(f"/{app_label}/")[1]
+                                model_name = match.split("/")[0].replace("/", "").strip()
+                                pk = match.split("/")[1].replace("/", "").strip()
+                            else:
+                                model_name = app_label[:-1]
+                                pk = match.split(f"/{app_label}/")[1].replace("/", "").strip()
 
                             model = apps.get_model(
                                 app_label=app_label,

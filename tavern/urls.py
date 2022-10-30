@@ -1,20 +1,16 @@
 from django.contrib.auth.decorators import login_required
 from django.urls import path
-
-from . import views
+from tavern import views
 
 
 app_name = 'tavern'
 urlpatterns = [
-    path('campaign/<int:campaign_pk>/',
+    path('campaign/<uuid:uuid>/',
         login_required(views.TavernCampaignDetailView.as_view()),
         name='tavern_campaign_detail'),
-    path('campaign/<int:campaign_pk>/review/',
+    path('campaign/<uuid:uuid>/review/',
         login_required(views.TavernCampaignReview.as_view()),
         name='tavern_campaign_review'),
-    path('campaign/<int:campaign_pk>/import/',
-        login_required(views.TavernCampaignImport.as_view()),
-        name='tavern_campaign_import'),
 
     path('<str:type>/<int:pk>/',
         login_required(views.TavernCharacterDetailView.as_view()),

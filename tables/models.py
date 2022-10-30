@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.db import models
+from dungeonomics.config import settings as secrets
 
 
 class Table(models.Model):
@@ -15,6 +16,10 @@ class Table(models.Model):
         return reverse('tables:table_detail',
             kwargs={'table_pk': self.pk}
         )
+
+    @property
+    def mention(self):
+        return f"[{self.__str__()}]({secrets['site']}{self.get_absolute_url()})"
 
     def options(self):
         return self.tableoption_set.all().order_by('pk')

@@ -28,7 +28,10 @@ def location_detail(request, world_pk=None, location_pk=None):
     if world_pk:
         world = get_object_or_404(models.World, pk=world_pk)
         if world.user == request.user:
-            return render(request, 'locations/location_detail.html', {'world': world, 'worlds': worlds})
+            return render(request, 'locations/location_detail.html', {
+                'world': world,
+                'worlds': worlds,
+            })
         else:
             raise Http404
     elif location_pk:
@@ -44,30 +47,49 @@ def location_detail(request, world_pk=None, location_pk=None):
         world = None
         if len(worlds) > 0:
             world = worlds[0]
-        return render(request, 'locations/location_detail.html', {'world': world, 'worlds': worlds})
+        return render(request, 'locations/location_detail.html', {
+            'world': world,
+            'worlds': worlds,
+        })
 
-@login_required
-def world_create(request):
-    data = at_tagging(request)
-    form = forms.WorldForm()
-    if request.method == 'POST':
-        form = forms.WorldForm(request.POST, request.FILES)
+class WorldCreate(LoginRequiredMixin, CreateView):
+    model = models.World
+    form_class = forms.WorldForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Get the objects to be used in mentions.
+        context['data'] = at_tagging(self.request)
+
+        return context
+
+    def get_form_kwargs(self, **kwargs):
+        kwargs = super().get_form_kwargs(**kwargs)
+
+        # Send the request object to the form.
+        kwargs['request'] = self.request
+
+        return kwargs
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
         if form.is_valid():
-            world = form.save(commit=False)
-            world.user = request.user
+            self.object = form.save(commit=False)
+
+            # Set the object's user.
+            self.object.user = request.user
+
             if form.cleaned_data['image']:
                 image_validity_check = image_is_valid(request, form)
                 if image_validity_check == True:
-                    world.image = form.cleaned_data['image']
-                elif image_validity_check == "bad size":
-                    return redirect('/error/image-size/')
-                elif image_validity_check == "bad type":
-                    return redirect('/error/image-type/')
-            world.save()
-            messages.add_message(request, messages.SUCCESS, "World created!")
-            return HttpResponseRedirect(world.get_absolute_url())
-    data['form'] = form
-    return render(request, 'locations/world_form.html', data)
+                    self.object.image = form.cleaned_data['image']
+                elif (
+                    image_validity_check == "bad size" or
+                    image_validity_check == "bad type"
+                ):
+                    return self.form_invalid(form)
+            return self.form_valid(form)
 
 @login_required
 def location_create(request, world_pk, location_pk=None):
@@ -103,9 +125,12 @@ def location_create(request, world_pk, location_pk=None):
                 return HttpResponseRedirect(location.get_absolute_url())
     else:
         raise Http404
-    data['world'] = world
-    data['form'] = form
-    return render(request, 'locations/location_form.html', data)
+
+    return render(request, 'locations/location_form.html', {
+        'data': data,
+        'world': world,
+        'form': form,
+    })
 
 @login_required
 def world_update(request, world_pk):
